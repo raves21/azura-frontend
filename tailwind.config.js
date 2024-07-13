@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        darkBackground: '#100c14',
+        darkBg: '#100c14',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,6 +73,11 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    fontFamily: {
+      'poppins' : 'Poppins',
+      'dm-sans' : 'DM Sans',
+      'montserrat' : 'Montserrat'
+    }
   },
   plugins: [require("tailwindcss-animate")],
 }
