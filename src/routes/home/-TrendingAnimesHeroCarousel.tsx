@@ -39,7 +39,7 @@ export default function TrendingAnimesHeroCarousel({
               <div className="flex flex-col justify-center gap-10">
                 <div className="w-[50vw] flex flex-col">
                   <p><span className="text-xl font-bold text-mainAccent">#{i+1}</span> in trending</p>
-                  <p className="text-4xl font-bold">{anime.title.english}</p>
+                  <p className="mt-2 text-4xl font-bold">{anime.title.english}</p>
                   <p className="mt-4 line-clamp-4">
                     {anime.description.replace(/<[^>]*>/g, "")}
                   </p>
