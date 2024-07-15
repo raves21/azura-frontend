@@ -23,13 +23,13 @@ export default function HomeHeader() {
 
   return (
     <div
-      className={`fixed flex items-center justify-between w-screen px-10 py-4 z-[9999] ${isScrolledDown ? "bg-darkBg/80" : ""} transition-all duration-300`}
+      className={`fixed flex items-center justify-between w-full px-10 py-4 z-[9999] ${isScrolledDown ? "bg-darkBg/80" : ""} transition-all duration-300`}
     >
       <Menu size={24} color="white" />
       <div className="flex items-center gap-12 text-sm">
         <Link className="font-medium">Anime</Link>
         <Link className="text-gray-300">Movie / TV</Link>
-        <img src="/temp-logo.svg" className="size-12" />
+        <img src="/temp-logo2.svg" className="size-12" />
         <Link className="text-gray-300">Social</Link>
         <Link className="text-gray-300">Profile</Link>
       </div>

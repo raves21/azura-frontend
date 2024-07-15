@@ -37,16 +37,17 @@ export default function TrendingAnimesHeroCarousel({
                 <img src={anime.image} className="object-cover"></img>
               </div>
               <div className="flex flex-col justify-center gap-10">
-                <div className="w-[50vw] flex flex-col gap-4">
-                  <p className="text-4xl font-bold">{anime.title.romaji}</p>
-                  <p className="line-clamp-4">
+                <div className="w-[50vw] flex flex-col">
+                  <p><span className="text-xl font-bold text-mainAccent">#{i+1}</span> in trending</p>
+                  <p className="text-4xl font-bold">{anime.title.english}</p>
+                  <p className="mt-4 line-clamp-4">
                     {anime.description.replace(/<[^>]*>/g, "")}
                   </p>
                 </div>
                 <div className="flex gap-12">
-                  <button className="flex items-center gap-2 px-5 py-2 text-white rounded-full bg-fuchsia-600">
+                  <button className="flex items-center gap-2 px-5 py-2 text-white rounded-full bg-mainAccent">
                     <Play size={20} />
-                    <p>Watch Now</p>
+                    <p className="font-medium">Watch Now</p>
                   </button>
                 </div>
               </div>
@@ -54,8 +55,8 @@ export default function TrendingAnimesHeroCarousel({
           );
         })}
       </CarouselContent>
-      <CarouselPrevious className="absolute left-0 ml-3 border-none bg-black/40 hover:bg-fuchsia-600" />
-      <CarouselNext className="absolute right-0 mr-3 border-none bg-black/40 hover:bg-fuchsia-600" />
+      <CarouselPrevious className="absolute left-0 ml-3 border-none bg-black/40 hover:bg-mainAccent" />
+      <CarouselNext className="absolute right-0 mr-3 border-none bg-black/40 hover:bg-mainAccent" />
     </Carousel>
   );
 }

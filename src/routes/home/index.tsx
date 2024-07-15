@@ -7,10 +7,7 @@ import {
   useFetchTrendingAnimePageTwo,
 } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
-import TrendingAnimes from "./-TrendingAnimes";
-import PopularAnimes from "./-PopularAnimes";
-import RecentlyUpdatedAnimes from "./-RecentlyUpdated";
-import TopRatedAnimes from "./-TopRatedAnimes";
+import AnimeCategorySection from "./-AnimeCategorySection";
 
 export const Route = createFileRoute("/home/")({
   component: () => <Home />,
@@ -22,12 +19,12 @@ function Home() {
   const {
     data: trendingAnimePageTwo,
     isLoading: isTrendingAnimePageTwoLoading,
-  } = useFetchTrendingAnimePageTwo(10);
+  } = useFetchTrendingAnimePageTwo(12);
   const { data: popularAnimes, isLoading: isPopularAnimesLoading } =
-    useFetchPopularAnimes(10);
+    useFetchPopularAnimes(12);
 
   const { data: topRatedAnimes, isLoading: isTopRatedAnimesLoading } =
-    useFetchTopRatedAnime(10);
+    useFetchTopRatedAnime(12);
   // const {data: recentlyUpdatedAnimes, isLoading: isRecentlyUpdatedAnimesLoading} = useFetchRecentlyUpdatedAniwatch()
 
   if (
@@ -53,11 +50,11 @@ function Home() {
     return (
       <div className="bg-darkBg">
         <TrendingAnimesHeroCarousel animeList={trendingAnimes.results} />
-        <div className="space-y-10">
-          <TrendingAnimes animeList={trendingAnimePageTwo.results} />
-          <PopularAnimes animeList={popularAnimes.results} />
-          <TopRatedAnimes animeList={topRatedAnimes.results} />
-          {/* <RecentlyUpdatedAnimes animeList={recentlyUpdatedAnimes.animes}/> */}
+        <div className="pb-24 space-y-10">
+          <AnimeCategorySection animeList={trendingAnimePageTwo.results} categoryName="Trending Anime"/>
+          <AnimeCategorySection animeList={popularAnimes.results} categoryName="All Time Popular"/>
+          <AnimeCategorySection animeList={topRatedAnimes.results} categoryName="Top Rated Anime"/>
+          {/* <AnimeCategorySection animeList={recentlyUpdatedAnimes.animes} categoryName="Recently Updated"/> */}
         </div>
       </div>
     );
