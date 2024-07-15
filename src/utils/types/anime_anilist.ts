@@ -2,10 +2,12 @@
 export type MultipleAnimeResponse = {
     currentPage: number,
     hasNextPage: boolean,
-    result: Anime[]
+    totalPages: number,
+    totalResults: number,
+    results: AnilistAnime[]
 }
 
-export type Anime = {
+export type AnilistAnime = {
     id:            string;
     malId:         number;
     title:         Title;
