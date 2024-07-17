@@ -1,10 +1,10 @@
 import { ChevronRight } from "lucide-react";
-import { AnilistAnime } from "../../utils/types/anime_anilist";
+import { Anime } from "../../utils/types/anime_anilist";
 import AnimeCard from "./-AnimeCard";
 import { Link } from "@tanstack/react-router";
 
 type AnimeCategorySectionProps = {
-  animeList: AnilistAnime[];
+  animeList: Anime[];
   categoryName: string
 };
 
@@ -21,7 +21,7 @@ export default function AnimeCategorySection({ animeList, categoryName }: AnimeC
       </div>
       <div className="grid grid-cols-6 gap-x-4 gap-y-6">
         {animeList.map((anime, i) => {
-          return <AnimeCard key={i} anilistAnime={anime} />;
+          return <AnimeCard key={i} anime={anime} />;
         })}
       </div>
     </div>

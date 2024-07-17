@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import HomeHeader from './-HomeHeader'
 
-export const Route = createFileRoute('/home')({
+export const Route = createFileRoute('/anime')({
   component: () => <HomeLayout/>
 })
 

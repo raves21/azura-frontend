@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        "auto-fill-45": "repeat(auto-fill, minmax(45px, 1fr))",
+      },
       colors: {
         darkBg: '#100c14',
         mainAccent: 
