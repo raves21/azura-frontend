@@ -1,4 +1,4 @@
-import { Episode, EpisodeChunk } from "@/utils/types/anime_anilist";
+import { Episode, EpisodeChunk } from "@/utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import EpisodeCard from "./-EpisodeCard";

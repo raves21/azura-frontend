@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/anime-carousel";
-import { Anime } from "../../utils/types/anime_anilist";
+import { Anime } from "../../utils/types/animeAnilist";
 import AnimeHeroComponent from "./-AnimeHeroComponent";
 
 type TrendingAnimeCarouselProps = {

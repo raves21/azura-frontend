@@ -1,4 +1,4 @@
-import { Anime, AnimeInfo } from "@/utils/types/anime_anilist";
+import { Anime, AnimeInfo } from "@/utils/types/animeAnilist";
 import { Play } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 

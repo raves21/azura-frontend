@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import { Anime } from "../../utils/types/anime_anilist";
+import { Anime } from "../../utils/types/animeAnilist";
 import AnimeCard from "./-AnimeCard";
 import { Link } from "@tanstack/react-router";
 

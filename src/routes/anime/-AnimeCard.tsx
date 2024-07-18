@@ -1,4 +1,4 @@
-import { Anime } from "../../utils/types/anime_anilist";
+import { Anime } from "../../utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
 
 type AnimeCardProps = {

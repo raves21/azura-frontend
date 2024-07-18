@@ -9,6 +9,7 @@ export const Route = createFileRoute("/anime/info/$animeId/")({
 
 function AnimeInfo() {
   const { animeId } = Route.useParams();
+
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
@@ -16,7 +17,6 @@ function AnimeInfo() {
   } = useFetchAnimeInfo(animeId);
 
   if (isAnimeInfoLoading) {
-    console.log("ROUTE IS LOADING");
     return (
       <div className="grid text-white bg-black h-dvh place-items-center">
         LOADING...
@@ -25,7 +25,6 @@ function AnimeInfo() {
   }
 
   if (animeInfo) {
-    console.log("LOADED ROUTE");
     return (
       <div className="relative bg-darkBg">
         <AnimeHeroComponent animeInfo={animeInfo} />

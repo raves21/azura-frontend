@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   AnimeInfo,
   MultipleAnimeResponse,
-} from "../utils/types/anime_anilist";
+} from "../utils/types/animeAnilist";
 
 const BASE_URL_ANILIST = "https://consumet-api-green.vercel.app/meta/anilist";
 
