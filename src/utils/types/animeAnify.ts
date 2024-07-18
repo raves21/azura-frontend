@@ -1,5 +1,16 @@
-export type AnifyAnimeEpisodes = {
-    episodes: Episodes;
+import { Episode } from "./animeAnilist";
+
+export type AnimeInfoAnify = {
+    id: string
+    coverImage:  string;
+    bannerImage: string;
+    trailer:     string;
+    title:       Title;
+    description: string;
+    rating:      Rating;
+    type:        string;
+    genres:      string[];
+    episodes:    Episodes;
 }
 
 export type Episodes = {
@@ -12,20 +23,21 @@ export type Data = {
     providerId: string;
 }
 
-export type Episode = {
-    id:          string;
-    img:         null | string;
-    title:       string;
-    hasDub:      boolean;
-    number:      number;
-    rating:      number | null;
-    isFiller:    boolean;
-    updatedAt:   number;
-    description: string | null;
-}
-
 export type Latest = {
     updatedAt:     number;
     latestTitle:   string;
     latestEpisode: number;
+}
+
+export type Rating = {
+    mal:     number;
+    anidb:   number;
+    kitsu:   number;
+    anilist: number;
+}
+
+export type Title = {
+    native:  string;
+    romaji:  string;
+    english: string;
 }

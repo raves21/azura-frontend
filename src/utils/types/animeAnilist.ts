@@ -26,7 +26,7 @@ export type Anime = {
   type: Type;
 };
 
-export type AnimeInfo = Anime & {
+export type AnimeInfoAnilist = Anime & {
   synonyms: string[];
   isLicensed: boolean;
   isAdult: boolean;
@@ -136,13 +136,11 @@ export type EndDateClass = {
 };
 
 export type Episode = {
-  id: string;
-  title: string;
-  description: string | null;
-  number: number;
-  image: string;
-  airDate: string | null;
-  createdAt: string | null;
+    id: string;
+    title: string;
+    number: number;
+    image?: string | null
+    img?: string | null
 };
 
 export type EpisodeChunk = {

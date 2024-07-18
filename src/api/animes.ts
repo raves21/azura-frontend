@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
-  AnimeInfo,
+  AnimeInfoAnilist,
   MultipleAnimeResponse,
 } from "../utils/types/animeAnilist";
+import { AnimeInfoAnify } from "@/utils/types/animeAnify";
 
 const BASE_URL_ANILIST = "https://consumet-api-green.vercel.app/meta/anilist";
 
@@ -17,28 +18,12 @@ const rarelyChanging = {
   staleTime: 240 * (60 * 1000), //4 hrs
 };
 
-export function useFetchTrendingAnime(perPage: number) {
+export function useFetchTrendingAnime(perPage: number, pageNum: number) {
   return useQuery({
-    queryKey: ["trending"],
+    queryKey: ["trending", perPage],
     queryFn: async () => {
       const { data: trendingAnimes } = await axios.get(
-        `${BASE_URL_ANILIST}/advanced-search?sort=["TRENDING_DESC"]&perPage=${perPage}&page=1`
-      );
-      return trendingAnimes as MultipleAnimeResponse;
-    },
-    ...frequentlyChanging,
-    retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-}
-
-export function useFetchTrendingAnimePageTwo(perPage?: number) {
-  return useQuery({
-    queryKey: ["trendingPageTwo"],
-    queryFn: async () => {
-      const { data: trendingAnimes } = await axios.get(
-        `${BASE_URL_ANILIST}/trending?perPage=${perPage}&page=2`
+        `${BASE_URL_ANILIST}/advanced-search?sort=["TRENDING_DESC"]&perPage=${perPage}&page=${pageNum}`
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
@@ -97,14 +82,30 @@ export function useSearchAnime(id: string) {
   });
 }
 
-export function useFetchAnimeInfo(id: string) {
+export function useFetchAnimeInfoAnilist(id: string) {
   return useQuery({
-    queryKey: ["info", id],
+    queryKey: ["infoAnilist", id],
     queryFn: async () => {
-      const { data: animeInfo } = await axios.get(
+      const { data: animeInfoAnilist } = await axios.get(
         `${BASE_URL_ANILIST}/info/${id}`
       );
-      return animeInfo as AnimeInfo;
+      return animeInfoAnilist as AnimeInfoAnilist;
+    },
+    ...rarelyChanging,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+}
+
+export function useFetchAnimeInfoAnify(id: string) {
+  return useQuery({
+    queryKey: ["infoAnify", id],
+    queryFn: async () => {
+      const { data: animeInfoAnify } = await axios.get(
+        `https://anify.eltik.cc/info/${id}?fields=[episodes,bannerImage,coverImage,title,rating,trailer,genres,description,type,id]`
+      );
+      return animeInfoAnify as AnimeInfoAnify;
     },
     ...rarelyChanging,
     retry: false,

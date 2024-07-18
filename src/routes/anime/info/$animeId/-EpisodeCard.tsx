@@ -1,12 +1,12 @@
-import { Episode } from "@/utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
 
 type EpisodeCardProps = {
-  episode: Episode;
+  number: number,
+  title: string,
   image: string
 };
 
-export default function EpisodeCard({ episode, image }: EpisodeCardProps) {
+export default function EpisodeCard({ number, title, image }: EpisodeCardProps) {
   return (
     <div className="relative flex flex-col gap-3 aspect-[4/3]">
       <div className="relative flex-1">
@@ -29,8 +29,8 @@ export default function EpisodeCard({ episode, image }: EpisodeCardProps) {
         />
       </div>
       <div className="text-sm">
-        <p className="text-white">{`Episode ${episode.number}`}</p>
-        <p className="line-clamp-1">{episode.title}</p>
+        <p className="text-white">{`Episode ${number}`}</p>
+        <p className="line-clamp-1">{title}</p>
       </div>
     </div>
   );

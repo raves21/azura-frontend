@@ -6,28 +6,20 @@ import { useEffect, useState } from "react";
 import { chunkEpisodes } from "@/utils/functions/reusable_functions";
 
 type EpisodesProps = {
-  episodes: Episode[];
-  animeCoverImage: string;
-  animePosterImage: string;
+  episodes: Episode[] | null;
+  defaultEpisodeImage?: string;
 };
 
-export default function Episodes({
-  episodes,
-  animeCoverImage,
-  animePosterImage,
-}: EpisodesProps) {
+export default function Episodes({ episodes }: EpisodesProps) {
   const [chunkedEpisodes, setChunkedEpisodes] = useState<EpisodeChunk[]>();
 
-  const displayEpisodeImage = true;
-
-  console.log(episodes);
-
   useEffect(() => {
+    if (!episodes) return;
     if (episodes.length === 0) return;
     setChunkedEpisodes(chunkEpisodes(episodes, 40));
   }, []);
 
-  if (episodes.length !== 0) {
+  if (episodes) {
     return (
       <div className="flex flex-col px-24 pt-8 pb-10 space-y-6 text-gray-400">
         <div className="flex justify-between">
@@ -41,39 +33,18 @@ export default function Episodes({
             <ChevronDown className="size-6" />
           </Link>
         </div>
-        {displayEpisodeImage ? (
-          <div className="grid grid-cols-6 gap-x-4 gap-y-6">
-            {episodes.map((episode, i) => {
-              return (
-                <EpisodeCard
-                  image={
-                    episode.image === animePosterImage
-                      ? animeCoverImage
-                      : episode.image
-                  }
-                  episode={episode}
-                  key={i}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <div className={`grid grid-cols-auto-fill-45 gap-x-4 gap-y-6`}>
-            {episodes.map((episode, i) => {
-              return (
-                <EpisodeCard
-                  image={
-                    episode.image === animePosterImage
-                      ? animeCoverImage
-                      : episode.image
-                  }
-                  episode={episode}
-                  key={i}
-                />
-              );
-            })}
-          </div>
-        )}
+        <div className="grid grid-cols-6 gap-x-4 gap-y-6">
+          {episodes.map((episode, i) => {
+            return (
+              <EpisodeCard
+                image={episode.image!}
+                title={episode.title}
+                number={episode.number}
+                key={i}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }

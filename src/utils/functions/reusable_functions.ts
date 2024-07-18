@@ -16,8 +16,5 @@ export function chunkEpisodes(
       };
     }
   );
-
-  console.log(chunkedEpisodes);
-
   return chunkedEpisodes;
 }
