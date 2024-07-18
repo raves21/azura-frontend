@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/anime-carousel";
-import { Anime } from "../../utils/types/anime_anilist";
+import { Anime } from "../../utils/types/animeAnilist";
 import AnimeHeroComponent from "./-AnimeHeroComponent";
 
 type TrendingAnimeCarouselProps = {
@@ -21,7 +21,15 @@ export default function TrendingAnimesHeroCarousel({
         {animeList.map((anime, i) => {
           return (
             <CarouselItem key={i}>
-              <AnimeHeroComponent anime={anime} index={i + 1} />
+              <AnimeHeroComponent
+                fromCarousel={true}
+                image={anime.image}
+                cover={anime.cover}
+                description={anime.description}
+                title={anime.title.english}
+                id={anime.id}
+                trendingRank={i + 1}
+              />
             </CarouselItem>
           );
         })}

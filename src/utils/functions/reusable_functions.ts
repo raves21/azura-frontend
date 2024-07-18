@@ -1,4 +1,4 @@
-import { EpisodeChunk, Episode } from "../types/anime_anilist";
+import { EpisodeChunk, Episode } from "../types/animeAnilist";
 
 export function chunkEpisodes(
   eps: Episode[],
@@ -16,8 +16,5 @@ export function chunkEpisodes(
       };
     }
   );
-
-  console.log(chunkedEpisodes);
-
   return chunkedEpisodes;
 }

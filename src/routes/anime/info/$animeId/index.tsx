@@ -1,22 +1,25 @@
-import { useFetchAnimeInfo } from "@/api/animes";
-import { createFileRoute } from "@tanstack/react-router";
+import { useFetchAnimeInfoAnify, useFetchAnimeInfoAnilist } from "@/api/animes";
+import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import AnimeHeroComponent from "../../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
-
+import { Episode } from "@/utils/types/animeAnilist";
 export const Route = createFileRoute("/anime/info/$animeId/")({
   component: () => <AnimeInfo />,
 });
 
 function AnimeInfo() {
   const { animeId } = Route.useParams();
+  const { animeCardToAnimeInfoNavigationState } = useRouterState({
+    select: (s) => s.location.state,
+  });
+
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
     error: animeInfoError,
-  } = useFetchAnimeInfo(animeId);
+  } = useFetchAnimeInfoAnify(animeId);
 
   if (isAnimeInfoLoading) {
-    console.log("ROUTE IS LOADING");
     return (
       <div className="grid text-white bg-black h-dvh place-items-center">
         LOADING...
@@ -25,14 +28,52 @@ function AnimeInfo() {
   }
 
   if (animeInfo) {
-    console.log("LOADED ROUTE");
+    const gogoAnimeData = animeInfo.episodes.data.find(
+      (epData) => epData.providerId === "gogoanime"
+    );
+    const animePaheData = animeInfo.episodes.data.find(
+      (epData) => epData.providerId === "animepahe"
+    );
+    const zoroData = animeInfo.episodes.data.find(
+      (epData) => epData.providerId === "zoro"
+    );
+
+    const gogoAnimeEpisodes = gogoAnimeData ? gogoAnimeData.episodes : null;
+    let epsToBeRendered: Episode[] | null;
+
+    if (gogoAnimeEpisodes) {
+      epsToBeRendered = gogoAnimeEpisodes.map((ep, i) => {
+        return {
+          id: ep.id,
+          number: ep.number,
+          image:
+            animePaheData && animePaheData.episodes[i]
+              ? animePaheData.episodes[i].img ??
+                animeCardToAnimeInfoNavigationState?.cover
+              : animeCardToAnimeInfoNavigationState?.cover,
+          title:
+            zoroData && zoroData.episodes[i]
+              ? zoroData.episodes[i].title ?? ep.title
+              : ep.title,
+        };
+      });
+    } else {
+      epsToBeRendered = null;
+    }
+
     return (
       <div className="relative bg-darkBg">
-        <AnimeHeroComponent animeInfo={animeInfo} />
+        <AnimeHeroComponent
+          fromCarousel={false}
+          title={animeInfo.title.english}
+          cover={animeInfo.bannerImage}
+          image={animeCardToAnimeInfoNavigationState?.image}
+          id={animeInfo.id}
+          description={animeCardToAnimeInfoNavigationState?.description}
+        />
         <Episodes
-          episodes={animeInfo.episodes}
-          animeCoverImage={animeInfo.cover}
-          animePosterImage={animeInfo.image}
+          episodes={epsToBeRendered}
+          defaultEpisodeImage={animeCardToAnimeInfoNavigationState?.cover}
         />
       </div>
     );

@@ -3,7 +3,6 @@ import {
   useFetchPopularAnimes,
   useFetchTopRatedAnime,
   useFetchTrendingAnime,
-  useFetchTrendingAnimePageTwo,
 } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
 import AnimeCategorySection from "./-AnimeCategorySection";
@@ -14,11 +13,11 @@ export const Route = createFileRoute("/anime/")({
 
 function Home() {
   const { data: trendingAnimes, isLoading: isTrendingAnimesLoading } =
-    useFetchTrendingAnime(5);
+    useFetchTrendingAnime(5, 1);
   const {
     data: trendingAnimePageTwo,
     isLoading: isTrendingAnimePageTwoLoading,
-  } = useFetchTrendingAnimePageTwo(12);
+  } = useFetchTrendingAnime(12, 1);
   const { data: popularAnimes, isLoading: isPopularAnimesLoading } =
     useFetchPopularAnimes(12);
 

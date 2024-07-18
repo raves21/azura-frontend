@@ -1,4 +1,4 @@
-import { Anime } from "../../utils/types/anime_anilist";
+import { Anime } from "../../utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
 
 type AnimeCardProps = {
@@ -10,8 +10,17 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
     <Link
       to="/anime/info/$animeId"
       className="space-y-2 group"
+      resetScroll={false}
       params={{
         animeId: anime.id,
+      }}
+      state={{
+        animeCardToAnimeInfoNavigationState: {
+          image: anime.image,
+          cover: anime.cover,
+          genres: anime.genres,
+          description: anime.description,
+        },
       }}
     >
       <div className="relative aspect-[3/4] overflow-hidden text-white bg-gray-600 rounded-xl">

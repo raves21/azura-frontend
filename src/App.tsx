@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
 } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
@@ -16,6 +15,14 @@ const router = createRouter({ routeTree });
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
+  }
+  interface HistoryState {
+    animeCardToAnimeInfoNavigationState: {
+      image?: string;
+      cover?: string;
+      genres?: string[];
+      description?: string;
+    };
   }
 }
 
