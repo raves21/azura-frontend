@@ -11,10 +11,10 @@ export const Route = createRootRoute({
 
 function RootRoute() {
   return (
-    <div>
-      <ScrollRestoration/>
+    <>
+      <ScrollRestoration />
       <Outlet />
       <TanStackRouterDevtools />
-    </div>
+    </>
   );
 }

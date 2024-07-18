@@ -22,6 +22,7 @@ export default function TrendingAnimesHeroCarousel({
           return (
             <CarouselItem key={i}>
               <AnimeHeroComponent
+                genres={anime.genres}
                 fromCarousel={true}
                 image={anime.image}
                 cover={anime.cover}

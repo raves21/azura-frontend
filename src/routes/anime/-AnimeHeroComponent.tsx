@@ -3,13 +3,13 @@ import { Link } from "@tanstack/react-router";
 
 type AnimeHeroComponentProps = {
   fromCarousel: boolean;
-  image?: string;
+  image: string;
   cover: string;
   title: string;
-  description?: string;
+  description: string;
   id: string;
   trendingRank?: number;
-  genres?: string[];
+  genres: string[];
 };
 
 export default function AnimeHeroComponent({
@@ -53,6 +53,14 @@ export default function AnimeHeroComponent({
             <Link
               to="/anime/info/$animeId"
               params={{ animeId: id }}
+              state={{
+                animeInfoPageNavigationState: {
+                  image: image,
+                  cover: cover,
+                  genres: genres,
+                  description: description,
+                },
+              }}
               className="flex items-center gap-2 px-5 py-2 text-white rounded-full bg-mainAccent"
             >
               <Play size={20} />

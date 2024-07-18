@@ -10,12 +10,11 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
     <Link
       to="/anime/info/$animeId"
       className="space-y-2 group"
-      resetScroll={false}
       params={{
         animeId: anime.id,
       }}
       state={{
-        animeCardToAnimeInfoNavigationState: {
+        animeInfoPageNavigationState: {
           image: anime.image,
           cover: anime.cover,
           genres: anime.genres,

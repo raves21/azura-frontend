@@ -3,15 +3,20 @@ import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import AnimeHeroComponent from "../../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
 import { Episode } from "@/utils/types/animeAnilist";
+import { useEffect } from "react";
 export const Route = createFileRoute("/anime/info/$animeId/")({
   component: () => <AnimeInfo />,
 });
 
 function AnimeInfo() {
   const { animeId } = Route.useParams();
-  const { animeCardToAnimeInfoNavigationState } = useRouterState({
+  const { animeInfoPageNavigationState } = useRouterState({
     select: (s) => s.location.state,
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     data: animeInfo,
@@ -49,8 +54,8 @@ function AnimeInfo() {
           image:
             animePaheData && animePaheData.episodes[i]
               ? animePaheData.episodes[i].img ??
-                animeCardToAnimeInfoNavigationState?.cover
-              : animeCardToAnimeInfoNavigationState?.cover,
+                animeInfoPageNavigationState?.cover
+              : animeInfoPageNavigationState?.cover,
           title:
             zoroData && zoroData.episodes[i]
               ? zoroData.episodes[i].title ?? ep.title
@@ -67,13 +72,14 @@ function AnimeInfo() {
           fromCarousel={false}
           title={animeInfo.title.english}
           cover={animeInfo.bannerImage}
-          image={animeCardToAnimeInfoNavigationState?.image}
+          image={animeInfoPageNavigationState?.image!}
           id={animeInfo.id}
-          description={animeCardToAnimeInfoNavigationState?.description}
+          description={animeInfoPageNavigationState?.description!}
+          genres={animeInfoPageNavigationState?.genres!}
         />
         <Episodes
           episodes={epsToBeRendered}
-          defaultEpisodeImage={animeCardToAnimeInfoNavigationState?.cover}
+          defaultEpisodeImage={animeInfoPageNavigationState?.cover}
         />
       </div>
     );
@@ -81,7 +87,10 @@ function AnimeInfo() {
 
   if (animeInfoError) {
     return (
-      <div className="grid h-screen bg-darkBg place-items-center">ERROR</div>
+      <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
+        <p>Oops! There was an error fetching the details for this anime.</p>
+        <p>Please try again later.</p>
+      </div>
     );
   }
 }

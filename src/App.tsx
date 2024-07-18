@@ -17,7 +17,7 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
   interface HistoryState {
-    animeCardToAnimeInfoNavigationState: {
+    animeInfoPageNavigationState: {
       image?: string;
       cover?: string;
       genres?: string[];
