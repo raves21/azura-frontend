@@ -11,6 +11,12 @@ export type AnimeInfoAnify = {
     type:        string;
     genres:      string[];
     episodes:    Episodes;
+    totalEpisodes: number
+    year: number
+    //TV OR MOVIE
+    format: string
+    //RELEASING OR COMPLETED
+    status: string
 }
 
 export type Episodes = {

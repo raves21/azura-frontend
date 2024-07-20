@@ -6,11 +6,14 @@ import { useEffect, useState } from "react";
 import { chunkEpisodes } from "@/utils/functions/reusable_functions";
 
 type EpisodesProps = {
-  episodes: Episode[] | null;
-  defaultEpisodeImage?: string;
+  episodes?: Episode[] | null;
+  defaultEpisodeImage: string;
 };
 
-export default function Episodes({ episodes }: EpisodesProps) {
+export default function Episodes({
+  episodes,
+  defaultEpisodeImage,
+}: EpisodesProps) {
   const [chunkedEpisodes, setChunkedEpisodes] = useState<EpisodeChunk[]>();
 
   useEffect(() => {
@@ -21,7 +24,7 @@ export default function Episodes({ episodes }: EpisodesProps) {
 
   if (episodes) {
     return (
-      <div className="flex flex-col px-24 pt-8 pb-10 space-y-6 text-gray-400">
+      <div className="flex flex-col w-full px-24 pt-8 pb-10 space-y-6 text-gray-400">
         <div className="flex justify-between">
           <p className="text-2xl font-semibold">Episodes</p>
           <Link className="flex items-center gap-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
@@ -37,7 +40,7 @@ export default function Episodes({ episodes }: EpisodesProps) {
           {episodes.map((episode, i) => {
             return (
               <EpisodeCard
-                image={episode.image!}
+                image={episode.img ?? defaultEpisodeImage}
                 title={episode.title}
                 number={episode.number}
                 key={i}

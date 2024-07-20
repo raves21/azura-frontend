@@ -11,10 +11,12 @@ export const Route = createRootRoute({
 
 function RootRoute() {
   return (
-    <>
-      <ScrollRestoration />
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
+    <div className="max-w-full w-dvw bg-darkBg">
+      <div className="max-w-[1440px] mx-auto">
+        <ScrollRestoration />
+        <Outlet />
+        <TanStackRouterDevtools />
+      </div>
+    </div>
   );
 }

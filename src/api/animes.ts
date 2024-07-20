@@ -27,10 +27,11 @@ export function useFetchTrendingAnime(perPage: number, pageNum: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
-    ...frequentlyChanging,
+    gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
@@ -45,8 +46,9 @@ export function useFetchTopRatedAnime(perPage: number) {
     },
     gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
@@ -61,8 +63,9 @@ export function useFetchAllTimeFavoriteAnime(perPage: number) {
     },
     gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
@@ -75,14 +78,16 @@ export function useSearchAnime(id: string) {
       );
       return searchResults;
     },
-    ...rarelyChanging,
+    //...rarelyChanging,
+    gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
-export function useFetchAnimeInfoAnilist(id: string) {
+export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
   return useQuery({
     queryKey: ["infoAnilist", id],
     queryFn: async () => {
@@ -91,10 +96,13 @@ export function useFetchAnimeInfoAnilist(id: string) {
       );
       return animeInfoAnilist as AnimeInfoAnilist;
     },
-    ...rarelyChanging,
+    enabled: enabled,
+    //...rarelyChanging,
+    gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
@@ -103,14 +111,16 @@ export function useFetchAnimeInfoAnify(id: string) {
     queryKey: ["infoAnify", id],
     queryFn: async () => {
       const { data: animeInfoAnify } = await axios.get(
-        `https://anify.eltik.cc/info/${id}?fields=[episodes,bannerImage,coverImage,title,rating,trailer,genres,description,type,id]`
+        `https://anify.eltik.cc/info/${id}?fields=[episodes,bannerImage,coverImage,title,rating,trailer,genres,description,type,id,totalEpisodes,year,status,format]`
       );
       return animeInfoAnify as AnimeInfoAnify;
     },
-    ...rarelyChanging,
+    //...rarelyChanging,
+    gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
@@ -125,8 +135,9 @@ export function useFetchPopularAnimes(perPage: number) {
     },
     gcTime: Infinity,
     retry: false,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnReconnect: false
   });
 }
 
@@ -141,8 +152,8 @@ export function useFetchPopularAnimes(perPage: number) {
 //     },
 //     gcTime: Infinity,
 //     retry: false,
-//  
+//
 //     refetchOnWindowFocus: false,
-//     refetchOnReconnect: false,
+//
 //   });
 // }

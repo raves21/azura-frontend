@@ -1,16 +1,21 @@
 import { Link } from "@tanstack/react-router";
 
 type EpisodeCardProps = {
-  number: number,
-  title: string,
-  image: string
+  number: number;
+  title: string;
+  image: string;
 };
 
-export default function EpisodeCard({ number, title, image }: EpisodeCardProps) {
+export default function EpisodeCard({
+  number,
+  title,
+  image,
+}: EpisodeCardProps) {
   return (
-    <div className="relative flex flex-col gap-3 aspect-[4/3]">
+    <Link className="relative flex flex-col gap-2 aspect-[4/2.7] group">
       <div className="relative flex-1">
-        <Link className="absolute z-10 grid transition-all rounded-lg opacity-0 place-items-center size-full bg-mainAccent/40 hover:opacity-100">
+        <div className="absolute z-20 px-2 py-1 bottom-1 left-1 text-sm text-[#E0E0E0] rounded-lg bg-black/60">Episode {number}</div>
+        <div className="absolute z-10 grid transition-all rounded-lg opacity-0 place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
           <div className="grid bg-white rounded-full size-12 place-items-center">
             <svg
               className="size-[50%]"
@@ -21,7 +26,7 @@ export default function EpisodeCard({ number, title, image }: EpisodeCardProps) 
               <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
             </svg>
           </div>
-        </Link>
+        </div>
         <img
           loading="lazy"
           src={image}
@@ -29,9 +34,9 @@ export default function EpisodeCard({ number, title, image }: EpisodeCardProps) 
         />
       </div>
       <div className="text-sm">
-        <p className="text-white">{`Episode ${number}`}</p>
-        <p className="line-clamp-1">{title}</p>
+        {/* <p className="text-white">{`Episode ${number}`}</p> */}
+        <p className="line-clamp-1">EP {number}</p>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -31,8 +31,8 @@ function Home() {
     isTopRatedAnimesLoading
   ) {
     return (
-      <div className="grid text-white bg-darkBg min-h-dvh place-items-center">
-        LOADING...
+      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
+        <p>Loading <span className="font-semibold text-mainAccent">AzuraAnime</span></p>
       </div>
     );
   }
@@ -43,21 +43,24 @@ function Home() {
     popularAnimes &&
     topRatedAnimes
   ) {
+    
     return (
-      <div className="bg-darkBg">
-        <TrendingAnimesHeroCarousel animeList={trendingAnimes.results} />
+      <div className="flex flex-col items-center w-full">
+        <div className="w-dvw">
+          <TrendingAnimesHeroCarousel animeList={trendingAnimes.results} />
+        </div>
         <div className="pb-24 space-y-10">
           <AnimeCategorySection
             animeList={trendingAnimePageTwo.results}
             categoryName="Trending Anime"
           />
           <AnimeCategorySection
-            animeList={popularAnimes.results}
-            categoryName="All Time Popular"
-          />
-          <AnimeCategorySection
             animeList={topRatedAnimes.results}
             categoryName="Top Rated Anime"
+          />
+          <AnimeCategorySection
+            animeList={popularAnimes.results}
+            categoryName="All Time Popular"
           />
         </div>
       </div>

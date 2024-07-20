@@ -3,7 +3,7 @@ import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import AnimeHeroComponent from "../../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
 import { Episode } from "@/utils/types/animeAnilist";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export const Route = createFileRoute("/anime/info/$animeId/")({
   component: () => <AnimeInfo />,
 });
@@ -14,32 +14,53 @@ function AnimeInfo() {
     select: (s) => s.location.state,
   });
 
+  const [shouldFetch, setShouldFetch] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (animeInfoPageNavigationState) {
+      setShouldFetch(false);
+    } else {
+      setShouldFetch(true);
+    }
   }, []);
 
   const {
-    data: animeInfo,
-    isLoading: isAnimeInfoLoading,
-    error: animeInfoError,
+    data: animeInfoAnify,
+    isLoading: isAnimeInfoAnifyLoading,
+    error: animeInfoAnifyError,
   } = useFetchAnimeInfoAnify(animeId);
 
-  if (isAnimeInfoLoading) {
+  const {
+    data: animeInfoAnilist,
+    isLoading: isAnimeInfoAnilistLoading,
+    error: animeInfoAnilistError,
+  } = useFetchAnimeInfoAnilist(animeId, shouldFetch);
+
+  if (isAnimeInfoAnifyLoading) {
     return (
-      <div className="grid text-white bg-black h-dvh place-items-center">
-        LOADING...
+      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
+        <p>LOADING <span className="font-semibold text-green-500">ANIFY</span></p>
       </div>
     );
   }
 
-  if (animeInfo) {
-    const gogoAnimeData = animeInfo.episodes.data.find(
+  if (isAnimeInfoAnilistLoading) {
+    return (
+      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
+        <p>LOADING <span className="font-semibold text-blue-500">ANILIST</span></p>
+      </div>
+    );
+  }
+
+  if (animeInfoAnify) {
+    const gogoAnimeData = animeInfoAnify.episodes.data.find(
       (epData) => epData.providerId === "gogoanime"
     );
-    const animePaheData = animeInfo.episodes.data.find(
+    const animePaheData = animeInfoAnify.episodes.data.find(
       (epData) => epData.providerId === "animepahe"
     );
-    const zoroData = animeInfo.episodes.data.find(
+    const zoroData = animeInfoAnify.episodes.data.find(
       (epData) => epData.providerId === "zoro"
     );
 
@@ -67,25 +88,38 @@ function AnimeInfo() {
     }
 
     return (
-      <div className="relative bg-darkBg">
+      <div className="relative max-w-full">
         <AnimeHeroComponent
-          fromCarousel={false}
-          title={animeInfo.title.english}
-          cover={animeInfo.bannerImage}
-          image={animeInfoPageNavigationState?.image!}
-          id={animeInfo.id}
-          description={animeInfoPageNavigationState?.description!}
-          genres={animeInfoPageNavigationState?.genres!}
+          title={animeInfoAnify.title.english}
+          cover={animeInfoAnify.bannerImage}
+          image={
+            animeInfoPageNavigationState?.image! ?? animeInfoAnilist?.image
+          }
+          id={animeInfoAnify.id}
+          description={
+            animeInfoPageNavigationState?.description! ??
+            animeInfoAnilist?.description
+          }
+          genres={
+            animeInfoPageNavigationState?.genres ?? animeInfoAnilist?.genres
+          }
+          status={animeInfoAnify.status}
+          totalEpisodes={animeInfoAnify.totalEpisodes}
+          type={animeInfoPageNavigationState?.type ?? animeInfoAnify.format}
+          year={animeInfoAnify.year}
+          rating={animeInfoAnify.rating.anilist ?? null}
         />
         <Episodes
           episodes={epsToBeRendered}
-          defaultEpisodeImage={animeInfoPageNavigationState?.cover}
+          defaultEpisodeImage={
+            animeInfoPageNavigationState?.cover ?? animeInfoAnify.coverImage
+          }
         />
       </div>
     );
   }
 
-  if (animeInfoError) {
+  if (animeInfoAnifyError || (shouldFetch && animeInfoAnilistError)) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching the details for this anime.</p>

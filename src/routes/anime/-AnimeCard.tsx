@@ -19,10 +19,11 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
           cover: anime.cover,
           genres: anime.genres,
           description: anime.description,
+          type: anime.type,
         },
       }}
     >
-      <div className="relative aspect-[3/4] overflow-hidden text-white bg-gray-600 rounded-xl">
+      <div className="relative aspect-[3/4] overflow-hidden bg-gray-600 rounded-xl">
         {anime.image && (
           <>
             <div className="absolute z-10 grid transition-all opacity-0 place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
@@ -48,7 +49,7 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
         )}
       </div>
       <div>
-        <p className="text-sm font-medium text-white line-clamp-1">
+        <p className="text-sm font-medium text-[#E0E0E0] line-clamp-1">
           {anime.title.english}
         </p>
         <div className="flex items-center gap-2 text-xs text-gray-400">

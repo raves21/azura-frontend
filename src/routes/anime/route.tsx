@@ -1,15 +1,15 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
-import HomeHeader from './-HomeHeader'
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import HomeHeader from "./-HomeHeader";
 
-export const Route = createFileRoute('/anime')({
-  component: () => <HomeLayout/>
-})
+export const Route = createFileRoute("/anime")({
+  component: () => <HomeLayout />,
+});
 
 function HomeLayout() {
   return (
-    <div className='text-white font-montserrat'>
-      <HomeHeader/>
-      <Outlet/>
+    <div className="text-[#f6f4f4] font-montserrat bg-darkBg w-full">
+      <HomeHeader />
+      <Outlet />
     </div>
-  )
+  );
 }

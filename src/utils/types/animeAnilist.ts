@@ -23,7 +23,7 @@ export type Anime = {
   genres: string[];
   totalEpisodes: number;
   duration: number;
-  type: Type;
+  type: string;
 };
 
 export type AnimeInfoAnilist = Anime & {
@@ -59,11 +59,6 @@ export type Trailer = {
   thumbnail: string;
   thumbnailHash: string;
 };
-
-export enum Type {
-  Movie = "MOVIE",
-  Tv = "TV",
-}
 
 export type Artwork = {
   img: string;
@@ -167,7 +162,7 @@ export type Recommendation = {
   cover: string;
   coverHash: string;
   rating: number;
-  type: Type;
+  type: string;
 };
 
 export enum Status {
