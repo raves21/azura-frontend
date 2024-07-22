@@ -69,6 +69,9 @@ function AnimeInfo() {
 
     if (gogoAnimeEpisodes) {
       epsToBeRendered = gogoAnimeEpisodes.map((ep, i) => {
+        //get episode ids from gogoanime,
+        //get episode titles from zoro,
+        //get episode images from animepahe
         return {
           id: ep.id,
           number: ep.number,
@@ -83,12 +86,13 @@ function AnimeInfo() {
               : ep.title,
         };
       });
+
     } else {
       epsToBeRendered = null;
     }
 
     return (
-      <div className="relative max-w-full">
+      <div className="w-full">
         <AnimeHeroComponent
           title={animeInfoAnify.title.english}
           cover={animeInfoAnify.bannerImage}
@@ -105,11 +109,12 @@ function AnimeInfo() {
           }
           status={animeInfoAnify.status}
           totalEpisodes={animeInfoAnify.totalEpisodes}
-          type={animeInfoPageNavigationState?.type ?? animeInfoAnify.format}
+          type={animeInfoPageNavigationState?.type ?? animeInfoAnilist?.type}
           year={animeInfoAnify.year}
           rating={animeInfoAnify.rating.anilist ?? null}
         />
         <Episodes
+          type={animeInfoAnify.format}
           episodes={epsToBeRendered}
           defaultEpisodeImage={
             animeInfoPageNavigationState?.cover ?? animeInfoAnify.coverImage

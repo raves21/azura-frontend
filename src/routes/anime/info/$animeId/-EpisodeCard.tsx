@@ -1,20 +1,31 @@
 import { Link } from "@tanstack/react-router";
 
 type EpisodeCardProps = {
+  id: string;
   number: number;
   title: string;
   image: string;
+  type: string;
 };
 
 export default function EpisodeCard({
+  id,
   number,
   title,
   image,
+  type,
 }: EpisodeCardProps) {
   return (
-    <Link className="relative flex flex-col gap-2 aspect-[4/2.7] group">
+    <div
+      onClick={() => console.log(id)}
+      className="relative flex flex-col gap-2 
+    aspect-[4/2.7] 
+    group"
+    >
       <div className="relative flex-1">
-        <div className="absolute z-20 px-2 py-1 bottom-1 left-1 text-sm text-[#E0E0E0] rounded-lg bg-black/60">Episode {number}</div>
+        <div className="absolute z-20 px-2 py-1 bottom-1 left-1 text-sm text-[#E0E0E0] rounded-lg bg-black/60">
+          {type === "MOVIE" ? `MOVIE` : `Episode ${number}`}
+        </div>
         <div className="absolute z-10 grid transition-all rounded-lg opacity-0 place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
           <div className="grid bg-white rounded-full size-12 place-items-center">
             <svg
@@ -35,8 +46,14 @@ export default function EpisodeCard({
       </div>
       <div className="text-sm">
         {/* <p className="text-white">{`Episode ${number}`}</p> */}
-        <p className="line-clamp-1">EP {number}</p>
+        <p className="line-clamp-1">
+          {type === "MOVIE"
+            ? "FULL"
+            : title === `Episode ${number}`
+              ? `EP ${number}`
+              : title}
+        </p>
       </div>
-    </Link>
+    </div>
   );
 }
