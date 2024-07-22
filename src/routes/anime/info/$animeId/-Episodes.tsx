@@ -8,11 +8,13 @@ import { chunkEpisodes } from "@/utils/functions/reusable_functions";
 type EpisodesProps = {
   episodes?: Episode[] | null;
   defaultEpisodeImage: string;
+  type: string
 };
 
 export default function Episodes({
   episodes,
   defaultEpisodeImage,
+  type
 }: EpisodesProps) {
   const [chunkedEpisodes, setChunkedEpisodes] = useState<EpisodeChunk[]>();
 
@@ -40,7 +42,9 @@ export default function Episodes({
           {episodes.map((episode, i) => {
             return (
               <EpisodeCard
-                image={episode.img ?? defaultEpisodeImage}
+                type={type}
+                id={episode.id}
+                image={episode.image ?? defaultEpisodeImage}
                 title={episode.title}
                 number={episode.number}
                 key={i}

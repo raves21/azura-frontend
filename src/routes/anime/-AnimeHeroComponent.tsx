@@ -55,19 +55,19 @@ export default function AnimeHeroComponent({
   }, []);
 
   return (
-    <div className="relative flex justify-center w-full pt-32 pb-12 text-sm">
-      <div className="absolute inset-0 w-dvw left-1/2 ml-[-50vw]">
+    <div className="relative flex justify-center w-full">
+      <div className="absolute inset-0 w-dvw left-1/2 ml-[-50vw] max-h-[600px]">
         <div className="absolute bg-black/60 size-full backdrop-blur-sm"></div>
         <div className="absolute bg-gradient-to-t from-darkBg from-[percentage:0%_1%] via-transparent to-transparent size-full"></div>
         <img src={cover ?? image} className="object-cover size-full" />
       </div>
-      <div className="flex justify-center w-full gap-16">
-        <div className="aspect-[3/4] h-[350px] rounded-xl overflow-hidden z-10">
-          <img src={image} />
+      <div className="flex w-full gap-16 px-24 pt-32 pb-12">
+        <div className="aspect-[3/4] h-[320px] rounded-xl overflow-hidden z-10">
+          <img src={image} className="object-cover"/>
         </div>
-        <div className="max-w-[65%] z-10 relative">
+        <div className="relative z-10 flex-1">
           <p className="text-3xl font-bold">{title}</p>
-          <div className="flex flex-col justify-center w-[70%] gap-4">
+          <div className="relative flex flex-col w-[70%] gap-4">
             <div className="flex items-center gap-4 mt-5">
               <div
                 style={{
@@ -83,12 +83,14 @@ export default function AnimeHeroComponent({
                   style={{
                     width: `${starsFillWidthPercentage}%`,
                   }}
-                  className={`absolute bg-amber-400 size-full`}
+                  className={`absolute bg-amber-400 h-full`}
                 ></div>
               </div>
               <p className="text-lg font-semibold">
                 <span className="text-mainAccent">
-                  {rating ? (0.05 * (rating * 10)).toFixed(1) : "?"}
+                  {rating
+                    ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
+                    : "?"}
                 </span>
                 /5
               </p>
@@ -106,7 +108,7 @@ export default function AnimeHeroComponent({
                 <div className="flex gap-2">
                   <p className="text-gray-400">Status:</p>
                   <p
-                    className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"}`}
+                    className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"} font-semibold`}
                   >
                     {status}
                   </p>
@@ -128,9 +130,9 @@ export default function AnimeHeroComponent({
                 </div>
               </div>
             </div>
-            <div className="flex gap-5 my-4">
+            <div className="flex gap-5 my-3">
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.2 }}
                 className="flex items-center gap-2 px-5 py-2 rounded-full bg-mainAccent"
               >
@@ -138,7 +140,7 @@ export default function AnimeHeroComponent({
                 <p className="font-medium">Play Now</p>
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.2 }}
                 className="flex items-center gap-2 px-5 py-2 bg-black rounded-full"
               >
@@ -169,27 +171,37 @@ export default function AnimeHeroComponent({
                 {`${description ? description.replace(/<[^>]*>/g, "") : "No Description"}`}
               </p>
             </motion.div>
-          </div>
-          {descriptionHeight > 80 && (
-            <button
-              onClick={() => setReadMore(!readMore)}
-              className="absolute left-0 flex gap-3 -bottom-8"
-            >
-              <p className="text-gray-400">
-                {readMore ? "Read Less" : "Read More"}
-              </p>
+            {descriptionHeight > 80 && (
               <motion.div
                 animate={{
-                  rotate: readMore ? -180 : 0,
+                  height: readMore ? `${descriptionHeight}px` : "80px",
                 }}
                 transition={{
-                  duration: 0.5,
+                  duration: 0.2,
                 }}
+                className="absolute w-full -bottom-3"
               >
-                <ChevronDown stroke="#9ca3af" />
+                <button
+                  onClick={() => setReadMore(!readMore)}
+                  className="absolute left-0 flex gap-3 -bottom-6"
+                >
+                  <p className="text-gray-400">
+                    {readMore ? "Read Less" : "Read More"}
+                  </p>
+                  <motion.div
+                    animate={{
+                      rotate: readMore ? -180 : 0,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                    }}
+                  >
+                    <ChevronDown stroke="#9ca3af" />
+                  </motion.div>
+                </button>
               </motion.div>
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

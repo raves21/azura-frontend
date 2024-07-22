@@ -26,7 +26,7 @@ export default function HomeHeader() {
       className={`fixed left-1/2 ml-[-50vw] w-dvw z-[999999] ${isScrolledDown ? "bg-darkBg/80" : ""} transition-all duration-300`}
     >
       <div
-        className={`flex items-center justify-between mx-auto w-[1440px] py-4 transition-all duration-300`}
+        className={`flex items-center justify-between mx-auto px-24 max-w-[1440px] py-4 transition-all duration-300`}
       >
         <Menu size={24} color="white" />
         <div className="flex items-center gap-12 text-sm">

@@ -15,7 +15,7 @@ function RootRoute() {
       <div className="max-w-[1440px] mx-auto">
         <ScrollRestoration />
         <Outlet />
-        <TanStackRouterDevtools />
+        {/* <TanStackRouterDevtools /> */}
       </div>
     </div>
   );

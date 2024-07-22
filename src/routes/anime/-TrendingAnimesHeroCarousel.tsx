@@ -16,7 +16,7 @@ export default function TrendingAnimesHeroCarousel({
   animeList,
 }: TrendingAnimeCarouselProps) {
   return (
-    <Carousel className="w-dvw">
+    <Carousel>
       <CarouselContent>
         {animeList.map((anime, i) => {
           return (
