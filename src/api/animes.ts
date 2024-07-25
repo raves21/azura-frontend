@@ -20,7 +20,7 @@ const rarelyChanging = {
 
 export function useFetchTrendingAnime(perPage: number, pageNum: number) {
   return useQuery({
-    queryKey: ["trending", perPage],
+    queryKey: ["trending", pageNum],
     queryFn: async () => {
       const { data: trendingAnimes } = await axios.get(
         `${BASE_URL_ANILIST}/advanced-search?sort=["TRENDING_DESC"]&perPage=${perPage}&page=${pageNum}`
@@ -31,7 +31,7 @@ export function useFetchTrendingAnime(perPage: number, pageNum: number) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 
@@ -48,7 +48,7 @@ export function useFetchTopRatedAnime(perPage: number) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 
@@ -65,7 +65,7 @@ export function useFetchAllTimeFavoriteAnime(perPage: number) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 
@@ -83,7 +83,7 @@ export function useSearchAnime(id: string) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 
@@ -102,7 +102,7 @@ export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 
@@ -120,7 +120,7 @@ export function useFetchAnimeInfoAnify(id: string) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 
@@ -137,7 +137,7 @@ export function useFetchPopularAnimes(perPage: number) {
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 }
 

@@ -20,6 +20,11 @@ module.exports = {
       gridTemplateColumns: {
         "auto-fill-45": "repeat(auto-fill, minmax(45px, 1fr))",
       },
+      screens: {
+        "mobile-m" : "375px",
+        "mobile-l" : "425px",
+        
+      },
       colors: {
         darkBg: '#100c14',
         mainAccent: 

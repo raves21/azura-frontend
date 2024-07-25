@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-
 type EpisodeCardProps = {
   id: string;
   number: number;
@@ -18,12 +16,10 @@ export default function EpisodeCard({
   return (
     <div
       onClick={() => console.log(id)}
-      className="relative flex flex-col gap-2 
-    aspect-[4/2.7] 
-    group"
+      className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[6/5] mobile-m:aspect-[4/3] lg:aspect-[4/2.7] group"
     >
       <div className="relative flex-1">
-        <div className="absolute z-20 px-2 py-1 bottom-1 left-1 text-sm text-[#E0E0E0] rounded-lg bg-black/60">
+        <div className="absolute font-medium z-20 px-2 py-[3px] bottom-1 left-1 text-[#E0E0E0] rounded-md bg-black/60">
           {type === "MOVIE" ? `MOVIE` : `Episode ${number}`}
         </div>
         <div className="absolute z-10 grid transition-all rounded-lg opacity-0 place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
@@ -44,7 +40,7 @@ export default function EpisodeCard({
           className="absolute inset-0 object-cover rounded-lg size-full"
         />
       </div>
-      <div className="text-sm">
+      <div>
         {/* <p className="text-white">{`Episode ${number}`}</p> */}
         <p className="line-clamp-1">
           {type === "MOVIE"
