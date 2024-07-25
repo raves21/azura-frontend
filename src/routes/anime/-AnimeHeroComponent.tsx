@@ -55,99 +55,113 @@ export default function AnimeHeroComponent({
   }, []);
 
   return (
-    <div className="relative flex justify-center w-full">
+    <div className="relative flex justify-center w-full text-sm md:text-base">
       <div className="absolute inset-0 w-dvw left-1/2 ml-[-50vw] max-h-[600px]">
         <div className="absolute bg-black/60 size-full backdrop-blur-sm"></div>
         <div className="absolute bg-gradient-to-t from-darkBg from-[percentage:0%_1%] via-transparent to-transparent size-full"></div>
         <img src={cover ?? image} className="object-cover size-full" />
       </div>
-      <div className="flex w-full gap-16 px-24 pt-32 pb-12">
-        <div className="aspect-[3/4] h-[320px] rounded-xl overflow-hidden z-10">
-          <img src={image} className="object-cover"/>
+      <div className="flex flex-col items-center w-full gap-2 pt-32 pb-12 lg:pt-36 lg:gap-14 xl:gap-16 lg:px-12 xl:px-16 lg:flex-row lg:items-start">
+        <div className="aspect-[3/4] h-[230px] sm:h-[280px] lg:h-[300px] xl:h-[320px] rounded-xl overflow-hidden z-10">
+          <img src={image} className="object-cover size-full" />
         </div>
-        <div className="relative z-10 flex-1">
-          <p className="text-3xl font-bold">{title}</p>
-          <div className="relative flex flex-col w-[70%] gap-4">
-            <div className="flex items-center gap-4 mt-5">
+        <div className="relative flex flex-col items-center flex-1 gap-3 mt-3 lg:mt-0 lg:items-start">
+          <p className="px-8 text-2xl font-semibold text-center lg:text-3xl lg:px-0 lg:text-start line-clamp-2">
+            {title}
+          </p>
+          <div className="items-center hidden gap-4 lg:flex lg:my-1">
+            <div
+              style={{
+                WebkitMaskImage: 'url("/five-stars.svg")',
+                WebkitMaskSize: "contain",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+              }}
+              className="relative w-32 h-5 bg-gray-500 xl:h-6 lg:-ml-2"
+            >
               <div
+                ref={starsFillWidthRef}
                 style={{
-                  WebkitMaskImage: 'url("/five-stars.svg")',
-                  WebkitMaskSize: "contain",
-                  WebkitMaskRepeat: "no-repeat",
-                  WebkitMaskPosition: "center",
+                  width: `${starsFillWidthPercentage}%`,
                 }}
-                className="relative self-start w-32 h-6 bg-gray-500"
-              >
-                <div
-                  ref={starsFillWidthRef}
-                  style={{
-                    width: `${starsFillWidthPercentage}%`,
-                  }}
-                  className={`absolute bg-amber-400 h-full`}
-                ></div>
-              </div>
-              <p className="text-lg font-semibold">
-                <span className="text-mainAccent">
-                  {rating
-                    ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
-                    : "?"}
-                </span>
-                /5
-              </p>
+                className={`absolute bg-amber-400 h-full`}
+              ></div>
             </div>
-            <div className="space-y-2">
-              <div className="flex gap-10">
-                <div className="flex gap-2">
-                  <p className="text-gray-400">Year:</p>
-                  <p>{year}</p>
-                </div>
-                <div className="flex gap-2">
-                  <p className="text-gray-400">Total Episodes:</p>
-                  <p>{totalEpisodes}</p>
-                </div>
-                <div className="flex gap-2">
-                  <p className="text-gray-400">Status:</p>
-                  <p
-                    className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"} font-semibold`}
-                  >
-                    {status}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <p className="text-gray-400">Type:</p>
-                  <p>{type && type !== "" ? type : "?"}</p>
-                </div>
+            <p className="text-lg font-semibold">
+              <span className="text-mainAccent">
+                {rating
+                  ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
+                  : "?"}
+              </span>
+              /5
+            </p>
+          </div>
+          <div className="flex-col items-center hidden w-full space-y-2 lg:items-start lg:flex">
+            <div className="flex flex-col gap-10 lg:flex-row">
+              <div className="flex gap-2">
+                <p className="text-gray-400">Year:</p>
+                <p>{year}</p>
               </div>
               <div className="flex gap-2">
-                <p className="text-gray-400">Genres:</p>
-                <div className="flex gap-1">
-                  {genres &&
-                    genres.map((genre, i) => (
-                      <button key={i} className="hover:text-mainAccent">
-                        {i === genres.length - 1 ? `${genre}` : `${genre},`}
-                      </button>
-                    ))}
-                </div>
+                <p className="text-gray-400">Total Episodes:</p>
+                <p>{totalEpisodes}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="text-gray-400">Status:</p>
+                <p
+                  className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"} font-semibold`}
+                >
+                  {status}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="text-gray-400">Type:</p>
+                <p>{type && type !== "" ? type : "?"}</p>
               </div>
             </div>
-            <div className="flex gap-5 my-3">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-center gap-2 px-5 py-2 rounded-full bg-mainAccent"
-              >
-                <Play size={20} />
-                <p className="font-medium">Play Now</p>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-center gap-2 px-5 py-2 bg-black rounded-full"
-              >
-                <Bookmark size={20} />
-                <p className="font-medium">Add to List</p>
-              </motion.button>
+            <div className="flex w-full gap-2">
+              <p className="text-gray-400">Genres:</p>
+              <div className="flex flex-wrap gap-1 max-w-[70%]">
+                {genres &&
+                  genres.map((genre, i) => (
+                    <button key={i} className="hover:text-mainAccent">
+                      {i === genres.length - 1 ? `${genre}` : `${genre},`}
+                    </button>
+                  ))}
+              </div>
             </div>
+          </div>
+          <div className="flex items-center gap-2 lg:hidden">
+            <p>{year}</p>
+            <div className="bg-gray-400 rounded-full size-1"></div>
+            <p
+              className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"}`}
+            >
+              {status}
+            </p>
+          </div>
+          <div className="flex gap-5 my-3">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center gap-2 px-4 py-4 rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent"
+            >
+              <Play size={20} />
+              <p className="hidden font-medium mobile-m:block">Play Now</p>
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center gap-2 px-4 py-4 bg-black rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2"
+            >
+              <Bookmark size={20} />
+              <p className="hidden font-medium mobile-m:block">Add to List</p>
+            </motion.button>
+          </div>
+
+          {/*DESCRIPTION*/}
+          <div className="relative flex flex-col w-full gap-3 px-3 mt-5 lg:mt-0 lg:px-0 sm:px-5 md:px-8 lg:w-[75%] xl:w-[70%]">
+            <p className="text-lg font-semibold lg:hidden">Description</p>
             <motion.div
               animate={{
                 height: readMore ? "auto" : "80px",
@@ -201,6 +215,72 @@ export default function AnimeHeroComponent({
                 </button>
               </motion.div>
             )}
+          </div>
+          <div className="flex flex-col self-start gap-2 px-3 lg:hidden md:px-8 sm:px-5 mt-14">
+            <p className="mb-1 text-lg font-semibold lg:hidden">Details</p>
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-2">
+                <p className="text-gray-400">Year:</p>
+                <p className="">{year}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="text-gray-400">Total Episodes:</p>
+                <p className="">{totalEpisodes}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="text-gray-400">Status:</p>
+                <p
+                  className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"} font-semibold `}
+                >
+                  {status}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="text-gray-400">Type:</p>
+                <p className="">{type && type !== "" ? type : "?"}</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <p className="text-gray-400">Genres:</p>
+              <div className="flex flex-wrap gap-1">
+                {genres &&
+                  genres.map((genre, i) => (
+                    <button key={i} className="hover:text-mainAccent">
+                      {i === genres.length - 1 ? `${genre}` : `${genre},`}
+                    </button>
+                  ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="text-gray-400">Score:</p>
+              <div className="flex items-center gap-4">
+                <div
+                  style={{
+                    WebkitMaskImage: 'url("/five-stars.svg")',
+                    WebkitMaskSize: "contain",
+                    WebkitMaskRepeat: "no-repeat",
+                    WebkitMaskPosition: "center",
+                  }}
+                  className="relative w-24 h-4 bg-gray-500"
+                >
+                  <div
+                    ref={starsFillWidthRef}
+                    style={{
+                      width: `${starsFillWidthPercentage}%`,
+                    }}
+                    className={`absolute bg-amber-400 h-full`}
+                  ></div>
+                </div>
+                <p className="font-semibold">
+                  <span className="text-mainAccent">
+                    {rating
+                      ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
+                      : "?"}
+                  </span>
+                  /5
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

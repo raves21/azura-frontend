@@ -18,9 +18,7 @@ function AnimeInfo() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (animeInfoPageNavigationState) {
-      setShouldFetch(false);
-    } else {
+    if (!animeInfoPageNavigationState) {
       setShouldFetch(true);
     }
   }, []);
@@ -37,18 +35,17 @@ function AnimeInfo() {
     error: animeInfoAnilistError,
   } = useFetchAnimeInfoAnilist(animeId, shouldFetch);
 
-  if (isAnimeInfoAnifyLoading) {
+  if (isAnimeInfoAnifyLoading || isAnimeInfoAnilistLoading) {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>LOADING <span className="font-semibold text-green-500">ANIFY</span></p>
-      </div>
-    );
-  }
-
-  if (isAnimeInfoAnilistLoading) {
-    return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>LOADING <span className="font-semibold text-blue-500">ANILIST</span></p>
+        <p>
+          LOADING&nbsp;
+          {isAnimeInfoAnifyLoading ? (
+            <span className="font-semibold text-green-500">ANIFY</span>
+          ) : (
+            <span className="font-semibold text-blue-500">ANILIST</span>
+          )}
+        </p>
       </div>
     );
   }
@@ -69,24 +66,25 @@ function AnimeInfo() {
 
     if (gogoAnimeEpisodes) {
       epsToBeRendered = gogoAnimeEpisodes.map((ep, i) => {
-        //get episode ids from gogoanime,
-        //get episode titles from zoro,
-        //get episode images from animepahe
         return {
+          //get episode ids from gogoanime
           id: ep.id,
           number: ep.number,
+
+          //get episode images from animepahe
           image:
             animePaheData && animePaheData.episodes[i]
               ? animePaheData.episodes[i].img ??
                 animeInfoPageNavigationState?.cover
               : animeInfoPageNavigationState?.cover,
+
+          //get episode titles from zoro
           title:
             zoroData && zoroData.episodes[i]
               ? zoroData.episodes[i].title ?? ep.title
               : ep.title,
         };
       });
-
     } else {
       epsToBeRendered = null;
     }
@@ -94,7 +92,7 @@ function AnimeInfo() {
     return (
       <div className="w-full">
         <AnimeHeroComponent
-          title={animeInfoAnify.title.english}
+          title={animeInfoAnify.title.english ?? animeInfoAnify.title.romaji}
           cover={animeInfoAnify.bannerImage}
           image={
             animeInfoPageNavigationState?.image! ?? animeInfoAnilist?.image
@@ -117,7 +115,9 @@ function AnimeInfo() {
           type={animeInfoAnify.format}
           episodes={epsToBeRendered}
           defaultEpisodeImage={
-            animeInfoPageNavigationState?.cover ?? animeInfoAnify.coverImage
+            animeInfoPageNavigationState?.cover ??
+            animeInfoAnilist?.cover ??
+            animeInfoAnify.coverImage
           }
         />
       </div>

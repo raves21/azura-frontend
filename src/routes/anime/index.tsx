@@ -21,7 +21,6 @@ function Home() {
     useFetchTopRatedAnime(12);
 
   if (
-    // isTrendingAnimePageTwoLoading ||
     isTrendingAnimesLoading ||
     isPopularAnimesLoading ||
     isTopRatedAnimesLoading
@@ -29,19 +28,14 @@ function Home() {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
-          Loading{" "}
-          <span className="font-semibold text-mainAccent">AzuraAnime</span>
+          Loading&nbsp;
+          <span className="font-semibold text-mainAccent">AzuraWatch</span>
         </p>
       </div>
     );
   }
 
-  if (
-    trendingAnimes &&
-    // trendingAnimePageTwo &&
-    popularAnimes &&
-    topRatedAnimes
-  ) {
+  if (trendingAnimes && popularAnimes && topRatedAnimes) {
     return (
       <div className="flex flex-col items-center w-full">
         <div className="w-dvw">
