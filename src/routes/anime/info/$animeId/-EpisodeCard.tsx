@@ -2,8 +2,8 @@ type EpisodeCardProps = {
   id: string;
   number: number;
   title: string;
-  image: string;
-  type: string;
+  image?: string;
+  type?: string;
 };
 
 export default function EpisodeCard({

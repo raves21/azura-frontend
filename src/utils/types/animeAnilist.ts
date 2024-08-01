@@ -130,6 +130,13 @@ export type EndDateClass = {
   day: number;
 };
 
+export type EpisodeToBeRendered = {
+  id: string
+  title: string
+  number: number
+  image?: string | null
+}
+
 export type Episode = {
     id: string;
     title: string;

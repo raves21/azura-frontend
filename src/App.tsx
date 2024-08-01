@@ -18,6 +18,7 @@ declare module "@tanstack/react-router" {
   }
   interface HistoryState {
     animeInfoPageNavigationState?: {
+      id: string
       image: string;
       cover: string;
       genres: string[];

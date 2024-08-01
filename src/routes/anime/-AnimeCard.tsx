@@ -15,6 +15,7 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
       }}
       state={{
         animeInfoPageNavigationState: {
+          id: anime.id,
           image: anime.image,
           cover: anime.cover,
           genres: anime.genres,

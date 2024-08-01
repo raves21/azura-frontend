@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 type AnimeHeroComponentProps = {
-  image: string;
-  cover: string;
-  title: string;
-  description: string;
-  id: string;
+  image?: string;
+  cover?: string;
+  title?: string;
+  description?: string;
+  id?: string;
   totalEpisodes?: number;
   year?: number;
   type?: string;
@@ -109,7 +109,7 @@ export default function AnimeHeroComponent({
               <div className="flex gap-2">
                 <p className="text-gray-400">Status:</p>
                 <p
-                  className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"} font-semibold`}
+                  className={`${status === "RELEASING" || status === "Ongoing" ? "text-green-500" : status === "FINISHED" || status === "Completed" ? "text-blue-500" : "text-orange-500"} font-semibold`}
                 >
                   {status}
                 </p>
@@ -135,7 +135,7 @@ export default function AnimeHeroComponent({
             <p>{year}</p>
             <div className="bg-gray-400 rounded-full size-1"></div>
             <p
-              className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"}`}
+              className={`${status === "RELEASING" || status === "Ongoing" ? "text-green-500" : status === "FINISHED" || status === "Completed" ? "text-blue-500" : "text-orange-500"}`}
             >
               {status}
             </p>
@@ -230,7 +230,7 @@ export default function AnimeHeroComponent({
               <div className="flex gap-2">
                 <p className="text-gray-400">Status:</p>
                 <p
-                  className={`${status === "RELEASING" ? "text-green-500" : "text-blue-500"} font-semibold `}
+                  className={`${status === "RELEASING" || status === "Ongoing" ? "text-green-500" : status === "FINISHED" || status === "Completed" ? "text-blue-500" : "text-orange-500"} font-semibold `}
                 >
                   {status}
                 </p>
@@ -277,7 +277,7 @@ export default function AnimeHeroComponent({
                       ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
                       : "?"}
                   </span>
-                  /5
+                  &nbsp;/ 5
                 </p>
               </div>
             </div>

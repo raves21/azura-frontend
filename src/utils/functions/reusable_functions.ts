@@ -1,7 +1,7 @@
-import { EpisodeChunk, Episode } from "../types/animeAnilist";
+import { EpisodeChunk, EpisodeToBeRendered } from "../types/animeAnilist";
 
 export function chunkEpisodes(
-  eps: Episode[],
+  eps: EpisodeToBeRendered[],
   epsPerChunk: number
 ): EpisodeChunk[] {
   const chunkedEpisodes = Array.from(
