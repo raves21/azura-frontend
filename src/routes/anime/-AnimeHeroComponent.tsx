@@ -28,6 +28,7 @@ export default function AnimeHeroComponent({
   status,
   genres,
   rating,
+  id
 }: AnimeHeroComponentProps) {
   // const [clicked, setClicked] = useState(false);
   const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);

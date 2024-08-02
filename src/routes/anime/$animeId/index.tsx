@@ -1,10 +1,10 @@
 import { useFetchAnimeInfoAnify, useFetchAnimeInfoAnilist } from "@/api/animes";
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
-import AnimeHeroComponent from "../../-AnimeHeroComponent";
+import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
 import { EpisodeToBeRendered } from "@/utils/types/animeAnilist";
 import { useEffect, useState } from "react";
-export const Route = createFileRoute("/anime/info/$animeId/")({
+export const Route = createFileRoute("/anime/$animeId/")({
   component: () => <AnimeInfo />,
 });
 
@@ -14,7 +14,7 @@ function AnimeInfo() {
     select: (s) => s.location.state,
   });
 
-  const [shouldFetch, setShouldFetch] = useState(false);
+  const [shouldFetchAnilist, setShouldFetchAnilist] = useState(false);
 
   const {
     data: animeInfoAnify,
@@ -26,14 +26,18 @@ function AnimeInfo() {
     data: animeInfoAnilist,
     isLoading: isAnimeInfoAnilistLoading,
     error: animeInfoAnilistError,
-  } = useFetchAnimeInfoAnilist(animeId, shouldFetch);
+  } = useFetchAnimeInfoAnilist(animeId, shouldFetchAnilist);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (!animeInfoPageNavigationState || animeInfoAnifyError || shouldFetch) {
-      setShouldFetch(true);
+    if (
+      !animeInfoPageNavigationState ||
+      animeInfoAnifyError ||
+      shouldFetchAnilist
+    ) {
+      setShouldFetchAnilist(true);
     }
-  }, [animeInfoAnifyError, setShouldFetch, shouldFetch]);
+  }, [animeInfoAnifyError, setShouldFetchAnilist, shouldFetchAnilist]);
 
   if (isAnimeInfoAnifyLoading || isAnimeInfoAnilistLoading) {
     return (
@@ -50,7 +54,7 @@ function AnimeInfo() {
     );
   }
 
-  if (animeInfoAnifyError && shouldFetch && animeInfoAnilistError) {
+  if (animeInfoAnifyError && shouldFetchAnilist && animeInfoAnilistError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching the details for this anime.</p>
@@ -109,7 +113,7 @@ function AnimeInfo() {
     });
   } else {
     //try to fetch from anilist if no episodes from available from anify
-    if(!shouldFetch) setShouldFetch(true)
+    if (!shouldFetchAnilist) setShouldFetchAnilist(true);
     epsToBeRendered = null;
   }
 
@@ -144,7 +148,9 @@ function AnimeInfo() {
         type={animeInfoPageNavigationState?.type ?? animeInfoAnilist?.type}
         year={animeInfoAnilist?.releaseDate ?? animeInfoAnify?.year}
         rating={
-          animeInfoAnify?.rating.anilist ?? animeInfoAnilist?.rating ?? null
+          animeInfoAnify?.rating.anilist ??
+          animeInfoAnilist?.rating! * 0.1 ??
+          null
         }
       />
       <Episodes

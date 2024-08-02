@@ -8,7 +8,7 @@ type AnimeCardProps = {
 export default function AnimeCard({ anime }: AnimeCardProps) {
   return (
     <Link
-      to="/anime/info/$animeId"
+      to="/anime/$animeId"
       className="space-y-2 group"
       params={{
         animeId: anime.id,

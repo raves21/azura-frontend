@@ -65,12 +65,13 @@ export default function TrendingCarouselItem({
                   transition={{ duration: 0.2 }}
                   onClick={() => {
                     navigate({
-                      to: "/anime/info/$animeId",
+                      to: "/anime/$animeId",
                       params: {
                         animeId: id,
                       },
                       state: {
                         animeInfoPageNavigationState: {
+                          id: id,
                           image: image,
                           cover: cover,
                           genres: genres!,
