@@ -60,10 +60,8 @@ export default function Episodes({
   }
 
   return (
-    <div className="flex flex-col px-24 pt-8 pb-10 space-y-6 text-gray-400">
-      <div className="flex justify-between">
-        <p className="text-2xl font-semibold">Episodes</p>
-      </div>
+    <div className="flex flex-col px-3 pt-8 pb-16 space-y-6 text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16">
+      <p className="font-semibold text-lg lg:text-xl text-[#f6f4f4]">Episodes</p>
       <div className="self-center py-12 text-xl">No Episodes available</div>
     </div>
   );
