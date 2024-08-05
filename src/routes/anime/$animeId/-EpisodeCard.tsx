@@ -16,7 +16,7 @@ export default function EpisodeCard({
   return (
     <div
       onClick={() => console.log(id)}
-      className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[6/5] mobile-m:aspect-[4/3] lg:aspect-[4/2.7] group"
+      className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[4/2.7] lg:aspect-[4/2.5] group"
     >
       <div className="relative flex-1">
         <div className="absolute font-semibold z-20 px-2 py-[3px] bottom-1 left-1 text-[#E0E0E0] rounded-md bg-black/60">

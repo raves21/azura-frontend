@@ -39,7 +39,7 @@ export default function Episodes({
             <ChevronDown className="duration-300 size-6 group-hover:stroke-mainAccent" />
           </button>
         </div>
-        <div className="h-[300px] lg:h-auto overflow-y-auto">
+        <div className="h-[360px] lg:h-auto overflow-y-auto">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-3 gap-y-4 lg:gap-x-4 lg:gap-y-6">
             {episodes.map((episode, i) => {
               return (
