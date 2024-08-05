@@ -28,6 +28,7 @@ export function useFetchTrendingAnime(perPage: number, pageNum: number) {
       return trendingAnimes as MultipleAnimeResponse;
     },
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -45,6 +46,7 @@ export function useFetchTopRatedAnime(perPage: number) {
       return trendingAnimes as MultipleAnimeResponse;
     },
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -62,6 +64,7 @@ export function useFetchAllTimeFavoriteAnime(perPage: number) {
       return trendingAnimes as MultipleAnimeResponse;
     },
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -80,6 +83,7 @@ export function useSearchAnime(id: string) {
     },
     //...rarelyChanging,
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -99,6 +103,7 @@ export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
     enabled: enabled,
     //...rarelyChanging,
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -117,6 +122,7 @@ export function useFetchAnimeInfoAnify(id: string) {
     },
     //...rarelyChanging,
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -134,6 +140,7 @@ export function useFetchPopularAnimes(perPage: number) {
       return popularAnimes as MultipleAnimeResponse;
     },
     gcTime: Infinity,
+    staleTime: Infinity,
     retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
