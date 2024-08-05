@@ -175,6 +175,7 @@ export type Recommendation = {
 export enum Status {
   Completed = "Completed",
   Ongoing = "Ongoing",
+  NotYetAired  = "Not yet aired"
 }
 
 export type Relation = {

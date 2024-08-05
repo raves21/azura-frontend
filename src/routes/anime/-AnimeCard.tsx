@@ -1,11 +1,13 @@
-import { Anime } from "../../utils/types/animeAnilist";
+import { Anime, Status } from "../../utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 
 type AnimeCardProps = {
   anime: Anime;
+  className?: string;
 };
 
-export default function AnimeCard({ anime }: AnimeCardProps) {
+export default function AnimeCard({ anime, className }: AnimeCardProps) {
   return (
     <Link
       to="/anime/$animeId"
@@ -24,10 +26,15 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
         },
       }}
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-gray-600 rounded-xl">
+      <div
+        className={cn(
+          "relative aspect-[3/4] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl",
+          className
+        )}
+      >
         {anime.image && (
           <>
-            <div className="absolute z-10 grid transition-all opacity-0 place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
+            <div className="absolute z-10 hidden transition-all opacity-0 lg:grid place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
               <div className="grid bg-white rounded-full size-12 place-items-center">
                 <svg
                   className="size-[50%]"
@@ -39,7 +46,6 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
                 </svg>
               </div>
             </div>
-            {/* <div className="absolute z-10 transition-all opacity-0 size-full bg-gradient-to-t from-mainAccent/50 to-transparent from-[percentage:0%_1%] group-hover:opacity-100"></div> */}
             <img
               loading="lazy"
               src={anime.image}
@@ -49,14 +55,33 @@ export default function AnimeCard({ anime }: AnimeCardProps) {
           </>
         )}
       </div>
-      <div>
-        <p className="text-sm font-medium text-[#E0E0E0] line-clamp-1">
-          {anime.title.english}
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-[#E0E0E0] line-clamp-2">
+          {anime.title.english ?? anime.title.romaji}
         </p>
         <div className="flex items-center gap-2 text-xs text-gray-400">
-          <p>{anime.releaseDate}</p>
-          <div className="bg-gray-400 rounded-full size-1"></div>
-          <p>{anime.totalEpisodes} episodes</p>
+          {anime.status === Status.NotYetAired ? (
+            <p className="line-clamp-1">Not yet aired</p>
+          ) : (
+            <>
+              <p>{anime.releaseDate}</p>
+              <div className="bg-gray-400 rounded-full size-1"></div>
+              {anime.type === "MOVIE" ? (
+                <p className="line-clamp-1">MOVIE</p>
+              ) : (
+                <>
+                  <p className="line-clamp-1 lg:hidden">
+                    {anime.totalEpisodes}{" "}
+                    {anime.totalEpisodes === 1 ? "ep" : "eps"}
+                  </p>
+                  <p className="hidden line-clamp-1 lg:block">
+                    {anime.totalEpisodes}{" "}
+                    {anime.totalEpisodes === 1 ? "episode" : "episodes"}
+                  </p>
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </Link>

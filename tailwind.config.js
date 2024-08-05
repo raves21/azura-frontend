@@ -23,7 +23,7 @@ module.exports = {
       screens: {
         "mobile-m" : "375px",
         "mobile-l" : "425px",
-        
+        "570": "570px"
       },
       colors: {
         darkBg: '#100c14',

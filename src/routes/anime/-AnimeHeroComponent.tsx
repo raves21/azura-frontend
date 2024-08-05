@@ -57,8 +57,8 @@ export default function AnimeHeroComponent({
 
   return (
     <div className="relative flex justify-center w-full text-sm md:text-base">
-      <div className="absolute inset-0 w-dvw left-1/2 ml-[-50vw] max-h-[600px]">
-        <div className="absolute bg-black/60 size-full backdrop-blur-sm"></div>
+      <div className="absolute inset-0 w-dvw left-1/2 ml-[-50vw] max-h-[500px] md:max-h-[600px]">
+        <div className="absolute bg-black/60 size-full backdrop-blur-[2px]"></div>
         <div className="absolute bg-gradient-to-t from-darkBg from-[percentage:0%_1%] via-transparent to-transparent size-full"></div>
         <img src={cover ?? image} className="object-cover size-full" />
       </div>

@@ -6,6 +6,7 @@ import {
 } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
 import AnimeCategorySection from "./-AnimeCategorySection";
+import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
 
 export const Route = createFileRoute("/anime/")({
   component: () => <Home />,
@@ -43,16 +44,16 @@ function Home() {
             animeList={trendingAnimes.results.slice(0, 5)}
           />
         </div>
-        <div className="pb-24 space-y-10">
-          <AnimeCategorySection
-            animeList={trendingAnimes.results.slice(5)}
+        <div className="w-full pt-8 pb-24 space-y-10">
+          <AnimeCategoryCarousel
+            animeList={trendingAnimes.results.slice(3)}
             categoryName="Trending Anime"
           />
-          <AnimeCategorySection
+          <AnimeCategoryCarousel
             animeList={topRatedAnimes.results}
-            categoryName="Top Rated Anime"
+            categoryName="Top Rated"
           />
-          <AnimeCategorySection
+          <AnimeCategoryCarousel
             animeList={popularAnimes.results}
             categoryName="All Time Popular"
           />

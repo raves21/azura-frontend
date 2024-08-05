@@ -5,7 +5,7 @@ import useEmblaCarousel, {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
+import { Button, ButtonProps } from "./button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -192,93 +192,145 @@ const CarouselItem = React.forwardRef<
 });
 CarouselItem.displayName = "CarouselItem";
 
+type CarouselActionAdditionalProps = {
+  carouselType: "category-carousel" | "hero-carousel";
+};
+
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  Omit<ButtonProps, keyof CarouselActionAdditionalProps> &
+    CarouselActionAdditionalProps
+>(
+  (
+    { className, variant = "outline", size = "icon", carouselType, ...props },
+    ref
+  ) => {
+    const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
-  const [isHovered, setIsHovered] = React.useState(false);
+    const [isHovered, setIsHovered] = React.useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+    const handleMouseEnter = () => {
+      setIsHovered(true);
+    };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+    const handleMouseLeave = () => {
+      setIsHovered(false);
+    };
 
-  return (
-    <Button
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      ref={ref}
-      variant={variant}
-      size={size}
-      className={cn(
-        "absolute rounded-full size-14",
-        !canScrollPrev ? "hidden" : "",
-        orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-        className
-      )}
-      disabled={!canScrollPrev}
-      onClick={scrollPrev}
-      {...props}
-    >
-      <ChevronLeft
-        className={`size-12 ${isHovered ? "" : "opacity-70"}`}
-        color={isHovered ? "white" : "#c026d3"}
-      />
-      <span className="sr-only">Previous slide</span>
-    </Button>
-  );
-});
+    if (carouselType === "hero-carousel") {
+      return (
+        <Button
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          ref={ref}
+          variant={variant}
+          size={size}
+          className={cn(
+            "absolute rounded-full mobile-l:p-1 md:p-2 box-content",
+            !canScrollPrev ? "hidden" : "",
+            orientation === "horizontal"
+              ? "-left-12 top-1/2 -translate-y-1/2"
+              : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+            className
+          )}
+          disabled={!canScrollPrev}
+          onClick={scrollPrev}
+          {...props}
+        >
+          <ChevronLeft
+            className={`size-8 md:size-10 xl:size-12 ${isHovered ? "" : "opacity-70"}`}
+            color={isHovered ? "white" : "#c026d3"}
+          />
+          <span className="sr-only">Previous slide</span>
+        </Button>
+      );
+    }
+
+    return (
+      <button
+        onClick={scrollPrev}
+        className={cn(
+          "absolute h-full w-8 flex items-center justify-center group",
+          !canScrollPrev ? "hidden" : "",
+          orientation === "horizontal"
+            ? "-left-12 top-1/2 -translate-y-1/2"
+            : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+          className
+        )}
+      >
+        <ChevronLeft className="size-8 stroke-white group-hover:stroke-mainAccent" />
+      </button>
+    );
+  }
+);
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
-  const [isHovered, setIsHovered] = React.useState(false);
+  Omit<ButtonProps, keyof CarouselActionAdditionalProps> &
+    CarouselActionAdditionalProps
+>(
+  (
+    { className, variant = "outline", size = "icon", carouselType, ...props },
+    ref
+  ) => {
+    const { orientation, scrollNext, canScrollNext } = useCarousel();
+    const [isHovered, setIsHovered] = React.useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+    const handleMouseEnter = () => {
+      setIsHovered(true);
+    };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+    const handleMouseLeave = () => {
+      setIsHovered(false);
+    };
 
-  return (
-    <Button
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      ref={ref}
-      variant={variant}
-      size={size}
-      className={cn(
-        "absolute size-14 rounded-full",
-        !canScrollNext ? "hidden" : "",
-        orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
-        className
-      )}
-      disabled={!canScrollNext}
-      onClick={scrollNext}
-      {...props}
-    >
-      <ChevronRight
-        className={`size-12 ${isHovered ? "" : "opacity-70"}`}
-        color={isHovered ? "white" : "#c026d3"}
-      />
-      <span className="sr-only">Next slide</span>
-    </Button>
-  );
-});
+    if (carouselType === "hero-carousel") {
+      return (
+        <Button
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          ref={ref}
+          variant={variant}
+          size={size}
+          className={cn(
+            "absolute box-content mobile-l:p-1 md:p-2 rounded-full",
+            !canScrollNext ? "hidden" : "",
+            orientation === "horizontal"
+              ? "-right-12 top-1/2 -translate-y-1/2"
+              : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+            className
+          )}
+          disabled={!canScrollNext}
+          onClick={scrollNext}
+          {...props}
+        >
+          <ChevronRight
+            className={`size-8 md:size-10 xl:size-12 ${isHovered ? "" : "opacity-70"}`}
+            color={isHovered ? "white" : "#c026d3"}
+          />
+          <span className="sr-only">Next slide</span>
+        </Button>
+      );
+    }
+
+    return (
+      <button
+        onClick={scrollNext}
+        className={cn(
+          "absolute h-full w-8 flex items-center justify-center group",
+          !canScrollNext ? "hidden" : "",
+          orientation === "horizontal"
+            ? "-right-12 top-1/2 -translate-y-1/2"
+            : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+          className
+        )}
+      >
+        <ChevronRight className="size-8 stroke-white group-hover:stroke-mainAccent" />
+      </button>
+    );
+  }
+);
 CarouselNext.displayName = "CarouselNext";
 
 export {
