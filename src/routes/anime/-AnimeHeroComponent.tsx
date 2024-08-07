@@ -17,6 +17,12 @@ type AnimeHeroComponentProps = {
   rating?: number | null;
 };
 
+function getRatingScore(rating: number) {
+  const decimal = (rating * 10).toString().split(".")[1];
+  if (!decimal || decimal.length < 1) return (0.05 * (rating * 10)).toFixed(1);
+  return (0.05 * (rating * 10)).toFixed(2);
+}
+
 export default function AnimeHeroComponent({
   image,
   cover,
@@ -28,9 +34,8 @@ export default function AnimeHeroComponent({
   status,
   genres,
   rating,
-  id
+  id,
 }: AnimeHeroComponentProps) {
-  // const [clicked, setClicked] = useState(false);
   const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);
   const starsFillWidthRef = useRef<HTMLDivElement | null>(null);
   const [readMore, setReadMore] = useState(false);
@@ -90,9 +95,7 @@ export default function AnimeHeroComponent({
             </div>
             <p className="text-lg font-semibold">
               <span className="text-mainAccent">
-                {rating
-                  ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
-                  : "?"}
+                {rating ? `${getRatingScore(rating)}` : "?"}
               </span>
               /5
             </p>
@@ -274,9 +277,7 @@ export default function AnimeHeroComponent({
                 </div>
                 <p className="font-semibold">
                   <span className="text-mainAccent">
-                    {rating
-                      ? `${(0.05 * (rating * 10)).toString().split(".")[1].length > 1 ? (0.05 * (rating * 10)).toFixed(2) : (0.05 * (rating * 10)).toFixed(1)}`
-                      : "?"}
+                    {rating ? `${getRatingScore(rating)}` : "?"}
                   </span>
                   &nbsp;/ 5
                 </p>
