@@ -175,7 +175,8 @@ export type Recommendation = {
 export enum Status {
   Completed = "Completed",
   Ongoing = "Ongoing",
-  NotYetAired  = "Not yet aired"
+  NotYetAired  = "Not yet aired",
+  NOTYETRELEASED = "NOT_YET_RELEASED"
 }
 
 export type Relation = {
@@ -193,3 +194,20 @@ export type Relation = {
   coverHash: string;
   rating: number;
 };
+
+export type EpisodeStreamLinks = {
+  headers:  Headers;
+  sources:  Source[];
+  download: string;
+}
+
+export type Headers = {
+  Referer: string;
+}
+
+export type Source = {
+  url:     string;
+  isM3U8:  boolean;
+  quality: string;
+}
+

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
   AnimeInfoAnilist,
+  EpisodeStreamLinks,
   MultipleAnimeResponse,
 } from "../utils/types/animeAnilist";
 import { AnimeInfoAnify } from "@/utils/types/animeAnify";
@@ -18,6 +19,16 @@ const rarelyChanging = {
   staleTime: 240 * (60 * 1000), //4 hrs
 };
 
+//this is the settings during development. to minimize network requests
+const neverRefetchSettings = {
+  gcTime: Infinity,
+  staleTime: Infinity,
+  retry: false,
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+};
+
 export function useFetchTrendingAnime(perPage: number, pageNum: number) {
   return useQuery({
     queryKey: ["trending", pageNum],
@@ -27,12 +38,7 @@ export function useFetchTrendingAnime(perPage: number, pageNum: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    ...neverRefetchSettings,
   });
 }
 
@@ -45,12 +51,7 @@ export function useFetchTopRatedAnime(perPage: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    ...neverRefetchSettings,
   });
 }
 
@@ -63,12 +64,7 @@ export function useFetchAllTimeFavoriteAnime(perPage: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+        ...neverRefetchSettings,
   });
 }
 
@@ -81,13 +77,7 @@ export function useSearchAnime(id: string) {
       );
       return searchResults;
     },
-    //...rarelyChanging,
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    ...neverRefetchSettings,
   });
 }
 
@@ -98,16 +88,11 @@ export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
       const { data: animeInfoAnilist } = await axios.get(
         `${BASE_URL_ANILIST}/info/${id}`
       );
+      console.log('FETCHING FROM ANIMEINFOANLIST');
       return animeInfoAnilist as AnimeInfoAnilist;
     },
     enabled: enabled,
-    //...rarelyChanging,
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    ...neverRefetchSettings,
   });
 }
 
@@ -116,17 +101,11 @@ export function useFetchAnimeInfoAnify(id: string) {
     queryKey: ["infoAnify", id],
     queryFn: async () => {
       const { data: animeInfoAnify } = await axios.get(
-        `https://anify.eltik.cc/info/${id}?fields=[episodes,bannerImage,coverImage,title,rating,trailer,genres,description,type,id,totalEpisodes,year,status,format]`
+        `https://anify.eltik.cc/info/${id}?fields=[episodes,bannerImage,coverImage,title,rating,trailer,description,type,id,totalEpisodes,year,status,format]`
       );
       return animeInfoAnify as AnimeInfoAnify;
     },
-    //...rarelyChanging,
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    ...neverRefetchSettings,
   });
 }
 
@@ -139,28 +118,19 @@ export function useFetchPopularAnimes(perPage: number) {
       );
       return popularAnimes as MultipleAnimeResponse;
     },
-    gcTime: Infinity,
-    staleTime: Infinity,
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    ...neverRefetchSettings,
   });
 }
 
-// export function useFetchAnimeEpisodes(id: string) {
-//   return useQuery({
-//     queryKey: ["animeEpisodes", id],
-//     queryFn: async () => {
-//       const { data: animeEpisodes } = await axios.get(
-//         `${BASE_URL_ANILIST}/episodes/${id}`
-//       );
-//       return animeEpisodes as Episode[];
-//     },
-//     gcTime: Infinity,
-//     retry: false,
-//
-//     refetchOnWindowFocus: false,
-//
-//   });
-// }
+export function useFetchEpisodeStreamLinks(episodeId: string) {
+  return useQuery({
+    queryKey: ["watchEpisode", episodeId],
+    queryFn: async () => {
+      const { data: episodeStreamLinks } = await axios.get(
+        `${BASE_URL_ANILIST}/watch/${episodeId}`
+      );
+      return episodeStreamLinks as EpisodeStreamLinks;
+    },
+    ...neverRefetchSettings,
+  });
+}

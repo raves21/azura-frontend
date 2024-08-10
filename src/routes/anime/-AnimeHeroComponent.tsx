@@ -1,6 +1,7 @@
 import { Bookmark, ChevronDown, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "@tanstack/react-router";
 
 type AnimeHeroComponentProps = {
   image?: string;
@@ -42,6 +43,8 @@ export default function AnimeHeroComponent({
   const [descriptionHeight, setDescriptionHeight] = useState(0);
   const descriptionRef = useRef<HTMLParagraphElement | null>(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (starsFillWidthRef.current && rating) {
       setStarsFillWidthPercentage(rating * 10);
@@ -63,7 +66,7 @@ export default function AnimeHeroComponent({
   return (
     <div className="relative flex justify-center w-full text-sm md:text-base">
       <div className="absolute inset-0 w-dvw left-1/2 ml-[-50vw] max-h-[500px] md:max-h-[600px]">
-        <div className="absolute bg-black/60 size-full backdrop-blur-[2px]"></div>
+        <div className="absolute bg-black/65 size-full backdrop-blur-[1px]"></div>
         <div className="absolute bg-gradient-to-t from-darkBg from-[percentage:0%_1%] via-transparent to-transparent size-full"></div>
         <img src={cover ?? image} className="object-cover size-full" />
       </div>
@@ -146,6 +149,12 @@ export default function AnimeHeroComponent({
           </div>
           <div className="flex gap-5 my-3">
             <motion.button
+              onClick={() => {
+                navigate({
+                  to: "/anime/$animeId",
+                  params: { animeId: "1535" },
+                });
+              }}
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.2 }}
               className="flex items-center gap-2 px-4 py-4 rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent"

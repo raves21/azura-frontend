@@ -59,16 +59,6 @@ export default function TrendingCarouselItem({
                       params: {
                         animeId: id,
                       },
-                      state: {
-                        animeInfoPageNavigationState: {
-                          id: id,
-                          image: image,
-                          cover: cover,
-                          genres: genres!,
-                          description: description,
-                          type: type!,
-                        },
-                      },
                     });
                   }}
                   className="flex items-center gap-1 px-3 py-2 rounded-full sm:gap-2 mobile-l:px-4 sm:px-5 bg-mainAccent"

@@ -1,5 +1,8 @@
+import { Link, useParams } from "@tanstack/react-router";
+
 type EpisodeCardProps = {
-  id: string;
+  // animeId: string;
+  episodeId: string;
   number: number;
   title: string;
   image?: string;
@@ -7,15 +10,22 @@ type EpisodeCardProps = {
 };
 
 export default function EpisodeCard({
-  id,
+  // animeId,
+  episodeId,
   number,
   title,
   image,
   type,
 }: EpisodeCardProps) {
+  const { animeId } = useParams({ from: "/anime/$animeId/" });
+
   return (
-    <div
-      onClick={() => console.log(id)}
+    <Link
+      to="/anime/$animeId/watch"
+      params={{
+        animeId: animeId,
+      }}
+      search={{ id: episodeId.replace(/^\//, "") }}
       className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[4/2.7] lg:aspect-[4/2.5] group"
     >
       <div className="relative flex-1">
@@ -23,9 +33,9 @@ export default function EpisodeCard({
           {type === "MOVIE" ? `MOVIE` : `Episode ${number}`}
         </div>
         <div className="absolute z-10 grid transition-all rounded-lg opacity-0 place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
-          <div className="grid bg-white rounded-full size-12 place-items-center">
+          <div className="grid bg-white rounded-full group/playicon hover:bg-mainAccent size-12 place-items-center">
             <svg
-              className="size-[50%]"
+              className="size-[50%] group-hover/playicon:fill-white fill-mainAccent"
               fill="#c026d3"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 384 512"
@@ -35,7 +45,7 @@ export default function EpisodeCard({
           </div>
         </div>
         <img
-          loading="lazy"
+          loading="eager"
           src={image}
           className="absolute inset-0 object-cover rounded-lg size-full"
         />
@@ -50,6 +60,6 @@ export default function EpisodeCard({
               : title}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

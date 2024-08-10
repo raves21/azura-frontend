@@ -15,7 +15,9 @@ import { Route as AnimeRouteImport } from './routes/anime/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as AnimeIndexImport } from './routes/anime/index'
+import { Route as AnimeSplatImport } from './routes/anime/$'
 import { Route as AnimeAnimeIdIndexImport } from './routes/anime/$animeId/index'
+import { Route as AnimeAnimeIdWatchIndexImport } from './routes/anime/$animeId/watch/index'
 
 // Create/Update Routes
 
@@ -39,8 +41,18 @@ const AnimeIndexRoute = AnimeIndexImport.update({
   getParentRoute: () => AnimeRouteRoute,
 } as any)
 
+const AnimeSplatRoute = AnimeSplatImport.update({
+  path: '/$',
+  getParentRoute: () => AnimeRouteRoute,
+} as any)
+
 const AnimeAnimeIdIndexRoute = AnimeAnimeIdIndexImport.update({
   path: '/$animeId/',
+  getParentRoute: () => AnimeRouteRoute,
+} as any)
+
+const AnimeAnimeIdWatchIndexRoute = AnimeAnimeIdWatchIndexImport.update({
+  path: '/$animeId/watch/',
   getParentRoute: () => AnimeRouteRoute,
 } as any)
 
@@ -61,6 +73,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/anime'
       preLoaderRoute: typeof AnimeRouteImport
       parentRoute: typeof rootRoute
+    }
+    '/anime/$': {
+      id: '/anime/$'
+      path: '/$'
+      fullPath: '/anime/$'
+      preLoaderRoute: typeof AnimeSplatImport
+      parentRoute: typeof AnimeRouteImport
     }
     '/anime/': {
       id: '/anime/'
@@ -83,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnimeAnimeIdIndexImport
       parentRoute: typeof AnimeRouteImport
     }
+    '/anime/$animeId/watch/': {
+      id: '/anime/$animeId/watch/'
+      path: '/$animeId/watch'
+      fullPath: '/anime/$animeId/watch'
+      preLoaderRoute: typeof AnimeAnimeIdWatchIndexImport
+      parentRoute: typeof AnimeRouteImport
+    }
   }
 }
 
@@ -91,8 +117,10 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AnimeRouteRoute: AnimeRouteRoute.addChildren({
+    AnimeSplatRoute,
     AnimeIndexRoute,
     AnimeAnimeIdIndexRoute,
+    AnimeAnimeIdWatchIndexRoute,
   }),
   LoginIndexRoute,
 })
@@ -116,9 +144,15 @@ export const routeTree = rootRoute.addChildren({
     "/anime": {
       "filePath": "anime/route.tsx",
       "children": [
+        "/anime/$",
         "/anime/",
-        "/anime/$animeId/"
+        "/anime/$animeId/",
+        "/anime/$animeId/watch/"
       ]
+    },
+    "/anime/$": {
+      "filePath": "anime/$.tsx",
+      "parent": "/anime"
     },
     "/anime/": {
       "filePath": "anime/index.tsx",
@@ -129,6 +163,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/anime/$animeId/": {
       "filePath": "anime/$animeId/index.tsx",
+      "parent": "/anime"
+    },
+    "/anime/$animeId/watch/": {
+      "filePath": "anime/$animeId/watch/index.tsx",
       "parent": "/anime"
     }
   }
