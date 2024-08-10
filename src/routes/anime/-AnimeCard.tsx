@@ -15,16 +15,6 @@ export default function AnimeCard({ anime, className }: AnimeCardProps) {
       params={{
         animeId: anime.id,
       }}
-      state={{
-        animeInfoPageNavigationState: {
-          id: anime.id,
-          image: anime.image,
-          cover: anime.cover,
-          genres: anime.genres,
-          description: anime.description,
-          type: anime.type,
-        },
-      }}
     >
       <div
         className={cn(
@@ -60,7 +50,8 @@ export default function AnimeCard({ anime, className }: AnimeCardProps) {
           {anime.title.english ?? anime.title.romaji}
         </p>
         <div className="flex items-center gap-2 text-xs text-gray-400">
-          {anime.status === Status.NotYetAired ? (
+          {anime.status === Status.NotYetAired ||
+          anime.status === Status.NOTYETRELEASED ? (
             <p className="line-clamp-1">Not yet aired</p>
           ) : (
             <>
