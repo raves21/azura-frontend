@@ -6,6 +6,10 @@ import {
   MultipleAnimeResponse,
 } from "../utils/types/animeAnilist";
 import { AnimeInfoAnify } from "@/utils/types/animeAnify";
+import {
+  chunkEpisodes,
+  getEpisodesToBeRendered,
+} from "@/utils/functions/reusable_functions";
 
 const BASE_URL_ANILIST = "https://consumet-api-green.vercel.app/meta/anilist";
 
@@ -38,6 +42,8 @@ export function useFetchTrendingAnime(perPage: number, pageNum: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }
@@ -51,6 +57,8 @@ export function useFetchTopRatedAnime(perPage: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }
@@ -64,7 +72,9 @@ export function useFetchAllTimeFavoriteAnime(perPage: number) {
       );
       return trendingAnimes as MultipleAnimeResponse;
     },
-        ...neverRefetchSettings,
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
+    ...neverRefetchSettings,
   });
 }
 
@@ -77,6 +87,8 @@ export function useSearchAnime(id: string) {
       );
       return searchResults;
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }
@@ -88,10 +100,12 @@ export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
       const { data: animeInfoAnilist } = await axios.get(
         `${BASE_URL_ANILIST}/info/${id}`
       );
-      console.log('FETCHING FROM ANIMEINFOANLIST');
+      console.log("FETCHING FROM ANIMEINFOANLIST");
       return animeInfoAnilist as AnimeInfoAnilist;
     },
     enabled: enabled,
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }
@@ -105,6 +119,8 @@ export function useFetchAnimeInfoAnify(id: string) {
       );
       return animeInfoAnify as AnimeInfoAnify;
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }
@@ -118,6 +134,8 @@ export function useFetchPopularAnimes(perPage: number) {
       );
       return popularAnimes as MultipleAnimeResponse;
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }
@@ -131,6 +149,32 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
       );
       return episodeStreamLinks as EpisodeStreamLinks;
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
+    ...neverRefetchSettings,
+  });
+}
+
+export function useFetchChunkedEpisodes(
+  animeInfoAnify: AnimeInfoAnify | undefined,
+  animeInfoAnilist: AnimeInfoAnilist | undefined
+) {
+  return useQuery({
+    queryKey: [
+      "epsToBeRendered",
+      `anify ${animeInfoAnify?.id}`,
+      `anilist ${animeInfoAnilist?.id}`,
+    ],
+    queryFn: () => {
+      console.log("useFetchChunkedEpisodes");
+      return chunkEpisodes(
+        getEpisodesToBeRendered(animeInfoAnify, animeInfoAnilist),
+        30
+      );
+    },
+    enabled: !!animeInfoAnify && !!animeInfoAnilist,
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
 }

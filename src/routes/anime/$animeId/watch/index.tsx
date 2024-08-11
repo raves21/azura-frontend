@@ -1,5 +1,6 @@
 import {
   useFetchAnimeInfoAnify,
+  useFetchAnimeInfoAnilist,
   useFetchEpisodeStreamLinks,
 } from "@/api/animes";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -15,6 +16,7 @@ import {
   defaultLayoutIcons,
   DefaultVideoLayout,
 } from "@vidstack/react/player/layouts/default";
+import Episodes from "../-Episodes";
 
 type EpisodePageSearchParams = {
   id: string;
@@ -36,6 +38,7 @@ function EpisodePage() {
   const { id } = Route.useSearch();
   const { animeId } = Route.useParams();
   const mediaPlayerRef = useRef<MediaPlayerInstance | null>(null);
+
   useEffect(() => {
     if (!id || id === "") {
       navigate({ to: "/anime/$animeId", params: { animeId: animeId } });
@@ -54,17 +57,31 @@ function EpisodePage() {
     error: animeInfoAnifyError,
   } = useFetchAnimeInfoAnify(animeId);
 
-  if (isEpisodeStreamLinksLoading || isAnimeInfoAnifyLoading) {
+  const {
+    data: animeInfoAnilist,
+    isLoading: isAnimeInfoAnilistLoading,
+    error: animeInfoAnilistError,
+  } = useFetchAnimeInfoAnilist(animeId, true);
+
+  if (
+    isEpisodeStreamLinksLoading ||
+    isAnimeInfoAnifyLoading ||
+    isAnimeInfoAnilistLoading
+  ) {
     return (
       <div className="grid text-2xl text-white h-dvh place-items-center">
         <p>
           LOADING&nbsp;
           <span className="font-semibold text-red-500">
-            {isEpisodeStreamLinksLoading && isAnimeInfoAnifyLoading
-              ? "BOTH"
+            {isEpisodeStreamLinksLoading &&
+            isAnimeInfoAnifyLoading &&
+            isAnimeInfoAnilistLoading
+              ? "ALL"
               : isEpisodeStreamLinksLoading
                 ? "EPISODE"
-                : "ANIFY"}
+                : isAnimeInfoAnifyLoading
+                  ? "ANIFY"
+                  : "ANILIST"}
           </span>
         </p>
       </div>
@@ -79,10 +96,10 @@ function EpisodePage() {
     );
   }
 
-  if (episodeStreamLinks && animeInfoAnify) {
+  if (episodeStreamLinks && animeInfoAnify && animeInfoAnilist) {
     return (
-      <div className="grid w-full min-h-screen gap-2 text-white place-items-center">
-        <div className="aspect-video h-[500px] mt-20">
+      <div className="flex flex-col w-full gap-2">
+        <div className="w-full mt-20 aspect-video">
           <MediaPlayer
             ref={mediaPlayerRef}
             playsInline
@@ -102,6 +119,44 @@ function EpisodePage() {
             <MediaProvider />
             <DefaultVideoLayout icons={defaultLayoutIcons} />
           </MediaPlayer>
+        </div>
+        <div className="w-full mt-2">
+          <div className="flex flex-col gap-1 px-2">
+            <p className="text-xl font-bold">
+              {animeInfoAnilist.title.english ?? animeInfoAnify.title.english}
+            </p>
+            <p className="text-lg font-bold text-gray-400">EPISODE 1</p>
+            <p className="text-sm font-medium line-clamp-1">
+              The man who will become the king of the pirates
+            </p>
+          </div>
+          <Episodes
+            type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
+            animeInfoAnilist={animeInfoAnilist}
+            animeInfoAnify={animeInfoAnify}
+            defaultEpisodeImage={
+              animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
+            }
+          />
+          {/* <div className="mt-12 space-y-4">
+            <p className="text-xl font-bold">Episodes</p>
+            <div className="w-full overflow-y-auto h-[400px]">
+              <div className="grid w-full grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-2">
+                {Array.from({ length: 30 }).map((_, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className="relative bg-gray-600 rounded-lg aspect-video"
+                    >
+                      <p className="absolute left-1 bottom-1">
+                        Episode {i + 1}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div> */}
         </div>
       </div>
     );

@@ -1,30 +1,30 @@
-import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/animeAnilist";
+import { AnimeInfoAnilist } from "@/utils/types/animeAnilist";
 import { ChevronDown } from "lucide-react";
 import EpisodeCard from "./-EpisodeCard";
-import { useEffect, useState } from "react";
-import { chunkEpisodes } from "@/utils/functions/reusable_functions";
+import { AnimeInfoAnify } from "@/utils/types/animeAnify";
+import { useFetchChunkedEpisodes } from "@/api/animes";
 
 type EpisodesProps = {
-  episodes?: EpisodeToBeRendered[] | null;
+  animeInfoAnify?: AnimeInfoAnify;
+  animeInfoAnilist?: AnimeInfoAnilist;
   defaultEpisodeImage?: string;
   type?: string;
 };
 
 export default function Episodes({
-  episodes,
+  animeInfoAnify,
+  animeInfoAnilist,
   defaultEpisodeImage,
   type,
 }: EpisodesProps) {
-  const [chunkedEpisodes, setChunkedEpisodes] = useState<EpisodeChunk[]>();
+  const { data: chunkedEpisodes } = useFetchChunkedEpisodes(
+    animeInfoAnify,
+    animeInfoAnilist
+  );
 
-  useEffect(() => {
-    if (!episodes || episodes.length === 0) return;
-    setChunkedEpisodes(chunkEpisodes(episodes, 30));
-  }, []);
-
-  if (chunkedEpisodes && chunkedEpisodes.length !== 0) {
+  if (chunkedEpisodes && animeInfoAnify && animeInfoAnilist) {
     return (
-      <div className="flex flex-col w-full px-3 pt-8 pb-10 space-y-6 text-sm text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16 lg:text-base">
+      <div className="flex flex-col w-full px-2 pt-8 pb-10 space-y-6 text-sm text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16 lg:text-base">
         <div className="flex items-center justify-between">
           <p className="text-lg lg:text-xl font-semibold text-[#f6f4f4]">
             Episodes
@@ -43,6 +43,7 @@ export default function Episodes({
             {chunkedEpisodes[0].episodes.map((episode, i) => {
               return (
                 <EpisodeCard
+                  animeId={animeInfoAnify.id ?? animeInfoAnilist.id}
                   type={type}
                   episodeId={episode.id}
                   image={episode.image ?? defaultEpisodeImage}

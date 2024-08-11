@@ -2,9 +2,7 @@ import { useFetchAnimeInfoAnify, useFetchAnimeInfoAnilist } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
-import { EpisodeToBeRendered } from "@/utils/types/animeAnilist";
 import { useEffect } from "react";
-import { getEpisodesToBeRendered } from "@/utils/functions/reusable_functions";
 export const Route = createFileRoute("/anime/$animeId/")({
   component: () => <AnimeInfo />,
 });
@@ -52,11 +50,6 @@ function AnimeInfo() {
     );
   }
 
-  const epsToBeRendered: EpisodeToBeRendered[] | null = getEpisodesToBeRendered(
-    animeInfoAnify,
-    animeInfoAnilist
-  );
-
   return (
     <main className="w-full">
       <AnimeHeroComponent
@@ -87,7 +80,8 @@ function AnimeInfo() {
       />
       <Episodes
         type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
-        episodes={epsToBeRendered}
+        animeInfoAnilist={animeInfoAnilist}
+        animeInfoAnify={animeInfoAnify}
         defaultEpisodeImage={
           animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
         }

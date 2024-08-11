@@ -1,7 +1,7 @@
-import { Link, useParams } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 type EpisodeCardProps = {
-  // animeId: string;
+  animeId: string;
   episodeId: string;
   number: number;
   title: string;
@@ -10,15 +10,13 @@ type EpisodeCardProps = {
 };
 
 export default function EpisodeCard({
-  // animeId,
+  animeId,
   episodeId,
   number,
   title,
   image,
   type,
 }: EpisodeCardProps) {
-  const { animeId } = useParams({ from: "/anime/$animeId/" });
-
   return (
     <Link
       to="/anime/$animeId/watch"
@@ -44,11 +42,13 @@ export default function EpisodeCard({
             </svg>
           </div>
         </div>
-        <img
-          loading="eager"
-          src={image}
-          className="absolute inset-0 object-cover rounded-lg size-full"
-        />
+        <div className="bg-gray-700 rounded-lg size-full">
+          <img
+            loading="eager"
+            src={image}
+            className="absolute inset-0 object-cover rounded-lg size-full"
+          />
+        </div>
       </div>
       <div>
         {/* <p className="text-white">{`Episode ${number}`}</p> */}
