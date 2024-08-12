@@ -148,7 +148,7 @@ export type Episode = {
 export type EpisodeChunk = {
   startEp: number;
   endEp: number;
-  episodes: Episode[];
+  episodes: EpisodeToBeRendered[];
 };
 
 export type Mapping = {

@@ -1,4 +1,6 @@
 import {
+  useChunkEpisodes,
+  useEpisodeInfo,
   useFetchAnimeInfoAnify,
   useFetchAnimeInfoAnilist,
   useFetchEpisodeStreamLinks,
@@ -63,6 +65,13 @@ function EpisodePage() {
     error: animeInfoAnilistError,
   } = useFetchAnimeInfoAnilist(animeId, true);
 
+  const { data: chunkedEpisodes } = useChunkEpisodes(
+    animeInfoAnify,
+    animeInfoAnilist
+  );
+
+  const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
+
   if (
     isEpisodeStreamLinksLoading ||
     isAnimeInfoAnifyLoading ||
@@ -87,7 +96,7 @@ function EpisodePage() {
       </div>
     );
   }
-  if (episodeStreamLinksError || animeInfoAnifyError) {
+  if (episodeStreamLinksError || animeInfoAnifyError || animeInfoAnilistError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -107,10 +116,10 @@ function EpisodePage() {
             // title="Sprite Fight"
             src={
               episodeStreamLinks.sources.find(
-                (source) => source.quality === "default"
+                (source) => source.quality === "backup"
               )?.url ??
               episodeStreamLinks.sources.find(
-                (source) => source.quality === "backup"
+                (source) => source.quality === "default"
               )?.url
             }
             streamType="on-demand"
@@ -125,38 +134,24 @@ function EpisodePage() {
             <p className="text-xl font-bold">
               {animeInfoAnilist.title.english ?? animeInfoAnify.title.english}
             </p>
-            <p className="text-lg font-bold text-gray-400">EPISODE 1</p>
-            <p className="text-sm font-medium line-clamp-1">
-              The man who will become the king of the pirates
+            <p className="text-lg font-bold text-gray-400">
+              {episodeInfo ? `Episode ${episodeInfo.number}` : "Loading..."}
             </p>
+            {episodeInfo && (
+              <p className="text-lg font-medium line-clamp-1">
+                {episodeInfo.title}
+              </p>
+            )}
           </div>
           <Episodes
+            animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
+            replace
             type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
-            animeInfoAnilist={animeInfoAnilist}
-            animeInfoAnify={animeInfoAnify}
+            chunkedEpisodes={chunkedEpisodes}
             defaultEpisodeImage={
               animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
             }
           />
-          {/* <div className="mt-12 space-y-4">
-            <p className="text-xl font-bold">Episodes</p>
-            <div className="w-full overflow-y-auto h-[400px]">
-              <div className="grid w-full grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-2">
-                {Array.from({ length: 30 }).map((_, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className="relative bg-gray-600 rounded-lg aspect-video"
-                    >
-                      <p className="absolute left-1 bottom-1">
-                        Episode {i + 1}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     );

@@ -2,7 +2,9 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
   AnimeInfoAnilist,
+  EpisodeChunk,
   EpisodeStreamLinks,
+  EpisodeToBeRendered,
   MultipleAnimeResponse,
 } from "../utils/types/animeAnilist";
 import { AnimeInfoAnify } from "@/utils/types/animeAnify";
@@ -13,15 +15,15 @@ import {
 
 const BASE_URL_ANILIST = "https://consumet-api-green.vercel.app/meta/anilist";
 
-const frequentlyChanging = {
-  gcTime: 180 * (60 * 1000), //3 hrs
-  staleTime: 120 * (60 * 1000), //2 hrs
-};
+// const frequentlyChanging = {
+//   gcTime: 180 * (60 * 1000), //3 hrs
+//   staleTime: 120 * (60 * 1000), //2 hrs
+// };
 
-const rarelyChanging = {
-  gcTime: 300 * (60 * 1000), //5 hrs
-  staleTime: 240 * (60 * 1000), //4 hrs
-};
+// const rarelyChanging = {
+//   gcTime: 300 * (60 * 1000), //5 hrs
+//   staleTime: 240 * (60 * 1000), //4 hrs
+// };
 
 //this is the settings during development. to minimize network requests
 const neverRefetchSettings = {
@@ -155,24 +157,49 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
   });
 }
 
-export function useFetchChunkedEpisodes(
+export function useChunkEpisodes(
   animeInfoAnify: AnimeInfoAnify | undefined,
   animeInfoAnilist: AnimeInfoAnilist | undefined
 ) {
   return useQuery({
     queryKey: [
-      "epsToBeRendered",
+      "chunkedEpisodes",
       `anify ${animeInfoAnify?.id}`,
       `anilist ${animeInfoAnilist?.id}`,
     ],
     queryFn: () => {
-      console.log("useFetchChunkedEpisodes");
-      return chunkEpisodes(
+      const a = chunkEpisodes(
         getEpisodesToBeRendered(animeInfoAnify, animeInfoAnilist),
         30
       );
+      return a;
     },
     enabled: !!animeInfoAnify && !!animeInfoAnilist,
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
+    ...neverRefetchSettings,
+  });
+}
+
+export function useEpisodeInfo(
+  episodeId: string,
+  chunkedEpisodes: EpisodeChunk[] | null | undefined
+) {
+  return useQuery({
+    queryKey: ["episodeInfo", episodeId],
+    queryFn: () => {
+      let foundEpisode: unknown;
+
+      for (let i = 0; i < chunkedEpisodes!.length; i++) {
+        foundEpisode = chunkedEpisodes![i].episodes.find(
+          (episode) => episode.id.replace(/^\//, "") === episodeId
+        );
+        if (foundEpisode) break;
+      }
+
+      return foundEpisode as EpisodeToBeRendered;
+    },
+    enabled: !!chunkedEpisodes,
     refetchInterval: false,
     refetchIntervalInBackground: false,
     ...neverRefetchSettings,

@@ -35,7 +35,7 @@ export default function AnimeHeroComponent({
   status,
   genres,
   rating,
-  id,
+  // id,
 }: AnimeHeroComponentProps) {
   const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);
   const starsFillWidthRef = useRef<HTMLDivElement | null>(null);

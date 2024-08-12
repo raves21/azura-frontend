@@ -7,6 +7,7 @@ type EpisodeCardProps = {
   title: string;
   image?: string;
   type?: string;
+  replace: boolean
 };
 
 export default function EpisodeCard({
@@ -16,6 +17,7 @@ export default function EpisodeCard({
   title,
   image,
   type,
+  replace
 }: EpisodeCardProps) {
   return (
     <Link
@@ -23,6 +25,7 @@ export default function EpisodeCard({
       params={{
         animeId: animeId,
       }}
+      replace={replace}
       search={{ id: episodeId.replace(/^\//, "") }}
       className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[4/2.7] lg:aspect-[4/2.5] group"
     >

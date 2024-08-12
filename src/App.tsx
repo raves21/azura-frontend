@@ -1,7 +1,7 @@
-import { StrictMode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import { StrictMode, useState } from "react";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";

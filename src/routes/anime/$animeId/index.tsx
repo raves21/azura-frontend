@@ -1,4 +1,4 @@
-import { useFetchAnimeInfoAnify, useFetchAnimeInfoAnilist } from "@/api/animes";
+import { useChunkEpisodes, useFetchAnimeInfoAnify, useFetchAnimeInfoAnilist } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
@@ -21,6 +21,11 @@ function AnimeInfo() {
     isLoading: isAnimeInfoAnilistLoading,
     error: animeInfoAnilistError,
   } = useFetchAnimeInfoAnilist(animeId, true);
+
+  const { data: chunkedEpisodes } = useChunkEpisodes(
+    animeInfoAnify,
+    animeInfoAnilist
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -79,9 +84,10 @@ function AnimeInfo() {
         }
       />
       <Episodes
+        animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
+        chunkedEpisodes={chunkedEpisodes}
+        replace={false}
         type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
-        animeInfoAnilist={animeInfoAnilist}
-        animeInfoAnify={animeInfoAnify}
         defaultEpisodeImage={
           animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
         }

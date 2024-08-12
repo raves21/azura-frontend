@@ -1,28 +1,23 @@
-import { AnimeInfoAnilist } from "@/utils/types/animeAnilist";
+import { EpisodeChunk } from "@/utils/types/animeAnilist";
 import { ChevronDown } from "lucide-react";
 import EpisodeCard from "./-EpisodeCard";
-import { AnimeInfoAnify } from "@/utils/types/animeAnify";
-import { useFetchChunkedEpisodes } from "@/api/animes";
 
 type EpisodesProps = {
-  animeInfoAnify?: AnimeInfoAnify;
-  animeInfoAnilist?: AnimeInfoAnilist;
-  defaultEpisodeImage?: string;
-  type?: string;
+  animeId: string | undefined
+  chunkedEpisodes: EpisodeChunk[] | null | undefined;
+  defaultEpisodeImage: string  | undefined;
+  type: string | undefined;
+  replace: boolean;
 };
 
 export default function Episodes({
-  animeInfoAnify,
-  animeInfoAnilist,
+  animeId,
+  chunkedEpisodes,
   defaultEpisodeImage,
   type,
+  replace,
 }: EpisodesProps) {
-  const { data: chunkedEpisodes } = useFetchChunkedEpisodes(
-    animeInfoAnify,
-    animeInfoAnilist
-  );
-
-  if (chunkedEpisodes && animeInfoAnify && animeInfoAnilist) {
+  if (chunkedEpisodes) {
     return (
       <div className="flex flex-col w-full px-2 pt-8 pb-10 space-y-6 text-sm text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16 lg:text-base">
         <div className="flex items-center justify-between">
@@ -43,7 +38,8 @@ export default function Episodes({
             {chunkedEpisodes[0].episodes.map((episode, i) => {
               return (
                 <EpisodeCard
-                  animeId={animeInfoAnify.id ?? animeInfoAnilist.id}
+                  replace={replace}
+                  animeId={animeId!}
                   type={type}
                   episodeId={episode.id}
                   image={episode.image ?? defaultEpisodeImage}

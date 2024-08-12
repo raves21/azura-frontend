@@ -5,7 +5,7 @@ import {
   useFetchTrendingAnime,
 } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
-import AnimeCategorySection from "./-AnimeCategorySection";
+// import AnimeCategorySection from "./-AnimeCategorySection";
 import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
 
 export const Route = createFileRoute("/anime/")({
