@@ -1,4 +1,8 @@
-import { useChunkEpisodes, useFetchAnimeInfoAnify, useFetchAnimeInfoAnilist } from "@/api/animes";
+import {
+  useChunkEpisodes,
+  useFetchAnimeInfoAnify,
+  useFetchAnimeInfoAnilist,
+} from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
@@ -78,12 +82,13 @@ function AnimeInfo() {
         type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
         year={animeInfoAnilist?.releaseDate ?? animeInfoAnify?.year}
         rating={
-          (animeInfoAnify?.rating && animeInfoAnify.rating.anilist) ??
+          animeInfoAnify?.rating.anilist ??
           animeInfoAnilist?.rating! * 0.1 ??
           null
         }
       />
       <Episodes
+        isInfoPage
         animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
         chunkedEpisodes={chunkedEpisodes}
         replace={false}
