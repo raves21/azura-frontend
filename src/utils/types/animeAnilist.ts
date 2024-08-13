@@ -131,18 +131,18 @@ export type EndDateClass = {
 };
 
 export type EpisodeToBeRendered = {
-  id: string
-  title: string
-  number: number
-  image?: string | null
-}
+  id: string;
+  title: string;
+  number: number;
+  image?: string | null;
+};
 
 export type Episode = {
-    id: string;
-    title: string;
-    number: number;
-    image?: string | null
-    img?: string | null
+  id: string;
+  title: string;
+  number: number;
+  image?: string | null;
+  img?: string | null;
 };
 
 export type EpisodeChunk = {
@@ -175,8 +175,8 @@ export type Recommendation = {
 export enum Status {
   Completed = "Completed",
   Ongoing = "Ongoing",
-  NotYetAired  = "Not yet aired",
-  NOTYETRELEASED = "NOT_YET_RELEASED"
+  NotYetAired = "Not yet aired",
+  NOTYETRELEASED = "NOT_YET_RELEASED",
 }
 
 export type Relation = {
@@ -196,18 +196,17 @@ export type Relation = {
 };
 
 export type EpisodeStreamLinks = {
-  headers:  Headers;
-  sources:  Source[];
+  headers: Headers;
+  sources: Source[];
   download: string;
-}
+};
 
 export type Headers = {
   Referer: string;
-}
+};
 
 export type Source = {
-  url:     string;
-  isM3U8:  boolean;
+  url: string;
+  isM3U8: boolean;
   quality: string;
-}
-
+};

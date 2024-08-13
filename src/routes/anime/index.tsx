@@ -46,14 +46,17 @@ function Home() {
         </div>
         <div className="w-full pt-8 pb-24 space-y-10">
           <AnimeCategoryCarousel
+            isHomePage
             animeList={trendingAnimes.results.slice(3)}
             categoryName="Trending Anime"
           />
           <AnimeCategoryCarousel
+            isHomePage
             animeList={topRatedAnimes.results}
             categoryName="Top Rated"
           />
           <AnimeCategoryCarousel
+            isHomePage
             animeList={popularAnimes.results}
             categoryName="All Time Popular"
           />

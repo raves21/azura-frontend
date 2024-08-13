@@ -19,6 +19,7 @@ import {
   DefaultVideoLayout,
 } from "@vidstack/react/player/layouts/default";
 import Episodes from "../-Episodes";
+import AnimeCategoryCarousel from "../../-AnimeCategoryCarousel";
 
 type EpisodePageSearchParams = {
   id: string;
@@ -107,54 +108,63 @@ function EpisodePage() {
 
   if (episodeStreamLinks && animeInfoAnify && animeInfoAnilist) {
     return (
-      <div className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row lg:px-16">
-        <div className="w-full">
-          <div className="w-full aspect-video">
-            <MediaPlayer
-              ref={mediaPlayerRef}
-              playsInline
-              className="size-full"
-              // title="Sprite Fight"
-              src={
-                episodeStreamLinks.sources.find(
-                  (source) => source.quality === "backup"
-                )?.url ??
-                episodeStreamLinks.sources.find(
-                  (source) => source.quality === "default"
-                )?.url
-              }
-              streamType="on-demand"
-              volume={0.08}
-            >
-              <MediaProvider />
-              <DefaultVideoLayout icons={defaultLayoutIcons} />
-            </MediaPlayer>
-          </div>
-          <div className="w-full mt-2">
-            <div className="flex flex-col gap-1 px-2 sm:px-3">
-              <p className="text-lg font-bold sm:text-xl line-clamp-1">
-                {animeInfoAnilist.title.english ?? animeInfoAnify.title.english}
-              </p>
-              <p className="text-lg font-semibold text-gray-400 sm:text-xl">
-                {episodeInfo ? `Episode ${episodeInfo.number}` : "Loading..."}
-              </p>
-              {episodeInfo && (
-                <p className="font-medium sm:text-lg line-clamp-1">
-                  {episodeInfo.title}
+      <div className="flex flex-col pb-32">
+        <div className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row lg:px-16">
+          <div className="w-full">
+            <div className="w-full aspect-video">
+              <MediaPlayer
+                ref={mediaPlayerRef}
+                playsInline
+                className="size-full"
+                // title="Sprite Fight"
+                src={
+                  episodeStreamLinks.sources.find(
+                    (source) => source.quality === "backup"
+                  )?.url ??
+                  episodeStreamLinks.sources.find(
+                    (source) => source.quality === "default"
+                  )?.url
+                }
+                streamType="on-demand"
+                volume={0.08}
+              >
+                <MediaProvider />
+                <DefaultVideoLayout icons={defaultLayoutIcons} />
+              </MediaPlayer>
+            </div>
+            <div className="w-full px-2 mt-2 sm:px-3 lg:px-0">
+              <div className="flex flex-col gap-1">
+                <p className="text-lg font-bold sm:text-xl line-clamp-1">
+                  {animeInfoAnilist.title.english ??
+                    animeInfoAnify.title.english}
                 </p>
-              )}
+                <p className="text-lg font-semibold text-gray-400 sm:text-xl">
+                  {episodeInfo ? `Episode ${episodeInfo.number}` : "Loading..."}
+                </p>
+                {episodeInfo && (
+                  <p className="font-medium sm:text-lg line-clamp-1">
+                    {episodeInfo.title}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
+          <Episodes
+            isInfoPage={false}
+            animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
+            replace
+            type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
+            chunkedEpisodes={chunkedEpisodes}
+            defaultEpisodeImage={
+              animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
+            }
+          />
         </div>
-        <Episodes
+        <AnimeCategoryCarousel
           isInfoPage={false}
-          animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
-          replace
-          type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
-          chunkedEpisodes={chunkedEpisodes}
-          defaultEpisodeImage={
-            animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
-          }
+          isHomePage={false}
+          categoryName="Recommendations"
+          recommendations={animeInfoAnilist.recommendations}
         />
       </div>
     );
