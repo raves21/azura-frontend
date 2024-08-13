@@ -28,7 +28,7 @@ export default function TrendingCarouselItem({
 
   return (
     <div className="flex items-end justify-center lg:items-center size-full lg:pt-20">
-      <div className="relative flex justify-center w-full lg:w-[1440px] lg:px-16 xl:px-24 px-3 sm:px-6">
+      <div className="relative flex justify-center w-full lg:w-[1440px] lg:px-16 px-3 sm:px-6">
         <div className="flex w-full gap-16">
           <div className="aspect-[3/4] h-[300px] rounded-xl overflow-hidden z-10 lg:block hidden">
             <img src={image} className="object-cover size-full" />

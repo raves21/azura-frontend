@@ -7,7 +7,7 @@ export const Route = createFileRoute("/anime")({
 
 function HomeLayout() {
   return (
-    <div className="text-[#f6f4f4] font-montserrat w-full">
+    <div className="w-full font-montserrat">
       <HomeHeader />
       <Outlet />
     </div>

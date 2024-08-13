@@ -1,9 +1,13 @@
+import { useGlobalComponentStore } from "@/utils/stores/globalComponentStore";
 import { Link } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import SearchDialog from "./-SearchDialog";
 
 export default function HomeHeader() {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
+
+  const { toggleOpenDialog } = useGlobalComponentStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,22 +27,24 @@ export default function HomeHeader() {
 
   return (
     <div
-      className={`fixed left-1/2 ml-[-50vw] w-dvw z-[999999] ${isScrolledDown ? "bg-darkBg/80" : ""} transition-all duration-300 hidden lg:block`}
+      className={`fixed left-1/2 ml-[-50vw] w-dvw z-[45] ${isScrolledDown ? "bg-darkBg/80" : ""} transition-all duration-300 hidden lg:block`}
     >
       <div
         className={`flex items-center justify-between mx-auto px-16 max-w-[1440px] py-4 transition-all duration-300`}
       >
         <Menu size={24} color="white" />
         <div className="flex items-center gap-12 text-sm">
-          <Link
-          to="/anime"
-          className="font-medium">Anime</Link>
-          <Link className="text-gray-300">Movie / TV</Link>
+          <Link to="/anime" className="font-medium">
+            Anime
+          </Link>
+          <Link className="text-gray-300">Filter</Link>
           <img src="/temp-logo2.svg" className="size-12" />
           <Link className="text-gray-300">Social</Link>
           <Link className="text-gray-300">Profile</Link>
         </div>
-        <Search />
+        <button>
+          <Search onClick={() => toggleOpenDialog(<SearchDialog />)} />
+        </button>
       </div>
     </div>
   );

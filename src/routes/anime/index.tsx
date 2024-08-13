@@ -5,7 +5,6 @@ import {
   useFetchTrendingAnime,
 } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
-// import AnimeCategorySection from "./-AnimeCategorySection";
 import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
 
 export const Route = createFileRoute("/anime/")({
@@ -39,7 +38,7 @@ function Home() {
   if (trendingAnimes && popularAnimes && topRatedAnimes) {
     return (
       <div className="flex flex-col items-center w-full">
-        <div className="w-dvw">
+        <div className="w-dvw max-w-[100dvw]">
           <TrendingAnimesHeroCarousel
             animeList={trendingAnimes.results.slice(0, 5)}
           />

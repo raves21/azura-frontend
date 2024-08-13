@@ -9,6 +9,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/custom-carousel";
+import { useGlobalComponentStore } from "@/utils/stores/globalComponentStore";
+import { useShallow } from "zustand/react/shallow";
 
 type HomePageProps = {
   isHomePage: true;
@@ -31,6 +33,8 @@ type AnimeCategoryCarouselProps = {
 export default function AnimeCategoryCarousel(
   props: AnimeCategoryCarouselProps
 ) {
+  const {toggleOpenDialog} = useGlobalComponentStore()
+
   if (props.isHomePage) {
     return (
       <div className="w-full px-3 pt-5 space-y-6 text-gray-400 lg:px-16 sm:px-6">
@@ -38,7 +42,16 @@ export default function AnimeCategoryCarousel(
           <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
             {props.categoryName}
           </p>
-          <Link className="flex items-center gap-1 px-2 py-1 transition-all duration-300 border border-gray-400 rounded-full sm:px-3 sm:py-2 lg:px-4 group hover:border-mainAccent">
+          <Link
+            onClick={() =>
+              toggleOpenDialog(
+                <div className="grid text-xl font-semibold text-black bg-red-200 size-96 place-items-center">
+                  IT WORKS
+                </div>
+              )
+            }
+            className="flex items-center gap-1 px-2 py-1 transition-all duration-300 border border-gray-400 rounded-full sm:px-3 sm:py-2 lg:px-4 group hover:border-mainAccent"
+          >
             <p className="text-xs transition-all duration-300 md:text-base group-hover:text-mainAccent whitespace-nowrap">
               See All
             </p>
