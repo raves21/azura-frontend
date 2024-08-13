@@ -1,32 +1,33 @@
-import { Link, useParams } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 type EpisodeCardProps = {
-  // animeId: string;
+  animeId: string;
   episodeId: string;
   number: number;
   title: string;
   image?: string;
   type?: string;
+  replace: boolean
 };
 
 export default function EpisodeCard({
-  // animeId,
+  animeId,
   episodeId,
   number,
   title,
   image,
   type,
+  replace
 }: EpisodeCardProps) {
-  const { animeId } = useParams({ from: "/anime/$animeId/" });
-
   return (
     <Link
       to="/anime/$animeId/watch"
       params={{
         animeId: animeId,
       }}
+      replace={replace}
       search={{ id: episodeId.replace(/^\//, "") }}
-      className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[4/2.7] lg:aspect-[4/2.5] group"
+      className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[4/3] group"
     >
       <div className="relative flex-1">
         <div className="absolute font-semibold z-20 px-2 py-[3px] bottom-1 left-1 text-[#E0E0E0] rounded-md bg-black/60">
@@ -44,11 +45,13 @@ export default function EpisodeCard({
             </svg>
           </div>
         </div>
-        <img
-          loading="eager"
-          src={image}
-          className="absolute inset-0 object-cover rounded-lg size-full"
-        />
+        <div className="bg-gray-700 rounded-lg size-full">
+          <img
+            loading="eager"
+            src={image}
+            className="absolute inset-0 object-cover rounded-lg size-full"
+          />
+        </div>
       </div>
       <div>
         {/* <p className="text-white">{`Episode ${number}`}</p> */}

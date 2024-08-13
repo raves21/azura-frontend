@@ -16,13 +16,13 @@ type AnimeHeroComponentProps = {
 
 export default function TrendingCarouselItem({
   image,
-  cover,
+  // cover,
   title,
   description,
   id,
-  type,
+  // type,
   trendingRank,
-  genres,
+  // genres,
 }: AnimeHeroComponentProps) {
   const navigate = useNavigate();
 

@@ -6,9 +6,10 @@ import {
 } from "../types/animeAnilist";
 
 export function chunkEpisodes(
-  eps: EpisodeToBeRendered[],
+  eps: EpisodeToBeRendered[] | null,
   epsPerChunk: number
-): EpisodeChunk[] {
+): EpisodeChunk[] | null {
+  if (!eps) return null;
   const chunkedEpisodes = Array.from(
     { length: Math.ceil(eps.length / epsPerChunk) },
     (_, i) => {
@@ -44,39 +45,30 @@ export function getEpisodesToBeRendered(
   //anilist epiosdes to be used (as a fallback, if anify-gogoanime does not have episodes)
   const anilistEpisodes = animeInfoAnilist?.episodes;
 
-  let epsToBeRendered: EpisodeToBeRendered[] | null;
-
   if (gogoAnimeEpisodes && gogoAnimeEpisodes.length !== 0) {
-    epsToBeRendered = gogoAnimeEpisodes.map((ep, i) => {
-      return {
-        //get episode ids from gogoanime
-        id: ep.id,
-        number: ep.number,
+    return gogoAnimeEpisodes.map((ep, i) => ({
+      //get episode ids from gogoanime
+      id: ep.id,
+      number: ep.number,
 
-        //get episode images from animepahe
-        image:
-          animePaheData && animePaheData.episodes[i]
-            ? animePaheData.episodes[i].img ?? animeInfoAnilist?.cover
-            : animeInfoAnilist?.cover,
-        //get episode titles from zoro
-        title:
-          zoroData && zoroData.episodes[i]
-            ? zoroData.episodes[i].title ?? ep.title
-            : ep.title,
-      };
-    });
+      //get episode images from animepahe
+      image:
+        animePaheData && animePaheData.episodes[i]
+          ? animePaheData.episodes[i].img : animeInfoAnilist?.cover,
+      //get episode titles from zoro
+      title:
+        zoroData && zoroData.episodes[i]
+          ? zoroData.episodes[i].title : ep.title,
+    }));
   } else if (anilistEpisodes && anilistEpisodes.length !== 0) {
-    epsToBeRendered = anilistEpisodes.map((ep) => {
-      return {
-        id: ep.id,
-        title: ep.title ?? `EP ${ep.number}`,
-        number: ep.number,
-        image: ep.image,
-      };
-    });
+    return anilistEpisodes.map((ep) => ({
+      id: ep.id,
+      title: ep.title ?? `EP ${ep.number}`,
+      number: ep.number,
+      image: ep.image,
+    }));
   } else {
-    //else, accept the fact that the selected anime just has no episodes
-    epsToBeRendered = null;
+    //else, accept the fact that the selected anime has no episodes
+    return null;
   }
-  return epsToBeRendered;
 }
