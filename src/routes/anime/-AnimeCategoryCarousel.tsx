@@ -31,6 +31,7 @@ type AnimeCategoryCarouselProps = {
 export default function AnimeCategoryCarousel(
   props: AnimeCategoryCarouselProps
 ) {
+
   if (props.isHomePage) {
     return (
       <div className="w-full px-3 pt-5 space-y-6 text-gray-400 lg:px-16 sm:px-6">
