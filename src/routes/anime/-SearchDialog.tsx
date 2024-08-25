@@ -3,8 +3,8 @@ export default function SearchDialog() {
     <div className="w-[800px]">
       <input
         type="text"
-        className="px-3 py-3 text-xl placeholder-gray-500 text-[#f6f4f4] bg-gray-700 rounded-lg size-full"
-        placeholder="Search for an anime..."
+        className="focus:outline-none p-5 text-lg placeholder-gray-400 font-medium text-[#f6f4f4] bg-gray-800 rounded-lg size-full"
+        placeholder="Search anime..."
       />
     </div>
   );

@@ -45,7 +45,7 @@ export default function GlobalDialog() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 grid place-items-center">
+          <div className="fixed inset-0 grid place-items-center font-montserrat">
             <DialogPanel className="min-w-fit">{dialogContent}</DialogPanel>
           </div>
         </TransitionChild>
