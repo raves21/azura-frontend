@@ -1,26 +1,26 @@
 import { create } from "zustand";
 import { ReactNode } from "@tanstack/react-router";
 
-type GlobalComponentStoreValues = {
+type GlobalStoreValues = {
   isDialogOpen: boolean;
   dialogContent: ReactNode | null;
 };
 
-type GlobalComponentStoreActions = {
+type GlobalStoreActions = {
   toggleOpenDialog: (dialogContent: ReactNode) => void;
 };
 
-type GlobalComponentStore = GlobalComponentStoreValues &
-  GlobalComponentStoreActions;
+type GlobalStore = GlobalStoreValues &
+  GlobalStoreActions;
 
-const globalComponentStoreDefaultValues: GlobalComponentStoreValues = {
+const globalStoreDefaultValues: GlobalStoreValues = {
   isDialogOpen: false,
   dialogContent: null,
 };
 
-export const useGlobalComponentStore = create<GlobalComponentStore>(
+export const useGlobalStore = create<GlobalStore>(
   (set, get) => ({
-    ...globalComponentStoreDefaultValues,
+    ...globalStoreDefaultValues,
     toggleOpenDialog: (dialogContent: ReactNode) => {
       if (get().isDialogOpen) {
         set({ isDialogOpen: false });

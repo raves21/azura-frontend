@@ -1,4 +1,4 @@
-import { useGlobalComponentStore } from "@/utils/stores/globalComponentStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import {
   Dialog,
   DialogPanel,
@@ -10,7 +10,7 @@ import { useShallow } from "zustand/react/shallow";
 
 export default function GlobalDialog() {
   const [isDialogOpen, dialogContent, toggleOpenDialog] =
-    useGlobalComponentStore(
+    useGlobalStore(
       useShallow((state) => [
         state.isDialogOpen,
         state.dialogContent,

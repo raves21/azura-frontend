@@ -31,7 +31,6 @@ type AnimeCategoryCarouselProps = {
 export default function AnimeCategoryCarousel(
   props: AnimeCategoryCarouselProps
 ) {
-
   if (props.isHomePage) {
     return (
       <div className="w-full px-3 pt-5 space-y-6 text-gray-400 lg:px-16 sm:px-6">
@@ -54,16 +53,15 @@ export default function AnimeCategoryCarousel(
           }}
           className="w-full"
         >
-          <CarouselContent className="">
+          <CarouselContent>
             {props.animeList.map((anime) => {
               return (
                 <CarouselItem
-                  key={anime.id}
+                  key={anime.id ?? anime.title ?? "no data"}
                   className="basis-1/3 mobile-m:basis-[30%] 570:basis-1/4 sm:basis-1/5 xl:basis-1/6"
                 >
                   <AnimeCard
                     isHomePage
-                    key={anime.id}
                     anime={anime}
                     className="min-h-fit max-h-[250px]"
                   />
@@ -98,16 +96,15 @@ export default function AnimeCategoryCarousel(
           }}
           className="w-full"
         >
-          <CarouselContent className="">
+          <CarouselContent>
             {props.recommendations.map((recommendation) => {
               return (
                 <CarouselItem
-                  key={recommendation.id}
+                  key={recommendation.id ?? recommendation.title ?? "no data"}
                   className="basis-1/3 mobile-m:basis-[30%] 570:basis-1/4 sm:basis-1/5 xl:basis-1/6"
                 >
                   <AnimeCard
                     isHomePage={false}
-                    key={recommendation.id}
                     recommendation={recommendation}
                     className="min-h-fit max-h-[250px]"
                   />

@@ -21,12 +21,8 @@ export default function EpisodeCard({
 }: EpisodeCardProps) {
   return (
     <Link
-      to="/anime/$animeId/watch"
-      params={{
-        animeId: animeId,
-      }}
+      to={`/anime/${animeId}/watch?id=${episodeId.replace(/^\//, "")}`}
       replace={replace}
-      search={{ id: episodeId.replace(/^\//, "") }}
       className="relative flex flex-col gap-2 text-xs md:text-sm aspect-[4/3] group"
     >
       <div className="relative flex-1">

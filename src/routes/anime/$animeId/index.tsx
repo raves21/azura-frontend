@@ -1,8 +1,4 @@
-import {
-  useChunkEpisodes,
-  useFetchAnimeInfoAnify,
-  useFetchAnimeInfoAnilist,
-} from "@/api/animes";
+import { useChunkEpisodes, useFetchAnimeInfo } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
@@ -16,42 +12,30 @@ function AnimeInfo() {
   const { animeId } = Route.useParams();
 
   const {
-    data: animeInfoAnify,
-    isLoading: isAnimeInfoAnifyLoading,
-    error: animeInfoAnifyError,
-  } = useFetchAnimeInfoAnify(animeId);
+    data: animeInfo,
+    isLoading: isAnimeInfoLoading,
+    error: animeInfoError,
+  } = useFetchAnimeInfo(animeId);
 
-  const {
-    data: animeInfoAnilist,
-    isLoading: isAnimeInfoAnilistLoading,
-    error: animeInfoAnilistError,
-  } = useFetchAnimeInfoAnilist(animeId, true);
-
-  const { data: chunkedEpisodes } = useChunkEpisodes(
-    animeInfoAnify,
-    animeInfoAnilist
-  );
+  const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
+    useChunkEpisodes(animeInfo);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (isAnimeInfoAnifyLoading || isAnimeInfoAnilistLoading) {
+  if (isAnimeInfoLoading || isChunkEpisodesLoading) {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
           LOADING&nbsp;
-          {isAnimeInfoAnifyLoading ? (
-            <span className="font-semibold text-green-500">ANIFY</span>
-          ) : (
-            <span className="font-semibold text-blue-500">ANILIST</span>
-          )}
+          <span className="font-semibold text-green-500">ANIME INFO</span>
         </p>
       </div>
     );
   }
 
-  if (animeInfoAnifyError && animeInfoAnilistError) {
+  if (animeInfoError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching the details for this anime.</p>
@@ -59,8 +43,9 @@ function AnimeInfo() {
       </div>
     );
   }
-
-  if (animeInfoAnify && animeInfoAnilist) {
+  
+  if (animeInfo) {
+    const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <main className="w-full pb-32">
         <AnimeHeroComponent
@@ -99,12 +84,14 @@ function AnimeInfo() {
             animeInfoAnify.coverImage ?? animeInfoAnilist.cover
           }
         />
-        <AnimeCategoryCarousel
-          isInfoPage
-          isHomePage={false}
-          recommendations={animeInfoAnilist.recommendations}
-          categoryName="Recommendations"
-        />
+        {animeInfoAnilist.recommendations && (
+          <AnimeCategoryCarousel
+            isInfoPage
+            isHomePage={false}
+            recommendations={animeInfoAnilist.recommendations}
+            categoryName="Recommendations"
+          />
+        )}
       </main>
     );
   }

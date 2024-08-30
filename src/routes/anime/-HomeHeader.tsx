@@ -1,4 +1,4 @@
-import { useGlobalComponentStore } from "@/utils/stores/globalComponentStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Link } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import SearchDialog from "./-SearchDialog";
 export default function HomeHeader() {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
 
-  const { toggleOpenDialog } = useGlobalComponentStore();
+  const { toggleOpenDialog } = useGlobalStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +38,7 @@ export default function HomeHeader() {
             Anime
           </Link>
           <Link className="text-gray-300">Filter</Link>
-          <img src="/temp-logo2.svg" className="size-12" />
+          <img src="/azurawatch-logo.svg" className="size-12" />
           <Link className="text-gray-300">Social</Link>
           <Link className="text-gray-300">Profile</Link>
         </div>
