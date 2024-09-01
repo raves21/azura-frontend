@@ -13,6 +13,7 @@ import {
 type HomePageProps = {
   isHomePage: true;
   animeList: Anime[];
+  seeAllSortBy: string
 };
 
 type NotHomePageProps = {
@@ -38,7 +39,9 @@ export default function AnimeCategoryCarousel(
           <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
             {props.categoryName}
           </p>
-          <Link className="flex items-center gap-1 px-2 py-1 transition-all duration-300 border border-gray-400 rounded-full sm:px-3 sm:py-2 lg:px-4 group hover:border-mainAccent">
+          <Link to="/anime/filter" search={{
+            sortBy: props.seeAllSortBy
+          }} className="flex items-center gap-1 px-2 py-1 transition-all duration-300 border border-gray-400 rounded-full sm:px-3 sm:py-2 lg:px-4 group hover:border-mainAccent">
             <p className="text-xs transition-all duration-300 md:text-base group-hover:text-mainAccent whitespace-nowrap">
               See All
             </p>
