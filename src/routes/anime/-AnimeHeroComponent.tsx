@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { Format, Genre, Status } from "@/utils/types/animeAnilist";
+import { Link } from "@tanstack/react-router";
 
 type AnimeHeroComponentProps = {
   image?: string;
@@ -132,9 +133,16 @@ export default function AnimeHeroComponent({
               <div className="flex flex-wrap gap-1 max-w-[70%]">
                 {genres &&
                   genres.map((genre, i) => (
-                    <button key={i} className="hover:text-mainAccent">
+                    <Link
+                      to="/anime/filter"
+                      search={{
+                        genres: `${genre}`,
+                      }}
+                      key={i}
+                      className="hover:text-mainAccent"
+                    >
                       {i === genres.length - 1 ? `${genre}` : `${genre},`}
-                    </button>
+                    </Link>
                   ))}
               </div>
             </div>
@@ -259,9 +267,16 @@ export default function AnimeHeroComponent({
               <div className="flex flex-wrap gap-1">
                 {genres &&
                   genres.map((genre, i) => (
-                    <button key={i} className="hover:text-mainAccent">
+                    <Link
+                      to="/anime/filter"
+                      search={{
+                        genres: `${genre}`,
+                      }}
+                      key={i}
+                      className="hover:text-mainAccent"
+                    >
                       {i === genres.length - 1 ? `${genre}` : `${genre},`}
-                    </button>
+                    </Link>
                   ))}
               </div>
             </div>
