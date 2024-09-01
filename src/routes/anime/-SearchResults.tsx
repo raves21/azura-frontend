@@ -1,6 +1,8 @@
 import { MultipleAnimeResponse } from "@/utils/types/animeAnilist";
 import SearchResultCard from "./-SearchResultCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Link } from "@tanstack/react-router";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 
 type SearchResultsProps = {
   query: string;
@@ -15,6 +17,8 @@ export default function SearchResults({
   error,
   query,
 }: SearchResultsProps) {
+  const { toggleOpenDialog } = useGlobalStore();
+
   if (isLoading) {
     return (
       <div className="grid w-full py-4 rounded-b-lg place-items-center text-[#f6f4f4] bg-gray-800">
@@ -40,14 +44,26 @@ export default function SearchResults({
       );
     }
     return (
-      <ScrollArea className={`flex flex-col w-full text-[#f6f4f4] rounded-b-lg bg-gray-800 ${searchResults.results.length <= 2 ? "h-auto" : "h-[300px]"} overflow-y-auto`}>
-        {searchResults.results.map((anime) => (
-          <SearchResultCard key={anime.id} anime={anime}/>
-        ))}
+      <ScrollArea
+        className={`w-full text-[#f6f4f4] rounded-b-lg bg-gray-800 ${searchResults.results.length <= 2 ? "h-auto" : "h-[300px]"} overflow-y-auto`}
+      >
+        <ul className="flex flex-col">
+          {searchResults.results.map((anime) => (
+            <SearchResultCard key={anime.id} anime={anime} />
+          ))}
+        </ul>
         {searchResults.hasNextPage && (
-            <button className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent">
-                View all search results
-            </button>
+          <Link
+            to="/anime/filter"
+            search={{
+              page: 1,
+              query: query,
+            }}
+            onClick={() => toggleOpenDialog(null)}
+            className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent"
+          >
+            View all search results
+          </Link>
         )}
       </ScrollArea>
     );

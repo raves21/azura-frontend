@@ -2,6 +2,7 @@ import { Bookmark, ChevronDown, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
+import { Format, Genre, Status } from "@/utils/types/animeAnilist";
 
 type AnimeHeroComponentProps = {
   image?: string;
@@ -11,10 +12,10 @@ type AnimeHeroComponentProps = {
   id?: string;
   totalEpisodes?: number;
   year?: number;
-  type?: string;
-  status?: string;
+  type?: Format;
+  status?: Status;
   trendingRank?: number;
-  genres?: string[];
+  genres?: Genre[];
   rating?: number | null;
 };
 
@@ -116,14 +117,14 @@ export default function AnimeHeroComponent({
               <div className="flex gap-2">
                 <p className="text-gray-400">Status:</p>
                 <p
-                  className={`${status === "RELEASING" || status === "Ongoing" ? "text-green-500" : status === "FINISHED" || status === "Completed" ? "text-blue-500" : "text-orange-500"} font-semibold`}
+                  className={`${status === Status.RELEASING || status === Status.Ongoing ? "text-green-500" : status === Status.FINISHED || status === Status.Completed ? "text-blue-500" : "text-orange-500"} font-semibold`}
                 >
                   {status}
                 </p>
               </div>
               <div className="flex gap-2">
                 <p className="text-gray-400">Type:</p>
-                <p>{type && type !== "" ? type : "?"}</p>
+                <p>{type ? type : "?"}</p>
               </div>
             </div>
             <div className="flex w-full gap-2">
@@ -142,7 +143,7 @@ export default function AnimeHeroComponent({
             <p>{year}</p>
             <div className="bg-gray-400 rounded-full size-1"></div>
             <p
-              className={`${status === "RELEASING" || status === "Ongoing" ? "text-green-500" : status === "FINISHED" || status === "Completed" ? "text-blue-500" : "text-orange-500"}`}
+              className={`${status === Status.RELEASING || status === Status.Ongoing ? "text-green-500" : status === Status.FINISHED || status === Status.Completed ? "text-blue-500" : "text-orange-500"}`}
             >
               {status}
             </p>
@@ -243,14 +244,14 @@ export default function AnimeHeroComponent({
               <div className="flex gap-2">
                 <p className="text-gray-400">Status:</p>
                 <p
-                  className={`${status === "RELEASING" || status === "Ongoing" ? "text-green-500" : status === "FINISHED" || status === "Completed" ? "text-blue-500" : "text-orange-500"} font-semibold `}
+                  className={`${status === Status.RELEASING || status === Status.Ongoing ? "text-green-500" : status === Status.FINISHED || status === Status.Completed ? "text-blue-500" : "text-orange-500"} font-semibold `}
                 >
                   {status}
                 </p>
               </div>
               <div className="flex gap-2">
                 <p className="text-gray-400">Type:</p>
-                <p className="">{type && type !== "" ? type : "?"}</p>
+                <p className="">{type ? type : "?"}</p>
               </div>
             </div>
             <div className="flex gap-2">

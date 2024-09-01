@@ -37,7 +37,9 @@ export default function HomeHeader() {
           <Link to="/anime" className="font-medium">
             Anime
           </Link>
-          <Link className="text-gray-300">Filter</Link>
+          <Link to="/anime/filter" className="text-gray-300">
+            Filter
+          </Link>
           <img src="/azurawatch-logo.svg" className="size-12" />
           <Link className="text-gray-300">Social</Link>
           <Link className="text-gray-300">Profile</Link>

@@ -34,7 +34,7 @@ export default function GlobalDialog() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 w-dvw bg-black/70"></div>
+          <div className="fixed inset-0 w-dvw bg-black/80"></div>
         </TransitionChild>
         <TransitionChild
           as={React.Fragment}

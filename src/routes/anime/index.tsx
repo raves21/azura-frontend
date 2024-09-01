@@ -12,13 +12,22 @@ export const Route = createFileRoute("/anime/")({
 });
 
 function Home() {
-  const { data: trendingAnimes, isLoading: isTrendingAnimesLoading } =
-    useFetchTrendingAnime(17, 1);
-  const { data: popularAnimes, isLoading: isPopularAnimesLoading } =
-    useFetchPopularAnimes(12);
+  const {
+    data: trendingAnimes,
+    isLoading: isTrendingAnimesLoading,
+    error: trendingAnimesError,
+  } = useFetchTrendingAnime(17, 1);
+  const {
+    data: popularAnimes,
+    isLoading: isPopularAnimesLoading,
+    error: popularAnimesError,
+  } = useFetchPopularAnimes(12);
 
-  const { data: topRatedAnimes, isLoading: isTopRatedAnimesLoading } =
-    useFetchTopRatedAnime(12);
+  const {
+    data: topRatedAnimes,
+    isLoading: isTopRatedAnimesLoading,
+    error: topRatedAnimesError,
+  } = useFetchTopRatedAnime(12);
 
   if (
     isTrendingAnimesLoading ||
@@ -31,6 +40,15 @@ function Home() {
           Loading&nbsp;
           <span className="font-semibold text-mainAccent">AzuraWatch</span>
         </p>
+      </div>
+    );
+  }
+
+  if (trendingAnimesError || popularAnimesError || topRatedAnimesError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
+        <p>Oops! There was an error fetching this page.</p>
+        <p>Please try again later.</p>
       </div>
     );
   }

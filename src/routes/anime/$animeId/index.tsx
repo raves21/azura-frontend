@@ -4,6 +4,7 @@ import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
 import { useEffect } from "react";
 import AnimeCategoryCarousel from "../-AnimeCategoryCarousel";
+import { Status } from "@/utils/types/animeAnilist";
 export const Route = createFileRoute("/anime/$animeId/")({
   component: () => <AnimeInfo />,
 });
@@ -62,7 +63,7 @@ function AnimeInfo() {
             animeInfoAnilist.description ?? animeInfoAnify.description
           }
           genres={animeInfoAnilist.genres}
-          status={animeInfoAnify.status ?? animeInfoAnilist.status}
+          status={animeInfoAnilist.status ?? animeInfoAnify.status as Status}
           totalEpisodes={
             animeInfoAnify.totalEpisodes ?? animeInfoAnilist.totalEpisodes
           }

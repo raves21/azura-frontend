@@ -16,6 +16,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as AnimeIndexImport } from './routes/anime/index'
 import { Route as AnimeSplatImport } from './routes/anime/$'
+import { Route as AnimeFilterIndexImport } from './routes/anime/filter/index'
 import { Route as AnimeAnimeIdIndexImport } from './routes/anime/$animeId/index'
 import { Route as AnimeAnimeIdWatchIndexImport } from './routes/anime/$animeId/watch/index'
 
@@ -43,6 +44,11 @@ const AnimeIndexRoute = AnimeIndexImport.update({
 
 const AnimeSplatRoute = AnimeSplatImport.update({
   path: '/$',
+  getParentRoute: () => AnimeRouteRoute,
+} as any)
+
+const AnimeFilterIndexRoute = AnimeFilterIndexImport.update({
+  path: '/filter/',
   getParentRoute: () => AnimeRouteRoute,
 } as any)
 
@@ -102,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnimeAnimeIdIndexImport
       parentRoute: typeof AnimeRouteImport
     }
+    '/anime/filter/': {
+      id: '/anime/filter/'
+      path: '/filter'
+      fullPath: '/anime/filter'
+      preLoaderRoute: typeof AnimeFilterIndexImport
+      parentRoute: typeof AnimeRouteImport
+    }
     '/anime/$animeId/watch/': {
       id: '/anime/$animeId/watch/'
       path: '/$animeId/watch'
@@ -120,6 +133,7 @@ export const routeTree = rootRoute.addChildren({
     AnimeSplatRoute,
     AnimeIndexRoute,
     AnimeAnimeIdIndexRoute,
+    AnimeFilterIndexRoute,
     AnimeAnimeIdWatchIndexRoute,
   }),
   LoginIndexRoute,
@@ -147,6 +161,7 @@ export const routeTree = rootRoute.addChildren({
         "/anime/$",
         "/anime/",
         "/anime/$animeId/",
+        "/anime/filter/",
         "/anime/$animeId/watch/"
       ]
     },
@@ -163,6 +178,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/anime/$animeId/": {
       "filePath": "anime/$animeId/index.tsx",
+      "parent": "/anime"
+    },
+    "/anime/filter/": {
+      "filePath": "anime/filter/index.tsx",
       "parent": "/anime"
     },
     "/anime/$animeId/watch/": {

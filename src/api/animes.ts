@@ -5,7 +5,11 @@ import {
   EpisodeChunk,
   EpisodeStreamLinks,
   EpisodeToBeRendered,
+  Format,
+  Genre,
   MultipleAnimeResponse,
+  Season,
+  SortBy,
 } from "../utils/types/animeAnilist";
 import { AnimeInfoAnify } from "@/utils/types/animeAnify";
 import {
@@ -13,7 +17,7 @@ import {
   getEpisodesToBeRendered,
 } from "@/utils/functions/reusable_functions";
 
-const BASE_URL_ANILIST = "https://consumet-api-green.vercel.app/meta/anilist";
+const BASE_URL_ANILIST = "https://consumet-api-raves.vercel.app/meta/anilist";
 
 // const frequentlyChanging = {
 //   gcTime: 180 * (60 * 1000), //3 hrs
@@ -96,6 +100,53 @@ export function useSearchAnime(query: string, enabled: boolean) {
   });
 }
 
+export function useFilterAnime(
+  query?: string,
+  season?: string,
+  genres?: string,
+  year?: number,
+  sortBy?: string,
+  format?: string,
+  page?: number
+) {
+  return useQuery({
+    queryKey: [
+      "filterAnime",
+      query,
+      season,
+      genres,
+      year,
+      sortBy,
+      format,
+      page,
+    ],
+    queryFn: async () => {
+      const _query = query ? `&query=${query}` : "";
+      const _season = season ? `&season=${season}` : "";
+      const _genres =
+        genres && genres.length !== 0
+          ? `&genres=[${genres
+              .split(",")
+              .map((genre) => `"${genre}"`)
+              .join(",")}]`
+          : "";
+      const _year = year ? `&year=${year}` : "";
+      const _sortBy = sortBy ? `&sort=["${sortBy}"]` : "";
+      const _format = format ? `&format=${format}` : "";
+      const _page = page ? `&page=${page}` : "";
+
+      const { data: filteredAnimes } = await axios.get(
+        `${BASE_URL_ANILIST}/advanced-search?perPage=30${_query}${_season}${_genres}${_year}${_sortBy}${_format}${_page}`
+      );
+
+      return filteredAnimes as MultipleAnimeResponse;
+    },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
+    ...neverRefetchSettings,
+  });
+}
+
 export function useFetchAnimeInfo(id: string) {
   return useQuery({
     queryKey: ["animeInfo", id],
@@ -110,6 +161,9 @@ export function useFetchAnimeInfo(id: string) {
       const animeInfoAnify = animeInfoAnifyRes.data as AnimeInfoAnify;
       return { animeInfoAnilist, animeInfoAnify };
     },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
+    ...neverRefetchSettings,
   });
 }
 
