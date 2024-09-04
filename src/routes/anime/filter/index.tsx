@@ -2,38 +2,50 @@ import { useFilterAnime } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
-import FilterAnimeList from "./-FilterAnimeList";
+import FilteredAnimes from "./-FilteredAnimes";
+import AppliedFilters from "./-AppliedFilters";
+import { Format, Season, SortBy } from "@/utils/types/animeAnilist";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
-  query: z.string().optional(),
-  season: z.string().optional(),
-  genres: z.string().optional(),
+  query: z.coerce.string().optional(),
+  season: z.nativeEnum(Season).optional(),
+  genres: z.coerce.string().optional(),
   year: z.number().optional(),
-  sortBy: z.string().optional(),
-  format: z.string().optional(),
+  sortBy: z.nativeEnum(SortBy).optional(),
+  format: z.nativeEnum(Format).optional(),
 });
+
+type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>
 
 export const Route = createFileRoute("/anime/filter/")({
   component: () => <FilterPage />,
-  validateSearch: (search) => filterPageSearchSchema.parse(search),
+  validateSearch: (search) : FilterPageSearchParams => {
+    const validationResult = filterPageSearchSchema.safeParse(search)
+    if(validationResult.success) {
+      return validationResult.data
+    }
+    else{
+      return {}
+    }
+  }
 });
 
 function FilterPage() {
-  const { page, query, season, genres, year, sortBy, format } = Route.useSearch();
-
+  const { format, genres, page, query, season, sortBy, year } = Route.useSearch();
+  
   const {
     data: filteredAnimes,
     isLoading: isFilteredAnimesLoading,
     error: filteredAnimeError,
   } = useFilterAnime(
     query?.trim(),
-    season?.trim(),
+    season,
     genres?.trim(),
     year,
-    sortBy?.trim(),
-    format?.trim(),
-    page ?? 1
+    sortBy,
+    format,
+    page
   );
 
   if (isFilteredAnimesLoading) {
@@ -58,15 +70,24 @@ function FilterPage() {
 
   if (filteredAnimes) {
     return (
-      <main className="w-full text-[#f6f4f4] pt-32 pb-28 px-16 space-y-10">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-medium">Filter Anime</h1>
-          <button className="flex items-center gap-2 px-5 py-2 border rounded-full border-mainAccent">
-            <p className="font-medium">Filter</p>
-            <SlidersHorizontal className="size-4" strokeWidth={3} />
-          </button>
+      <main className="w-full text-[#f6f4f4] pt-32 pb-28 px-16 flex flex-col gap-10">
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <h1 className="text-2xl font-medium">Filter Anime</h1>
+            <button className="flex items-center gap-2 px-5 py-2 border rounded-full border-mainAccent">
+              <p className="font-medium">Filter</p>
+              <SlidersHorizontal className="size-4" strokeWidth={3} />
+            </button>
+          </div>
+          <AppliedFilters />
         </div>
-        <FilterAnimeList animeList={filteredAnimes.results} />
+        {filteredAnimes.results.length !== 0 ? (
+          <FilteredAnimes animeList={filteredAnimes.results} />
+        ) : (
+          <div className="grid h-[40dvh] text-lg place-items-center">
+            Sorry, we could not find the Anime you were looking for.
+          </div>
+        )}
       </main>
     );
   }

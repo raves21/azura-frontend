@@ -5,7 +5,7 @@ type FilterAnimeListProps = {
   animeList: Anime[];
 };
 
-export default function FilterAnimeList({ animeList }: FilterAnimeListProps) {
+export default function FilteredAnimes({ animeList }: FilterAnimeListProps) {
   return (
     <div className="grid w-full grid-cols-6 gap-x-5 gap-y-6">
       {animeList.map((anime, i) => (

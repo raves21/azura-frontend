@@ -6,7 +6,6 @@ import {
   EpisodeStreamLinks,
   EpisodeToBeRendered,
   Format,
-  Genre,
   MultipleAnimeResponse,
   Season,
   SortBy,
@@ -102,11 +101,11 @@ export function useSearchAnime(query: string, enabled: boolean) {
 
 export function useFilterAnime(
   query?: string,
-  season?: string,
+  season?: Season,
   genres?: string,
   year?: number,
-  sortBy?: string,
-  format?: string,
+  sortBy?: SortBy,
+  format?: Format,
   page?: number
 ) {
   return useQuery({

@@ -21,12 +21,17 @@ const globalStoreDefaultValues: GlobalStoreValues = {
 export const useGlobalStore = create<GlobalStore>(
   (set, get) => ({
     ...globalStoreDefaultValues,
-    toggleOpenDialog: (dialogContent: ReactNode) => {
-      if (get().isDialogOpen) {
-        set({ isDialogOpen: false });
-        setTimeout(() => set({ dialogContent: null }), 300);
+    toggleOpenDialog: (dialogContent: ReactNode | null) => {
+      if (dialogContent) {
+        set({
+          dialogContent: dialogContent,
+          isDialogOpen: true,
+        });
       } else {
-        set({ isDialogOpen: true, dialogContent });
+        set({ isDialogOpen: false });
+        setTimeout(() => {
+          set({ dialogContent: null });
+        }, 150);
       }
     },
   })
