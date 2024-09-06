@@ -4,7 +4,10 @@ import {
   useFetchAnimeInfo,
   useFetchEpisodeStreamLinks,
 } from "@/api/animes";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate
+} from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
@@ -53,22 +56,23 @@ function EpisodePage() {
     error: episodeStreamLinksError,
   } = useFetchEpisodeStreamLinks(id);
 
-  const {data: animeInfo, isLoading: isAnimeInfoLoading, error: animeInfoError} = useFetchAnimeInfo(animeId)
+  const {
+    data: animeInfo,
+    isLoading: isAnimeInfoLoading,
+    error: animeInfoError,
+  } = useFetchAnimeInfo(animeId);
 
   const { data: chunkedEpisodes } = useChunkEpisodes(animeInfo);
 
   const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
-  if (
-    isEpisodeStreamLinksLoading ||
-    isAnimeInfoLoading) {
+  if (isEpisodeStreamLinksLoading || isAnimeInfoLoading) {
     return (
       <div className="grid text-2xl text-white h-dvh place-items-center">
         <p>
           LOADING&nbsp;
           <span className="font-semibold text-red-500">
-            {isEpisodeStreamLinksLoading &&
-             isAnimeInfoLoading
+            {isEpisodeStreamLinksLoading && isAnimeInfoLoading
               ? "ALL"
               : isEpisodeStreamLinksLoading
                 ? "EPISODE"
@@ -88,7 +92,7 @@ function EpisodePage() {
   }
 
   if (episodeStreamLinks && animeInfo) {
-    const {animeInfoAnilist, animeInfoAnify} = animeInfo
+    const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <div className="flex flex-col pb-32">
         <div className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row lg:px-16">
@@ -117,7 +121,7 @@ function EpisodePage() {
             <div className="w-full px-2 mt-2 sm:px-3 lg:px-0">
               <div className="flex flex-col gap-1">
                 <p className="text-lg font-bold sm:text-xl line-clamp-1">
-                {animeInfoAnilist.title && animeInfoAnify.title
+                  {animeInfoAnilist.title && animeInfoAnify.title
                     ? animeInfoAnilist.title.english ??
                       animeInfoAnify.title.english
                     : ""}
@@ -144,12 +148,14 @@ function EpisodePage() {
             }
           />
         </div>
-        {animeInfoAnilist.recommendations && <AnimeCategoryCarousel
-          isInfoPage={false}
-          isHomePage={false}
-          categoryName="Recommendations"
-          recommendations={animeInfoAnilist.recommendations}
-        />}
+        {animeInfoAnilist.recommendations && (
+          <AnimeCategoryCarousel
+            isInfoPage={false}
+            isHomePage={false}
+            categoryName="Recommendations"
+            recommendations={animeInfoAnilist.recommendations}
+          />
+        )}
       </div>
     );
   }

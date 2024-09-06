@@ -1,11 +1,15 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
+  AnilistAnimeStatus,
   AnimeInfoAnilist,
   EpisodeChunk,
   EpisodeStreamLinks,
   EpisodeToBeRendered,
+  Format,
   MultipleAnimeResponse,
+  Season,
+  SortBy,
 } from "../utils/types/animeAnilist";
 import { AnimeInfoAnify } from "@/utils/types/animeAnify";
 import {
@@ -13,7 +17,7 @@ import {
   getEpisodesToBeRendered,
 } from "@/utils/functions/reusable_functions";
 
-const BASE_URL_ANILIST = "https://consumet-api-green.vercel.app/meta/anilist";
+const BASE_URL_ANILIST = "https://consumet-api-raves.vercel.app/meta/anilist";
 
 // const frequentlyChanging = {
 //   gcTime: 180 * (60 * 1000), //3 hrs
@@ -80,30 +84,14 @@ export function useFetchAllTimeFavoriteAnime(perPage: number) {
   });
 }
 
-export function useSearchAnime(id: string) {
+export function useSearchAnime(query: string, enabled: boolean) {
   return useQuery({
-    queryKey: ["search"],
+    queryKey: ["search", query],
     queryFn: async () => {
       const { data: searchResults } = await axios.get(
-        `${BASE_URL_ANILIST}/${id}`
+        `${BASE_URL_ANILIST}/advanced-search?query=${query}&perPage=10`
       );
-      return searchResults;
-    },
-    refetchInterval: false,
-    refetchIntervalInBackground: false,
-    ...neverRefetchSettings,
-  });
-}
-
-export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
-  return useQuery({
-    queryKey: ["infoAnilist", id],
-    queryFn: async () => {
-      const { data: animeInfoAnilist } = await axios.get(
-        `${BASE_URL_ANILIST}/info/${id}`
-      );
-      console.log("FETCHING FROM ANIMEINFOANLIST");
-      return animeInfoAnilist as AnimeInfoAnilist;
+      return searchResults as MultipleAnimeResponse;
     },
     enabled: enabled,
     refetchInterval: false,
@@ -112,14 +100,69 @@ export function useFetchAnimeInfoAnilist(id: string, enabled: boolean) {
   });
 }
 
-export function useFetchAnimeInfoAnify(id: string) {
+export function useFilterAnime(
+  query?: string,
+  season?: Season,
+  genres?: string,
+  year?: number,
+  sortBy?: SortBy,
+  format?: Format,
+  page?: number,
+  status?: AnilistAnimeStatus
+) {
   return useQuery({
-    queryKey: ["infoAnify", id],
+    queryKey: [
+      "filterAnime",
+      query,
+      season,
+      genres,
+      year,
+      sortBy ?? SortBy.TRENDING_DESC,
+      format,
+      page ?? 1,
+      status
+    ],
     queryFn: async () => {
-      const { data: animeInfoAnify } = await axios.get(
+      const _query = query ? `&query=${query}` : "";
+      const _season = season ? `&season=${season}` : "";
+      const _genres =
+        genres && genres.length !== 0
+          ? `&genres=[${genres
+              .split(",")
+              .map((genre) => `"${genre}"`)
+              .join(",")}]`
+          : "";
+      const _year = year ? `&year=${year}` : "";
+      const _sortBy = `&sort=["${sortBy ?? SortBy.TRENDING_DESC}"]`;
+      const _format = format ? `&format=${format}` : "";
+      const _page = `&page=${page ?? 1}`;
+      const _status = status ? `&status=${status}` : "";
+
+      const { data: filteredAnimes } = await axios.get(
+        `${BASE_URL_ANILIST}/advanced-search?perPage=30${_query}${_season}${_genres}${_year}${_sortBy}${_format}${_page}${_status}`
+      );
+
+      return filteredAnimes as MultipleAnimeResponse;
+    },
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
+    ...neverRefetchSettings,
+  });
+}
+
+export function useFetchAnimeInfo(id: string) {
+  return useQuery({
+    queryKey: ["animeInfo", id],
+    queryFn: async () => {
+      const animeInfoAnilistRes = await axios.get(
+        `${BASE_URL_ANILIST}/info/${id}`
+      );
+      const animeInfoAnifyRes = await axios.get(
         `https://anify.eltik.cc/info/${id}?fields=[episodes,bannerImage,coverImage,title,rating,trailer,description,type,id,totalEpisodes,year,status,format]`
       );
-      return animeInfoAnify as AnimeInfoAnify;
+      const animeInfoAnilist = animeInfoAnilistRes.data as AnimeInfoAnilist;
+      const animeInfoAnify = animeInfoAnifyRes.data as AnimeInfoAnify;
+      return { animeInfoAnilist, animeInfoAnify };
     },
     refetchInterval: false,
     refetchIntervalInBackground: false,
@@ -158,23 +201,30 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
 }
 
 export function useChunkEpisodes(
-  animeInfoAnify: AnimeInfoAnify | undefined,
-  animeInfoAnilist: AnimeInfoAnilist | undefined
+  animeInfo:
+    | {
+        animeInfoAnilist: AnimeInfoAnilist;
+        animeInfoAnify: AnimeInfoAnify;
+      }
+    | undefined
 ) {
   return useQuery({
     queryKey: [
       "chunkedEpisodes",
-      `anify ${animeInfoAnify?.id}`,
-      `anilist ${animeInfoAnilist?.id}`,
+      `anify ${animeInfo?.animeInfoAnify?.id}`,
+      `anilist ${animeInfo?.animeInfoAnilist?.id}`,
     ],
     queryFn: () => {
       const a = chunkEpisodes(
-        getEpisodesToBeRendered(animeInfoAnify, animeInfoAnilist),
+        getEpisodesToBeRendered(
+          animeInfo?.animeInfoAnify,
+          animeInfo?.animeInfoAnilist
+        ),
         30
       );
       return a;
     },
-    enabled: !!animeInfoAnify && !!animeInfoAnilist,
+    enabled: !!animeInfo,
     refetchInterval: false,
     refetchIntervalInBackground: false,
     ...neverRefetchSettings,

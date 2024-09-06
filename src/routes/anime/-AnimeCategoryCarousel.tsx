@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import { Anime, Recommendation } from "@/utils/types/animeAnilist";
+import { Anime, Recommendation, SortBy } from "@/utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
 import AnimeCard from "./-AnimeCard";
 import {
@@ -13,6 +13,7 @@ import {
 type HomePageProps = {
   isHomePage: true;
   animeList: Anime[];
+  seeAllSortBy: SortBy;
 };
 
 type NotHomePageProps = {
@@ -38,7 +39,13 @@ export default function AnimeCategoryCarousel(
           <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
             {props.categoryName}
           </p>
-          <Link className="flex items-center gap-1 px-2 py-1 transition-all duration-300 border border-gray-400 rounded-full sm:px-3 sm:py-2 lg:px-4 group hover:border-mainAccent">
+          <Link
+            to="/anime/catalog"
+            search={{
+              sortBy: props.seeAllSortBy,
+            }}
+            className="flex items-center gap-1 px-2 py-1 transition-all duration-300 border border-gray-400 rounded-full sm:px-3 sm:py-2 lg:px-4 group hover:border-mainAccent"
+          >
             <p className="text-xs transition-all duration-300 md:text-base group-hover:text-mainAccent whitespace-nowrap">
               See All
             </p>
@@ -97,18 +104,20 @@ export default function AnimeCategoryCarousel(
           className="w-full"
         >
           <CarouselContent>
-            {props.recommendations.map((recommendation) => {
+            {props.recommendations.map((recommendation, i) => {
               return (
-                <CarouselItem
-                  key={recommendation.id ?? recommendation.title ?? "no data"}
-                  className="basis-1/3 mobile-m:basis-[30%] 570:basis-1/4 sm:basis-1/5 xl:basis-1/6"
-                >
-                  <AnimeCard
-                    isHomePage={false}
-                    recommendation={recommendation}
-                    className="min-h-fit max-h-[250px]"
-                  />
-                </CarouselItem>
+                recommendation.id && (
+                  <CarouselItem
+                    key={recommendation.id ?? recommendation.title ?? i}
+                    className="basis-1/3 mobile-m:basis-[30%] 570:basis-1/4 sm:basis-1/5 xl:basis-1/6"
+                  >
+                    <AnimeCard
+                      isHomePage={false}
+                      recommendation={recommendation}
+                      className="min-h-fit max-h-[250px]"
+                    />
+                  </CarouselItem>
+                )
               );
             })}
           </CarouselContent>

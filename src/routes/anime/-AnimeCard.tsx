@@ -58,7 +58,7 @@ export default function AnimeCard(props: AnimeCardProps) {
           </p>
           <div className="flex items-center gap-2 text-xs text-gray-400">
             {props.anime.status === Status.NotYetAired ||
-            props.anime.status === Status.NOTYETRELEASED ? (
+            props.anime.status === Status.NOT_YET_RELEASED ? (
               <p className="line-clamp-1">Not yet aired</p>
             ) : (
               <>
@@ -127,7 +127,7 @@ export default function AnimeCard(props: AnimeCardProps) {
           </p>
           <div className="flex items-center gap-2 text-xs text-gray-400">
             {props.recommendation.status === Status.NotYetAired ||
-            props.recommendation.status === Status.NOTYETRELEASED ? (
+            props.recommendation.status === Status.NOT_YET_RELEASED ? (
               <p className="line-clamp-1">Not yet aired</p>
             ) : (
               <>

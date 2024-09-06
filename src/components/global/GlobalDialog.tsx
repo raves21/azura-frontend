@@ -2,54 +2,33 @@ import { useGlobalStore } from "@/utils/stores/globalStore";
 import {
   Dialog,
   DialogPanel,
-  Transition,
-  TransitionChild,
 } from "@headlessui/react";
-import React from "react";
 import { useShallow } from "zustand/react/shallow";
 
 export default function GlobalDialog() {
-  const [isDialogOpen, dialogContent, toggleOpenDialog] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.isDialogOpen,
-        state.dialogContent,
-        state.toggleOpenDialog,
-      ])
-    );
+  const [isDialogOpen, dialogContent, toggleOpenDialog] = useGlobalStore(
+    useShallow((state) => [
+      state.isDialogOpen,
+      state.dialogContent,
+      state.toggleOpenDialog,
+    ])
+  );
 
   return (
-    <Transition appear show={isDialogOpen} as={React.Fragment}>
-      <Dialog
-        open={isDialogOpen}
-        onClose={() => toggleOpenDialog(null)}
-        className="relative z-[99999999]"
-      >
-        <TransitionChild
-          as={React.Fragment}
-          enter="ease-out duration-200"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+    <Dialog
+      open={isDialogOpen}
+      onClose={() => toggleOpenDialog(null)}
+      className="relative z-[99999999]"
+    >
+      <div className="fixed inset-0 w-dvw bg-black/85 backdrop-blur-[1px]"></div>
+      <div className="fixed inset-0 grid overflow-x-hidden overflow-y-auto place-items-center font-montserrat">
+        <DialogPanel
+          transition
+          className="duration-150 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
         >
-          <div className="fixed inset-0 w-dvw bg-black/70"></div>
-        </TransitionChild>
-        <TransitionChild
-          as={React.Fragment}
-          enter="ease-out duration-50"  
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-50"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 grid place-items-center font-montserrat">
-            <DialogPanel className="min-w-fit">{dialogContent}</DialogPanel>
-          </div>
-        </TransitionChild>
-      </Dialog>
-    </Transition>
+          {dialogContent}
+        </DialogPanel>
+      </div>
+    </Dialog>
   );
 }
