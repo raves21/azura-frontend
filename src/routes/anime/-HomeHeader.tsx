@@ -33,12 +33,12 @@ export default function HomeHeader() {
         className={`flex items-center justify-between mx-auto px-16 max-w-[1440px] py-4 transition-all duration-300`}
       >
         <Menu size={24} color="white" />
-        <div className="flex items-center gap-12 text-sm">
-          <Link to="/anime" className="font-medium">
+        <div className="flex items-center gap-12 text-sm text-gray-30">
+          <Link to="/anime">
             Anime
           </Link>
-          <Link to="/anime/filter" className="text-gray-300">
-            Filter
+          <Link to="/anime/catalog">
+            Catalog
           </Link>
           <img src="/azurawatch-logo.svg" className="size-12" />
           <Link className="text-gray-300">Social</Link>

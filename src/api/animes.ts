@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
+  AnilistAnimeStatus,
   AnimeInfoAnilist,
   EpisodeChunk,
   EpisodeStreamLinks,
@@ -106,7 +107,8 @@ export function useFilterAnime(
   year?: number,
   sortBy?: SortBy,
   format?: Format,
-  page?: number
+  page?: number,
+  status?: AnilistAnimeStatus
 ) {
   return useQuery({
     queryKey: [
@@ -115,9 +117,10 @@ export function useFilterAnime(
       season,
       genres,
       year,
-      sortBy,
+      sortBy ?? SortBy.TRENDING_DESC,
       format,
-      page,
+      page ?? 1,
+      status
     ],
     queryFn: async () => {
       const _query = query ? `&query=${query}` : "";
@@ -130,12 +133,13 @@ export function useFilterAnime(
               .join(",")}]`
           : "";
       const _year = year ? `&year=${year}` : "";
-      const _sortBy = sortBy ? `&sort=["${sortBy}"]` : "";
+      const _sortBy = `&sort=["${sortBy ?? SortBy.TRENDING_DESC}"]`;
       const _format = format ? `&format=${format}` : "";
-      const _page = page ? `&page=${page}` : "";
+      const _page = `&page=${page ?? 1}`;
+      const _status = status ? `&status=${status}` : "";
 
       const { data: filteredAnimes } = await axios.get(
-        `${BASE_URL_ANILIST}/advanced-search?perPage=30${_query}${_season}${_genres}${_year}${_sortBy}${_format}${_page}`
+        `${BASE_URL_ANILIST}/advanced-search?perPage=30${_query}${_season}${_genres}${_year}${_sortBy}${_format}${_page}${_status}`
       );
 
       return filteredAnimes as MultipleAnimeResponse;

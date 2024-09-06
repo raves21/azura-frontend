@@ -1,7 +1,7 @@
 import { useSearchAnime } from "@/api/animes";
 import { useDebounce } from "@/utils/hooks/useDebounce";
 import { useEffect, useRef, useState } from "react";
-import SearchResults from "./-SearchResults";
+import SearchDialogResults from "./-SearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/globalStore";
@@ -25,11 +25,11 @@ export default function SearchDialog() {
     }
   }, []);
 
-  const handleEnterPress: React.FormEventHandler = (e) => {
+  const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
     navigate({
-      to: "/anime/filter",
-      search: { page: 1, query: search.trim() },
+      to: "/anime/catalog",
+      search: { query: search.trim() },
     });
   };
 
@@ -53,7 +53,7 @@ export default function SearchDialog() {
           )}
           placeholder="Search anime..."
         />
-        <SearchResults
+        <SearchDialogResults
           query={debouncedSearch.trim()}
           searchResults={searchResults}
           isLoading={isSearchResultsLoading}

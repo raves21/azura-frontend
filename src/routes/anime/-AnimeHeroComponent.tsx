@@ -134,7 +134,7 @@ export default function AnimeHeroComponent({
                 {genres &&
                   genres.map((genre, i) => (
                     <Link
-                      to="/anime/filter"
+                      to="/anime/catalog"
                       search={{
                         genres: `${genre}`,
                       }}
@@ -268,7 +268,7 @@ export default function AnimeHeroComponent({
                 {genres &&
                   genres.map((genre, i) => (
                     <Link
-                      to="/anime/filter"
+                      to="/anime/catalog"
                       search={{
                         genres: `${genre}`,
                       }}

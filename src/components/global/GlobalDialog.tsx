@@ -20,11 +20,11 @@ export default function GlobalDialog() {
       onClose={() => toggleOpenDialog(null)}
       className="relative z-[99999999]"
     >
-      <div className="fixed inset-0 w-dvw bg-black/80"></div>
-      <div className="fixed inset-0 grid place-items-center font-montserrat">
+      <div className="fixed inset-0 w-dvw bg-black/85 backdrop-blur-[1px]"></div>
+      <div className="fixed inset-0 grid overflow-x-hidden overflow-y-auto place-items-center font-montserrat">
         <DialogPanel
           transition
-          className="min-w-fit duration-150 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+          className="duration-150 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
         >
           {dialogContent}
         </DialogPanel>

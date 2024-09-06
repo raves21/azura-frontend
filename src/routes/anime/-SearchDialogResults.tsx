@@ -1,5 +1,5 @@
 import { MultipleAnimeResponse } from "@/utils/types/animeAnilist";
-import SearchResultCard from "./-SearchResultCard";
+import SearchDialogResultCard from "./-SearchDialogResultCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/globalStore";
@@ -11,7 +11,7 @@ type SearchResultsProps = {
   error: Error | null;
 };
 
-export default function SearchResults({
+export default function SearchDialogResults({
   searchResults,
   isLoading,
   error,
@@ -49,12 +49,12 @@ export default function SearchResults({
       >
         <ul className="flex flex-col">
           {searchResults.results.map((anime) => (
-            <SearchResultCard key={anime.id} anime={anime} />
+            <SearchDialogResultCard key={anime.id} anime={anime} />
           ))}
         </ul>
         {searchResults.hasNextPage && (
           <Link
-            to="/anime/filter"
+            to="/anime/catalog"
             search={{
               page: 1,
               query: query,

@@ -6,7 +6,7 @@ type SearchResultCardProps = {
   anime: Anime;
 };
 
-export default function SearchResultCard({ anime }: SearchResultCardProps) {
+export default function SearchDialogResultCard({ anime }: SearchResultCardProps) {
   const { toggleOpenDialog } = useGlobalStore();
   return (
     <Link

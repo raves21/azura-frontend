@@ -6,6 +6,7 @@ import {
 } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
 import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
+import { SortBy } from "@/utils/types/animeAnilist";
 
 export const Route = createFileRoute("/anime/")({
   component: () => <Home />,
@@ -63,19 +64,19 @@ function Home() {
         </div>
         <div className="w-full pt-8 pb-24 space-y-10">
           <AnimeCategoryCarousel
-            seeAllSortBy="TRENDING_DESC"
+            seeAllSortBy={SortBy.TRENDING_DESC}
             isHomePage
             animeList={trendingAnimes.results.slice(3)}
             categoryName="Trending Anime"
           />
           <AnimeCategoryCarousel
-            seeAllSortBy="SCORE_DESC"
+            seeAllSortBy={SortBy.SCORE_DESC}
             isHomePage
             animeList={topRatedAnimes.results}
             categoryName="Top Rated"
           />
           <AnimeCategoryCarousel
-            seeAllSortBy="POPULARITY_DESC"
+            seeAllSortBy={SortBy.POPULARITY_DESC}
             isHomePage
             animeList={popularAnimes.results}
             categoryName="All Time Popular"

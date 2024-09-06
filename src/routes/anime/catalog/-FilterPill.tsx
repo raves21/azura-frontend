@@ -1,0 +1,27 @@
+import React from "react";
+import { cn } from "@/lib/utils";
+
+type FilterPillProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  isSelected: boolean;
+  label: string;
+};
+
+export default function FilterPill({
+  isSelected,
+  label,
+  ...props
+}: FilterPillProps) {
+  return (
+    <button
+      {...props}
+      className={cn(
+        `px-5 py-3 rounded-full border transition-colors duration-200`,
+        isSelected
+          ? "text-white bg-mainAccent border-mainAccent"
+          : "text-gray-400 bg-transparent border-gray-400"
+      )}
+    >
+      {label}
+    </button>
+  );
+}

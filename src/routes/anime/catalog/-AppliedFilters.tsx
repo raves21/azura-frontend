@@ -1,9 +1,23 @@
 import { useSearch } from "@tanstack/react-router";
-import FilterPill from "./-FilterPill";
+import AppliedFilterPill from "./-AppliedFilterPill";
+import {
+  formatLabels,
+  seasonLabels,
+  sortByLabels,
+  anilistAnimeStatusLabels,
+} from "@/utils/variables/anime";
 
 export default function AppliedFilters() {
-  const { genres, query, format, season, sortBy, year } = useSearch({
-    from: "/anime/filter/",
+  const {
+    genres,
+    query,
+    format,
+    season,
+    sortBy,
+    year,
+    status,
+  } = useSearch({
+    from: "/anime/catalog/",
   });
 
   return (
@@ -11,7 +25,7 @@ export default function AppliedFilters() {
       {query && (
         <div className="space-y-2">
           <p className="font-medium text-gray-400">Query</p>
-          <FilterPill
+          <AppliedFilterPill
             className="text-white rounded-full bg-emerald-500"
             label={query}
             onDelete={() => {}}
@@ -23,7 +37,7 @@ export default function AppliedFilters() {
           <p className="font-medium text-gray-400">Genres</p>
           <div className="flex flex-wrap items-center gap-2">
             {genres.split(",").map((genre) => (
-              <FilterPill
+              <AppliedFilterPill
                 key={genre}
                 className="text-white rounded-full bg-sky-500"
                 label={genre}
@@ -36,9 +50,19 @@ export default function AppliedFilters() {
       {sortBy && (
         <div className="space-y-2">
           <p className="font-medium text-gray-400">Sort By</p>
-          <FilterPill
+          <AppliedFilterPill
             className="text-white bg-pink-600 rounded-full"
-            label={`${sortBy.charAt(0).toUpperCase()}${sortBy.slice(1).toLowerCase()}`}
+            label={sortByLabels[sortBy]}
+            onDelete={() => {}}
+          />
+        </div>
+      )}
+      {status && (
+        <div className="space-y-2">
+          <p className="font-medium text-gray-400">Sort By</p>
+          <AppliedFilterPill
+            className="text-white bg-pink-600 rounded-full"
+            label={anilistAnimeStatusLabels[status]}
             onDelete={() => {}}
           />
         </div>
@@ -46,7 +70,7 @@ export default function AppliedFilters() {
       {year && (
         <div className="space-y-2">
           <p className="font-medium text-gray-400">Year</p>
-          <FilterPill
+          <AppliedFilterPill
             className="text-white bg-indigo-500 rounded-full"
             label={year.toString()}
             onDelete={() => {}}
@@ -56,9 +80,9 @@ export default function AppliedFilters() {
       {format && (
         <div className="space-y-2">
           <p className="font-medium text-gray-400">Format</p>
-          <FilterPill
+          <AppliedFilterPill
             className="text-white bg-orange-500 rounded-full"
-            label={`${format.charAt(0).toUpperCase()}${format.slice(1).toLowerCase()}`}
+            label={formatLabels[format]}
             onDelete={() => {}}
           />
         </div>
@@ -66,9 +90,9 @@ export default function AppliedFilters() {
       {season && (
         <div className="space-y-2">
           <p className="font-medium text-gray-400">Season</p>
-          <FilterPill
+          <AppliedFilterPill
             className="text-white bg-teal-500 rounded-full"
-            label={`${season.charAt(0).toUpperCase()}${season.slice(1).toLowerCase()}`}
+            label={seasonLabels[season]}
             onDelete={() => {}}
           />
         </div>
