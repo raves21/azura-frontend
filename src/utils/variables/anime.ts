@@ -1,4 +1,4 @@
-import { Format, Season, SortBy, AnilistAnimeStatus } from "../types/animeAnilist";
+import { Format, Season, SortBy, AnilistAnimeStatus, Status } from "../types/animeAnilist";
 
 export const sortByLabels: Record<string, string> = {
   [SortBy.TRENDING_DESC]: "Trending",
@@ -21,11 +21,23 @@ export const formatLabels: Record<string, string> = {
 };
 
 export const anilistAnimeStatusLabels: Record<string, string> = {
-  [AnilistAnimeStatus.RELEASING]: "Releasing",
-  [AnilistAnimeStatus.FINISHED]: "Finished",
-  [AnilistAnimeStatus.NOT_YET_RELEASED]: "Not Yet Aired",
+  [AnilistAnimeStatus.RELEASING]: "Ongoing",
+  [AnilistAnimeStatus.FINISHED]: "Completed",
+  [AnilistAnimeStatus.NOT_YET_RELEASED]: "Upcoming",
   [AnilistAnimeStatus.CANCELLED]: "Cancelled",
 };
+
+export const statusLabels: Record<string, string> = {
+  [Status.RELEASING]: "Ongoing",
+  [Status.Ongoing]: "Ongoing",
+  [Status.FINISHED]: "Completed",
+  [Status.Completed]: "Completed",
+  [Status.NotYetAired]: "Upcoming",
+  [Status.NOT_YET_RELEASED]: "Upcoming",
+  [Status.CANCELLED]: "Cancelled",
+  [Status.HIATUS]: "Hiatus",
+};
+
 
 export const seasonLabels: Record<string, string> = {
   [Season.WINTER]: "Winter",

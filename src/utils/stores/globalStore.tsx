@@ -19,7 +19,7 @@ const globalStoreDefaultValues: GlobalStoreValues = {
 };
 
 export const useGlobalStore = create<GlobalStore>(
-  (set, get) => ({
+  (set) => ({
     ...globalStoreDefaultValues,
     toggleOpenDialog: (dialogContent: ReactNode | null) => {
       if (dialogContent) {

@@ -1,8 +1,5 @@
 import { useGlobalStore } from "@/utils/stores/globalStore";
-import {
-  Dialog,
-  DialogPanel,
-} from "@headlessui/react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import { useShallow } from "zustand/react/shallow";
 
 export default function GlobalDialog() {
@@ -18,10 +15,9 @@ export default function GlobalDialog() {
     <Dialog
       open={isDialogOpen}
       onClose={() => toggleOpenDialog(null)}
-      className="relative z-[99999999]"
+      className="relative z-[200]"
     >
-      <div className="fixed inset-0 w-dvw bg-black/85 backdrop-blur-[1px]"></div>
-      <div className="fixed inset-0 grid overflow-x-hidden overflow-y-auto place-items-center font-montserrat">
+      <div className="fixed font-montserrat inset-0 grid place-items-center w-dvw overflow-x-hidden hide-scrollbar overflow-y-auto bg-black/85 backdrop-blur-[1px]">
         <DialogPanel
           transition
           className="duration-150 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"

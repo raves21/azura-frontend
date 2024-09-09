@@ -23,6 +23,7 @@ module.exports = {
       screens: {
         "mobile-m" : "375px",
         "mobile-l" : "425px",
+        "1440": "1440px",
         "570": "570px"
       },
       colors: {
