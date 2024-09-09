@@ -29,7 +29,7 @@ export default function FilterDropdown<T>({
     <div className="relative" ref={parentDivRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-4 py-2 border border-gray-400 rounded-full z-[100]"
+        className="flex items-center gap-3 px-4 lg:px-5 py-2 border border-gray-400 rounded-full z-[100]"
       >
         <p className="font-medium text-mainAccent">
           {currentlySelected
@@ -46,7 +46,7 @@ export default function FilterDropdown<T>({
             duration: 0.3,
           }}
         >
-          <ChevronDown className="size-6 stroke-gray-400" />
+          <ChevronDown className="size-4 md:size-6 stroke-gray-400" />
         </motion.div>
       </button>
       <motion.div
@@ -68,8 +68,8 @@ export default function FilterDropdown<T>({
           }
         }}
         className={cn(
-          "absolute w-fit overflow-x-hidden top-[50px] right-0 max-h-[300px] rounded-lg bg-black overflow-y-auto",
-          dropdownMenuListHeight! < 300 && "hide-scrollbar"
+          "absolute w-fit z-10 overflow-x-hidden top-[50px] right-0 max-h-[250px] rounded-lg bg-black overflow-y-auto",
+          dropdownMenuListHeight! < 250 && "hide-scrollbar"
         )}
       >
         {itemList.map((item, i) => (
@@ -79,7 +79,15 @@ export default function FilterDropdown<T>({
               onSelectItem(item);
               setIsOpen(false);
             }}
-            className="w-full px-3 py-2 text-gray-400 text-start hover:text-mainAccent whitespace-nowrap"
+            className={cn(
+              "w-full px-3 py-2 text-gray-400 text-start hover:text-mainAccent whitespace-nowrap",
+              {
+                "text-mainAccent":
+                  (labelMap &&
+                    labelMap[currentlySelected as string] === item) ||
+                  currentlySelected === item,
+              }
+            )}
           >
             {`${labelMap ? labelMap[item as string] : item}`}
           </button>

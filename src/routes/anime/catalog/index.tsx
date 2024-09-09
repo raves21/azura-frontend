@@ -4,7 +4,12 @@ import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 import CatalogAnimeList from "./-CatalogAnimeList";
 import AppliedFilters from "./-AppliedFilters";
-import { AnilistAnimeStatus, Format, Season, SortBy } from "@/utils/types/animeAnilist";
+import {
+  AnilistAnimeStatus,
+  Format,
+  Season,
+  SortBy,
+} from "@/utils/types/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import FiltersDialog from "./-FiltersDialog";
 
@@ -16,27 +21,27 @@ const filterPageSearchSchema = z.object({
   year: z.number().optional(),
   sortBy: z.nativeEnum(SortBy).optional(),
   format: z.nativeEnum(Format).optional(),
-  status: z.nativeEnum(AnilistAnimeStatus).optional()
+  status: z.nativeEnum(AnilistAnimeStatus).optional(),
 });
 
-type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>
+type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>;
 
 export const Route = createFileRoute("/anime/catalog/")({
   component: () => <FilterPage />,
-  validateSearch: (search) : FilterPageSearchParams => {
-    const validationResult = filterPageSearchSchema.safeParse(search)
-    if(validationResult.success) {
-      return validationResult.data
+  validateSearch: (search): FilterPageSearchParams => {
+    const validationResult = filterPageSearchSchema.safeParse(search);
+    if (validationResult.success) {
+      return validationResult.data;
+    } else {
+      return {};
     }
-    else{
-      return {}
-    }
-  }
+  },
 });
 
 function FilterPage() {
-  const { format, genres, page, query, season, sortBy, year, status } = Route.useSearch();
-  const {toggleOpenDialog} = useGlobalStore()
+  const { format, genres, page, query, season, sortBy, year, status } =
+    Route.useSearch();
+  const { toggleOpenDialog } = useGlobalStore();
   const {
     data: filteredAnimes,
     isLoading: isFilteredAnimesLoading,
@@ -74,21 +79,29 @@ function FilterPage() {
 
   if (filteredAnimes) {
     return (
-      <main className="w-full text-[#f6f4f4] pt-32 pb-28 px-16 flex flex-col gap-10">
-        <div className="space-y-3">
-          <div className="flex justify-between">
-            <h1 className="text-2xl font-medium">Anime Catalog</h1>
-            <button onClick={() => toggleOpenDialog(<FiltersDialog/>)} className="flex items-center gap-2 px-5 py-2 border rounded-full group border-mainAccent">
-              <p className="font-medium transition-colors group-hover:text-mainAccent">Filter</p>
-              <SlidersHorizontal className="transition-colors size-4 group-hover:stroke-mainAccent" strokeWidth={3} />
+      <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 px-3 sm:px-6 lg:px-16 flex flex-col gap-10">
+        <header className="space-y-7 lg:space-y-8">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">Discover Animes</h1>
+            <button
+              onClick={() => toggleOpenDialog(<FiltersDialog />)}
+              className="flex items-center gap-2 px-3 py-2 border rounded-full mobile-l:gap-3 mobile-l:px-4 md:px-5 md:py-3 group border-mainAccent"
+            >
+              <p className="text-xs font-medium transition-colors mobile-l:text-sm md:text-base group-hover:text-mainAccent">
+                Filter
+              </p>
+              <SlidersHorizontal
+                className="transition-colors size-3 sm:size-4 group-hover:stroke-mainAccent"
+                strokeWidth={3}
+              />
             </button>
           </div>
           <AppliedFilters />
-        </div>
+        </header>
         {filteredAnimes.results.length !== 0 ? (
           <CatalogAnimeList animeList={filteredAnimes.results} />
         ) : (
-          <div className="grid h-[40dvh] text-lg place-items-center">
+          <div className="grid flex-grow text-base text-center md:text-lg place-items-center">
             Sorry, we could not find the Anime you were looking for.
           </div>
         )}

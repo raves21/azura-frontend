@@ -1,13 +1,11 @@
 import {
   useChunkEpisodes,
   useEpisodeInfo,
-  useFetchAnimeInfo,
+  useFetchAnimeInfoAnilist,
+  useFetchAnimeInfoAnify,
   useFetchEpisodeStreamLinks,
 } from "@/api/animes";
-import {
-  createFileRoute,
-  useNavigate
-} from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
@@ -57,32 +55,38 @@ function EpisodePage() {
   } = useFetchEpisodeStreamLinks(id);
 
   const {
-    data: animeInfo,
-    isLoading: isAnimeInfoLoading,
-    error: animeInfoError,
-  } = useFetchAnimeInfo(animeId);
+    data: animeInfoAnify,
+    isLoading: isAnimeInfoAnifyLoading,
+    error: animeInfoAnifyError,
+  } = useFetchAnimeInfoAnify(animeId);
+  const {
+    data: animeInfoAnilist,
+    isLoading: isAnimeInfoAnilistLoading,
+    error: animeInfoAnilistError,
+  } = useFetchAnimeInfoAnilist(animeId);
 
-  const { data: chunkedEpisodes } = useChunkEpisodes(animeInfo);
+  const { data: chunkedEpisodes } = useChunkEpisodes(
+    animeInfoAnilist,
+    animeInfoAnify
+  );
 
   const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
-  if (isEpisodeStreamLinksLoading || isAnimeInfoLoading) {
+  if (
+    isEpisodeStreamLinksLoading ||
+    isAnimeInfoAnilistLoading ||
+    isAnimeInfoAnifyLoading
+  ) {
     return (
       <div className="grid text-2xl text-white h-dvh place-items-center">
         <p>
           LOADING&nbsp;
-          <span className="font-semibold text-red-500">
-            {isEpisodeStreamLinksLoading && isAnimeInfoLoading
-              ? "ALL"
-              : isEpisodeStreamLinksLoading
-                ? "EPISODE"
-                : "ANIME INFO"}
-          </span>
+          <span className="font-semibold text-red-500">EPISODE</span>
         </p>
       </div>
     );
   }
-  if (episodeStreamLinksError || animeInfoError) {
+  if (episodeStreamLinksError && animeInfoAnifyError && animeInfoAnilistError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -91,8 +95,7 @@ function EpisodePage() {
     );
   }
 
-  if (episodeStreamLinks && animeInfo) {
-    const { animeInfoAnilist, animeInfoAnify } = animeInfo;
+  if (episodeStreamLinks && (animeInfoAnify || animeInfoAnilist)) {
     return (
       <div className="flex flex-col pb-32">
         <div className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row lg:px-16">
@@ -121,9 +124,9 @@ function EpisodePage() {
             <div className="w-full px-2 mt-2 sm:px-3 lg:px-0">
               <div className="flex flex-col gap-1">
                 <p className="text-lg font-bold sm:text-xl line-clamp-1">
-                  {animeInfoAnilist.title && animeInfoAnify.title
-                    ? animeInfoAnilist.title.english ??
-                      animeInfoAnify.title.english
+                  {animeInfoAnilist?.title && animeInfoAnify?.title
+                    ? animeInfoAnilist?.title.english ??
+                      animeInfoAnify?.title.english
                     : ""}
                 </p>
                 <p className="text-lg font-semibold text-gray-400 sm:text-xl">
@@ -148,12 +151,12 @@ function EpisodePage() {
             }
           />
         </div>
-        {animeInfoAnilist.recommendations && (
+        {animeInfoAnilist?.recommendations && (
           <AnimeCategoryCarousel
             isInfoPage={false}
             isHomePage={false}
             categoryName="Recommendations"
-            recommendations={animeInfoAnilist.recommendations}
+            recommendations={animeInfoAnilist?.recommendations}
           />
         )}
       </div>

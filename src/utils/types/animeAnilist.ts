@@ -236,6 +236,7 @@ export enum Status {
   NOT_YET_RELEASED = "NOT_YET_RELEASED",
   CANCELLED = "CANCELLED",
   HIATUS = "HIATUS",
+  Cancelled = "Cancelled"
 }
 
 export type Relation = {

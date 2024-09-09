@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { Format, Genre, Status } from "@/utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
+import { getRatingScore } from "@/utils/functions/reusable_functions";
+import { cn } from "@/lib/utils";
 
 type AnimeHeroComponentProps = {
   image?: string;
@@ -18,13 +20,9 @@ type AnimeHeroComponentProps = {
   trendingRank?: number;
   genres?: Genre[];
   rating?: number | null;
+  firstEpisodeId?: string;
+  animeId: string;
 };
-
-function getRatingScore(rating: number) {
-  const decimal = (rating * 10).toString().split(".")[1];
-  if (!decimal || decimal.length < 1) return (0.05 * (rating * 10)).toFixed(1);
-  return (0.05 * (rating * 10)).toFixed(2);
-}
 
 export default function AnimeHeroComponent({
   image,
@@ -37,14 +35,14 @@ export default function AnimeHeroComponent({
   status,
   genres,
   rating,
-  // id,
+  firstEpisodeId,
+  animeId,
 }: AnimeHeroComponentProps) {
   const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);
   const starsFillWidthRef = useRef<HTMLDivElement | null>(null);
   const [readMore, setReadMore] = useState(false);
   const [descriptionHeight, setDescriptionHeight] = useState(0);
   const descriptionRef = useRef<HTMLParagraphElement | null>(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -117,11 +115,26 @@ export default function AnimeHeroComponent({
               </div>
               <div className="flex gap-2">
                 <p className="text-gray-400">Status:</p>
-                <p
-                  className={`${status === Status.RELEASING || status === Status.Ongoing ? "text-green-500" : status === Status.FINISHED || status === Status.Completed ? "text-blue-500" : "text-orange-500"} font-semibold`}
-                >
-                  {status}
-                </p>
+                {status && (
+                  <p
+                    className={cn("font-semibold text-orange-500", {
+                      "text-green-500": [
+                        Status.Ongoing,
+                        Status.RELEASING,
+                      ].includes(status),
+                      "text-blue-500": [
+                        Status.FINISHED,
+                        Status.Completed,
+                      ].includes(status),
+                      "text-red-500": [
+                        Status.CANCELLED,
+                        Status.Cancelled,
+                      ].includes(status),
+                    })}
+                  >
+                    {status}
+                  </p>
+                )}
               </div>
               <div className="flex gap-2">
                 <p className="text-gray-400">Type:</p>
@@ -150,19 +163,33 @@ export default function AnimeHeroComponent({
           <div className="flex items-center gap-2 lg:hidden">
             <p>{year}</p>
             <div className="bg-gray-400 rounded-full size-1"></div>
-            <p
-              className={`${status === Status.RELEASING || status === Status.Ongoing ? "text-green-500" : status === Status.FINISHED || status === Status.Completed ? "text-blue-500" : "text-orange-500"}`}
-            >
-              {status}
-            </p>
+            {status && (
+              <p
+                className={cn("font-semibold text-orange-500", {
+                  "text-green-500": [Status.Ongoing, Status.RELEASING].includes(
+                    status
+                  ),
+                  "text-blue-500": [Status.FINISHED, Status.Completed].includes(
+                    status
+                  ),
+                  "text-red-500": [Status.CANCELLED, Status.Cancelled].includes(
+                    status
+                  ),
+                })}
+              >
+                {status}
+              </p>
+            )}
           </div>
           <div className="flex gap-5 my-3">
             <motion.button
               onClick={() => {
-                navigate({
-                  to: "/anime/$animeId",
-                  params: { animeId: "1535" },
-                });
+                firstEpisodeId &&
+                  navigate({
+                    to: "/anime/$animeId/watch",
+                    params: { animeId: animeId },
+                    search: { id: firstEpisodeId.replace(/^\//, "") },
+                  });
               }}
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.2 }}
@@ -251,11 +278,26 @@ export default function AnimeHeroComponent({
               </div>
               <div className="flex gap-2">
                 <p className="text-gray-400">Status:</p>
-                <p
-                  className={`${status === Status.RELEASING || status === Status.Ongoing ? "text-green-500" : status === Status.FINISHED || status === Status.Completed ? "text-blue-500" : "text-orange-500"} font-semibold `}
-                >
-                  {status}
-                </p>
+                {status && (
+                  <p
+                    className={cn("font-semibold text-orange-500", {
+                      "text-green-500": [
+                        Status.Ongoing,
+                        Status.RELEASING,
+                      ].includes(status),
+                      "text-blue-500": [
+                        Status.FINISHED,
+                        Status.Completed,
+                      ].includes(status),
+                      "text-red-500": [
+                        Status.CANCELLED,
+                        Status.Cancelled,
+                      ].includes(status),
+                    })}
+                  >
+                    {status}
+                  </p>
+                )}
               </div>
               <div className="flex gap-2">
                 <p className="text-gray-400">Type:</p>

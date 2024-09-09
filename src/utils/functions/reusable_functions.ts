@@ -33,9 +33,9 @@ export function getEpisodesToBeRendered(
   const gogoAnimeData = animeInfoAnify?.episodes.data.find(
     (epData) => epData.providerId === "gogoanime"
   );
-  const animePaheData = animeInfoAnify?.episodes.data.find(
-    (epData) => epData.providerId === "animepahe"
-  );
+  // const animePaheData = animeInfoAnify?.episodes.data.find(
+  //   (epData) => epData.providerId === "animepahe"
+  // );
   const zoroData = animeInfoAnify?.episodes.data.find(
     (epData) => epData.providerId === "zoro"
   );
@@ -51,14 +51,24 @@ export function getEpisodesToBeRendered(
       id: ep.id,
       number: ep.number,
 
-      //get episode images from animepahe
-      image:
-        animePaheData && animePaheData.episodes[i]
-          ? animePaheData.episodes[i].img : animeInfoAnilist?.cover,
+      // ! since (9/8/24) this method of getting episode image doesnt work
+      // ! requesting animePahe images returns 403 forbidden, (might be CORS)
+      // image:
+      //   animePaheData && animePaheData.episodes[i]
+      //     ? animePaheData.episodes[i].img : animeInfoAnilist?.cover,
+
+      // ! currently this is the way.
+      // ! we just hope anilist gives us episode images 🙏
+      //get episode images from anilist, if none, just the default image
+      image: anilistEpisodes
+        ? anilistEpisodes[i].image
+        : animeInfoAnilist?.cover ?? animeInfoAnify?.coverImage,
+
       //get episode titles from zoro
       title:
         zoroData && zoroData.episodes[i]
-          ? zoroData.episodes[i].title : ep.title,
+          ? zoroData.episodes[i].title
+          : ep.title,
     }));
   } else if (anilistEpisodes && anilistEpisodes.length !== 0) {
     return anilistEpisodes.map((ep) => ({
@@ -71,4 +81,10 @@ export function getEpisodesToBeRendered(
     //else, accept the fact that the selected anime has no episodes
     return null;
   }
+}
+
+export function getRatingScore(rating: number) {
+  const decimal = (rating * 10).toString().split(".")[1];
+  if (!decimal || decimal.length < 1) return (0.05 * (rating * 10)).toFixed(1);
+  return (0.05 * (rating * 10)).toFixed(2);
 }
