@@ -16,6 +16,7 @@ import {
   chunkEpisodes,
   getEpisodesToBeRendered,
 } from "@/utils/functions/reusable_functions";
+import { AnimeInfoAnizip } from "@/utils/types/animeAnizip";
 
 const BASE_URL_ANILIST = "https://consumet-api-raves.vercel.app/meta/anilist";
 
@@ -183,6 +184,16 @@ export function useFetchPopularAnimes(perPage: number) {
     refetchIntervalInBackground: false,
     ...neverRefetchSettings,
   });
+}
+
+export function useFetchAnimeInfoAnizip(animeId: string) {
+  return useQuery({
+    queryKey: ["animeInfoAnizip", animeId],
+    queryFn: async () => {
+      const {data: animeInfoAnizip} = await axios.get(`https://api.ani.zip/mappings?anilist_id=${animeId}`)
+      return animeInfoAnizip as AnimeInfoAnizip
+    }
+  })
 }
 
 export function useFetchEpisodeStreamLinks(episodeId: string) {
