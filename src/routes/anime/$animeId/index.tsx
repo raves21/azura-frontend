@@ -1,14 +1,12 @@
 import {
-  useChunkEpisodes,
-  useFetchAnimeInfoAnify,
   useFetchAnimeInfoAnilist,
+  useFetchAnimeEpisodes,
 } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
 import { useEffect } from "react";
 import AnimeCategoryCarousel from "../-AnimeCategoryCarousel";
-import { Format, Status } from "@/utils/types/animeAnilist";
 export const Route = createFileRoute("/anime/$animeId/")({
   component: () => <AnimeInfo />,
 });
@@ -17,28 +15,22 @@ function AnimeInfo() {
   const { animeId } = Route.useParams();
 
   const {
-    data: animeInfoAnify,
-    isLoading: isAnimeInfoAnifyLoading,
-    error: animeInfoAnifyError,
-  } = useFetchAnimeInfoAnify(animeId);
+    data: episodes,
+    isLoading: isEpisodesLoading,
+    error: episodesError,
+  } = useFetchAnimeEpisodes(animeId);
+
   const {
     data: animeInfoAnilist,
     isLoading: isAnimeInfoAnilistLoading,
     error: animeInfoAnilistError,
   } = useFetchAnimeInfoAnilist(animeId);
 
-  const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkEpisodes(animeInfoAnilist, animeInfoAnify);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (
-    isAnimeInfoAnifyLoading ||
-    isAnimeInfoAnilistLoading ||
-    isChunkEpisodesLoading
-  ) {
+  if (isAnimeInfoAnilistLoading) {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
@@ -49,7 +41,7 @@ function AnimeInfo() {
     );
   }
 
-  if (animeInfoAnifyError && animeInfoAnilistError) {
+  if (animeInfoAnilistError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching the details for this anime.</p>
@@ -58,47 +50,45 @@ function AnimeInfo() {
     );
   }
 
-  if (animeInfoAnify || animeInfoAnilist) {
+  if (animeInfoAnilist) {
     return (
       <main className="w-full pb-32">
         <AnimeHeroComponent
           animeId={animeId}
           title={
-            animeInfoAnify?.title.english ??
-            animeInfoAnify?.title.romaji ??
-            animeInfoAnilist?.title.english ??
-            animeInfoAnilist?.title.romaji
+            animeInfoAnilist?.title.english ?? animeInfoAnilist?.title.romaji
           }
-          cover={animeInfoAnify?.bannerImage ?? animeInfoAnilist?.cover}
-          image={animeInfoAnilist?.image ?? animeInfoAnify?.coverImage}
-          id={animeInfoAnilist?.id ?? animeInfoAnify?.id}
-          description={
-            animeInfoAnilist?.description ?? animeInfoAnify?.description
+          cover={
+            animeInfoAnilist?.cover
           }
+          image={
+            animeInfoAnilist?.image
+          }
+          id={animeId}
+          description={animeInfoAnilist?.description}
           genres={animeInfoAnilist?.genres}
-          status={
-            animeInfoAnilist?.status ?? (animeInfoAnify?.status as Status)
-          }
-          totalEpisodes={
-            animeInfoAnify?.totalEpisodes ?? animeInfoAnilist?.totalEpisodes
-          }
-          type={animeInfoAnilist?.type ?? (animeInfoAnify?.format as Format)}
-          year={animeInfoAnilist?.releaseDate ?? animeInfoAnify?.year}
+          status={animeInfoAnilist?.status}
+          totalEpisodes={animeInfoAnilist?.totalEpisodes}
+          type={animeInfoAnilist?.type}
+          year={animeInfoAnilist?.releaseDate}
           rating={
-            animeInfoAnify?.rating.anilist ??
             animeInfoAnilist?.rating! * 0.1 ??
+            // anifyEpisodesQuery?.data?.rating.anilist
+            // ??
             null
           }
         />
         <Episodes
-          isInfoPage
-          animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
-          chunkedEpisodes={chunkedEpisodes}
-          replace={false}
-          type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
           defaultEpisodeImage={
-            animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
+            animeInfoAnilist?.image ?? animeInfoAnilist?.cover
           }
+          isEpisodesLoading={isEpisodesLoading}
+          episodesError={episodesError}
+          episodes={episodes}
+          isInfoPage
+          animeId={animeId}
+          replace={false}
+          type={animeInfoAnilist?.type}
         />
         {animeInfoAnilist?.recommendations &&
           animeInfoAnilist?.recommendations.length !== 0 && (

@@ -1,8 +1,8 @@
 import {
   useChunkEpisodes,
   useEpisodeInfo,
+  useFetchAnimeEpisodes,
   useFetchAnimeInfoAnilist,
-  useFetchAnimeInfoAnify,
   useFetchEpisodeStreamLinks,
 } from "@/api/animes";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -55,28 +55,22 @@ function EpisodePage() {
   } = useFetchEpisodeStreamLinks(id);
 
   const {
-    data: animeInfoAnify,
-    isLoading: isAnimeInfoAnifyLoading,
-    error: animeInfoAnifyError,
-  } = useFetchAnimeInfoAnify(animeId);
+    data: episodes,
+    isLoading: isEpisodesLoading,
+    error: episodesError,
+  } = useFetchAnimeEpisodes(animeId);
+
   const {
     data: animeInfoAnilist,
     isLoading: isAnimeInfoAnilistLoading,
     error: animeInfoAnilistError,
   } = useFetchAnimeInfoAnilist(animeId);
 
-  const { data: chunkedEpisodes } = useChunkEpisodes(
-    animeInfoAnilist,
-    animeInfoAnify
-  );
+  const { data: chunkedEpisodes } = useChunkEpisodes(episodes);
 
   const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
-  if (
-    isEpisodeStreamLinksLoading ||
-    isAnimeInfoAnilistLoading ||
-    isAnimeInfoAnifyLoading
-  ) {
+  if (isEpisodeStreamLinksLoading || isAnimeInfoAnilistLoading) {
     return (
       <div className="grid text-2xl text-white h-dvh place-items-center">
         <p>
@@ -86,7 +80,7 @@ function EpisodePage() {
       </div>
     );
   }
-  if (episodeStreamLinksError && animeInfoAnifyError && animeInfoAnilistError) {
+  if (episodeStreamLinksError && animeInfoAnilistError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -95,7 +89,7 @@ function EpisodePage() {
     );
   }
 
-  if (episodeStreamLinks && (animeInfoAnify || animeInfoAnilist)) {
+  if (episodeStreamLinks && animeInfoAnilist) {
     return (
       <div className="flex flex-col pb-32">
         <div className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row lg:px-16">
@@ -124,10 +118,9 @@ function EpisodePage() {
             <div className="w-full px-2 mt-2 sm:px-3 lg:px-0">
               <div className="flex flex-col gap-1">
                 <p className="text-lg font-bold sm:text-xl line-clamp-1">
-                  {animeInfoAnilist?.title && animeInfoAnify?.title
-                    ? animeInfoAnilist?.title.english ??
-                      animeInfoAnify?.title.english
-                    : ""}
+                  {animeInfoAnilist?.title?.english ??
+                    animeInfoAnilist?.title?.romaji ??
+                    ""}
                 </p>
                 <p className="text-lg font-semibold text-gray-400 sm:text-xl">
                   {episodeInfo ? `Episode ${episodeInfo.number}` : "Loading..."}
@@ -141,13 +134,15 @@ function EpisodePage() {
             </div>
           </div>
           <Episodes
+            isEpisodesLoading={isEpisodesLoading}
+            episodesError={episodesError}
+            episodes={episodes}
             isInfoPage={false}
-            animeId={animeInfoAnify?.id ?? animeInfoAnilist?.id}
+            animeId={animeId}
             replace
-            type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
-            chunkedEpisodes={chunkedEpisodes}
+            type={animeInfoAnilist?.type}
             defaultEpisodeImage={
-              animeInfoAnify?.coverImage ?? animeInfoAnilist?.cover
+              animeInfoAnilist?.cover ?? animeInfoAnilist?.image
             }
           />
         </div>
