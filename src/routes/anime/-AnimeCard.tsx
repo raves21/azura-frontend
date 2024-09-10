@@ -28,17 +28,6 @@ export default function AnimeCard(props: AnimeCardProps) {
         >
           {props.anime.image && (
             <>
-              {/* <div className="absolute z-10 hidden transition-all duration-300 opacity-0 lg:grid place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
-                <div className="grid bg-white rounded-full size-12 place-items-center">
-                  <svg
-                    className="size-[50%] fill-mainAccent"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 384 512"
-                  >
-                    <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
-                  </svg>
-                </div>
-              </div> */}
               <div className="absolute inset-0 z-10 transition-all duration-300 opacity-0 group-hover:opacity-100 size-full bg-mainAccent/40"></div>
               <img
                 loading="lazy"
@@ -90,22 +79,11 @@ export default function AnimeCard(props: AnimeCardProps) {
         >
           {props.recommendation.image && (
             <>
-              <div className="absolute z-10 hidden transition-all opacity-0 lg:grid place-items-center size-full bg-mainAccent/40 group-hover:opacity-100">
-                <div className="grid bg-white rounded-full size-12 place-items-center">
-                  <svg
-                    className="size-[50%]"
-                    fill="#c026d3"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 384 512"
-                  >
-                    <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
-                  </svg>
-                </div>
-              </div>
+              <div className="absolute inset-0 z-10 transition-all duration-300 opacity-0 group-hover:opacity-100 size-full bg-mainAccent/40"></div>
               <img
                 loading="lazy"
                 src={props.recommendation.image}
-                className="object-cover transition-all size-full group-hover:scale-105"
+                className="object-cover transition-all duration-300 size-full group-hover:scale-105"
                 alt={props.recommendation.title.english}
               />
             </>

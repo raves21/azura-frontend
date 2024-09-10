@@ -5,9 +5,9 @@ type EpisodeCardProps = {
   episodeId: string;
   number: number;
   title: string;
-  image?: string;
-  type?: string;
-  replace: boolean
+  image: string | null | undefined;
+  type: string | null | undefined;
+  replace: boolean;
 };
 
 export default function EpisodeCard({
@@ -17,7 +17,7 @@ export default function EpisodeCard({
   title,
   image,
   type,
-  replace
+  replace,
 }: EpisodeCardProps) {
   return (
     <Link
@@ -44,7 +44,7 @@ export default function EpisodeCard({
         <div className="bg-gray-700 rounded-lg size-full">
           <img
             loading="eager"
-            src={image}
+            src={image ?? "/no-image.png"}
             className="absolute inset-0 object-cover rounded-lg size-full"
           />
         </div>
