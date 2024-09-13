@@ -9,10 +9,10 @@ import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
 import { SortBy } from "@/utils/types/animeAnilist";
 
 export const Route = createFileRoute("/anime/")({
-  component: () => <Home />,
+  component: () => <AnimeHomePage />,
 });
 
-function Home() {
+function AnimeHomePage() {
   const {
     data: trendingAnimes,
     isLoading: isTrendingAnimesLoading,
@@ -45,7 +45,7 @@ function Home() {
     );
   }
 
-  if (trendingAnimesError || popularAnimesError || topRatedAnimesError) {
+  if (trendingAnimesError && popularAnimesError && topRatedAnimesError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this page.</p>
@@ -54,35 +54,41 @@ function Home() {
     );
   }
 
-  if (trendingAnimes && popularAnimes && topRatedAnimes) {
-    return (
-      <div className="flex flex-col items-center w-full">
+  return (
+    <div className="flex flex-col items-center w-full">
+      {trendingAnimes && (
         <div className="w-dvw max-w-[100dvw]">
           <TrendingAnimesHeroCarousel
             animeList={trendingAnimes.results.slice(0, 5)}
           />
         </div>
-        <div className="w-full pt-8 pb-24 space-y-10">
+      )}
+      <div className="w-full pt-8 pb-24 space-y-10">
+        {trendingAnimes && (
           <AnimeCategoryCarousel
             seeAllSortBy={SortBy.TRENDING_DESC}
             isHomePage
             animeList={trendingAnimes.results.slice(3)}
             categoryName="Trending Anime"
           />
+        )}
+        {topRatedAnimes && (
           <AnimeCategoryCarousel
             seeAllSortBy={SortBy.SCORE_DESC}
             isHomePage
             animeList={topRatedAnimes.results}
             categoryName="Top Rated"
           />
+        )}
+        {popularAnimes && (
           <AnimeCategoryCarousel
             seeAllSortBy={SortBy.POPULARITY_DESC}
             isHomePage
             animeList={popularAnimes.results}
             categoryName="All Time Popular"
           />
-        </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }

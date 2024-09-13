@@ -86,6 +86,8 @@ body {
 .hide-scrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scroll-behavior: smooth;
+
 }
 
 /* Hide scrollbar for Chrome, Safari, and Edge */
@@ -113,14 +115,4 @@ body {
   ::-webkit-scrollbar-thumb:hover {
     background: #b4b4b4;
   }
-}
-
-.hidden-scrollbar {
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  scroll-behavior: smooth;
-}
-
-.hidden-scrollbar::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Opera */
 }

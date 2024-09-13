@@ -64,8 +64,7 @@ export default function AnimeCard(props: AnimeCardProps) {
         </div>
       </Link>
     );
-  }
-  if (props.recommendation.id) {
+  } else {
     return (
       <Link
         to={`/anime/${props.recommendation.id.toString()}`}
@@ -125,12 +124,4 @@ export default function AnimeCard(props: AnimeCardProps) {
       </Link>
     );
   }
-  return (
-    <div className="space-y-2">
-      <div className="bg-gray-600 aspect-[3/4] rounded-md lg:rounded-xl text-center grid place-items-center text-sm">
-        Cannot be loaded.
-      </div>
-      <p>NO DATA</p>
-    </div>
-  );
 }

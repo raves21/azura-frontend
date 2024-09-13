@@ -1,26 +1,17 @@
-import { Episode } from "@/utils/types/animeAnilist";
+import { AnimeEpisodes } from "@/utils/types/animeAnilist";
 import { ChevronDown } from "lucide-react";
 import EpisodeCard from "./-EpisodeCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Data } from "@/utils/types/animeAnify";
-import { AnimeInfoAnizip } from "@/utils/types/animeAnizip";
 import { useChunkEpisodes } from "@/api/animes";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type EpisodeProps = {
   animeId: string | undefined;
   type: string | undefined;
   replace: boolean;
   isInfoPage: boolean;
-  defaultEpisodeImage: string | undefined;
-  isEpisodesLoading: boolean;
-  episodesError: Error | null;
-  episodes:
-    | {
-        anifyEps: Data[] | null;
-        anilistEps: Episode[] | null;
-        anizipEps: AnimeInfoAnizip | null;
-      }
-    | undefined;
+  episodesQuery: UseQueryResult<AnimeEpisodes, Error>;
+  episodeImageFallback: string | undefined;
 };
 
 export default function Episodes({
@@ -28,11 +19,15 @@ export default function Episodes({
   type,
   replace,
   isInfoPage,
-  defaultEpisodeImage,
-  isEpisodesLoading,
-  episodesError,
-  episodes,
+  episodesQuery,
+  episodeImageFallback,
 }: EpisodeProps) {
+  const {
+    data: episodes,
+    isLoading: isEpisodesLoading,
+    error: episodesError,
+  } = episodesQuery;
+
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
     useChunkEpisodes(episodes);
 
@@ -83,11 +78,12 @@ export default function Episodes({
               {chunkedEpisodes[0].episodes.map((episode, i) => {
                 return (
                   <EpisodeCard
+                    episodeImageFallback={episodeImageFallback}
                     replace={replace}
                     animeId={animeId!}
                     type={type}
                     episodeId={episode.id}
-                    image={episode.image ?? defaultEpisodeImage}
+                    image={episode.image}
                     title={episode.title}
                     number={episode.number}
                     key={i}
@@ -124,11 +120,12 @@ export default function Episodes({
             {chunkedEpisodes[0].episodes.map((episode, i) => {
               return (
                 <EpisodeCard
+                  episodeImageFallback={episodeImageFallback}
                   replace={replace}
                   animeId={animeId!}
                   type={type}
                   episodeId={episode.id}
-                  image={episode.image ?? defaultEpisodeImage}
+                  image={episode.image}
                   title={episode.title}
                   number={episode.number}
                   key={i}
