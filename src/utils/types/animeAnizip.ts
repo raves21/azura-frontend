@@ -8,10 +8,10 @@ export type AnimeInfoAnizip = {
 };
 
 export type Episodes = {
-  [episodeNumber: string]: Episode;
+  [episodeNumber: string]: AnizipEpisode;
 };
 
-export type Episode = {
+export type AnizipEpisode = {
   episodeNumber: number;
   title: {en: string};
   overview: string;

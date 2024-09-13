@@ -2,17 +2,23 @@ import { Bookmark, ChevronDown, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
-import { Format, Genre, Status } from "@/utils/types/animeAnilist";
+import {
+  AnimeEpisodes,
+  Format,
+  Genre,
+  Status,
+} from "@/utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";
 import { getRatingScore } from "@/utils/functions/reusable_functions";
 import { cn } from "@/lib/utils";
+import { UseQueryResult } from "@tanstack/react-query";
+import { useChunkEpisodes } from "@/api/animes";
 
 type AnimeHeroComponentProps = {
   image?: string;
   cover?: string;
   title?: string;
   description?: string;
-  id?: string;
   totalEpisodes?: number;
   year?: number;
   type?: Format;
@@ -20,8 +26,8 @@ type AnimeHeroComponentProps = {
   trendingRank?: number;
   genres?: Genre[];
   rating?: number | null;
-  firstEpisodeId?: string;
   animeId: string;
+  episodesQuery: UseQueryResult<AnimeEpisodes, Error>;
 };
 
 export default function AnimeHeroComponent({
@@ -35,8 +41,8 @@ export default function AnimeHeroComponent({
   status,
   genres,
   rating,
-  firstEpisodeId,
   animeId,
+  episodesQuery,
 }: AnimeHeroComponentProps) {
   const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);
   const starsFillWidthRef = useRef<HTMLDivElement | null>(null);
@@ -44,22 +50,17 @@ export default function AnimeHeroComponent({
   const [descriptionHeight, setDescriptionHeight] = useState(0);
   const descriptionRef = useRef<HTMLParagraphElement | null>(null);
   const navigate = useNavigate();
+  const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
+    useChunkEpisodes(episodesQuery.data);
 
   useEffect(() => {
     if (starsFillWidthRef.current && rating) {
       setStarsFillWidthPercentage(rating * 10);
-    } else {
-      return;
     }
-  }, []);
-
-  useEffect(() => {
     if (descriptionRef.current) {
       setDescriptionHeight(
         descriptionRef.current.getBoundingClientRect().height
       );
-    } else {
-      return;
     }
   }, []);
 
@@ -144,19 +145,20 @@ export default function AnimeHeroComponent({
             <div className="flex w-full gap-2">
               <p className="text-gray-400">Genres:</p>
               <div className="flex flex-wrap gap-1 max-w-[70%]">
-                {genres &&
-                  genres.map((genre, i) => (
-                    <Link
-                      to="/anime/catalog"
-                      search={{
-                        genres: `${genre}`,
-                      }}
-                      key={i}
-                      className="hover:text-mainAccent"
-                    >
-                      {i === genres.length - 1 ? `${genre}` : `${genre},`}
-                    </Link>
-                  ))}
+                {genres
+                  ? genres.map((genre, i) => (
+                      <Link
+                        to="/anime/catalog"
+                        search={{
+                          genres: `${genre}`,
+                        }}
+                        key={i}
+                        className="hover:text-mainAccent"
+                      >
+                        {i === genres.length - 1 ? `${genre}` : `${genre},`}
+                      </Link>
+                    ))
+                  : "N/A"}
               </div>
             </div>
           </div>
@@ -183,17 +185,25 @@ export default function AnimeHeroComponent({
           </div>
           <div className="flex gap-5 my-3">
             <motion.button
+              disabled={
+                episodesQuery.isLoading ||
+                episodesQuery.isError ||
+                isChunkEpisodesLoading ||
+                !chunkedEpisodes
+              }
               onClick={() => {
-                firstEpisodeId &&
+                chunkedEpisodes &&
                   navigate({
                     to: "/anime/$animeId/watch",
                     params: { animeId: animeId },
-                    search: { id: firstEpisodeId.replace(/^\//, "") },
+                    search: {
+                      id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
+                    },
                   });
               }}
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center gap-2 px-4 py-4 rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent"
+              className="flex items-center gap-2 px-4 py-4 rounded-full disabled:bg-fuchsia-800 disabled:text-gray-400 mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent"
             >
               <Play size={20} />
               <p className="hidden font-medium mobile-m:block">Play Now</p>
@@ -307,19 +317,20 @@ export default function AnimeHeroComponent({
             <div className="flex gap-2">
               <p className="text-gray-400">Genres:</p>
               <div className="flex flex-wrap gap-1">
-                {genres &&
-                  genres.map((genre, i) => (
-                    <Link
-                      to="/anime/catalog"
-                      search={{
-                        genres: `${genre}`,
-                      }}
-                      key={i}
-                      className="hover:text-mainAccent"
-                    >
-                      {i === genres.length - 1 ? `${genre}` : `${genre},`}
-                    </Link>
-                  ))}
+                {genres
+                  ? genres.map((genre, i) => (
+                      <Link
+                        to="/anime/catalog"
+                        search={{
+                          genres: `${genre}`,
+                        }}
+                        key={i}
+                        className="hover:text-mainAccent"
+                      >
+                        {i === genres.length - 1 ? `${genre}` : `${genre},`}
+                      </Link>
+                    ))
+                  : "N/A"}
               </div>
             </div>
             <div className="flex items-center gap-2">

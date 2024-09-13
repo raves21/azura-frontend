@@ -6,18 +6,25 @@ type ProvidersProps = {
   children: ReactNode;
 };
 
+//this is the settings during development. to minimize network requests
+const neverRefetchSettings = {
+  gcTime: Infinity,
+  staleTime: Infinity,
+  retry: false,
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+};
+
 export default function Providers({ children }: ProvidersProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            gcTime: Infinity,
-            staleTime: Infinity,
-            retry: false,
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
+            refetchInterval: false,
+            refetchIntervalInBackground: false,
+            ...neverRefetchSettings,
           },
         },
       })

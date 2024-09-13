@@ -1,3 +1,6 @@
+import { AnimeInfoAnify, Data } from "./animeAnify";
+import { AnimeInfoAnizip } from "./animeAnizip";
+
 export type MultipleAnimeResponse = {
   currentPage: number;
   hasNextPage: boolean;
@@ -162,7 +165,7 @@ export type EpisodeToBeRendered = {
   id: string;
   title: string;
   number: number;
-  image?: string | null;
+  image: string | null | undefined;
 };
 
 export type Episode = {
@@ -236,8 +239,19 @@ export enum Status {
   NOT_YET_RELEASED = "NOT_YET_RELEASED",
   CANCELLED = "CANCELLED",
   HIATUS = "HIATUS",
-  Cancelled = "Cancelled"
+  Cancelled = "Cancelled",
 }
+
+export type AnimeInfo = {
+  animeInfoAnilist: AnimeInfoAnilist
+  animeInfoAnify: AnimeInfoAnify
+}
+
+export type AnimeEpisodes = {
+  anifyEps: Data[];
+  anilistEps: Episode[];
+  anizipEps: AnimeInfoAnizip;
+};
 
 export type Relation = {
   id: number;

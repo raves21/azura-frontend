@@ -27,7 +27,7 @@ const filterPageSearchSchema = z.object({
 type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>;
 
 export const Route = createFileRoute("/anime/catalog/")({
-  component: () => <FilterPage />,
+  component: () => <CatalogPage />,
   validateSearch: (search): FilterPageSearchParams => {
     const validationResult = filterPageSearchSchema.safeParse(search);
     if (validationResult.success) {
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/anime/catalog/")({
   },
 });
 
-function FilterPage() {
+function CatalogPage() {
   const { format, genres, page, query, season, sortBy, year, status } =
     Route.useSearch();
   const { toggleOpenDialog } = useGlobalStore();
@@ -82,7 +82,9 @@ function FilterPage() {
       <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 px-3 sm:px-6 lg:px-16 flex flex-col gap-10">
         <header className="space-y-7 lg:space-y-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">Discover Animes</h1>
+            <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">
+              Discover Animes
+            </h1>
             <button
               onClick={() => toggleOpenDialog(<FiltersDialog />)}
               className="flex items-center gap-2 px-3 py-2 border rounded-full mobile-l:gap-3 mobile-l:px-4 md:px-5 md:py-3 group border-mainAccent"
