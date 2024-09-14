@@ -71,7 +71,7 @@ export default function AnimeHeroComponent({
         <div className="absolute bg-gradient-to-t from-darkBg from-[percentage:0%_1%] via-transparent to-transparent size-full"></div>
         <img src={cover ?? image} className="object-cover size-full" />
       </div>
-      <div className="flex flex-col items-center w-full gap-2 pt-32 pb-12 lg:pt-36 lg:gap-14 xl:gap-16 lg:flex-row lg:items-start">
+      <div className="flex flex-col items-center w-full gap-2 pt-32 pb-12 lg:pt-36 lg:gap-14 lg:flex-row lg:items-start">
         <div className="aspect-[3/4] h-[230px] sm:h-[280px] lg:h-[300px] xl:h-[320px] rounded-xl overflow-hidden z-10">
           <img src={image} className="object-cover size-full" />
         </div>

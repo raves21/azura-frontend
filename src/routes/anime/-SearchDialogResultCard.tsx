@@ -19,11 +19,13 @@ export default function SearchDialogResultCard({
       onClick={() => toggleOpenDialog(null)}
       className="flex w-full gap-4 px-3 py-2 hover:bg-gray-900/70"
     >
-      <img
-        src={anime.image}
-        alt={anime.title.english ?? anime.title.romaji}
-        className="object-cover size-full aspect-[3/4] w-[80px] rounded-md"
-      />
+      <div className="aspect-[3/4] w-[80px] bg-gray-600 rounded-md">
+        <img
+          src={anime.image}
+          alt={anime.title.english ?? anime.title.romaji}
+          className="object-cover rounded-md size-full"
+        />
+      </div>
       <div className="flex flex-col justify-center w-full gap-3">
         <p className="text-lg font-semibold">
           {anime.title.english ?? anime.title.romaji}

@@ -6,7 +6,7 @@ import {
   useFetchEpisodeStreamLinks,
 } from "@/api/animes";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import {
@@ -20,20 +20,16 @@ import {
 } from "@vidstack/react/player/layouts/default";
 import Episodes from "../-Episodes";
 import AnimeCategoryCarousel from "../../-AnimeCategoryCarousel";
+import { z } from "zod";
+import { useGetWindowWidth } from "@/utils/hooks/useGetWindowWidth";
 
-type EpisodePageSearchParams = {
-  id: string;
-};
+const episodePageSearchParams = z.object({
+  id: z.coerce.string(),
+});
 
 export const Route = createFileRoute("/anime/$animeId/watch/")({
   component: () => <WatchEpisodePage />,
-  validateSearch: (
-    search: Record<string, unknown>
-  ): EpisodePageSearchParams => {
-    return {
-      id: search.id as string,
-    };
-  },
+  validateSearch: (search) => episodePageSearchParams.parse(search),
 });
 
 function WatchEpisodePage() {
@@ -41,6 +37,13 @@ function WatchEpisodePage() {
   const { id } = Route.useSearch();
   const { animeId } = Route.useParams();
   const mediaPlayerRef = useRef<MediaPlayerInstance | null>(null);
+  const videoAndeEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
+  const [
+    videoAndeEpisodeInfoContainerHeight,
+    setVideoAndEpisodeInfoContainerHeight,
+  ] = useState(0);
+
+  const windowWidth = useGetWindowWidth();
 
   useEffect(() => {
     if (!id || id === "") {
@@ -66,7 +69,19 @@ function WatchEpisodePage() {
 
   const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
-  if (isEpisodeStreamLinksLoading || isAnimeInfoLoading) {
+  useEffect(() => {
+    if (videoAndeEpisodeInfoContainerRef.current) {
+      setVideoAndEpisodeInfoContainerHeight(
+        videoAndeEpisodeInfoContainerRef.current.getBoundingClientRect().height
+      );
+    }
+  }, [episodeStreamLinks, episodeInfo, windowWidth]);
+
+  if (
+    isEpisodeStreamLinksLoading ||
+    isAnimeInfoLoading ||
+    episodesQuery.isLoading
+  ) {
     return (
       <div className="grid text-2xl text-white h-dvh place-items-center">
         <p>
@@ -76,7 +91,7 @@ function WatchEpisodePage() {
       </div>
     );
   }
-  if (episodeStreamLinksError && animeInfoError) {
+  if (episodeStreamLinksError || episodesQuery.error || animeInfoError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -85,17 +100,17 @@ function WatchEpisodePage() {
     );
   }
 
-  if (episodeStreamLinks && animeInfo) {
+  if (episodeStreamLinks && animeInfo && episodesQuery.data && episodeInfo) {
     const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
-          <div className="w-full">
-            <div className="w-full aspect-video">
+          <div ref={videoAndeEpisodeInfoContainerRef} className="w-full h-fit">
+            <div className="w-dvw ml-[calc(-50vw+50%)] lg:w-full lg:ml-auto aspect-video rounded-none">
               <MediaPlayer
                 ref={mediaPlayerRef}
                 playsInline
-                className="size-full"
+                className="rounded-none size-full"
                 // title="Sprite Fight"
                 src={
                   episodeStreamLinks.sources.find(
@@ -112,7 +127,7 @@ function WatchEpisodePage() {
                 <DefaultVideoLayout icons={defaultLayoutIcons} />
               </MediaPlayer>
             </div>
-            <div className="flex flex-col w-full gap-1 px-2 mt-2 sm:px-3 lg:px-0">
+            <div className="flex flex-col w-full gap-1 mt-2 lg:px-0">
               <p className="text-lg font-bold sm:text-xl line-clamp-1">
                 {animeInfoAnilist?.title?.english ??
                   animeInfoAnilist?.title?.romaji ??
@@ -131,6 +146,7 @@ function WatchEpisodePage() {
             </div>
           </div>
           <Episodes
+            episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
               animeInfoAnilist?.cover ?? animeInfoAnilist?.image
             }

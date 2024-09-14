@@ -238,11 +238,7 @@ export function useChunkEpisodes(animeEpisodes: AnimeEpisodes | undefined) {
     queryKey: ["chunkedEpisodes", animeEpisodes],
     queryFn: () => {
       return chunkEpisodes(
-        getEpisodesToBeRendered(
-          anifyEpisodes,
-          anilistEpisodes,
-          anizipEpisodes
-        ),
+        getEpisodesToBeRendered(anifyEpisodes, anilistEpisodes, anizipEpisodes),
         30
       );
     },

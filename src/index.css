@@ -82,28 +82,27 @@ body {
    bg-[#100c14];
 }
 
-/* Hide scrollbar for modern browsers */
-.hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scroll-behavior: smooth;
-
-}
-
-/* Hide scrollbar for Chrome, Safari, and Edge */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
 @layer utilities {
+  /* Hide scrollbar for modern browsers */
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar for Chrome, Safari, and Edge */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-track:hover {
     border-radius: 0rem;
-    background: black;
+    background: #100c14;
   }
 
   ::-webkit-scrollbar-thumb {

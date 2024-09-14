@@ -12,6 +12,7 @@ type EpisodeProps = {
   isInfoPage: boolean;
   episodesQuery: UseQueryResult<AnimeEpisodes, Error>;
   episodeImageFallback: string | undefined;
+  episodeListMaxHeight?: number;
 };
 
 export default function Episodes({
@@ -21,6 +22,7 @@ export default function Episodes({
   isInfoPage,
   episodesQuery,
   episodeImageFallback,
+  episodeListMaxHeight,
 }: EpisodeProps) {
   const {
     data: episodes,
@@ -94,48 +96,52 @@ export default function Episodes({
           </div>
         </div>
       );
-    }
-
-    return (
-      <div className="lg:w-[520px] flex flex-col w-full pt-8 lg:pt-0 space-y-6 text-sm text-gray-400 lg:text-base">
-        <div className="flex items-center justify-between">
-          <p className="text-lg md:text-xl font-semibold text-[#f6f4f4]">
-            Episodes
-          </p>
-          {chunkedEpisodes.length > 1 && (
-            <button className="flex items-center gap-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
-              <p className="duration-300 group-hover:text-mainAccent">
-                {chunkedEpisodes
-                  ? `${chunkedEpisodes[0].startEp} - ${chunkedEpisodes[0].endEp}`
-                  : "0-0"}
-              </p>
-              <ChevronDown className="duration-300 size-6 group-hover:stroke-mainAccent" />
-            </button>
-          )}
-        </div>
-        <ScrollArea
-          className={`h-[360px] lg:h-[650px] ${chunkedEpisodes[0].episodes.length < 30 ? "lg:h-auto" : ""} overflow-y-auto`}
+    } else {
+      return (
+        <div
+          style={{
+            maxHeight:
+              window.innerWidth >= 1024 ? episodeListMaxHeight : "auto",
+          }}
+          className="lg:w-[520px] flex flex-col w-full pt-8 lg:pt-0 space-y-6 text-sm text-gray-400 lg:text-base"
         >
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 gap-y-4">
-            {chunkedEpisodes[0].episodes.map((episode, i) => {
-              return (
-                <EpisodeCard
-                  episodeImageFallback={episodeImageFallback}
-                  replace={replace}
-                  animeId={animeId!}
-                  type={type}
-                  episodeId={episode.id}
-                  image={episode.image}
-                  title={episode.title}
-                  number={episode.number}
-                  key={i}
-                />
-              );
-            })}
+          <div className="flex items-center justify-between">
+            <p className="text-lg md:text-xl font-semibold text-[#f6f4f4]">
+              Episodes
+            </p>
+            {chunkedEpisodes.length > 1 && (
+              <button className="flex items-center gap-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
+                <p className="duration-300 group-hover:text-mainAccent">
+                  {chunkedEpisodes
+                    ? `${chunkedEpisodes[0].startEp} - ${chunkedEpisodes[0].endEp}`
+                    : "0-0"}
+                </p>
+                <ChevronDown className="duration-300 size-6 group-hover:stroke-mainAccent" />
+              </button>
+            )}
           </div>
-        </ScrollArea>
-      </div>
-    );
+          <div className="h-[350px] overflow-y-auto lg:h-auto z-[1]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 gap-y-4">
+              {chunkedEpisodes[0].episodes.map((episode, i) => {
+                return (
+                  <EpisodeCard
+                    episodeImageFallback={episodeImageFallback}
+                    replace={replace}
+                    animeId={animeId!}
+                    type={type}
+                    episodeId={episode.id}
+                    image={episode.image}
+                    title={episode.title}
+                    number={episode.number}
+                    key={i}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
   return (
     <div className="flex flex-col px-2 pt-8 pb-16 space-y-6 text-gray-400 sm:px-3">
