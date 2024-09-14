@@ -24,7 +24,8 @@ module.exports = {
         "mobile-m" : "375px",
         "mobile-l" : "425px",
         "1440": "1440px",
-        "570": "570px"
+        "570": "570px",
+        "1600" : "1600px"
       },
       colors: {
         darkBg: '#100c14',

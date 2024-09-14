@@ -71,7 +71,7 @@ export default function AnimeHeroComponent({
         <div className="absolute bg-gradient-to-t from-darkBg from-[percentage:0%_1%] via-transparent to-transparent size-full"></div>
         <img src={cover ?? image} className="object-cover size-full" />
       </div>
-      <div className="flex flex-col items-center w-full gap-2 pt-32 pb-12 lg:pt-36 lg:gap-14 xl:gap-16 lg:px-12 xl:px-16 lg:flex-row lg:items-start">
+      <div className="flex flex-col items-center w-full gap-2 pt-32 pb-12 lg:pt-36 lg:gap-14 xl:gap-16 lg:flex-row lg:items-start">
         <div className="aspect-[3/4] h-[230px] sm:h-[280px] lg:h-[300px] xl:h-[320px] rounded-xl overflow-hidden z-10">
           <img src={image} className="object-cover size-full" />
         </div>
@@ -219,7 +219,7 @@ export default function AnimeHeroComponent({
           </div>
 
           {/*DESCRIPTION*/}
-          <div className="relative flex flex-col w-full gap-3 px-2 mt-5 lg:mt-0 lg:px-0 sm:px-5 md:px-8 lg:w-[75%] xl:w-[70%]">
+          <div className="relative flex flex-col w-full gap-3 mt-5 lg:mt-0 lg:w-[75%] xl:w-[70%]">
             <p className="text-lg font-semibold lg:hidden">Description</p>
             <motion.div
               animate={{
@@ -275,7 +275,7 @@ export default function AnimeHeroComponent({
               </motion.div>
             )}
           </div>
-          <div className="flex flex-col self-start gap-2 px-2 lg:hidden md:px-8 sm:px-5 mt-14">
+          <div className="flex flex-col self-start gap-2 lg:hidden mt-14">
             <p className="mb-1 text-lg font-semibold lg:hidden">Details</p>
             <div className="flex flex-col gap-3">
               <div className="flex gap-2">

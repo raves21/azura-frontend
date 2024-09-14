@@ -34,7 +34,10 @@ export default function AnimeCategoryCarousel(
 ) {
   if (props.isHomePage) {
     return (
-      <div className="w-full px-3 pt-5 space-y-6 text-gray-400 lg:px-16 sm:px-6">
+      <div
+        // className="w-full px-3 pt-5 space-y-6 text-gray-400 lg:px-16 sm:px-6"
+        className="w-full pt-5 space-y-6 text-gray-400"
+      >
         <div className="flex items-center justify-between w-full">
           <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
             {props.categoryName}
@@ -67,11 +70,7 @@ export default function AnimeCategoryCarousel(
                   key={anime.id ?? anime.title ?? "no data"}
                   className="basis-1/3 mobile-m:basis-[30%] 570:basis-1/4 sm:basis-1/5 xl:basis-1/6"
                 >
-                  <AnimeCard
-                    isHomePage
-                    anime={anime}
-                    className="min-h-fit max-h-[250px]"
-                  />
+                  <AnimeCard isHomePage anime={anime} />
                 </CarouselItem>
               );
             })}
@@ -89,9 +88,7 @@ export default function AnimeCategoryCarousel(
     );
   } else {
     return (
-      <div
-        className={`w-full pt-16 space-y-6 text-gray-400 ${props.isInfoPage ? "px-2 lg:px-12 xl:px-16 sm:px-5 md:px-8" : "px-2 lg:px-16 sm:px-3"}`}
-      >
+      <div className="w-full pt-16 space-y-6 text-gray-400">
         <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
           {props.categoryName}
         </p>
@@ -114,7 +111,6 @@ export default function AnimeCategoryCarousel(
                     <AnimeCard
                       isHomePage={false}
                       recommendation={recommendation}
-                      className="min-h-fit max-h-[250px]"
                     />
                   </CarouselItem>
                 )

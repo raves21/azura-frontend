@@ -79,7 +79,7 @@ function CatalogPage() {
 
   if (filteredAnimes) {
     return (
-      <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 px-3 sm:px-6 lg:px-16 flex flex-col gap-10">
+      <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 flex flex-col gap-10">
         <header className="space-y-7 lg:space-y-8">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">

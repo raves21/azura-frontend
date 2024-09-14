@@ -12,11 +12,9 @@ export const Route = createRootRoute({
 function RootRoute() {
   return (
     <div className="max-w-full w-dvw bg-darkBg text-[#f6f4f4]">
-      <div className="max-w-[1440px] mx-auto">
-        <GlobalDialog/>
-        <ScrollRestoration />
-        <Outlet />
-      </div>
+      <GlobalDialog/>
+      <ScrollRestoration />
+      <Outlet />
     </div>
   );
 }

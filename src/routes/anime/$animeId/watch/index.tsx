@@ -89,7 +89,7 @@ function WatchEpisodePage() {
     const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <main className="flex flex-col pb-32">
-        <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row lg:px-16">
+        <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div className="w-full">
             <div className="w-full aspect-video">
               <MediaPlayer

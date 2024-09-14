@@ -28,9 +28,9 @@ export default function TrendingCarouselItem({
 
   return (
     <div className="flex items-end justify-center lg:items-center size-full lg:pt-20">
-      <div className="relative flex justify-center w-full lg:w-[1440px] lg:px-16 px-3 sm:px-6">
-        <div className="flex w-full gap-16">
-          <div className="aspect-[3/4] h-[300px] rounded-xl overflow-hidden z-10 lg:block hidden">
+      <div className="w-full px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1300px] 1600:max-w-[1440px]">
+        <div className="flex items-center w-full gap-16">
+          <div className="aspect-[3/4] w-[230px] rounded-xl overflow-hidden z-10 lg:block hidden">
             <img src={image} className="object-cover size-full" />
           </div>
           <div className="z-10 flex-1">
@@ -72,7 +72,9 @@ export default function TrendingCarouselItem({
                   className="flex items-center gap-1 px-3 py-2 bg-black rounded-full sm:gap-2 mobile-l:px-4 sm:px-5"
                 >
                   <Bookmark size={20} />
-                  <p className="text-sm font-medium sm:text-base">Add to List</p>
+                  <p className="text-sm font-medium sm:text-base">
+                    Add to List
+                  </p>
                 </motion.button>
               </div>
             </div>

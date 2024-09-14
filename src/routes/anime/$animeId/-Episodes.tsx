@@ -33,7 +33,7 @@ export default function Episodes({
 
   if (isEpisodesLoading || isChunkEpisodesLoading) {
     return (
-      <div className="flex flex-col px-3 pt-8 pb-16 space-y-6 text-[#f6f4f4] sm:px-5 md:px-8 lg:px-12 xl:px-16">
+      <div className="flex flex-col pt-8 pb-16 space-y-6 text-[#f6f4f4]">
         <p className="text-lg font-semibold lg:text-xl">Episodes</p>
         <div className="self-center py-12 text-xl">Loading episodes...</div>
       </div>
@@ -42,7 +42,7 @@ export default function Episodes({
 
   if (episodesError) {
     return (
-      <div className="flex flex-col px-3 pt-8 pb-16 space-y-6 text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16">
+      <div className="flex flex-col pt-8 pb-16 space-y-6 text-gray-400">
         <p className="font-semibold text-lg lg:text-xl text-[#f6f4f4]">
           Episodes
         </p>
@@ -57,13 +57,13 @@ export default function Episodes({
   if (episodes && chunkedEpisodes) {
     if (isInfoPage) {
       return (
-        <div className="flex flex-col w-full px-2 pt-8 space-y-6 text-sm text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16 lg:text-base">
+        <div className="flex flex-col w-full pt-8 space-y-6 text-sm text-gray-400 lg:text-base">
           <div className="flex items-center justify-between">
             <p className="text-lg lg:text-xl font-semibold text-[#f6f4f4]">
               Episodes
             </p>
             {chunkedEpisodes.length > 1 && (
-              <button className="flex items-center gap-3 px-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
+              <button className="flex items-center gap-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
                 <p className="duration-300 group-hover:text-mainAccent">
                   {chunkedEpisodes
                     ? `${chunkedEpisodes[0].startEp} - ${chunkedEpisodes[0].endEp}`
@@ -97,13 +97,13 @@ export default function Episodes({
     }
 
     return (
-      <div className="lg:w-[520px] flex flex-col w-full px-2 pt-8 lg:pt-0 space-y-6 text-sm text-gray-400 sm:px-3 lg:px-0 lg:text-base">
+      <div className="lg:w-[520px] flex flex-col w-full pt-8 lg:pt-0 space-y-6 text-sm text-gray-400 lg:text-base">
         <div className="flex items-center justify-between">
           <p className="text-lg md:text-xl font-semibold text-[#f6f4f4]">
             Episodes
           </p>
           {chunkedEpisodes.length > 1 && (
-            <button className="flex items-center gap-3 px-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
+            <button className="flex items-center gap-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
               <p className="duration-300 group-hover:text-mainAccent">
                 {chunkedEpisodes
                   ? `${chunkedEpisodes[0].startEp} - ${chunkedEpisodes[0].endEp}`
@@ -138,7 +138,7 @@ export default function Episodes({
     );
   }
   return (
-    <div className="flex flex-col px-3 pt-8 pb-16 space-y-6 text-gray-400 sm:px-5 md:px-8 lg:px-12 xl:px-16">
+    <div className="flex flex-col px-2 pt-8 pb-16 space-y-6 text-gray-400 sm:px-3">
       <p className="font-semibold text-lg lg:text-xl text-[#f6f4f4]">
         Episodes
       </p>
