@@ -8,7 +8,7 @@ type EpisodeCardProps = {
   image: string | null | undefined;
   type: string | null | undefined;
   replace: boolean;
-  episodeImageFallback: string | undefined
+  episodeImageFallback: string | undefined;
 };
 
 export default function EpisodeCard({
@@ -19,7 +19,7 @@ export default function EpisodeCard({
   image,
   type,
   replace,
-  episodeImageFallback
+  episodeImageFallback,
 }: EpisodeCardProps) {
   return (
     <Link
@@ -46,13 +46,12 @@ export default function EpisodeCard({
         <div className="bg-gray-700 rounded-lg size-full">
           <img
             loading="eager"
-            src={image ?? episodeImageFallback ?? "/no-image.png"}
+            src={image || episodeImageFallback || "/no-image.png"}
             className="absolute inset-0 object-cover rounded-lg size-full"
           />
         </div>
       </div>
       <div>
-        {/* <p className="text-white">{`Episode ${number}`}</p> */}
         <p className="line-clamp-1">
           {type === "MOVIE"
             ? "FULL"

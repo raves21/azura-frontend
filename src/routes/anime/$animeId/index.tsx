@@ -1,8 +1,4 @@
-import {
-  // useFetchAnimeInfoAnilist,
-  useFetchAnimeEpisodes,
-  useFetchAnimeInfo,
-} from "@/api/animes";
+import { useFetchAnimeEpisodes, useFetchAnimeInfo } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
@@ -16,12 +12,6 @@ function AnimeInfoPage() {
   const { animeId } = Route.useParams();
 
   const episodesQuery = useFetchAnimeEpisodes(animeId);
-
-  // const {
-  //   data: animeInfoAnilist,
-  //   isLoading: isAnimeInfoAnilistLoading,
-  //   error: animeInfoAnilistError,
-  // } = useFetchAnimeInfoAnilist(animeId);
 
   const {
     data: animeInfo,
@@ -61,23 +51,23 @@ function AnimeInfoPage() {
           episodesQuery={episodesQuery}
           animeId={animeId}
           title={
-            animeInfoAnilist?.title.english ??
-            animeInfoAnilist?.title.romaji ??
-            animeInfoAnify?.title.english ??
+            animeInfoAnilist?.title.english ||
+            animeInfoAnilist?.title.romaji ||
+            animeInfoAnify?.title.english ||
             animeInfoAnify?.title.romaji
           }
-          cover={animeInfoAnify?.bannerImage ?? animeInfoAnilist?.cover}
-          image={animeInfoAnilist?.image ?? animeInfoAnify?.coverImage}
+          cover={animeInfoAnify?.bannerImage || animeInfoAnilist?.cover}
+          image={animeInfoAnilist?.image || animeInfoAnify?.coverImage}
           description={
-            animeInfoAnilist?.description ?? animeInfoAnify?.description
+            animeInfoAnilist?.description || animeInfoAnify?.description
           }
-          genres={animeInfoAnilist?.genres ?? undefined}
-          status={animeInfoAnilist?.status ?? animeInfoAnify?.status}
+          genres={animeInfoAnilist?.genres || undefined}
+          status={animeInfoAnilist?.status || animeInfoAnify?.status}
           totalEpisodes={
-            animeInfoAnilist?.totalEpisodes ?? animeInfoAnify?.totalEpisodes
+            animeInfoAnilist?.totalEpisodes || animeInfoAnify?.totalEpisodes
           }
-          type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
-          year={animeInfoAnilist?.releaseDate ?? animeInfoAnify?.year}
+          type={animeInfoAnilist?.type || animeInfoAnify?.format}
+          year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
           rating={
             animeInfoAnilist?.rating! * 0.1 ??
             animeInfoAnify?.rating.anilist ??
@@ -91,9 +81,9 @@ function AnimeInfoPage() {
           replace={false}
           type={animeInfoAnilist?.type}
           episodeImageFallback={
-            animeInfoAnilist?.cover ??
-            animeInfoAnify?.coverImage ??
-            animeInfoAnilist?.image ??
+            animeInfoAnilist?.cover ||
+            animeInfoAnify?.coverImage ||
+            animeInfoAnilist?.image ||
             animeInfoAnify?.bannerImage
           }
         />

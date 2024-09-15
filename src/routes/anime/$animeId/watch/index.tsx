@@ -21,7 +21,7 @@ import {
 import Episodes from "../-Episodes";
 import AnimeCategoryCarousel from "../../-AnimeCategoryCarousel";
 import { z } from "zod";
-import { useGetWindowWidth } from "@/utils/hooks/useGetWindowWidth";
+import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 
 const episodePageSearchParams = z.object({
   id: z.coerce.string(),
@@ -37,16 +37,16 @@ function WatchEpisodePage() {
   const { id } = Route.useSearch();
   const { animeId } = Route.useParams();
   const mediaPlayerRef = useRef<MediaPlayerInstance | null>(null);
-  const videoAndeEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
+  const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
     videoAndeEpisodeInfoContainerHeight,
     setVideoAndEpisodeInfoContainerHeight,
   ] = useState(0);
 
-  const windowWidth = useGetWindowWidth();
+  const windowWidth = useWindowWidth();
 
   useEffect(() => {
-    if (!id || id === "") {
+    if (!id) {
       navigate({ to: "/anime/$animeId", params: { animeId: animeId } });
     }
   }, []);
@@ -70,9 +70,9 @@ function WatchEpisodePage() {
   const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
   useEffect(() => {
-    if (videoAndeEpisodeInfoContainerRef.current) {
+    if (videoAndEpisodeInfoContainerRef.current) {
       setVideoAndEpisodeInfoContainerHeight(
-        videoAndeEpisodeInfoContainerRef.current.getBoundingClientRect().height
+        videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height
       );
     }
   }, [episodeStreamLinks, episodeInfo, windowWidth]);
@@ -105,7 +105,7 @@ function WatchEpisodePage() {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
-          <div ref={videoAndeEpisodeInfoContainerRef} className="w-full h-fit">
+          <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
             <div className="w-dvw ml-[calc(-50vw+50%)] lg:w-full lg:ml-auto aspect-video rounded-none">
               <MediaPlayer
                 ref={mediaPlayerRef}
@@ -129,10 +129,10 @@ function WatchEpisodePage() {
             </div>
             <div className="flex flex-col w-full gap-1 mt-2 lg:px-0">
               <p className="text-lg font-bold sm:text-xl line-clamp-1">
-                {animeInfoAnilist?.title?.english ??
-                  animeInfoAnilist?.title?.romaji ??
-                  animeInfoAnify?.title.english ??
-                  animeInfoAnify?.title.romaji ??
+                {animeInfoAnilist?.title?.english ||
+                  animeInfoAnilist?.title?.romaji ||
+                  animeInfoAnify?.title.english ||
+                  animeInfoAnify?.title.romaji ||
                   ""}
               </p>
               <p className="text-lg font-semibold text-gray-400 sm:text-xl">
@@ -148,13 +148,13 @@ function WatchEpisodePage() {
           <Episodes
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
-              animeInfoAnilist?.cover ?? animeInfoAnilist?.image
+              animeInfoAnilist?.cover || animeInfoAnilist?.image
             }
             episodesQuery={episodesQuery}
             isInfoPage={false}
             animeId={animeId}
             replace
-            type={animeInfoAnilist?.type ?? animeInfoAnify?.format}
+            type={animeInfoAnilist?.type || animeInfoAnify?.format}
           />
         </section>
         {animeInfoAnilist?.recommendations && (

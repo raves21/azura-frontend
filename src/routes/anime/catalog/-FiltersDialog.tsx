@@ -142,26 +142,26 @@ export default function FiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Sort By:</p>
                 <FilterDropdown
-                  itemList={sortBys}
+                  menuItems={sortBys}
                   onSelectItem={(sortBy) => setSelectedSortBy(sortBy)}
-                  labelMap={sortByLabels}
+                  menuItemLabelNames={sortByLabels}
                   currentlySelected={selectedSortBy}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Type:</p>
                 <FilterDropdown
-                  itemList={formats}
+                  menuItems={formats}
                   onSelectItem={(format) => setSelectedFormat(format)}
-                  labelMap={formatLabels}
+                  menuItemLabelNames={formatLabels}
                   currentlySelected={selectedFormat}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Status:</p>
                 <FilterDropdown
-                  itemList={statuses}
-                  labelMap={anilistAnimeStatusLabels}
+                  menuItems={statuses}
+                  menuItemLabelNames={anilistAnimeStatusLabels}
                   onSelectItem={(status) => setSelectedStatus(status)}
                   currentlySelected={selectedStatus}
                 />
@@ -169,16 +169,16 @@ export default function FiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Season:</p>
                 <FilterDropdown
-                  itemList={seasons}
+                  menuItems={seasons}
                   onSelectItem={(season) => setSelectedSeason(season)}
-                  labelMap={seasonLabels}
+                  menuItemLabelNames={seasonLabels}
                   currentlySelected={selectedSeason}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Year:</p>
                 <FilterDropdown
-                  itemList={years}
+                  menuItems={years}
                   onSelectItem={(year) => setSelectedYear(year)}
                   currentlySelected={selectedYear}
                 />

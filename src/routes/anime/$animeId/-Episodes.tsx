@@ -1,7 +1,6 @@
 import { AnimeEpisodes } from "@/utils/types/animeAnilist";
 import { ChevronDown } from "lucide-react";
 import EpisodeCard from "./-EpisodeCard";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChunkEpisodes } from "@/api/animes";
 import { UseQueryResult } from "@tanstack/react-query";
 
@@ -103,7 +102,7 @@ export default function Episodes({
             maxHeight:
               window.innerWidth >= 1024 ? episodeListMaxHeight : "auto",
           }}
-          className="lg:w-[520px] flex flex-col w-full pt-8 lg:pt-0 space-y-6 text-sm text-gray-400 lg:text-base"
+          className="lg:w-[550px] flex flex-col w-full pt-8 lg:pt-0 space-y-6 text-sm text-gray-400 lg:text-base"
         >
           <div className="flex items-center justify-between">
             <p className="text-lg md:text-xl font-semibold text-[#f6f4f4]">

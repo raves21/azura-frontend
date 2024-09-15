@@ -59,7 +59,6 @@ export enum Season {
 export enum Genre {
   Action = "Action",
   Adventure = "Adventure",
-  Cars = "Cars",
   Comedy = "Comedy",
   Drama = "Drama",
   Fantasy = "Fantasy",

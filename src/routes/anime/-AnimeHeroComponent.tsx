@@ -261,16 +261,10 @@ export default function AnimeHeroComponent({
                   <p className="text-gray-400">
                     {readMore ? "Read Less" : "Read More"}
                   </p>
-                  <motion.div
-                    animate={{
-                      rotate: readMore ? -180 : 0,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                    }}
-                  >
-                    <ChevronDown stroke="#9ca3af" />
-                  </motion.div>
+                  <ChevronDown
+                    stroke="#9ca3af"
+                    className={`${readMore && "rotate-180"} duration-500 transition-transform`}
+                  />
                 </button>
               </motion.div>
             )}

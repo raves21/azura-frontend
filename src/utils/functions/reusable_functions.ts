@@ -39,7 +39,7 @@ export function getEpisodesToBeRendered(
   const gogoAnimeEpisodes = gogoAnimeData ? gogoAnimeData.episodes : null;
 
   if (gogoAnimeEpisodes && gogoAnimeEpisodes.length !== 0) {
-    const episodes = gogoAnimeEpisodes.map((ep) => {
+    return gogoAnimeEpisodes.map((ep) => {
       return {
         id: ep.id,
         number: ep.number,
@@ -53,25 +53,23 @@ export function getEpisodesToBeRendered(
             : `EP ${ep.number}`,
       };
     });
-    return episodes;
   }
   //if no anify, fallback to anilist
   else if (anilistEpisodes && anilistEpisodes.length !== 0) {
-    const episodes = anilistEpisodes.map((ep) => {
+    return anilistEpisodes.map((ep) => {
       return {
         id: ep.id,
         number: ep.number,
         image:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
-            ? animeInfoAnizip?.episodes[ep.number].image ?? ep.image
-            : ep.image,
+            ? animeInfoAnizip?.episodes[ep.number].image || undefined
+            : undefined,
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
             ? animeInfoAnizip?.episodes[ep.number].title.en
             : `EP ${ep.number}`,
       };
     });
-    return episodes;
   } else {
     //if no anify and anilist, accept the fact that the selected anime has no episodes
     return null;

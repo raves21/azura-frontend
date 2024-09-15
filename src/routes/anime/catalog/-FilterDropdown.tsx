@@ -5,17 +5,17 @@ import { cn } from "@/lib/utils";
 import { useHandleClickOutside } from "@/utils/hooks/useHandleClickOutside";
 
 type DropdownFilterProps<T> = {
-  itemList: T[];
-  labelMap?: Record<string, string>;
+  menuItems: T[];
+  menuItemLabelNames?: Record<string, string>;
   onSelectItem: (item: T) => void;
   currentlySelected: T | null;
 };
 
 export default function FilterDropdown<T>({
-  itemList,
+  menuItems,
   onSelectItem,
   currentlySelected,
-  labelMap,
+  menuItemLabelNames,
 }: DropdownFilterProps<T>) {
   const dropdownMenuListRef = useRef<HTMLDivElement | null>(null);
   const parentDivRef = useRef<HTMLDivElement | null>(null);
@@ -33,21 +33,14 @@ export default function FilterDropdown<T>({
       >
         <p className="font-medium text-mainAccent">
           {currentlySelected
-            ? labelMap
-              ? labelMap[currentlySelected as string]
+            ? menuItemLabelNames
+              ? menuItemLabelNames[currentlySelected as string]
               : `${currentlySelected}`
             : "Any"}
         </p>
-        <motion.div
-          animate={{
-            rotate: isOpen ? -180 : 0,
-          }}
-          transition={{
-            duration: 0.3,
-          }}
-        >
-          <ChevronDown className="size-4 md:size-6 stroke-gray-400" />
-        </motion.div>
+        <ChevronDown
+          className={`size-4 md:size-6 stroke-gray-400 ${isOpen && "rotate-180"} duration-300 transition-transform`}
+        />
       </button>
       <motion.div
         initial={{
@@ -68,28 +61,28 @@ export default function FilterDropdown<T>({
           }
         }}
         className={cn(
-          "absolute w-fit z-10 overflow-x-hidden top-[50px] right-0 max-h-[250px] rounded-lg bg-black overflow-y-auto",
-          dropdownMenuListHeight! < 250 && "hide-scrollbar"
+          "absolute w-fit z-10 overflow-x-hidden top-[50px] right-0 max-h-[300px] rounded-lg bg-black overflow-y-auto",
+          dropdownMenuListHeight! < 300 && "hide-scrollbar"
         )}
       >
-        {itemList.map((item, i) => (
+        {menuItems.map((menuItem, i) => (
           <button
             key={i}
             onClick={() => {
-              onSelectItem(item);
+              onSelectItem(menuItem);
               setIsOpen(false);
             }}
             className={cn(
               "w-full px-3 py-2 text-gray-400 text-start hover:text-mainAccent whitespace-nowrap",
               {
                 "text-mainAccent":
-                  (labelMap &&
-                    labelMap[currentlySelected as string] === item) ||
-                  currentlySelected === item,
+                  (menuItemLabelNames &&
+                    menuItemLabelNames[currentlySelected as string] === menuItem) ||
+                  currentlySelected === menuItem,
               }
             )}
           >
-            {`${labelMap ? labelMap[item as string] : item}`}
+            {`${menuItemLabelNames ? menuItemLabelNames[menuItem as string] : menuItem}`}
           </button>
         ))}
       </motion.div>

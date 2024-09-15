@@ -7,7 +7,7 @@ type GlobalStoreValues = {
 };
 
 type GlobalStoreActions = {
-  toggleOpenDialog: (dialogContent: ReactNode) => void;
+  toggleOpenDialog: (dialogContent: ReactNode | null) => void;
 };
 
 type GlobalStore = GlobalStoreValues &
@@ -29,6 +29,8 @@ export const useGlobalStore = create<GlobalStore>(
         });
       } else {
         set({ isDialogOpen: false });
+        //need to give slight delay when setting dialog content to null
+        //so that dialog closing animation does not skip frames
         setTimeout(() => {
           set({ dialogContent: null });
         }, 150);
