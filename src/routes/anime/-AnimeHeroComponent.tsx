@@ -184,7 +184,7 @@ export default function AnimeHeroComponent({
             )}
           </div>
           <div className="flex gap-5 my-3">
-            <motion.button
+            <button
               disabled={
                 episodesQuery.isLoading ||
                 episodesQuery.isError ||
@@ -201,27 +201,24 @@ export default function AnimeHeroComponent({
                     },
                   });
               }}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center gap-2 px-4 py-4 rounded-full disabled:bg-fuchsia-800 disabled:text-gray-400 mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent"
+              className="hover:scale-[1.02] transition-transform duration-200 flex items-center gap-2 px-4 py-4 rounded-full disabled:bg-fuchsia-800 disabled:text-gray-400 mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent"
             >
               <Play size={20} />
               <p className="hidden font-medium mobile-m:block">Play Now</p>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center gap-2 px-4 py-4 bg-black rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2"
-            >
+            </button>
+            <button className="hover:scale-[1.02] transition-transform duration-200 flex items-center gap-2 px-4 py-4 bg-black rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2">
               <Bookmark size={20} />
               <p className="hidden font-medium mobile-m:block">Add to List</p>
-            </motion.button>
+            </button>
           </div>
 
           {/*DESCRIPTION*/}
           <div className="relative flex flex-col w-full gap-3 mt-5 lg:mt-0 lg:w-[75%] xl:w-[70%]">
             <p className="text-lg font-semibold lg:hidden">Description</p>
             <motion.div
+              initial={{
+                height: "80px",
+              }}
               animate={{
                 height: readMore ? "auto" : "80px",
               }}

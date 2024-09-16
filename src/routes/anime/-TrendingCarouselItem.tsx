@@ -1,34 +1,26 @@
 import { useNavigate } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import { Bookmark, Play } from "lucide-react";
 
 type AnimeHeroComponentProps = {
   image: string;
-  cover: string;
   title: string;
   description: string;
   id: string;
-  year?: number;
-  type?: string;
   trendingRank?: number;
-  genres: string[];
 };
 
 export default function TrendingCarouselItem({
   image,
-  // cover,
   title,
   description,
   id,
-  // type,
   trendingRank,
-  // genres,
 }: AnimeHeroComponentProps) {
   const navigate = useNavigate();
 
   return (
     <div className="flex items-end justify-center lg:items-center size-full lg:pt-20">
-      <div className="w-full px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1300px] 1600:max-w-[1440px]">
+      <div className="w-full px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px]">
         <div className="flex items-center w-full gap-16">
           <div className="aspect-[3/4] w-[230px] rounded-xl overflow-hidden z-10 lg:block hidden">
             <img src={image} className="object-cover size-full" />
@@ -50,9 +42,7 @@ export default function TrendingCarouselItem({
                 {`${description ? description.replace(/<[^>]*>/g, "") : "No Description"}`}
               </p>
               <div className="flex gap-2 sm:gap-4 sm:my-4">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.2 }}
+                <button
                   onClick={() => {
                     navigate({
                       to: "/anime/$animeId",
@@ -61,21 +51,17 @@ export default function TrendingCarouselItem({
                       },
                     });
                   }}
-                  className="flex items-center gap-1 px-3 py-2 rounded-full sm:gap-2 mobile-l:px-4 sm:px-5 bg-mainAccent"
+                  className="flex items-center gap-1 px-3 py-2 transition-transform duration-200 rounded-full sm:gap-2 mobile-l:px-4 sm:px-5 bg-mainAccent hover:scale-[1.02]"
                 >
                   <Play size={20} />
                   <p className="text-sm font-medium sm:text-base">Play Now</p>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex items-center gap-1 px-3 py-2 bg-black rounded-full sm:gap-2 mobile-l:px-4 sm:px-5"
-                >
+                </button>
+                <button className="hover:scale-[1.02] transition-transform duration-200 flex items-center gap-1 px-3 py-2 bg-black rounded-full sm:gap-2 mobile-l:px-4 sm:px-5">
                   <Bookmark size={20} />
                   <p className="text-sm font-medium sm:text-base">
                     Add to List
                   </p>
-                </motion.button>
+                </button>
               </div>
             </div>
           </div>

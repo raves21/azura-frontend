@@ -30,38 +30,18 @@ import { AnimeInfoAnizip } from "@/utils/types/animeAnizip";
 //   staleTime: 240 * (60 * 1000), //4 hrs
 // };
 
-export function useFetchTrendingAnime(perPage: number, pageNum: number) {
+export function useFetchAnimesByCategory(
+  perPage: number,
+  category: SortBy,
+  status?: AnilistAnimeStatus
+) {
   return useQuery({
-    queryKey: ["trending", pageNum],
+    queryKey: ["categoryAnime", perPage, category],
     queryFn: async () => {
-      const { data: trendingAnimes } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/advanced-search?sort=["TRENDING_DESC"]&perPage=${perPage}&page=${pageNum}`
+      const { data: categoryAnime } = await axios.get(
+        `${import.meta.env.VITE_N_ANILIST_URL}/advanced-search?sort=["${category}"]&perPage=${perPage}${status ? `&status=${status}` : ""}`
       );
-      return trendingAnimes as MultipleAnimeResponse;
-    },
-  });
-}
-
-export function useFetchTopRatedAnime(perPage: number) {
-  return useQuery({
-    queryKey: ["topRated", perPage],
-    queryFn: async () => {
-      const { data: trendingAnimes } = await axios.get(
-        `${import.meta.env.VITE_N_ANILIST_URL}/advanced-search?sort=["SCORE_DESC"]&perPage=${perPage}`
-      );
-      return trendingAnimes as MultipleAnimeResponse;
-    },
-  });
-}
-
-export function useFetchAllTimeFavoriteAnime(perPage: number) {
-  return useQuery({
-    queryKey: ["allTimeFavorite"],
-    queryFn: async () => {
-      const { data: trendingAnimes } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/advanced-search?sort=["FAVOURITES_DESC"]&perPage=${perPage}&page=1`
-      );
-      return trendingAnimes as MultipleAnimeResponse;
+      return categoryAnime as MultipleAnimeResponse;
     },
   });
 }
@@ -149,18 +129,6 @@ export function useFetchAnimeInfo(animeId: string) {
       const animeInfoAnilist = anilistResponse?.data as AnimeInfoAnilist;
       const animeInfoAnify = anifyResponse?.data as AnimeInfoAnify;
       return { animeInfoAnilist, animeInfoAnify };
-    },
-  });
-}
-
-export function useFetchPopularAnimes(perPage: number) {
-  return useQuery({
-    queryKey: ["popular"],
-    queryFn: async () => {
-      const { data: popularAnimes } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/advanced-search?sort=["POPULARITY_DESC"]&perPage=${perPage}`
-      );
-      return popularAnimes as MultipleAnimeResponse;
     },
   });
 }

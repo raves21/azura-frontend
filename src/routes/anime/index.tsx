@@ -1,12 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  useFetchPopularAnimes,
-  useFetchTopRatedAnime,
-  useFetchTrendingAnime,
-} from "../../api/animes";
+import { useFetchAnimesByCategory } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
 import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
-import { SortBy } from "@/utils/types/animeAnilist";
+import { AnilistAnimeStatus, SortBy } from "@/utils/types/animeAnilist";
 
 export const Route = createFileRoute("/anime/")({
   component: () => <AnimeHomePage />,
@@ -17,18 +13,22 @@ function AnimeHomePage() {
     data: trendingAnimes,
     isLoading: isTrendingAnimesLoading,
     error: trendingAnimesError,
-  } = useFetchTrendingAnime(17, 1);
+  } = useFetchAnimesByCategory(
+    17,
+    SortBy.TRENDING_DESC,
+    AnilistAnimeStatus.RELEASING
+  );
   const {
     data: popularAnimes,
     isLoading: isPopularAnimesLoading,
     error: popularAnimesError,
-  } = useFetchPopularAnimes(12);
+  } = useFetchAnimesByCategory(12, SortBy.POPULARITY_DESC);
 
   const {
     data: topRatedAnimes,
     isLoading: isTopRatedAnimesLoading,
     error: topRatedAnimesError,
-  } = useFetchTopRatedAnime(12);
+  } = useFetchAnimesByCategory(12, SortBy.SCORE_DESC);
 
   if (
     isTrendingAnimesLoading ||
@@ -68,7 +68,7 @@ function AnimeHomePage() {
           <AnimeCategoryCarousel
             seeAllSortBy={SortBy.TRENDING_DESC}
             isHomePage
-            animeList={trendingAnimes.results.slice(3)}
+            animeList={trendingAnimes.results.slice(5)}
             categoryName="Trending Anime"
           />
         )}
