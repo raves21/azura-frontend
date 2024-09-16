@@ -94,8 +94,9 @@ export default function AnimeCard(props: AnimeCardProps) {
               props.recommendation.title.romaji}
           </p>
           <div className="flex items-center gap-2 text-xs text-gray-400">
-            {props.recommendation.status === Status.NotYetAired ||
-            props.recommendation.status === Status.NOT_YET_RELEASED ? (
+            {[Status.NotYetAired, Status.NOT_YET_RELEASED].includes(
+              props.recommendation.status
+            ) ? (
               <p className="line-clamp-1">Not yet aired</p>
             ) : (
               <>

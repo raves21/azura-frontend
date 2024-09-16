@@ -1,5 +1,5 @@
 import { useFilterAnime } from "@/api/animes";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 import CatalogAnimeList from "./-CatalogAnimeList";
@@ -12,6 +12,7 @@ import {
 } from "@/utils/types/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import FiltersDialog from "./-FiltersDialog";
+import Pagination from "@/components/global/Pagination";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/anime/catalog/")({
 function CatalogPage() {
   const { format, genres, page, query, season, sortBy, year, status } =
     Route.useSearch();
+  const navigate = useNavigate();
   const { toggleOpenDialog } = useGlobalStore();
   const {
     data: filteredAnimes,
@@ -79,7 +81,7 @@ function CatalogPage() {
 
   if (filteredAnimes) {
     return (
-      <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 flex flex-col gap-10">
+      <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 flex flex-col gap-6">
         <header className="space-y-7 lg:space-y-8">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">
@@ -101,7 +103,19 @@ function CatalogPage() {
           <AppliedFilters />
         </header>
         {filteredAnimes.results.length !== 0 ? (
-          <CatalogAnimeList animeList={filteredAnimes.results} />
+          <>
+            <CatalogAnimeList animeList={filteredAnimes.results} />
+            <Pagination
+              className="mt-10"
+              totalPages={filteredAnimes.totalPages}
+              currentPage={filteredAnimes.currentPage}
+              handlePageChange={(_, page) => {
+                navigate({
+                  search: (prev) => ({ ...prev, page: page }),
+                });
+              }}
+            />
+          </>
         ) : (
           <div className="grid flex-grow text-base text-center md:text-lg place-items-center">
             Sorry, we could not find the Anime you were looking for.
