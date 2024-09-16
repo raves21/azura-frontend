@@ -49,7 +49,7 @@ export function getEpisodesToBeRendered(
             : null,
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
-            ? animeInfoAnizip?.episodes[ep.number].title.en
+            ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
             : `EP ${ep.number}`,
       };
     });
@@ -66,7 +66,7 @@ export function getEpisodesToBeRendered(
             : undefined,
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
-            ? animeInfoAnizip?.episodes[ep.number].title.en
+            ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
             : `EP ${ep.number}`,
       };
     });
