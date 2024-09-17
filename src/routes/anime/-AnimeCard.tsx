@@ -22,7 +22,7 @@ export default function AnimeCard(props: AnimeCardProps) {
       <Link to={`/anime/${props.anime.id}`} className="space-y-2 group">
         <div
           className={cn(
-            "relative aspect-[3/4] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl",
+            "relative aspect-[3/4] min-h-[130px] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl",
             props.className
           )}
         >
@@ -72,7 +72,7 @@ export default function AnimeCard(props: AnimeCardProps) {
       >
         <div
           className={cn(
-            "relative aspect-[3/4] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl",
+            "relative aspect-[3/4] min-h-[130px] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl",
             props.className
           )}
         >
