@@ -88,7 +88,7 @@ export default function AnimeCategoryCarousel(
     );
   } else {
     return (
-      <div className="w-full pt-16 space-y-6 text-gray-400">
+      <div className="w-full space-y-6 text-gray-400">
         <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
           {props.categoryName}
         </p>

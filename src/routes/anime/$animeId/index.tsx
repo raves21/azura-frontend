@@ -69,8 +69,8 @@ function AnimeInfoPage() {
           type={animeInfoAnilist?.type || animeInfoAnify?.format}
           year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
           rating={
-            animeInfoAnilist?.rating! * 0.1 ??
-            animeInfoAnify?.rating.anilist ??
+            animeInfoAnilist?.rating * 0.1 ||
+            animeInfoAnify?.rating.anilist ||
             null
           }
         />
