@@ -17,6 +17,7 @@ export function chunkEpisodes(
       const start = i * epsPerChunk + 1;
       const end = Math.min((i + 1) * epsPerChunk, eps.length);
       return {
+        label: `${start} - ${end}`,
         startEp: start,
         endEp: end,
         episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk),
@@ -39,20 +40,28 @@ export function getEpisodesToBeRendered(
   const gogoAnimeEpisodes = gogoAnimeData ? gogoAnimeData.episodes : null;
 
   if (gogoAnimeEpisodes && gogoAnimeEpisodes.length !== 0) {
-    return gogoAnimeEpisodes.map((ep) => {
+    const a = gogoAnimeEpisodes.map((ep) => {
+      console.log(
+        `EP ${ep.number}`,
+        animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
+          ? animeInfoAnizip?.episodes[ep.number].image
+          : undefined
+      );
       return {
         id: ep.id,
         number: ep.number,
         image:
-          animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
-            ? animeInfoAnizip?.episodes[ep.number].image
-            : null,
+          animeInfoAnizip && animeInfoAnizip.episodes[ep.number]
+            ? animeInfoAnizip.episodes[ep.number].image
+            : undefined,
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
             ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
             : `EP ${ep.number}`,
       };
     });
+    console.log("A", a);
+    return a;
   }
   //if no anify, fallback to anilist
   else if (anilistEpisodes && anilistEpisodes.length !== 0) {
@@ -62,7 +71,7 @@ export function getEpisodesToBeRendered(
         number: ep.number,
         image:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
-            ? animeInfoAnizip?.episodes[ep.number].image || undefined
+            ? animeInfoAnizip?.episodes[ep.number].image || ep.image
             : undefined,
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]

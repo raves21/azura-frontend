@@ -4,19 +4,29 @@ import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useHandleClickOutside } from "@/utils/hooks/useHandleClickOutside";
 
-type DropdownFilterProps<T> = {
+type CustomDropdownProps<T> = {
   menuItems: T[];
-  menuItemLabelNames?: Record<string, string>;
+  menuItemLabelNames?: string[];
+  menuEnumItemLabelNames?: Record<string, string>;
   onSelectItem: (item: T) => void;
   currentlySelected: T | null;
+  menuContentMaxHeight: number;
+  menuContentClassName?: string;
+  menuItemClassName?: string;
+  dropdownTriggerClassName?: string;
 };
 
-export default function FilterDropdown<T>({
+export default function CustomDropdown<T>({
   menuItems,
   onSelectItem,
   currentlySelected,
+  menuEnumItemLabelNames,
   menuItemLabelNames,
-}: DropdownFilterProps<T>) {
+  dropdownTriggerClassName,
+  menuContentClassName,
+  menuItemClassName,
+  menuContentMaxHeight,
+}: CustomDropdownProps<T>) {
   const dropdownMenuListRef = useRef<HTMLDivElement | null>(null);
   const parentDivRef = useRef<HTMLDivElement | null>(null);
   const [dropdownMenuListHeight, setDropdownMenuListHeight] = useState<
@@ -29,13 +39,18 @@ export default function FilterDropdown<T>({
     <div className="relative" ref={parentDivRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-4 lg:px-5 py-2 border border-gray-400 rounded-full z-[100]"
+        className={cn(
+          "flex items-center gap-3 text-mainAccent px-4 lg:px-5 py-2 border border-gray-400 rounded-full z-[100]",
+          dropdownTriggerClassName
+        )}
       >
-        <p className="font-medium text-mainAccent">
+        <p className="font-medium">
           {currentlySelected
-            ? menuItemLabelNames
-              ? menuItemLabelNames[currentlySelected as string]
-              : `${currentlySelected}`
+            ? menuEnumItemLabelNames
+              ? menuEnumItemLabelNames[currentlySelected as string]
+              : menuItemLabelNames
+                ? menuItemLabelNames[menuItems.indexOf(currentlySelected)]
+                : `${currentlySelected}`
             : "Any"}
         </p>
         <ChevronDown
@@ -43,6 +58,9 @@ export default function FilterDropdown<T>({
         />
       </button>
       <motion.div
+        style={{
+          maxHeight: menuContentMaxHeight,
+        }}
         initial={{
           height: 0,
         }}
@@ -61,8 +79,10 @@ export default function FilterDropdown<T>({
           }
         }}
         className={cn(
-          "absolute w-fit z-10 overflow-x-hidden top-[50px] right-0 max-h-[300px] rounded-lg bg-black overflow-y-auto",
-          dropdownMenuListHeight! < 300 && "hide-scrollbar"
+          "absolute w-fit z-40 overflow-x-hidden top-[50px] right-0 rounded-lg bg-black overflow-y-auto",
+          dropdownMenuListHeight! < menuContentMaxHeight && "hide-scrollbar",
+          { "border border-gray-400": isOpen },
+          menuContentClassName
         )}
       >
         {menuItems.map((menuItem, i) => (
@@ -74,15 +94,17 @@ export default function FilterDropdown<T>({
             }}
             className={cn(
               "w-full px-3 py-2 text-gray-400 text-start hover:text-mainAccent whitespace-nowrap",
+              menuItemClassName,
               {
                 "text-mainAccent":
-                  (menuItemLabelNames &&
-                    menuItemLabelNames[currentlySelected as string] === menuItem) ||
+                  (menuEnumItemLabelNames &&
+                    menuEnumItemLabelNames[currentlySelected as string] ===
+                      menuItem) ||
                   currentlySelected === menuItem,
               }
             )}
           >
-            {`${menuItemLabelNames ? menuItemLabelNames[menuItem as string] : menuItem}`}
+            {`${menuEnumItemLabelNames ? menuEnumItemLabelNames[menuItem as string] : menuItemLabelNames ? menuItemLabelNames[i] : menuItem}`}
           </button>
         ))}
       </motion.div>

@@ -45,7 +45,6 @@ export default function EpisodeCard({
         </div>
         <div className="bg-gray-700 rounded-lg size-full">
           <img
-            loading="eager"
             src={image || episodeImageFallback || "/no-image.png"}
             className="absolute inset-0 object-cover rounded-lg size-full"
           />

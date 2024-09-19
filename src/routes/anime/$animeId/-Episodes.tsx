@@ -1,8 +1,10 @@
-import { AnimeEpisodes } from "@/utils/types/animeAnilist";
+import { AnimeEpisodes, EpisodeChunk } from "@/utils/types/animeAnilist";
 import { ChevronDown } from "lucide-react";
 import EpisodeCard from "./-EpisodeCard";
 import { useChunkEpisodes } from "@/api/animes";
 import { UseQueryResult } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import CustomDropdown from "../../../components/reusables/CustomDropdown";
 
 type EpisodeProps = {
   animeId: string | undefined;
@@ -31,6 +33,14 @@ export default function Episodes({
 
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
     useChunkEpisodes(episodes);
+
+  const [selectedChunk, setSelectedChunk] = useState<EpisodeChunk | null>(null);
+
+  useEffect(() => {
+    if (chunkedEpisodes) {
+      setSelectedChunk(chunkedEpisodes[0]);
+    }
+  }, [chunkedEpisodes]);
 
   if (isEpisodesLoading || isChunkEpisodesLoading) {
     return (
@@ -64,19 +74,23 @@ export default function Episodes({
               Episodes
             </p>
             {chunkedEpisodes.length > 1 && (
-              <button className="flex items-center gap-3 py-2 pl-4 pr-3 transition-all duration-300 border border-gray-400 rounded-full group hover:border-mainAccent">
-                <p className="duration-300 group-hover:text-mainAccent">
-                  {chunkedEpisodes
-                    ? `${chunkedEpisodes[0].startEp} - ${chunkedEpisodes[0].endEp}`
-                    : "0-0"}
-                </p>
-                <ChevronDown className="duration-300 size-6 group-hover:stroke-mainAccent" />
-              </button>
+              <CustomDropdown
+                menuContentClassName="bg-darkBg top-[60px]"
+                menuItemClassName="text-gray-400 lg:py-3"
+                dropdownTriggerClassName="lg:py-3 text-gray-400"
+                menuItems={chunkedEpisodes}
+                currentlySelected={selectedChunk}
+                menuContentMaxHeight={350}
+                onSelectItem={(epChunk) => setSelectedChunk(epChunk)}
+                menuItemLabelNames={chunkedEpisodes.map(
+                  (epChunk) => epChunk.label
+                )}
+              />
             )}
           </div>
-          <div className="h-[360px] lg:h-auto overflow-y-auto">
+          <div className="max-h-[350px] lg:max-h-fit overflow-y-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-x-3 gap-y-4 lg:gap-x-4 lg:gap-y-6">
-              {chunkedEpisodes[0].episodes.map((episode, i) => {
+              {selectedChunk?.episodes.map((episode, i) => {
                 return (
                   <EpisodeCard
                     episodeImageFallback={episodeImageFallback}
@@ -119,7 +133,7 @@ export default function Episodes({
               </button>
             )}
           </div>
-          <div className="h-[350px] overflow-y-auto lg:h-auto z-[1]">
+          <div className="max-h-[350px] overflow-y-auto lg:max-h-fit z-[1]">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-3 gap-y-4">
               {chunkedEpisodes[0].episodes.map((episode, i) => {
                 return (
