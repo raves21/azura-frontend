@@ -58,7 +58,7 @@ export default function Episodes({
   if (episodes && chunkedEpisodes) {
     if (isInfoPage) {
       return (
-        <div className="flex flex-col w-full pt-8 space-y-6 text-sm text-gray-400 lg:text-base">
+        <div className="flex flex-col w-full pt-8 mb-16 space-y-6 text-sm text-gray-400 lg:text-base">
           <div className="flex items-center justify-between">
             <p className="text-lg lg:text-xl font-semibold text-[#f6f4f4]">
               Episodes

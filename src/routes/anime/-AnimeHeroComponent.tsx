@@ -23,8 +23,7 @@ type AnimeHeroComponentProps = {
   year?: number;
   type?: Format;
   status?: Status;
-  trendingRank?: number;
-  genres?: Genre[];
+  genres?: string[];
   rating?: number | null;
   animeId: string;
   episodesQuery: UseQueryResult<AnimeEpisodes, Error>;
@@ -79,7 +78,7 @@ export default function AnimeHeroComponent({
           <p className="px-8 text-2xl font-semibold text-center lg:text-3xl lg:px-0 lg:text-start line-clamp-2">
             {title}
           </p>
-          <div className="items-center hidden gap-4 lg:flex lg:my-1">
+          <div className="items-center hidden gap-4 ml-2 lg:flex lg:my-1">
             <div
               style={{
                 WebkitMaskImage: 'url("/five-stars.svg")',

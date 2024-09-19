@@ -4,6 +4,10 @@ import AnimeHeroComponent from "../-AnimeHeroComponent";
 import Episodes from "./-Episodes";
 import { useEffect } from "react";
 import AnimeCategoryCarousel from "../-AnimeCategoryCarousel";
+import { Genre } from "@/utils/types/animeAnilist";
+
+const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
+
 export const Route = createFileRoute("/anime/$animeId/")({
   component: () => <AnimeInfoPage />,
 });
@@ -61,7 +65,13 @@ function AnimeInfoPage() {
           description={
             animeInfoAnilist?.description || animeInfoAnify?.description
           }
-          genres={animeInfoAnilist?.genres || undefined}
+          genres={
+            animeInfoAnilist?.genres || animeInfoAnify?.genres
+              ? animeInfoAnify?.genres.filter((genre) =>
+                  anilistGenres.includes(genre)
+                )
+              : undefined
+          }
           status={animeInfoAnilist?.status || animeInfoAnify?.status}
           totalEpisodes={
             animeInfoAnilist?.totalEpisodes || animeInfoAnify?.totalEpisodes
@@ -69,8 +79,8 @@ function AnimeInfoPage() {
           type={animeInfoAnilist?.type || animeInfoAnify?.format}
           year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
           rating={
-            animeInfoAnilist?.rating! * 0.1 ??
-            animeInfoAnify?.rating.anilist ??
+            animeInfoAnilist?.rating * 0.1 ||
+            animeInfoAnify?.rating.anilist ||
             null
           }
         />
@@ -90,7 +100,6 @@ function AnimeInfoPage() {
         {animeInfoAnilist?.recommendations &&
           animeInfoAnilist?.recommendations.length !== 0 && (
             <AnimeCategoryCarousel
-              isInfoPage
               isHomePage={false}
               recommendations={animeInfoAnilist?.recommendations}
               categoryName="Recommendations"

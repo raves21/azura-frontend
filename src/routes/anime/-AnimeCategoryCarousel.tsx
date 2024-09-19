@@ -19,11 +19,7 @@ type HomePageProps = {
 type NotHomePageProps = {
   isHomePage: false;
   recommendations: Recommendation[];
-} & isInfoPage;
-
-type isInfoPage = {
-  isInfoPage: boolean;
-};
+}
 
 type AnimeCategoryCarouselProps = {
   categoryName: string;
@@ -35,7 +31,6 @@ export default function AnimeCategoryCarousel(
   if (props.isHomePage) {
     return (
       <div
-        // className="w-full px-3 pt-5 space-y-6 text-gray-400 lg:px-16 sm:px-6"
         className="w-full pt-5 space-y-6 text-gray-400"
       >
         <div className="flex items-center justify-between w-full">
@@ -88,7 +83,7 @@ export default function AnimeCategoryCarousel(
     );
   } else {
     return (
-      <div className="w-full pt-16 space-y-6 text-gray-400">
+      <div className="w-full space-y-6 text-gray-400">
         <p className="text-lg font-semibold sm:text-xl lg:text-2xl">
           {props.categoryName}
         </p>
