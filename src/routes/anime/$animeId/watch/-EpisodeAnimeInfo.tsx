@@ -60,7 +60,7 @@ export default function EpisodeAnimeInfo({
   }, [windowWidth]);
 
   return (
-    <main className="relative flex flex-col w-full gap-6 py-24 mb-10 justfy-center mt-14">
+    <main className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justfy-center">
       <div className="absolute inset-0 size-full max-h-[500px] rounded-[inherit]">
         <div className="absolute bg-black/60 size-full backdrop-blur-[1px] rounded-[inherit]"></div>
         <div className="absolute bg-gradient-to-r from-darkBg from-[percentage:0%_1%] rounded-[inherit] via-transparent to-transparent size-full"></div>
