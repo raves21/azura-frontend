@@ -23,7 +23,7 @@ type AnimeHeroComponentProps = {
   year?: number;
   type?: Format;
   status?: Status;
-  genres?: Genre[];
+  genres?: string[];
   rating?: number | null;
   animeId: string;
   episodesQuery: UseQueryResult<AnimeEpisodes, Error>;

@@ -117,7 +117,7 @@ export function useFetchAnimeInfo(animeId: string) {
           .catch(() => null),
         axios
           .get(
-            `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[bannerImage,coverImage,title,rating,trailer,description,id,totalEpisodes,year,status,format]`
+            `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[genres,bannerImage,coverImage,title,rating,trailer,description,id,totalEpisodes,year,status,format]`
           )
           .catch(() => null),
       ]);

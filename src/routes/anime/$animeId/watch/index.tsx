@@ -17,6 +17,9 @@ import {
   useEpisodeInfo,
 } from "@/api/animes";
 import EpisodeTitleAndNumber from "./-EpisodeTitleAndNumber";
+import { Genre } from "@/utils/types/animeAnilist";
+
+const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
 
 const episodePageSearchParams = z.object({
   id: z.coerce.string(),
@@ -145,7 +148,13 @@ function WatchEpisodePage() {
           description={
             animeInfoAnilist?.description || animeInfoAnify?.description
           }
-          genres={animeInfoAnilist?.genres || undefined}
+          genres={
+            animeInfoAnilist?.genres || animeInfoAnify?.genres
+              ? animeInfoAnify?.genres.filter((genre) =>
+                  anilistGenres.includes(genre)
+                )
+              : undefined
+          }
           status={animeInfoAnilist?.status || animeInfoAnify?.status}
           totalEpisodes={
             animeInfoAnilist?.totalEpisodes || animeInfoAnify?.totalEpisodes
@@ -160,7 +169,6 @@ function WatchEpisodePage() {
         />
         {animeInfoAnilist?.recommendations && (
           <AnimeCategoryCarousel
-            isInfoPage={false}
             isHomePage={false}
             categoryName="Recommendations"
             recommendations={animeInfoAnilist?.recommendations}
