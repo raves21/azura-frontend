@@ -12,7 +12,7 @@ import {
 } from "@/utils/types/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import FiltersDialog from "./-FiltersDialog";
-import Pagination from "@/components/global/Pagination";
+import Pagination from "@/components/reusables/Pagination";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),

@@ -137,24 +137,26 @@ export function useFetchAnimeEpisodes(animeId: string) {
   return useQuery({
     queryKey: ["episodes", animeId],
     queryFn: async () => {
-      const [anifyEpsResponse, anilistEpsResponse] = await axios.all([
-        axios
-          .get(
-            `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[episodes]`
-          )
-          .catch(() => null),
-        axios
-          .get(`${import.meta.env.VITE_ANILIST_URL}/episodes/${animeId}`)
-          .catch(() => null),
-      ]);
+      const [anifyEpsResponse, anilistEpsResponse, anizipResponse] =
+        await axios.all([
+          axios
+            .get(
+              `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[episodes]`
+            )
+            .catch(() => null),
+          axios
+            .get(`${import.meta.env.VITE_ANILIST_URL}/episodes/${animeId}`)
+            .catch(() => null),
+          axios
+            .get(
+              `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
+            )
+            .catch(() => null),
+        ]);
 
       if (!anifyEpsResponse && !anilistEpsResponse) {
         throw new Error("therse was an error fetching episodes for this anime");
       }
-
-      const anizipResponse = await axios.get(
-        `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
-      );
 
       const anifyEps = anifyEpsResponse?.data.episodes.data as Data[];
       const anilistEps = anilistEpsResponse?.data as Episode[];

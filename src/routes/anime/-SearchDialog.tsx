@@ -9,7 +9,7 @@ import { useGlobalStore } from "@/utils/stores/globalStore";
 export default function SearchDialog() {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 400);
+  const debouncedSearch = useDebounce({ value: search, delay: 400 });
   const navigate = useNavigate();
   const { toggleOpenDialog } = useGlobalStore();
 

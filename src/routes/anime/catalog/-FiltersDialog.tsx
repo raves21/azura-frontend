@@ -8,7 +8,7 @@ import {
 } from "@/utils/types/animeAnilist";
 import FilterPill from "./-FilterPill";
 import { useState } from "react";
-import FilterDropdown from "./-FilterDropdown";
+import CustomDropdown from "@/components/reusables/CustomDropdown";
 import {
   formatLabels,
   seasonLabels,
@@ -141,46 +141,51 @@ export default function FiltersDialog() {
             <div className="flex flex-wrap justify-center gap-6 text-xs xl:text-base mobile-m:px-2 sm:px-2 md:px-3 md:text-sm">
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Sort By:</p>
-                <FilterDropdown
+                <CustomDropdown
                   menuItems={sortBys}
                   onSelectItem={(sortBy) => setSelectedSortBy(sortBy)}
-                  menuItemLabelNames={sortByLabels}
+                  menuEnumItemLabelNames={sortByLabels}
                   currentlySelected={selectedSortBy}
+                  menuContentMaxHeight={300}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Type:</p>
-                <FilterDropdown
+                <CustomDropdown
                   menuItems={formats}
                   onSelectItem={(format) => setSelectedFormat(format)}
-                  menuItemLabelNames={formatLabels}
+                  menuEnumItemLabelNames={formatLabels}
                   currentlySelected={selectedFormat}
+                  menuContentMaxHeight={300}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Status:</p>
-                <FilterDropdown
+                <CustomDropdown
                   menuItems={statuses}
-                  menuItemLabelNames={anilistAnimeStatusLabels}
+                  menuEnumItemLabelNames={anilistAnimeStatusLabels}
                   onSelectItem={(status) => setSelectedStatus(status)}
                   currentlySelected={selectedStatus}
+                  menuContentMaxHeight={300}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Season:</p>
-                <FilterDropdown
+                <CustomDropdown
                   menuItems={seasons}
                   onSelectItem={(season) => setSelectedSeason(season)}
-                  menuItemLabelNames={seasonLabels}
+                  menuEnumItemLabelNames={seasonLabels}
                   currentlySelected={selectedSeason}
+                  menuContentMaxHeight={300}
                 />
               </div>
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Year:</p>
-                <FilterDropdown
+                <CustomDropdown
                   menuItems={years}
                   onSelectItem={(year) => setSelectedYear(year)}
                   currentlySelected={selectedYear}
+                  menuContentMaxHeight={300}
                 />
               </div>
             </div>

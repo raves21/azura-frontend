@@ -5,7 +5,6 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   AnimeEpisodes,
   Format,
-  Genre,
   Status,
 } from "@/utils/types/animeAnilist";
 import { Link } from "@tanstack/react-router";

@@ -176,6 +176,7 @@ export type Episode = {
 };
 
 export type EpisodeChunk = {
+  label: string
   startEp: number;
   endEp: number;
   episodes: EpisodeToBeRendered[];
