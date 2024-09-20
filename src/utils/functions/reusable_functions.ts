@@ -41,12 +41,6 @@ export function getEpisodesToBeRendered(
 
   if (gogoAnimeEpisodes && gogoAnimeEpisodes.length !== 0) {
     const a = gogoAnimeEpisodes.map((ep) => {
-      console.log(
-        `EP ${ep.number}`,
-        animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
-          ? animeInfoAnizip?.episodes[ep.number].image
-          : undefined
-      );
       return {
         id: ep.id,
         number: ep.number,
@@ -60,7 +54,6 @@ export function getEpisodesToBeRendered(
             : `EP ${ep.number}`,
       };
     });
-    console.log("A", a);
     return a;
   }
   //if no anify, fallback to anilist

@@ -14,6 +14,7 @@ type CustomDropdownProps<T> = {
   menuContentClassName?: string;
   menuItemClassName?: string;
   dropdownTriggerClassName?: string;
+  showMenuContentBorder?: boolean;
 };
 
 export default function CustomDropdown<T>({
@@ -26,17 +27,23 @@ export default function CustomDropdown<T>({
   menuContentClassName,
   menuItemClassName,
   menuContentMaxHeight,
+  showMenuContentBorder,
 }: CustomDropdownProps<T>) {
   const dropdownMenuListRef = useRef<HTMLDivElement | null>(null);
-  const parentDivRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [dropdownMenuListHeight, setDropdownMenuListHeight] = useState<
     number | undefined
   >(0);
   const [isOpen, setIsOpen] = useState(false);
-  useHandleClickOutside(parentDivRef, () => setIsOpen(false));
+  
+  //for closing the dropdown if user clicks anywhere outside of it
+  useHandleClickOutside({
+    ref: containerRef,
+    callBack: () => setIsOpen(false),
+  });
 
   return (
-    <div className="relative" ref={parentDivRef}>
+    <div className="relative" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
@@ -81,7 +88,7 @@ export default function CustomDropdown<T>({
         className={cn(
           "absolute w-fit z-40 overflow-x-hidden top-[50px] right-0 rounded-lg bg-black overflow-y-auto",
           dropdownMenuListHeight! < menuContentMaxHeight && "hide-scrollbar",
-          { "border border-gray-400": isOpen },
+          { "border border-gray-400": isOpen && showMenuContentBorder },
           menuContentClassName
         )}
       >

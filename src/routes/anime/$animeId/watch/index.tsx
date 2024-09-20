@@ -134,6 +134,7 @@ function WatchEpisodePage() {
             animeId={animeId}
             replace
             type={animeInfoAnilist?.type || animeInfoAnify?.format}
+            currentlyWatchingEpisodeNumber={episodeInfo.number}
           />
         </section>
         <EpisodeAnimeInfo

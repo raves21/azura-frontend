@@ -73,13 +73,16 @@
 }
 
 * {
-  @apply p-0 m-0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html,
 body {
-  @apply overflow-x-hidden
-   bg-[#100c14];
+  overflow-x: hidden;
+  background: #100c14;
+  scroll-behavior: smooth;
 }
 
 @layer utilities {
