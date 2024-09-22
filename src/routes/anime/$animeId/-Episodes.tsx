@@ -132,9 +132,8 @@ export default function Episodes({
             </p>
             {chunkedEpisodes.length > 1 && (
               <CustomDropdown
-                menuContentClassName="bg-darkBg top-[60px]"
-                menuItemClassName="lg:py-3"
-                dropdownTriggerClassName="lg:py-3 text-gray-400"
+                menuContentClassName="bg-darkBg"
+                dropdownTriggerClassName="text-gray-400"
                 menuItems={chunkedEpisodes}
                 currentlySelected={selectedChunk}
                 menuContentMaxHeight={350}
@@ -182,8 +181,7 @@ export default function Episodes({
             </p>
             {selectedChunk && chunkedEpisodes.length > 1 && (
               <CustomDropdown
-                menuContentClassName="bg-darkBg top-[60px]"
-                menuItemClassName=""
+                menuContentClassName="bg-darkBg"
                 dropdownTriggerClassName="text-gray-400"
                 menuItems={chunkedEpisodes}
                 currentlySelected={selectedChunk}
