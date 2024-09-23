@@ -82,7 +82,6 @@ html,
 body {
   overflow-x: hidden;
   background: #100c14;
-  scroll-behavior: smooth;
 }
 
 @layer utilities {

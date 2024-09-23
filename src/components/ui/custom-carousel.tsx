@@ -238,8 +238,10 @@ const CarouselPrevious = React.forwardRef<
           {...props}
         >
           <ChevronLeft
-            className={`size-8 md:size-10 xl:size-12 ${isHovered ? "" : "opacity-70"}`}
-            color={isHovered ? "white" : "#c026d3"}
+            className={cn(
+              `size-8 md:size-10 xl:size-12 stroke-mainAccent`,
+              {"stroke-white" : isHovered} 
+            )}
           />
           <span className="sr-only">Previous slide</span>
         </Button>
@@ -306,8 +308,10 @@ const CarouselNext = React.forwardRef<
           {...props}
         >
           <ChevronRight
-            className={`size-8 md:size-10 xl:size-12 ${isHovered ? "" : "opacity-70"}`}
-            color={isHovered ? "white" : "#c026d3"}
+            className={cn(
+              `size-8 md:size-10 xl:size-12 stroke-mainAccent`,
+              {"stroke-white" : isHovered} 
+            )}
           />
           <span className="sr-only">Next slide</span>
         </Button>
