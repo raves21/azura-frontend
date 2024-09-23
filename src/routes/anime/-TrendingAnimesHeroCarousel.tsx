@@ -22,7 +22,7 @@ export default function TrendingAnimesHeroCarousel({
           return (
             <CarouselItem
               key={i}
-              className="relative w-full h-[380px] mobile-l:h-[400px] sm:h-[420px] md:h-[450px] lg:h-[500px] xl:h-[525px]"
+              className="relative w-full h-[350px] mobile-m:h-[380px] mobile-l:h-[400px] sm:h-[420px] md:h-[450px] lg:h-[500px] xl:h-[525px]"
             >
               <TrendingCarouselItem
                 image={anime.image}
