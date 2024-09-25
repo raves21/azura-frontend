@@ -75,7 +75,7 @@ export default function HomeHeader() {
         {/* <button onClick={() => router.history.back()} className="px-2 py-1">
           <img src="/chevron-left.svg" className="self-end size-5" />
         </button> */}
-        <Link to="/anime">
+        <Link to="/anime" className="p-1">
           <img
             src="/azura-logo-with-label.svg"
             className="w-24 mobile-m:w-28"
@@ -83,16 +83,20 @@ export default function HomeHeader() {
         </Link>
       </div>
       <div className="flex items-center gap-4">
-        <Search
-          className="size-6"
+        <button
+          className="p-[6px]"
           onClick={() => toggleOpenDialog(<SearchDialog />)}
-        />
-        <button className="p-[2px] rounded-full bg-mainAccent box-content">
-          <div className="box-content overflow-hidden border-2 rounded-full size-6 border-darkBg">
-            <img
-              src="/sample-user-pfp.png"
-              className="object-cover size-full"
-            />
+        >
+          <Search className="size-6" />
+        </button>
+        <button className="p-[2px]">
+          <div className="p-[2px] rounded-full bg-mainAccent box-content">
+            <div className="box-content overflow-hidden border-2 rounded-full size-6 border-darkBg">
+              <img
+                src="/sample-user-pfp.png"
+                className="object-cover size-full"
+              />
+            </div>
           </div>
         </button>
       </div>

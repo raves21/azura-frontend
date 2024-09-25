@@ -100,7 +100,7 @@ export default function CustomDropdown<T>({
               setIsOpen(false);
             }}
             className={cn(
-              "w-full px-3 py-2 text-gray-400 text-start hover:text-mainAccent whitespace-nowrap",
+              "w-full px-3 py-2 text-gray-400 text-start lg:hover:text-mainAccent whitespace-nowrap",
               menuItemClassName,
               {
                 "text-mainAccent":
