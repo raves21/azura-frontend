@@ -29,7 +29,7 @@ export default function SearchDialogResults({
 
   if (error) {
     return (
-      <div className="grid w-full py-4 place-items-center rounded-b-lg text-[#f6f4f4] bg-gray-800 text-balance">
+      <div className="grid text-center w-full py-4 place-items-center rounded-b-lg text-[#f6f4f4] bg-gray-800 text-balance">
         There seems to be problems with search. Please try again later.
       </div>
     );
