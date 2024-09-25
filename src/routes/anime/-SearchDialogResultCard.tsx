@@ -19,7 +19,7 @@ export default function SearchDialogResultCard({
       onClick={() => toggleOpenDialog(null)}
       className="flex w-full gap-4 px-3 py-2 hover:bg-gray-900/70"
     >
-      <div className="aspect-[3/4] w-[90px] bg-gray-600 rounded-md">
+      <div className="aspect-[3/4] h-min w-[90px] bg-gray-600 rounded-md">
         <img
           src={anime.image}
           alt={anime.title.english ?? anime.title.romaji}
