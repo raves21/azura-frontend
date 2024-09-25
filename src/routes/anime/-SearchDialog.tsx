@@ -34,7 +34,7 @@ export default function SearchDialog() {
   };
 
   return (
-    <div className="w-[800px]">
+    <div className="px-2 w-dvw sm:px-8 md:max-w-[800px]">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -48,8 +48,11 @@ export default function SearchDialog() {
           ref={searchInputRef}
           type="text"
           className={cn(
-            "focus:outline-none p-5 text-lg placeholder-gray-400 font-medium text-[#f6f4f4] bg-gray-800 rounded-lg size-full",
-            debouncedSearch ? "rounded-b-none" : ""
+            "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-[#f6f4f4] bg-gray-800 rounded-lg size-full",
+            {
+              "rounded-b-none":
+                debouncedSearch || isSearchResultsLoading || searchResultsError,
+            }
           )}
           placeholder="Search anime..."
         />
