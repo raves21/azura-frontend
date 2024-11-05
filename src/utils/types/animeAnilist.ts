@@ -30,7 +30,6 @@ export type Anime = {
 };
 
 export type AnimeInfoAnilist = Anime & {
-  synonyms: string[];
   isLicensed: boolean;
   isAdult: boolean;
   countryOfOrigin: string;
@@ -42,10 +41,8 @@ export type AnimeInfoAnilist = Anime & {
   studios: string[];
   subOrDub: string;
   recommendations: Recommendation[];
-  characters: Character[];
   relations: Relation[];
   mappings: Mapping[];
-  artwork: Artwork[];
   episodes: Episode[];
 };
 
@@ -90,18 +87,6 @@ export type Trailer = {
   thumbnailHash: string;
 };
 
-export type Artwork = {
-  img: string;
-  type: ArtworkType;
-  providerId: ProviderID;
-};
-
-export enum ProviderID {
-  Anilist = "anilist",
-  Kitsu = "kitsu",
-  Tvdb = "tvdb",
-}
-
 export enum ArtworkType {
   Banner = "banner",
   ClearArt = "clear_art",
@@ -110,36 +95,6 @@ export enum ArtworkType {
   Poster = "poster",
   TopBanner = "top_banner",
 }
-
-export type Character = {
-  id: number;
-  role: Role;
-  name: Name;
-  image: string;
-  imageHash: string;
-  voiceActors: VoiceActor[];
-};
-
-export type Name = {
-  first: string;
-  last: null | string;
-  full: string;
-  native: null | string;
-  userPreferred: string;
-};
-
-export enum Role {
-  Main = "MAIN",
-  Supporting = "SUPPORTING",
-}
-
-export type VoiceActor = {
-  id: number;
-  language: Language;
-  name: Name;
-  image: string;
-  imageHash: string;
-};
 
 export enum Language {
   English = "English",
@@ -160,26 +115,12 @@ export type EndDateClass = {
   day: number;
 };
 
-export type EpisodeToBeRendered = {
-  id: string;
-  title: string;
-  number: number;
-  image: string | null | undefined;
-};
-
 export type Episode = {
   id: string;
   title: string;
   number: number;
   image?: string | null;
   img?: string | null;
-};
-
-export type EpisodeChunk = {
-  label: string
-  startEp: number;
-  endEp: number;
-  episodes: EpisodeToBeRendered[];
 };
 
 export type Mapping = {
@@ -200,7 +141,7 @@ export type Recommendation = {
   cover: string;
   coverHash: string;
   rating: number;
-  type: string;
+  type: Format;
 };
 
 export enum AnilistAnimeStatus {
@@ -247,7 +188,7 @@ export type AnimeInfo = {
   animeInfoAnify: AnimeInfoAnify
 }
 
-export type AnimeEpisodes = {
+export type AnimeEpisodesData = {
   anifyEps: Data[];
   anilistEps: Episode[];
   anizipEps: AnimeInfoAnizip;
@@ -273,10 +214,6 @@ export type EpisodeStreamLinks = {
   headers: Headers;
   sources: Source[];
   download: string;
-};
-
-export type Headers = {
-  Referer: string;
 };
 
 export type Source = {

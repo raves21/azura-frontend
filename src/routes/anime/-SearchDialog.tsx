@@ -5,6 +5,8 @@ import SearchDialogResults from "./-SearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/globalStore";
+import SearchDialogContainer from "@/components/shared/search/SearchDialogContainer";
+import SearchDialogForm from "@/components/shared/search/SearchDialogForm";
 
 export default function SearchDialog() {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -13,17 +15,17 @@ export default function SearchDialog() {
   const navigate = useNavigate();
   const { toggleOpenDialog } = useGlobalStore();
 
-  const {
-    data: searchResults,
-    isLoading: isSearchResultsLoading,
-    error: searchResultsError,
-  } = useSearchAnime(debouncedSearch.trim(), debouncedSearch.trim().length > 0);
-
   useEffect(() => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, []);
+
+  const {
+    data: searchResults,
+    isLoading: isSearchResultsLoading,
+    error: searchResultsError,
+  } = useSearchAnime(debouncedSearch.trim(), debouncedSearch.trim().length > 0);
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
@@ -34,21 +36,14 @@ export default function SearchDialog() {
   };
 
   return (
-    <div className="px-2 w-dvw sm:px-8 md:max-w-[800px]">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (search.trim().length >= 1) {
-            handleEnterPress(e);
-          }
-        }}
-      >
+    <SearchDialogContainer>
+      <SearchDialogForm search={search} handleEnterPress={handleEnterPress}>
         <input
           onChange={(e) => setSearch(e.target.value)}
           ref={searchInputRef}
           type="text"
           className={cn(
-            "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-[#f6f4f4] bg-gray-800 rounded-lg size-full",
+            "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
               "rounded-b-none":
                 debouncedSearch || isSearchResultsLoading || searchResultsError,
@@ -62,8 +57,7 @@ export default function SearchDialog() {
           isLoading={isSearchResultsLoading}
           error={searchResultsError}
         />
-        <input type="submit" className="hidden" />
-      </form>
-    </div>
+      </SearchDialogForm>
+    </SearchDialogContainer>
   );
 }

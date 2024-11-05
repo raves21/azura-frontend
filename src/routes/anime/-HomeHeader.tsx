@@ -34,7 +34,7 @@ export default function HomeHeader() {
 
   const DesktopHeader = (
     <div
-      className={`flex font-medium items-center justify-between mx-auto px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] py-4`}
+      className={`flex font-medium items-center justify-between mx-auto px-2 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] py-4`}
     >
       <button className="p-[6px]">
         <Menu />
@@ -72,9 +72,6 @@ export default function HomeHeader() {
   const MobileHeader = (
     <>
       <div className="flex items-center gap-4 mobile-m:gap-6">
-        {/* <button onClick={() => router.history.back()} className="px-2 py-1">
-          <img src="/chevron-left.svg" className="self-end size-5" />
-        </button> */}
         <Link to="/anime" className="p-1">
           <img
             src="/azura-logo-with-label.svg"

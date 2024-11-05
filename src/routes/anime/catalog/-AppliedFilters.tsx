@@ -1,5 +1,5 @@
 import { useSearch } from "@tanstack/react-router";
-import AppliedFilterPill from "./-AppliedFilterPill";
+import AppliedFilterPill from "@/components/shared/catalog/AppliedFilterPill";
 import {
   formatLabels,
   seasonLabels,
@@ -22,7 +22,7 @@ export default function AppliedFilters() {
           </p>
           <AppliedFilterPill
             className="text-white rounded-full bg-emerald-500"
-            label={query}
+            label={`"${query}"`}
           />
         </div>
       )}

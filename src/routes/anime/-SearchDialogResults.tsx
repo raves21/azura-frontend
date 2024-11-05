@@ -21,7 +21,7 @@ export default function SearchDialogResults({
 
   if (isLoading) {
     return (
-      <div className="grid w-full py-4 rounded-b-lg place-items-center text-[#f6f4f4] bg-gray-800">
+      <div className="grid w-full py-4 bg-gray-800 rounded-b-lg place-items-center text-mainWhite">
         Loading...
       </div>
     );
@@ -29,7 +29,7 @@ export default function SearchDialogResults({
 
   if (error) {
     return (
-      <div className="grid text-center w-full py-4 place-items-center rounded-b-lg text-[#f6f4f4] bg-gray-800 text-balance">
+      <div className="grid w-full py-4 text-center bg-gray-800 rounded-b-lg place-items-center text-mainWhite text-balance">
         There seems to be problems with search. Please try again later.
       </div>
     );
@@ -38,14 +38,14 @@ export default function SearchDialogResults({
   if (searchResults) {
     if (searchResults.results.length === 0) {
       return (
-        <div className="flex flex-col w-full text-[#f6f4f4] rounded-b-lg bg-gray-800">
+        <div className="flex flex-col w-full bg-gray-800 rounded-b-lg text-mainWhite">
           <p>No results found for {query}</p>
         </div>
       );
     }
     return (
       <ScrollArea
-        className={`w-full text-[#f6f4f4] rounded-b-lg bg-gray-800 ${searchResults.results.length <= 2 ? "h-auto" : "h-[300px]"} overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-gray-800 ${searchResults.results.length <= 2 ? "h-auto" : "h-[300px]"} overflow-y-auto`}
       >
         <ul className="flex flex-col">
           {searchResults.results.map((anime) => (

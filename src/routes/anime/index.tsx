@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useFetchAnimesByCategory } from "../../api/animes";
 import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
-import AnimeCategoryCarousel from "./-AnimeCategoryCarousel";
+import CategoryCarousel from "@/components/shared/CategoryCarousel";
+import CategoryCarouselItem from "@/components/shared/CategoryCarouselItem";
 import { AnilistAnimeStatus, SortBy } from "@/utils/types/animeAnilist";
+import MediaCard from "@/components/shared/MediaCard";
 
 export const Route = createFileRoute("/anime/")({
   component: () => <AnimeHomePage />,
@@ -65,26 +67,107 @@ function AnimeHomePage() {
       )}
       <div className="w-full pt-8 pb-24 space-y-10">
         {trendingAnimes && (
-          <AnimeCategoryCarousel
-            seeAllSortBy={SortBy.TRENDING_DESC}
-            isHomePage
-            animeList={trendingAnimes.results.slice(5)}
+          <CategoryCarousel
+            gotoLinkProps={{
+              to: "/anime/catalog",
+              search: {
+                sortBy: SortBy.TRENDING_DESC,
+              },
+            }}
+            carouselItems={trendingAnimes.results.slice(5)}
+            renderCarouselItems={(trendingAnime, i) => {
+              return (
+                <CategoryCarouselItem key={trendingAnime.id || i}>
+                  <MediaCard
+                    image={trendingAnime.image || trendingAnime.cover}
+                    linkProps={{
+                      to: "/anime/$animeId",
+                      params: { animeId: trendingAnime.id },
+                    }}
+                    subLabels={[
+                      trendingAnime.type,
+                      trendingAnime.releaseDate?.toString(),
+                      trendingAnime.status,
+                    ]}
+                    title={
+                      trendingAnime.title.english ||
+                      trendingAnime.title.romaji ||
+                      trendingAnime.title.userPreferred
+                    }
+                  />
+                </CategoryCarouselItem>
+              );
+            }}
             categoryName="Trending Anime"
           />
         )}
         {topRatedAnimes && (
-          <AnimeCategoryCarousel
-            seeAllSortBy={SortBy.SCORE_DESC}
-            isHomePage
-            animeList={topRatedAnimes.results}
+          <CategoryCarousel
+            gotoLinkProps={{
+              to: "/anime/catalog",
+              search: {
+                sortBy: SortBy.SCORE_DESC,
+              },
+            }}
+            carouselItems={topRatedAnimes.results}
+            renderCarouselItems={(topRatedAnime, i) => {
+              return (
+                <CategoryCarouselItem key={topRatedAnime.id || i}>
+                  <MediaCard
+                    image={topRatedAnime.image || topRatedAnime.cover}
+                    linkProps={{
+                      to: "/anime/$animeId",
+                      params: { animeId: topRatedAnime.id },
+                    }}
+                    subLabels={[
+                      topRatedAnime.type,
+                      topRatedAnime.releaseDate?.toString(),
+                      topRatedAnime.status,
+                    ]}
+                    title={
+                      topRatedAnime.title.english ||
+                      topRatedAnime.title.romaji ||
+                      topRatedAnime.title.userPreferred
+                    }
+                  />
+                </CategoryCarouselItem>
+              );
+            }}
             categoryName="Top Rated"
           />
         )}
         {popularAnimes && (
-          <AnimeCategoryCarousel
-            seeAllSortBy={SortBy.POPULARITY_DESC}
-            isHomePage
-            animeList={popularAnimes.results}
+          <CategoryCarousel
+            gotoLinkProps={{
+              to: "/anime/catalog",
+              search: {
+                sortBy: SortBy.POPULARITY_DESC,
+              },
+            }}
+            carouselItems={popularAnimes.results}
+            renderCarouselItems={(popularAnime, i) => {
+              return (
+                <CategoryCarouselItem key={popularAnime.id || i}>
+                  <MediaCard
+                    image={popularAnime.image || popularAnime.cover}
+                    linkProps={{
+                      to: "/anime/$animeId",
+                      params: { animeId: popularAnime.id },
+                    }}
+                    subLabels={[
+                      popularAnime.type,
+                      popularAnime.releaseDate?.toString(),
+                      popularAnime.status,
+                    ]}
+                    title={
+                      popularAnime.title.english ||
+                      popularAnime.title.romaji ||
+                      popularAnime.title.userPreferred
+                    }
+                  />
+                </CategoryCarouselItem>
+              );
+            }}
             categoryName="All Time Popular"
           />
         )}

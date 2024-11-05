@@ -1,10 +1,12 @@
 import { useFetchAnimeEpisodes, useFetchAnimeInfo } from "@/api/animes";
 import { createFileRoute } from "@tanstack/react-router";
-import AnimeHeroComponent from "../-AnimeHeroComponent";
-import Episodes from "./-Episodes";
+import AnimeInfoPageHero from "./-AnimeInfoPageHero";
+import AnimeEpisodes from "@/components/shared/anime/AnimeEpisodes";
 import { useEffect } from "react";
-import AnimeCategoryCarousel from "../-AnimeCategoryCarousel";
 import { Genre } from "@/utils/types/animeAnilist";
+import CategoryCarousel from "@/components/shared/CategoryCarousel";
+import CategoryCarouselItem from "@/components/shared/CategoryCarouselItem";
+import MediaCard from "@/components/shared/MediaCard";
 
 const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
 
@@ -51,7 +53,7 @@ function AnimeInfoPage() {
     const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <main className="w-full pb-32">
-        <AnimeHeroComponent
+        <AnimeInfoPageHero
           episodesQuery={episodesQuery}
           animeId={animeId}
           title={
@@ -80,13 +82,13 @@ function AnimeInfoPage() {
           year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
           rating={
             animeInfoAnilist?.rating * 0.1 ||
-            animeInfoAnify?.rating.anilist ||
+            animeInfoAnify?.rating?.anilist ||
             null
           }
         />
-        <Episodes
+        <AnimeEpisodes
+          variant="infoPage"
           episodesQuery={episodesQuery}
-          isInfoPage
           animeId={animeId}
           replace={false}
           type={animeInfoAnilist?.type}
@@ -99,10 +101,28 @@ function AnimeInfoPage() {
         />
         {animeInfoAnilist?.recommendations &&
           animeInfoAnilist?.recommendations.length !== 0 && (
-            <AnimeCategoryCarousel
-              isHomePage={false}
-              recommendations={animeInfoAnilist?.recommendations}
-              categoryName="Recommendations"
+            <CategoryCarousel
+              carouselItems={animeInfoAnilist.recommendations}
+              categoryName="Recommendations:"
+              renderCarouselItems={(recommendation, i) => {
+                return (
+                  <CategoryCarouselItem key={recommendation.id || i}>
+                    <MediaCard
+                      image={recommendation.image || recommendation.cover}
+                      linkProps={{
+                        to: "/anime/$animeId",
+                        params: { animeId: `${recommendation.id}` },
+                      }}
+                      subLabels={[recommendation.type, recommendation.status]}
+                      title={
+                        recommendation.title.english ||
+                        recommendation.title.romaji ||
+                        recommendation.title.userPreferred
+                      }
+                    />
+                  </CategoryCarouselItem>
+                );
+              }}
             />
           )}
       </main>

@@ -1,7 +1,7 @@
 import { forwardRef, HTMLAttributes } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
+import { MediaPlayer, MediaProvider, Poster } from "@vidstack/react";
 import {
   defaultLayoutIcons,
   DefaultVideoLayout,
@@ -16,29 +16,32 @@ type VideoPlayerProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const VideoPlayer = forwardRef<HTMLDivElement, VideoPlayerProps>(
-  ({ ...props }, ref) => {
+  ({ streamLink, className, volume, title, ...props }, ref) => {
     return (
       <div
         ref={ref}
+        {...props}
         className={cn(
           "w-dvw ml-[calc(-50vw+50%)] lg:w-full lg:ml-auto aspect-video rounded-none",
-          props.className
+          className
         )}
       >
-        {props.streamLink ? (
+        {streamLink ? (
           <MediaPlayer
+            crossOrigin
             playsInline
             className="rounded-none size-full"
-            title={props.title}
-            src={props.streamLink}
-            streamType="on-demand"
-            volume={props.volume || 0.08}
+            title={title}
+            src={streamLink}
+            volume={0.08}
           >
-            <MediaProvider />
+            <MediaProvider>
+              <Poster className="vds-poster" />
+            </MediaProvider>
             <DefaultVideoLayout icons={defaultLayoutIcons} />
           </MediaPlayer>
         ) : (
-          <div className="grid text-lg font-medium size-full place-items-center">
+          <div className="grid text-lg font-medium bg-gray-800 rounded-lg size-full place-items-center">
             Error: Source Not Found
           </div>
         )}

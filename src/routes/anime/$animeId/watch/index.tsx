@@ -3,21 +3,23 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
-import Episodes from "../-Episodes";
-import AnimeCategoryCarousel from "../../-AnimeCategoryCarousel";
+import AnimeEpisodes from "@/components/shared/anime/AnimeEpisodes";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import { VideoPlayer } from "./-VideoPlayer";
+import { VideoPlayer } from "@/components/shared/VideoPlayer";
 import EpisodeAnimeInfo from "./-EpisodeAnimeInfo";
 import {
   useFetchEpisodeStreamLinks,
   useFetchAnimeEpisodes,
   useFetchAnimeInfo,
-  useChunkEpisodes,
+  useChunkAnimeEpisodes,
   useEpisodeInfo,
 } from "@/api/animes";
-import EpisodeTitleAndNumber from "./-EpisodeTitleAndNumber";
+import EpisodeTitleAndNumber from "@/components/shared/episode/EpisodeTitleAndNumber";
 import { Genre } from "@/utils/types/animeAnilist";
+import MediaCard from "@/components/shared/MediaCard";
+import CategoryCarousel from "@/components/shared/CategoryCarousel";
+import CategoryCarouselItem from "@/components/shared/CategoryCarouselItem";
 
 const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
 
@@ -42,6 +44,7 @@ function WatchEpisodePage() {
 
   const windowWidth = useWindowWidth();
 
+  //navigates back to info page if id (episode id) search param is not given
   useEffect(() => {
     if (!id) {
       navigate({ to: "/anime/$animeId", params: { animeId: animeId } });
@@ -62,10 +65,11 @@ function WatchEpisodePage() {
     error: animeInfoError,
   } = useFetchAnimeInfo(animeId);
 
-  const { data: chunkedEpisodes } = useChunkEpisodes(episodesQuery.data);
+  const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
 
   const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
+  //sets the videoAndEpisodeInfoContainerHeight everytime window width changes
   useEffect(() => {
     if (videoAndEpisodeInfoContainerRef.current) {
       setVideoAndEpisodeInfoContainerHeight(
@@ -115,13 +119,12 @@ function WatchEpisodePage() {
               title={episodeInfo.title}
             />
             <EpisodeTitleAndNumber
-              episodeNumber={
-                episodeInfo ? `Episode ${episodeInfo.number}` : "Loading..."
-              }
+              episodeNumber={`Episode ${episodeInfo.number}`}
               episodeTitle={episodeInfo.title}
             />
           </div>
-          <Episodes
+          <AnimeEpisodes
+            variant="watchPage"
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
               animeInfoAnilist?.cover ||
@@ -130,7 +133,6 @@ function WatchEpisodePage() {
               animeInfoAnify?.bannerImage
             }
             episodesQuery={episodesQuery}
-            isInfoPage={false}
             animeId={animeId}
             replace
             type={animeInfoAnilist?.type || animeInfoAnify?.format}
@@ -164,15 +166,33 @@ function WatchEpisodePage() {
           year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
           rating={
             animeInfoAnilist?.rating * 0.1 ||
-            animeInfoAnify?.rating.anilist ||
+            animeInfoAnify?.rating?.anilist ||
             null
           }
         />
         {animeInfoAnilist?.recommendations && (
-          <AnimeCategoryCarousel
-            isHomePage={false}
-            categoryName="Recommendations"
-            recommendations={animeInfoAnilist?.recommendations}
+          <CategoryCarousel
+            carouselItems={animeInfoAnilist.recommendations}
+            categoryName="Recommendations:"
+            renderCarouselItems={(recommendation, i) => {
+              return (
+                <CategoryCarouselItem key={recommendation.id || i}>
+                  <MediaCard
+                    image={recommendation.image || recommendation.cover}
+                    linkProps={{
+                      to: "/anime/$animeId",
+                      params: { animeId: `${recommendation.id}` },
+                    }}
+                    subLabels={[recommendation.type, recommendation.status]}
+                    title={
+                      recommendation.title.english ||
+                      recommendation.title.romaji ||
+                      recommendation.title.userPreferred
+                    }
+                  />
+                </CategoryCarouselItem>
+              );
+            }}
           />
         )}
       </main>

@@ -3,16 +3,15 @@ import { useQuery } from "@tanstack/react-query";
 import {
   AnilistAnimeStatus,
   AnimeInfoAnilist,
-  EpisodeChunk,
   EpisodeStreamLinks,
-  EpisodeToBeRendered,
   Format,
   MultipleAnimeResponse,
   Season,
   SortBy,
   Episode,
-  AnimeEpisodes,
+  AnimeEpisodesData,
 } from "../utils/types/animeAnilist";
+import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/shared";
 import { AnimeInfoAnify, Data } from "@/utils/types/animeAnify";
 import {
   chunkEpisodes,
@@ -106,7 +105,6 @@ export function useFilterAnime(
   });
 }
 
-//currently used for fetching anime info
 export function useFetchAnimeInfo(animeId: string) {
   return useQuery({
     queryKey: ["animeInfo", animeId],
@@ -193,14 +191,15 @@ export function useEpisodeInfo(
         );
         if (foundEpisode) break;
       }
-
       return foundEpisode as EpisodeToBeRendered;
     },
     enabled: !!chunkedEpisodes,
   });
 }
 
-export function useChunkEpisodes(animeEpisodes: AnimeEpisodes | undefined) {
+export function useChunkAnimeEpisodes(
+  animeEpisodes: AnimeEpisodesData | undefined
+) {
   const anifyEpisodes = animeEpisodes?.anifyEps;
   const anilistEpisodes = animeEpisodes?.anilistEps;
   const anizipEpisodes = animeEpisodes?.anizipEps;

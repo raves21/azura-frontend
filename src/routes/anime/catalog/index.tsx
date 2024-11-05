@@ -2,7 +2,7 @@ import { useFilterAnime } from "@/api/animes";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
-import CatalogAnimeList from "./-CatalogAnimeList";
+import CatalogMediaList from "@/components/shared/catalog/CatalogMediaList";
 import AppliedFilters from "./-AppliedFilters";
 import {
   AnilistAnimeStatus,
@@ -12,7 +12,7 @@ import {
 } from "@/utils/types/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import FiltersDialog from "./-FiltersDialog";
-import Pagination from "@/components/reusables/Pagination";
+import Pagination from "@/components/shared/Pagination";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
@@ -81,7 +81,7 @@ function CatalogPage() {
 
   if (filteredAnimes) {
     return (
-      <main className="w-full min-h-screen text-[#f6f4f4] pt-32 pb-28 flex flex-col gap-6">
+      <main className="flex flex-col w-full min-h-screen gap-6 pt-32 text-mainWhite pb-28">
         <header className="space-y-7 lg:space-y-8">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">
@@ -104,7 +104,7 @@ function CatalogPage() {
         </header>
         {filteredAnimes.results.length !== 0 ? (
           <>
-            <CatalogAnimeList animeList={filteredAnimes.results} />
+            <CatalogMediaList type="anime" animeList={filteredAnimes.results} />
             <Pagination
               className="mt-10"
               totalPages={filteredAnimes.totalPages}
