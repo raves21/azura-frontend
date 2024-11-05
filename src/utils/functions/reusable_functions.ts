@@ -1,9 +1,6 @@
 import { Data } from "../types/animeAnify";
-import {
-  Episode,
-  EpisodeChunk,
-  EpisodeToBeRendered,
-} from "../types/animeAnilist";
+import { Episode } from "../types/animeAnilist";
+import { EpisodeToBeRendered, EpisodeChunk } from "../types/shared";
 import { AnimeInfoAnizip } from "../types/animeAnizip";
 
 export function chunkEpisodes(

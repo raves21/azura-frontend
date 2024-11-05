@@ -27,7 +27,7 @@ export default function TrendingAnimesHeroCarousel({
               <TrendingCarouselItem
                 image={anime.image}
                 description={anime.description}
-                title={anime.title.english}
+                title={anime.title.english || anime.title.romaji}
                 id={anime.id}
                 trendingRank={i + 1}
               />

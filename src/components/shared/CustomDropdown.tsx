@@ -35,7 +35,7 @@ export default function CustomDropdown<T>({
     number | undefined
   >(0);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   //for closing the dropdown if user clicks anywhere outside of it
   useHandleClickOutside({
     ref: containerRef,

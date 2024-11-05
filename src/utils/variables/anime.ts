@@ -45,3 +45,8 @@ export const seasonLabels: Record<string, string> = {
   [Season.SUMMER]: "Summer",
   [Season.FALL]: "Fall",
 };
+
+export const animeCancelledStatus = [Status.CANCELLED, Status.Cancelled]
+export const animeOngoingStatus = [Status.Ongoing, Status.RELEASING]
+export const animeUpcomingStatus = [Status.NOT_YET_RELEASED, Status.NotYetAired]
+export const animeCompletedStatus = [Status.FINISHED, Status.Completed]

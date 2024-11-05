@@ -6,9 +6,9 @@ import {
   Season,
   SortBy,
 } from "@/utils/types/animeAnilist";
-import FilterPill from "./-FilterPill";
+import FilterPill from "@/components/shared/catalog/FilterPill";
 import { useState } from "react";
-import CustomDropdown from "@/components/reusables/CustomDropdown";
+import CustomDropdown from "@/components/shared/CustomDropdown";
 import {
   formatLabels,
   seasonLabels,
