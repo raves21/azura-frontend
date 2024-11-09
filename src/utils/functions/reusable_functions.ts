@@ -1,7 +1,7 @@
-import { Data } from "../types/animeAnify";
-import { Episode } from "../types/animeAnilist";
-import { EpisodeToBeRendered, EpisodeChunk } from "../types/shared";
-import { AnimeInfoAnizip } from "../types/animeAnizip";
+import { Data } from "../types/thirdParty/animeAnify";
+import { Episode } from "../types/thirdParty/animeAnilist";
+import { EpisodeToBeRendered, EpisodeChunk } from "../types/thirdParty/shared";
+import { AnimeInfoAnizip } from "../types/thirdParty/animeAnizip";
 
 export function chunkEpisodes(
   eps: EpisodeToBeRendered[] | null,

@@ -1,4 +1,4 @@
-import { Anime } from "@/utils/types/animeAnilist";
+import { Anime } from "@/utils/types/thirdParty/animeAnilist";
 import MediaCard from "../MediaCard";
 
 type AnimeVariant = {
@@ -24,7 +24,11 @@ export default function CatalogMediaList({ ...props }: CatalogMediaListProps) {
               to: `/anime/$animeId`,
               params: { animeId: anime.id },
             }}
-            subLabels={[anime.type, anime.releaseDate?.toString(), anime.status]}
+            subLabels={[
+              anime.type,
+              anime.releaseDate?.toString(),
+              anime.status,
+            ]}
             title={
               anime.title.english ||
               anime.title.romaji ||
