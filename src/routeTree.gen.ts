@@ -25,6 +25,7 @@ import { Route as AuthSignupVerifyEmailIndexImport } from './routes/_auth/signup
 import { Route as AuthLoginForgotPasswordIndexImport } from './routes/_auth/login/forgot-password/index'
 import { Route as ProtectedAnimeAnimeIdWatchIndexImport } from './routes/_protected/anime/$animeId/watch/index'
 import { Route as AuthLoginForgotPasswordVerifyEmailIndexImport } from './routes/_auth/login/forgot-password/verify-email/index'
+import { Route as AuthLoginForgotPasswordFindAccountIndexImport } from './routes/_auth/login/forgot-password/find-account/index'
 import { Route as AuthLoginForgotPasswordChangePasswordIndexImport } from './routes/_auth/login/forgot-password/change-password/index'
 
 // Create/Update Routes
@@ -105,6 +106,12 @@ const ProtectedAnimeAnimeIdWatchIndexRoute =
 const AuthLoginForgotPasswordVerifyEmailIndexRoute =
   AuthLoginForgotPasswordVerifyEmailIndexImport.update({
     path: '/login/forgot-password/verify-email/',
+    getParentRoute: () => AuthRouteRoute,
+  } as any)
+
+const AuthLoginForgotPasswordFindAccountIndexRoute =
+  AuthLoginForgotPasswordFindAccountIndexImport.update({
+    path: '/login/forgot-password/find-account/',
     getParentRoute: () => AuthRouteRoute,
   } as any)
 
@@ -209,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginForgotPasswordChangePasswordIndexImport
       parentRoute: typeof AuthRouteImport
     }
+    '/_auth/login/forgot-password/find-account/': {
+      id: '/_auth/login/forgot-password/find-account/'
+      path: '/login/forgot-password/find-account'
+      fullPath: '/login/forgot-password/find-account'
+      preLoaderRoute: typeof AuthLoginForgotPasswordFindAccountIndexImport
+      parentRoute: typeof AuthRouteImport
+    }
     '/_auth/login/forgot-password/verify-email/': {
       id: '/_auth/login/forgot-password/verify-email/'
       path: '/login/forgot-password/verify-email'
@@ -237,6 +251,7 @@ export const routeTree = rootRoute.addChildren({
     AuthLoginForgotPasswordIndexRoute,
     AuthSignupVerifyEmailIndexRoute,
     AuthLoginForgotPasswordChangePasswordIndexRoute,
+    AuthLoginForgotPasswordFindAccountIndexRoute,
     AuthLoginForgotPasswordVerifyEmailIndexRoute,
   }),
   ProtectedRouteRoute: ProtectedRouteRoute.addChildren({
@@ -274,6 +289,7 @@ export const routeTree = rootRoute.addChildren({
         "/_auth/login/forgot-password/",
         "/_auth/signup/verify-email/",
         "/_auth/login/forgot-password/change-password/",
+        "/_auth/login/forgot-password/find-account/",
         "/_auth/login/forgot-password/verify-email/"
       ]
     },
@@ -327,6 +343,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_auth/login/forgot-password/change-password/": {
       "filePath": "_auth/login/forgot-password/change-password/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/login/forgot-password/find-account/": {
+      "filePath": "_auth/login/forgot-password/find-account/index.tsx",
       "parent": "/_auth"
     },
     "/_auth/login/forgot-password/verify-email/": {

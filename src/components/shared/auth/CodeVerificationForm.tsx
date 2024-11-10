@@ -13,47 +13,33 @@ import {
   InputOTPSlot,
 } from "@/components/ui/custom-input-otp";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "@tanstack/react-router";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-
-const formSchema = z.object({
-  code: z.string().min(6, {
-    message: "Code must be 6 digits.",
-  }),
-});
+import { codeVerificationFormSchema } from "@/utils/variables/formSchemas";
+import { CodeVerificationFormData } from "@/utils/types/auth/forms";
 
 type CodeVerificationFormProps = {
   backButtonAction: () => void;
-  verificationSuccessNavigationLink: string;
+  verifyButtonAction: (values: CodeVerificationFormData) => void;
 };
 
 export default function CodeVerificationForm({
   backButtonAction,
-  verificationSuccessNavigationLink,
+  verifyButtonAction,
 }: CodeVerificationFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<CodeVerificationFormData>({
+    resolver: zodResolver(codeVerificationFormSchema),
     defaultValues: {
       code: "",
     },
   });
-
-  const router = useRouter();
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    router.navigate({
-      to: verificationSuccessNavigationLink,
-    });
-  }
 
   return (
     <div className="flex flex-col items-center gap-8">
       <h1 className="text-4xl font-bold text-mainWhite">Email Verification</h1>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(verifyButtonAction)}
           className="space-y-6 w-min"
         >
           <FormField

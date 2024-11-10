@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,34 +13,8 @@ import { Link } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { useShallow } from "zustand/react/shallow";
-
-const formSchema = z.object({
-  username: z
-    .string()
-    .min(1, {
-      message: "This field is required.",
-    })
-    .regex(/^[A-Za-z0-9_]+$/, {
-      message: "Letters, digits, or underscores only.",
-    })
-    .max(30, {
-      message: "Maximum of 30 characters.",
-    }),
-  handle: z
-    .string()
-    .min(1, {
-      message: "This field is required.",
-    })
-    .regex(/^[A-Za-z0-9._]+$/, {
-      message: "Letters, digits, period, or underscores only.",
-    })
-    .max(15, {
-      message: "Maximum of 15 characters.",
-    }),
-  email: z.string().email({
-    message: "Email is badly formatted.",
-  }),
-});
+import { userDetailsFormSchema } from "@/utils/variables/formSchemas";
+import { UserDetailsFormData } from "@/utils/types/auth/forms";
 
 export default function UserDetailsForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -52,8 +25,8 @@ export default function UserDetailsForm() {
     ])
   );
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<UserDetailsFormData>({
+    resolver: zodResolver(userDetailsFormSchema),
     defaultValues: {
       username: signUpValues.username,
       handle: signUpValues.handle,
@@ -61,7 +34,7 @@ export default function UserDetailsForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: UserDetailsFormData) {
     setSignUpValues({
       ...values,
       password: signUpValues.password,
@@ -82,13 +55,12 @@ export default function UserDetailsForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between w-full ">
-                  <p className="text-gray-500">Username</p>
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="user123"
+                    placeholder="Display Name"
                     {...field}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
                   />
@@ -101,22 +73,16 @@ export default function UserDetailsForm() {
             name="handle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center justify-between w-full ">
-                  <p className="text-gray-500">Handle</p>
+                <FormLabel className="flex items-center justify-between w-full">
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
-                  <div className="relative">
-                    <span className="absolute top-[7px] left-[10px] text-gray-400">
-                      @
-                    </span>
-                    <Input
-                      autoComplete="off"
-                      placeholder="azuratopfan29"
-                      {...field}
-                      className="font-medium bg-gray-800 border-none pl-[31px] text-mainWhite"
-                    />
-                  </div>
+                  <Input
+                    autoComplete="off"
+                    placeholder="Username"
+                    {...field}
+                    className="font-medium bg-gray-800 border-none text-mainWhite"
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -127,13 +93,12 @@ export default function UserDetailsForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between w-full ">
-                  <p className="text-gray-500">Email</p>
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="user@email.com"
+                    placeholder="Email"
                     {...field}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
                   />

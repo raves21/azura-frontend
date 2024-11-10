@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,20 +17,12 @@ import { useRouter } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoginResponse } from "@/utils/types/auth/auth";
 import { Link } from "@tanstack/react-router";
-import { useAuthStore } from "@/utils/stores/authStore";
-
-const formSchema = z.object({
-  email: z.string().email({
-    message: "Email is badly formatted.",
-  }),
-  password: z.string().min(1, {
-    message: "This field is required.",
-  }),
-});
+import { loginFormSchema } from "@/utils/variables/formSchemas";
+import { LoginFormData } from "@/utils/types/auth/forms";
 
 export default function LoginForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -43,9 +34,8 @@ export default function LoginForm() {
   const queryClient = useQueryClient();
   const { toggleOpenDialog } = useGlobalStore();
   const router = useRouter();
-  const { setForgotPassword } = useAuthStore();
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: LoginFormData) {
     setIsLoggingIn(true);
     try {
       const { data } = await axios.post<LoginResponse>(
@@ -99,16 +89,15 @@ export default function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex justify-between w-full text-base">
-                    <p className="text-gray-500 ">Email</p>
+                  <FormLabel className="flex justify-between w-full ">
                     <FormMessage />
                   </FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="off"
-                      placeholder="user@email.com"
+                      placeholder="Email"
                       {...field}
-                      className="text-base font-medium bg-gray-800 border-none text-mainWhite"
+                      className="font-medium bg-gray-800 border-none text-mainWhite"
                     />
                   </FormControl>
                 </FormItem>
@@ -119,16 +108,15 @@ export default function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex justify-between w-full text-base">
-                    <p className="text-gray-500">Password</p>
+                  <FormLabel className="flex justify-between w-full ">
                     <FormMessage />
                   </FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="off"
-                      placeholder="*************"
+                      placeholder="Password"
                       {...field}
-                      className="text-base font-medium bg-gray-800 border-none text-mainWhite"
+                      className="font-medium bg-gray-800 border-none text-mainWhite"
                     />
                   </FormControl>
                 </FormItem>
@@ -157,8 +145,7 @@ export default function LoginForm() {
             {isLoggingIn ? "Logging in..." : "Login"}
           </button>
           <Link
-            onClick={() => setForgotPassword(true)}
-            to="/login/forgot-password/verify-email"
+            to="/login/forgot-password/find-account"
             className="self-center mt-4 text-gray-500 hover:underline"
           >
             Forgot your password?

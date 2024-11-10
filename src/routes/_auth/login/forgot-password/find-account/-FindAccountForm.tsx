@@ -10,22 +10,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "@tanstack/react-router";
-import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
-import { ChangePasswordFormData } from "@/utils/types/auth/forms";
+import { useAuthStore } from "@/utils/stores/authStore";
+import { ForgotPasswordStep } from "@/utils/types/auth/auth";
+import { findAccountFormSchema } from "@/utils/variables/formSchemas";
+import { FindAccountFormData } from "@/utils/types/auth/forms";
 
-export default function ChangePasswordForm() {
+export default function FindAccountForm() {
   const router = useRouter();
+  const { setForgotPasswordStep } = useAuthStore();
 
-  const form = useForm<ChangePasswordFormData>({
-    resolver: zodResolver(changePasswordFormSchema),
+  const form = useForm<FindAccountFormData>({
+    resolver: zodResolver(findAccountFormSchema),
     defaultValues: {
-      newPassword: "",
-      confirmNewPassword: "",
+      email: "",
     },
   });
 
-  function onSubmit(values: ChangePasswordFormData) {
-    //
+  function onSubmit(values: FindAccountFormData) {
+    setForgotPasswordStep(ForgotPasswordStep.VERIFY_EMAIL);
+    router.navigate({
+      to: "/login/forgot-password/verify-email",
+    });
   }
 
   return (
@@ -34,10 +39,10 @@ export default function ChangePasswordForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="text-mainWhite w-[370px] flex flex-col"
       >
-        <div className="space-y-6">
+        <div>
           <FormField
             control={form.control}
-            name="newPassword"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
@@ -46,26 +51,7 @@ export default function ChangePasswordForm() {
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="New Password"
-                    {...field}
-                    className="font-medium bg-gray-800 border-none text-mainWhite"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmNewPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  <FormMessage />
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    autoComplete="off"
-                    placeholder="Confirm new Password"
+                    placeholder="Email"
                     {...field}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
                   />
@@ -86,7 +72,7 @@ export default function ChangePasswordForm() {
             type="submit"
             className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700"
           >
-            Confirm
+            Find
           </button>
         </div>
       </form>

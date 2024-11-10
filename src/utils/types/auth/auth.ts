@@ -49,3 +49,9 @@ export type SignUpValues = {
   email: string;
   password: string;
 };
+
+export enum ForgotPasswordStep {
+  FIND_ACCOUNT = "findAccount",
+  VERIFY_EMAIL = "verifyEmail",
+  CHANGE_PASSWORD = "changePassword",
+}

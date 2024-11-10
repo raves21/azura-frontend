@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,30 +13,8 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { useShallow } from "zustand/react/shallow";
-
-const formSchema = z
-  .object({
-    password: z
-      .string()
-      .min(1, {
-        message: "This field is required.",
-      })
-      .superRefine((password, ctx) => {
-        if (password.length < 8) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Minimum of 8 characters.",
-          });
-        }
-      }),
-    confirmPassword: z.string().min(1, {
-      message: "This field is required.",
-    }),
-  })
-  .refine((values) => values.confirmPassword === values.password, {
-    message: "Passwords doesn't match.",
-    path: ["confirmPassword"],
-  });
+import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
+import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
 
 export default function PasswordConfirmationForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -50,15 +27,15 @@ export default function PasswordConfirmationForm() {
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<PasswordConfirmationFormData>({
+    resolver: zodResolver(passwordConfirmationFormSchema),
     defaultValues: {
       password: signUpValues.password,
       confirmPassword: signUpValues.password,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: PasswordConfirmationFormData) {
     setSignUpValues({
       ...signUpValues,
       password: values.password,
@@ -116,16 +93,6 @@ export default function PasswordConfirmationForm() {
               </FormItem>
             )}
           />
-        </div>
-        <div className="flex self-center mt-4 font-light">
-          <p>Already have an account?&nbsp;</p>
-          <Link
-            to="/login"
-            className="font-normal text-mainAccent hover:underline"
-          >
-            Login
-          </Link>
-          <p>&nbsp;here</p>
         </div>
         <div className="flex w-full gap-3">
           <button
