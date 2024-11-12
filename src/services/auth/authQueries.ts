@@ -1,17 +1,18 @@
 import { api } from "@/utils/axiosInstance";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { queryClient } from "@/Providers";
+import { LoginResponse } from "@/utils/types/auth/auth";
+
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export function useAccessToken() {
   return useQuery({
     queryKey: ["accessToken"],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/refresh`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.get(`${BASE_URL}/refresh`, {
+        withCredentials: true,
+      });
       return data.data.accessToken;
     },
     retryOnMount: false,
@@ -24,6 +25,104 @@ export function useCurrentUser() {
     queryFn: async () => {
       const { data } = await api.get("/users/me");
       return data.data;
+    },
+  });
+}
+
+export function useOTC(email: string) {
+  return useQuery({
+    queryKey: ["otc", email],
+    queryFn: async () => {
+      const response = await axios.post(`${BASE_URL}/otc/send`, { email });
+      return {
+        message: response.data.message,
+        statusCode: response.status,
+      };
+    },
+  });
+}
+
+export function useSendtOTC(email: string) {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      console.log("SENDING OTC");
+      const response = await axios.post(`${BASE_URL}/otc/send`, { email });
+      console.log("OTC SENT");
+      return {
+        message: response.data.message,
+        statusCode: response.status,
+      };
+    },
+    onSuccess: (result) => {
+      queryClient.setQueryData(["otc", email], {
+        message: result.message,
+        statusCode: result.statusCode,
+      });
+    },
+  });
+}
+
+export function useVerifyOTC() {
+  return useMutation({
+    mutationFn: async ({ email, otc }: { email: string; otc: string }) => {
+      try {
+        await axios.get(`${BASE_URL}/otc/verify?email=${email}&otc=${otc}`);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          throw error as AxiosError;
+        } else {
+          throw error;
+        }
+      }
+    },
+  });
+}
+
+export function useCreateAccount() {
+  return useMutation({
+    mutationFn: async ({
+      email,
+      password,
+      handle,
+    }: {
+      email: string;
+      password: string;
+      handle: string;
+    }) => {
+      try {
+        await axios.post(`${BASE_URL}/auth/signup`, {
+          email,
+          password,
+          handle,
+        });
+      } catch (error) {}
+    },
+  });
+}
+
+export function useLogin() {
+  return useMutation({
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      try {
+        const { data } = await axios.post<LoginResponse>(
+          `${BASE_URL}/auth/login`,
+          { email, password }
+        );
+
+        return data;
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          throw error;
+        } else {
+          throw error;
+        }
+      }
     },
   });
 }

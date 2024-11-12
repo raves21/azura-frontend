@@ -56,9 +56,14 @@ export const userDetailsFormSchema = z.object({
 });
 
 export const loginFormSchema = z.object({
-  email: z.string().email({
-    message: "Email is badly formatted.",
-  }),
+  email: z
+    .string()
+    .min(1, {
+      message: "This field is required.",
+    })
+    .email({
+      message: "Email is badly formatted.",
+    }),
   password: z.string().min(1, {
     message: "This field is required.",
   }),

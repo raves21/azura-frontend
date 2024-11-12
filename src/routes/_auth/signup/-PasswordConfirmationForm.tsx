@@ -9,12 +9,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { useShallow } from "zustand/react/shallow";
 import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
 import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
+import { useSendtOTC } from "@/services/auth/authQueries";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export default function PasswordConfirmationForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -25,7 +28,12 @@ export default function PasswordConfirmationForm() {
     ])
   );
 
+  const { toggleOpenDialog } = useGlobalStore();
+
   const router = useRouter();
+  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendtOTC(
+    signUpValues.email
+  );
 
   const form = useForm<PasswordConfirmationFormData>({
     resolver: zodResolver(passwordConfirmationFormSchema),
@@ -35,15 +43,23 @@ export default function PasswordConfirmationForm() {
     },
   });
 
-  function onSubmit(values: PasswordConfirmationFormData) {
-    setSignUpValues({
-      ...signUpValues,
-      password: values.password,
-    });
-    setSignUpStep(SignUpStep.VERIFY_EMAIL);
-    router.navigate({
-      to: "/signup/verify-email",
-    });
+  async function onSubmit(values: PasswordConfirmationFormData) {
+    try {
+      //send otc
+      await sendOTC(signUpValues.email);
+      setSignUpValues({
+        ...signUpValues,
+        password: values.password,
+      });
+      setSignUpStep(SignUpStep.VERIFY_EMAIL);
+      router.navigate({
+        to: "/signup/verify-email",
+      });
+    } catch (error) {
+      toggleOpenDialog(
+        <ErrorDialog message="There was an error in sending the email verification code. Please try again later." />
+      );
+    }
   }
 
   return (
@@ -109,10 +125,14 @@ export default function PasswordConfirmationForm() {
             Back
           </button>
           <button
+            disabled={isSendingOTC}
             type="submit"
-            className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700"
+            className="flex items-center justify-center w-1/2 h-full gap-3 py-2 mt-8 font-medium transition-colors border rounded-lg disabled:bg-fuchsia-700 bg-mainAccent hover:bg-fuchsia-800 border-mainAccent hover:border-fuchsia-700"
           >
-            Next
+            <p>Next</p>
+            {isSendingOTC && (
+              <div className="size-4 loader border-mainWhite border-[3px]" />
+            )}
           </button>
         </div>
       </form>

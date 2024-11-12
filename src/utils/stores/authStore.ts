@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import {
   ForgotPasswordStep,
   SignUpStep,
@@ -34,6 +34,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
   ...authStoreDefaultValues,
   setSignUpStep: (signUpStep: SignUpStep) => set({ signUpStep }),
   setSignUpValues: (signUpValues: SignUpValues) => set({ signUpValues }),
-  setForgotPasswordStep: (forgotPasswordStep: ForgotPasswordStep) =>
+  setForgotPasswordStep: (forgotPasswordStep: ForgotPasswordStep | null) =>
     set({ forgotPasswordStep }),
 }));

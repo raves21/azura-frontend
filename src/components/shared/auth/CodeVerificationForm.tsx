@@ -15,24 +15,77 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useOTC } from "@/services/auth/authQueries";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ErrorDialog from "../ErrorDialog";
+import { Check } from "lucide-react";
+import { useAuthStore } from "@/utils/stores/authStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 import { codeVerificationFormSchema } from "@/utils/variables/formSchemas";
 import { CodeVerificationFormData } from "@/utils/types/auth/forms";
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 
 type CodeVerificationFormProps = {
   backButtonAction: () => void;
   verifyButtonAction: (values: CodeVerificationFormData) => void;
+  isVerifying: boolean;
+  verificationError: AxiosError | null;
 };
 
 export default function CodeVerificationForm({
   backButtonAction,
   verifyButtonAction,
+  isVerifying,
+  verificationError,
 }: CodeVerificationFormProps) {
+  const { signUpValues } = useAuthStore();
+  const email = signUpValues.email;
+  const { toggleOpenDialog } = useGlobalStore();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const {
+    data: otc,
+    isFetching: isOTCLoading,
+    error: OTCError,
+  } = useOTC(email);
+
+  const [verificationErrorMessage, setVerificationErrorMessage] = useState<
+    string | null
+  >(null);
+
   const form = useForm<CodeVerificationFormData>({
     resolver: zodResolver(codeVerificationFormSchema),
     defaultValues: {
       code: "",
     },
   });
+
+  //this is for clearing the error message for every input completion
+  //so that the error message that was there before will be cleared.
+  useEffect(() => {
+    setVerificationErrorMessage(null);
+  }, [form.getValues().code]);
+
+  //this will only trigger when clicking the verify button, since
+  //a new verificationError (if any) from the useVerifyOTC will be passed in thIS component.
+  useEffect(() => {
+    if (verificationError && verificationError.response) {
+      if (verificationError.response.status === 400) {
+        setVerificationErrorMessage("The code you entered was incorrect.");
+      }
+      if (verificationError.response.status === 410) {
+        setVerificationErrorMessage("The code you entered was expired.");
+      }
+    }
+  }, [verificationError]);
+
+  if (OTCError) {
+    toggleOpenDialog(
+      <ErrorDialog okButtonAction={() => router.navigate({ to: "/login" })} />
+    );
+  }
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -47,7 +100,9 @@ export default function CodeVerificationForm({
             name="code"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center gap-3">
-                <FormMessage className="text-base" />
+                <FormMessage className="text-base">
+                  {verificationErrorMessage}
+                </FormMessage>
                 <FormControl>
                   <InputOTP
                     maxLength={6}
@@ -80,18 +135,45 @@ export default function CodeVerificationForm({
                     </InputOTPGroup>
                   </InputOTP>
                 </FormControl>
-                <FormDescription className="text-base text-center text-gray-500">
-                  Please enter the code sent to your email.
-                </FormDescription>
+                {!isOTCLoading && !OTCError && (
+                  <FormDescription className="text-base text-center text-gray-500">
+                    {`Please enter the code sent to your email`}
+                  </FormDescription>
+                )}
               </FormItem>
             )}
           />
-          <p className="text-center text-gray-500">
-            Didn't get the code?{" "}
-            <span className="hover:underline text-mainAccent hover:cursor-pointer ">
-              Resend code
-            </span>
-          </p>
+          {!isOTCLoading && !OTCError && otc ? (
+            <div className="flex items-center justify-center gap-3">
+              <Check className="size-4 stroke-green-500" />
+              <p className="text-green-500">Code Sent!</p>
+            </div>
+          ) : isOTCLoading ? (
+            <div className="flex items-center justify-center gap-3">
+              <div className="border loader size-4 border-mainWhite" />
+              <p className="text-mainAccent">Resending Code</p>
+            </div>
+          ) : null}
+          {!isOTCLoading && !OTCError && otc && (
+            <p className="text-center text-gray-500">
+              Didn't get the code?{" "}
+              <span
+                onClick={() => {
+                  queryClient.refetchQueries(
+                    {
+                      queryKey: ["otc", email],
+                    },
+                    {
+                      throwOnError: true,
+                    }
+                  );
+                }}
+                className="hover:underline text-mainAccent hover:cursor-pointer "
+              >
+                Resend code
+              </span>
+            </p>
+          )}
           <div className="flex w-full gap-3">
             <button
               onClick={backButtonAction}
@@ -101,10 +183,18 @@ export default function CodeVerificationForm({
               Back
             </button>
             <button
+              disabled={isOTCLoading || isVerifying}
               type="submit"
-              className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700"
+              className="flex items-center justify-center w-1/2 h-full gap-3 py-2 mt-8 font-medium transition-colors border rounded-lg disabled:border-fuchsia-800 disabled:bg-fuchsia-800 bg-mainAccent hover:bg-fuchsia-700 border-mainAccent hover:border-fuchsia-700"
             >
-              Verify
+              {isVerifying ? (
+                <>
+                  <p>Verifying...</p>
+                  <div className="loader border-mainWhite border-[3px] size-4" />
+                </>
+              ) : (
+                <p>Verify</p>
+              )}
             </button>
           </div>
         </form>
