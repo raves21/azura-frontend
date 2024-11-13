@@ -18,6 +18,7 @@ import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
 import { useSendtOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
+import axios from "axios";
 
 export default function PasswordConfirmationForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -56,9 +57,18 @@ export default function PasswordConfirmationForm() {
         to: "/signup/verify-email",
       });
     } catch (error) {
-      toggleOpenDialog(
-        <ErrorDialog message="There was an error in sending the email verification code. Please try again later." />
-      );
+      if (axios.isAxiosError(error) && error.response) {
+        toggleOpenDialog(
+          <ErrorDialog
+            message={error.response.data.message}
+            statusCode={error.response.status}
+          />
+        );
+      } else {
+        toggleOpenDialog(
+          <ErrorDialog message="There was an error in sending the email verification code. Please try again later." />
+        );
+      }
     }
   }
 

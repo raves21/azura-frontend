@@ -1,6 +1,6 @@
 import { api } from "@/utils/axiosInstance";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { queryClient } from "@/Providers";
 import { LoginResponse } from "@/utils/types/auth/auth";
 
@@ -45,9 +45,7 @@ export function useOTC(email: string) {
 export function useSendtOTC(email: string) {
   return useMutation({
     mutationFn: async (email: string) => {
-      console.log("SENDING OTC");
       const response = await axios.post(`${BASE_URL}/otc/send`, { email });
-      console.log("OTC SENT");
       return {
         message: response.data.message,
         statusCode: response.status,
@@ -65,15 +63,7 @@ export function useSendtOTC(email: string) {
 export function useVerifyOTC() {
   return useMutation({
     mutationFn: async ({ email, otc }: { email: string; otc: string }) => {
-      try {
-        await axios.get(`${BASE_URL}/otc/verify?email=${email}&otc=${otc}`);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          throw error as AxiosError;
-        } else {
-          throw error;
-        }
-      }
+      await axios.get(`${BASE_URL}/otc/verify?email=${email}&otc=${otc}`);
     },
   });
 }
@@ -81,21 +71,22 @@ export function useVerifyOTC() {
 export function useCreateAccount() {
   return useMutation({
     mutationFn: async ({
+      username,
       email,
       password,
       handle,
     }: {
+      username: string;
       email: string;
       password: string;
       handle: string;
     }) => {
-      try {
-        await axios.post(`${BASE_URL}/auth/signup`, {
-          email,
-          password,
-          handle,
-        });
-      } catch (error) {}
+      await axios.post(`${BASE_URL}/auth/signup`, {
+        username,
+        email,
+        password,
+        handle,
+      });
     },
   });
 }
@@ -109,20 +100,12 @@ export function useLogin() {
       email: string;
       password: string;
     }) => {
-      try {
-        const { data } = await axios.post<LoginResponse>(
-          `${BASE_URL}/auth/login`,
-          { email, password }
-        );
+      const { data } = await axios.post<LoginResponse>(
+        `${BASE_URL}/auth/login`,
+        { email, password }
+      );
 
-        return data;
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          throw error;
-        } else {
-          throw error;
-        }
-      }
+      return data;
     },
   });
 }

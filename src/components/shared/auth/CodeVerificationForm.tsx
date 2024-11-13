@@ -68,22 +68,26 @@ export default function CodeVerificationForm({
     setVerificationErrorMessage(null);
   }, [form.getValues().code]);
 
+  //this is for setting the verification error message.
   //this will only trigger when clicking the verify button, since
-  //a new verificationError (if any) from the useVerifyOTC will be passed in thIS component.
+  //a new verificationError (if any) from the useVerifyOTC will be passed in this component.
   useEffect(() => {
     if (verificationError && verificationError.response) {
       if (verificationError.response.status === 400) {
-        setVerificationErrorMessage("The code you entered was incorrect.");
+        setVerificationErrorMessage("The code you entered is incorrect.");
       }
       if (verificationError.response.status === 410) {
-        setVerificationErrorMessage("The code you entered was expired.");
+        setVerificationErrorMessage("The code you entered is expired.");
       }
     }
   }, [verificationError]);
 
   if (OTCError) {
     toggleOpenDialog(
-      <ErrorDialog okButtonAction={() => router.navigate({ to: "/login" })} />
+      <ErrorDialog
+        message="There was an error in resending the code. Please try again later."
+        okButtonAction={() => router.navigate({ to: "/login" })}
+      />
     );
   }
 
@@ -174,18 +178,18 @@ export default function CodeVerificationForm({
               </span>
             </p>
           )}
-          <div className="flex w-full gap-3">
+          <div className="flex w-full gap-3 pt-8">
             <button
               onClick={backButtonAction}
               type="button"
-              className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
+              className="grid w-1/2 h-full py-2 font-medium transition-colors bg-gray-800 border rounded-lg hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
             >
               Back
             </button>
             <button
               disabled={isOTCLoading || isVerifying}
               type="submit"
-              className="flex items-center justify-center w-1/2 h-full gap-3 py-2 mt-8 font-medium transition-colors border rounded-lg disabled:border-fuchsia-800 disabled:bg-fuchsia-800 bg-mainAccent hover:bg-fuchsia-700 border-mainAccent hover:border-fuchsia-700"
+              className="flex items-center justify-center w-1/2 gap-3 py-2 font-medium transition-colors border rounded-lg disabled:border-fuchsia-800 disabled:bg-fuchsia-800 bg-mainAccent hover:bg-fuchsia-700 border-mainAccent hover:border-fuchsia-700"
             >
               {isVerifying ? (
                 <>

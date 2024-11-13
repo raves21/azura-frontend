@@ -4,7 +4,11 @@ import { useAuthStore } from "@/utils/stores/authStore";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect } from "react";
-import { useLogin, useOTC, useVerifyOTC } from "@/services/auth/authQueries";
+import {
+  useCreateAccount,
+  useLogin,
+  useVerifyOTC,
+} from "@/services/auth/authQueries";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
@@ -24,17 +28,15 @@ function VerifyEmailPage() {
     ])
   );
   const router = useRouter();
-  const { data: otc } = useOTC(signUpValues.email);
   const {
     mutateAsync: verifyOTC,
     isPending: isVerifyingOTC,
-    isSuccess: isVerifyOTCSuccess,
     error: OTCVerificationError,
   } = useVerifyOTC();
-  // const {
-  //   mutateAsync: login,
-  //   isPending: isLoggingIn
-  // } = useLogin();
+
+  const { mutateAsync: createAccount, isPending: isCreatingAccount } =
+    useCreateAccount();
+  const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
   const { toggleOpenDialog } = useGlobalStore();
   const queryClient = useQueryClient();
 
@@ -46,17 +48,17 @@ function VerifyEmailPage() {
     }
   }, []);
 
-  // if (isLoggingIn) {
-  //   return (
-  //     <h1 className="text-3xl font-bold text-mainAccent">Logging in...</h1>
-  //   );
-  // }
-
-  if (isVerifyOTCSuccess) {
+  if (isCreatingAccount) {
     return (
       <h1 className="text-3xl font-bold text-mainAccent">
-        CODE VERIFICIATION SUCCESS.
+        Creating account...
       </h1>
+    );
+  }
+
+  if (isLoggingIn) {
+    return (
+      <h1 className="text-3xl font-bold text-mainAccent">Logging in...</h1>
     );
   }
 
@@ -69,33 +71,41 @@ function VerifyEmailPage() {
         setSignUpStep(SignUpStep.PASSWORD_CONFIRMATION);
       }}
       verifyButtonAction={async (values) => {
-        if (!otc) return;
         try {
           await verifyOTC({ email: signUpValues.email, otc: values.code });
-          // const loginResponse = await login({
-          //   email: signUpValues.email,
-          //   password: signUpValues.password,
-          // });
-          // if (loginResponse.isDetachedMode) {
-          //   router.navigate({
-          //     to: "/detached-mode",
-          //   });
-          // } else {
-          //   queryClient.setQueryData(
-          //     ["accessToken"],
-          //     loginResponse.data.accessToken
-          //   );
-          //   router.navigate({
-          //     to: "/anime",
-          //   });
-          // }
+          await createAccount({
+            username: signUpValues.username,
+            email: signUpValues.email,
+            handle: signUpValues.handle,
+            password: signUpValues.password,
+          });
+          const loginResponse = await login({
+            email: signUpValues.email,
+            password: signUpValues.password,
+          });
+          if (loginResponse.isDetachedMode) {
+            router.navigate({
+              to: "/detached-mode",
+            });
+          } else {
+            queryClient.setQueryData(
+              ["accessToken"],
+              loginResponse.data.accessToken
+            );
+            router.navigate({
+              to: "/anime",
+            });
+          }
         } catch (error) {
           if (axios.isAxiosError(error) && error.response) {
+            //I want to make 410 and 400 error as a formMessage error instead of
+            //making it an ErrorDialog. 400 for incorrect OTC, 410 for expired OTC
             if (![400, 410].includes(error.response.status)) {
               toggleOpenDialog(
                 <ErrorDialog
-                  statusCode={error.status}
-                  message={error.message}
+                  statusCode={error.response.status}
+                  message={error.response.data.message}
+                  okButtonAction={() => router.navigate({ to: "/login" })}
                 />
               );
             }

@@ -14,7 +14,7 @@ export default function ErrorDialog({
   const { toggleOpenDialog } = useGlobalStore();
 
   return (
-    <div className="max-w-[400px] text-center flex flex-col items-center justify-center gap-10 py-8 text-white bg-gray-800 rounded-lg">
+    <div className="min-w-[300px] max-w-[500px] text-center flex flex-col items-center justify-center gap-10 py-8 text-white bg-gray-800 rounded-lg">
       <div className="flex flex-col items-center justify-center gap-8">
         <h1 className="text-2xl font-semibold text-mainAccent">
           <span className="text-white">Error</span>{" "}

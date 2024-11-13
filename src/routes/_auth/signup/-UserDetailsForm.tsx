@@ -117,7 +117,7 @@ export default function UserDetailsForm() {
           </Link>
           <p>&nbsp;here</p>
         </div>
-        <button className="grid w-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent disabled:bg-fuchsia-900 disabled:border-fuchsia-9hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700">
+        <button className="grid w-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700">
           Next
         </button>
       </form>
