@@ -25,7 +25,7 @@ function AuthLayout() {
   }
 
   return (
-    <div className="relative grid h-screen text-white place-items-center bg-darkBg font-montserrat">
+    <div className="relative grid min-h-screen text-mainWhite place-items-center bg-darkBg font-montserrat">
       <Waves />
       {!isAccessTokenLoading && (
         <Link className="absolute top-2 left-2" to="/login">
@@ -35,7 +35,9 @@ function AuthLayout() {
           />
         </Link>
       )}
-      <Outlet />
+      <div className="z-10 flex flex-col items-center gap-8">
+        <Outlet />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-type LoginResponseUser = {
+export type UserBasicInfo = {
   id: string;
   username: string;
   email: string;
@@ -17,7 +17,7 @@ export type LoginResponseDetachedMode = {
   message: string;
   isDetachedMode: true;
   data: {
-    user: LoginResponseUser;
+    user: UserBasicInfo;
     accessToken: never;
     sessions: UserSession[];
   };
@@ -27,7 +27,7 @@ export type LoginResponseRegular = {
   message: string;
   isDetachedMode: false;
   data: {
-    user: LoginResponseUser;
+    user: UserBasicInfo;
     sessions: never;
     accessToken: string;
   };

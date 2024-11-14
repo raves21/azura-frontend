@@ -9,7 +9,7 @@ export const Route = createFileRoute(
 
 function FindAccountPage() {
   return (
-    <div className="z-10 flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-6">
       <h1 className="text-4xl font-bold text-mainWhite">Find your acccount</h1>
       <p className="text-gray-500">
         Please enter your email to search for your account.

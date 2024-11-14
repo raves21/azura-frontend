@@ -1,8 +1,11 @@
 import { useAuthStore } from "@/utils/stores/authStore";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import ChangePasswordForm from "./-ChangePasswordForm";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
+import { useLogin } from "@/services/auth/authQueries";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/change-password/"
@@ -11,21 +14,42 @@ export const Route = createFileRoute(
 });
 
 function ChangePasswordPage() {
-  const { forgotPasswordStep } = useAuthStore();
-  const router = useRouter();
+  const { forgotPasswordStep, findAccountFoundUser } = useAuthStore();
+  const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
+  const { toggleOpenDialog } = useGlobalStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (forgotPasswordStep !== ForgotPasswordStep.CHANGE_PASSWORD) {
-      router.navigate({
+      navigate({
         to: "/login",
       });
     }
   }, []);
 
+  if (isLoggingIn) {
+    return (
+      <h1 className="text-3xl font-bold text-mainAccent">Logging in...</h1>
+    );
+  }
+
   return (
-    <div className="z-10 flex flex-col items-center gap-8">
+    <>
       <h1 className="text-4xl font-bold text-mainWhite">Change Password</h1>
-      <ChangePasswordForm />
-    </div>
+      <ChangePasswordForm
+        afterChangePasswordSuccessAction={async (values) => {
+          try {
+            if (!findAccountFoundUser) throw new Error("User not found.");
+            //todo: show dialog choice before logging in, if user wants to logout other sessions or not
+            await login({
+              email: findAccountFoundUser.email.trim(),
+              password: values.newPassword.trim(),
+            });
+          } catch (error) {
+            toggleOpenDialog(<ErrorDialog error={error} />);
+          }
+        }}
+      />
+    </>
   );
 }

@@ -35,6 +35,7 @@ export default function UserDetailsForm() {
   });
 
   async function onSubmit(values: UserDetailsFormData) {
+    console.log("BRUH");
     setSignUpValues({
       ...values,
       password: signUpValues.password,

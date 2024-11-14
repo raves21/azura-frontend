@@ -13,17 +13,22 @@ export const Route = createFileRoute(
 });
 
 function VerifyEmailPage() {
-  const [forgotPasswordStep, setForgotPasswordStep] = useAuthStore(
-    useShallow((state) => [
-      state.forgotPasswordStep,
-      state.setForgotPasswordStep,
-    ])
-  );
+  const [forgotPasswordStep, setForgotPasswordStep, findAccountFoundUser] =
+    useAuthStore(
+      useShallow((state) => [
+        state.forgotPasswordStep,
+        state.setForgotPasswordStep,
+        state.findAccountFoundUser,
+      ])
+    );
 
   const router = useRouter();
 
   useEffect(() => {
-    if (forgotPasswordStep !== ForgotPasswordStep.VERIFY_EMAIL) {
+    if (
+      forgotPasswordStep !== ForgotPasswordStep.VERIFY_EMAIL ||
+      !findAccountFoundUser
+    ) {
       router.navigate({
         to: "/login",
       });
@@ -32,10 +37,12 @@ function VerifyEmailPage() {
 
   return (
     <CodeVerificationForm
+      email={findAccountFoundUser ? findAccountFoundUser.email : ""}
       backButtonAction={() => {
+        setForgotPasswordStep(ForgotPasswordStep.FIND_ACCOUNT);
         router.history.back();
       }}
-      verifyButtonAction={() => {
+      afterVerificationSuccessAction={() => {
         setForgotPasswordStep(ForgotPasswordStep.CHANGE_PASSWORD);
         router.navigate({
           to: "/login/forgot-password/change-password",

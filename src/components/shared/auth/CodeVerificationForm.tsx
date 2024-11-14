@@ -15,13 +15,12 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { useOTC } from "@/services/auth/authQueries";
+import { useOTC, useVerifyOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "../ErrorDialog";
 import { Check } from "lucide-react";
-import { useAuthStore } from "@/utils/stores/authStore";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { codeVerificationFormSchema } from "@/utils/variables/formSchemas";
 import { CodeVerificationFormData } from "@/utils/types/auth/forms";
 import { useEffect, useState } from "react";
@@ -29,27 +28,29 @@ import { AxiosError } from "axios";
 
 type CodeVerificationFormProps = {
   backButtonAction: () => void;
-  verifyButtonAction: (values: CodeVerificationFormData) => void;
-  isVerifying: boolean;
-  verificationError: AxiosError | null;
+  afterVerificationSuccessAction: (values: CodeVerificationFormData) => void;
+  email: string;
 };
 
 export default function CodeVerificationForm({
   backButtonAction,
-  verifyButtonAction,
-  isVerifying,
-  verificationError,
+  afterVerificationSuccessAction,
+  email,
 }: CodeVerificationFormProps) {
-  const { signUpValues } = useAuthStore();
-  const email = signUpValues.email;
   const { toggleOpenDialog } = useGlobalStore();
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const navigate = useNavigate();
   const {
     data: otc,
     isFetching: isOTCLoading,
     error: OTCError,
   } = useOTC(email);
+
+  const {
+    mutateAsync: verifyOTC,
+    isPending: isVerifyingOTC,
+    error: OTCVerificationError,
+  } = useVerifyOTC();
 
   const [verificationErrorMessage, setVerificationErrorMessage] = useState<
     string | null
@@ -72,21 +73,49 @@ export default function CodeVerificationForm({
   //this will only trigger when clicking the verify button, since
   //a new verificationError (if any) from the useVerifyOTC will be passed in this component.
   useEffect(() => {
-    if (verificationError && verificationError.response) {
-      if (verificationError.response.status === 400) {
+    if (
+      OTCVerificationError &&
+      OTCVerificationError instanceof AxiosError &&
+      OTCVerificationError.response
+    ) {
+      if (OTCVerificationError.response.status === 400) {
         setVerificationErrorMessage("The code you entered is incorrect.");
       }
-      if (verificationError.response.status === 410) {
+      if (OTCVerificationError.response.status === 410) {
         setVerificationErrorMessage("The code you entered is expired.");
       }
     }
-  }, [verificationError]);
+  }, [OTCVerificationError]);
+
+  async function onSubmit(values: CodeVerificationFormData) {
+    try {
+      await verifyOTC({ email, otc: values.code });
+      afterVerificationSuccessAction(values);
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        //I want to make 410 and 400 error as a formMessage error instead of
+        //making it an ErrorDialog. 400 for incorrect OTC, 410 for expired OTC
+        if (![400, 410].includes(error.response.status)) {
+          toggleOpenDialog(
+            <ErrorDialog
+              error={error}
+              okButtonAction={() => navigate({ to: "/login" })}
+            />
+          );
+          return;
+        }
+      } else {
+        toggleOpenDialog(<ErrorDialog error={error} />);
+      }
+    }
+  }
 
   if (OTCError) {
     toggleOpenDialog(
       <ErrorDialog
-        message="There was an error in resending the code. Please try again later."
-        okButtonAction={() => router.navigate({ to: "/login" })}
+        error={OTCError}
+        customMessage="There was an error in resending the code. Please try again later."
+        okButtonAction={() => navigate({ to: "/login" })}
       />
     );
   }
@@ -96,7 +125,7 @@ export default function CodeVerificationForm({
       <h1 className="text-4xl font-bold text-mainWhite">Email Verification</h1>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(verifyButtonAction)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 w-min"
         >
           <FormField
@@ -187,11 +216,11 @@ export default function CodeVerificationForm({
               Back
             </button>
             <button
-              disabled={isOTCLoading || isVerifying}
+              disabled={isOTCLoading || isVerifyingOTC}
               type="submit"
               className="flex items-center justify-center w-1/2 gap-3 py-2 font-medium transition-colors border rounded-lg disabled:border-fuchsia-800 disabled:bg-fuchsia-800 bg-mainAccent hover:bg-fuchsia-700 border-mainAccent hover:border-fuchsia-700"
             >
-              {isVerifying ? (
+              {isVerifyingOTC ? (
                 <>
                   <p>Verifying...</p>
                   <div className="loader border-mainWhite border-[3px] size-4" />

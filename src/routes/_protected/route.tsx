@@ -1,4 +1,4 @@
-import PulseCheckJWT from "@/components/shared/PulseCheckJWT";
+import PulseCheckJWT from "@/components/shared/auth/PulseCheckJWT";
 import StaticLoadingPage from "@/components/shared/StaticLoadingPage";
 import { useAccessToken } from "@/services/auth/authQueries";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";

@@ -9,13 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { useShallow } from "zustand/react/shallow";
 import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
 import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
-import { useSendtOTC } from "@/services/auth/authQueries";
+import { useSendOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 import axios from "axios";
@@ -31,10 +31,8 @@ export default function PasswordConfirmationForm() {
 
   const { toggleOpenDialog } = useGlobalStore();
 
-  const router = useRouter();
-  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendtOTC(
-    signUpValues.email
-  );
+  const navigate = useNavigate();
+  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC();
 
   const form = useForm<PasswordConfirmationFormData>({
     resolver: zodResolver(passwordConfirmationFormSchema),
@@ -53,20 +51,18 @@ export default function PasswordConfirmationForm() {
         password: values.password,
       });
       setSignUpStep(SignUpStep.VERIFY_EMAIL);
-      router.navigate({
+      navigate({
         to: "/signup/verify-email",
       });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        toggleOpenDialog(
-          <ErrorDialog
-            message={error.response.data.message}
-            statusCode={error.response.status}
-          />
-        );
+        toggleOpenDialog(<ErrorDialog error={error} />);
       } else {
         toggleOpenDialog(
-          <ErrorDialog message="There was an error in sending the email verification code. Please try again later." />
+          <ErrorDialog
+            error={error}
+            customMessage="There was an error in sending the email verification code. Please try again later."
+          />
         );
       }
     }

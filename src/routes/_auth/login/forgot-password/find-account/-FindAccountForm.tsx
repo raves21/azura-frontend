@@ -9,15 +9,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { findAccountFormSchema } from "@/utils/variables/formSchemas";
 import { FindAccountFormData } from "@/utils/types/auth/forms";
+import { useFindUserByEmail, useSendOTC } from "@/services/auth/authQueries";
+import { useShallow } from "zustand/react/shallow";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export default function FindAccountForm() {
-  const router = useRouter();
-  const { setForgotPasswordStep } = useAuthStore();
+  const navigate = useNavigate();
+  const [setForgotPasswordStep, setFindAccountFoundUser] = useAuthStore(
+    useShallow((state) => [
+      state.setForgotPasswordStep,
+      state.setFindAccountFoundUser,
+    ])
+  );
+  const { toggleOpenDialog } = useGlobalStore();
 
   const form = useForm<FindAccountFormData>({
     resolver: zodResolver(findAccountFormSchema),
@@ -26,11 +36,23 @@ export default function FindAccountForm() {
     },
   });
 
-  function onSubmit(values: FindAccountFormData) {
-    setForgotPasswordStep(ForgotPasswordStep.VERIFY_EMAIL);
-    router.navigate({
-      to: "/login/forgot-password/verify-email",
-    });
+  const { mutateAsync: findUserByEmail, isPending: isFindingUserByEmail } =
+    useFindUserByEmail();
+
+  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC();
+
+  async function onSubmit(values: FindAccountFormData) {
+    try {
+      const foundUser = await findUserByEmail({ email: values.email.trim() });
+      await sendOTC(foundUser.email);
+      setFindAccountFoundUser(foundUser);
+      setForgotPasswordStep(ForgotPasswordStep.VERIFY_EMAIL);
+      navigate({
+        to: "/login/forgot-password/verify-email",
+      });
+    } catch (error) {
+      toggleOpenDialog(<ErrorDialog error={error} />);
+    }
   }
 
   return (
@@ -63,16 +85,20 @@ export default function FindAccountForm() {
         <div className="flex w-full gap-3">
           <button
             type="button"
-            onClick={() => router.navigate({ to: "/login" })}
+            onClick={() => navigate({ to: "/login" })}
             className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
           >
             Cancel
           </button>
           <button
+            disabled={isFindingUserByEmail || isSendingOTC}
             type="submit"
-            className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700"
+            className="flex items-center justify-center w-1/2 h-full gap-3 py-2 mt-8 font-medium transition-colors border rounded-lg disabled:bg-fuchsia-700 bg-mainAccent hover:bg-fuchsia-800 border-mainAccent hover:border-fuchsia-700"
           >
-            Find
+            <p>Find</p>
+            {isFindingUserByEmail || isSendingOTC ? (
+              <div className="size-4 loader border-mainWhite border-[3px]" />
+            ) : null}
           </button>
         </div>
       </form>

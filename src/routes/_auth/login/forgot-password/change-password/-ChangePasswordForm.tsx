@@ -9,12 +9,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
 import { ChangePasswordFormData } from "@/utils/types/auth/forms";
+import { useAuthStore } from "@/utils/stores/authStore";
+import { useChangePassword } from "@/services/auth/authQueries";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ErrorDialog from "@/components/shared/ErrorDialog";
 
-export default function ChangePasswordForm() {
-  const router = useRouter();
+type ChangePasswordFormProps = {
+  afterChangePasswordSuccessAction: (values: ChangePasswordFormData) => void;
+};
+
+export default function ChangePasswordForm({
+  afterChangePasswordSuccessAction,
+}: ChangePasswordFormProps) {
+  const navigate = useNavigate();
+  const { findAccountFoundUser } = useAuthStore();
+  const { toggleOpenDialog } = useGlobalStore();
+  const { mutateAsync: changePassword, isPending: isChangingPassword } =
+    useChangePassword();
 
   const form = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormSchema),
@@ -24,8 +38,17 @@ export default function ChangePasswordForm() {
     },
   });
 
-  function onSubmit(values: ChangePasswordFormData) {
-    //
+  async function onSubmit(values: ChangePasswordFormData) {
+    try {
+      if (!findAccountFoundUser) throw new Error("User not found.");
+      await changePassword({
+        userId: findAccountFoundUser.id,
+        newPassword: values.newPassword.trim(),
+      });
+      afterChangePasswordSuccessAction(values);
+    } catch (error) {
+      toggleOpenDialog(<ErrorDialog error={error} />);
+    }
   }
 
   return (
@@ -76,17 +99,22 @@ export default function ChangePasswordForm() {
         </div>
         <div className="flex w-full gap-3">
           <button
+            disabled={isChangingPassword}
             type="button"
-            onClick={() => router.navigate({ to: "/login" })}
-            className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
+            onClick={() => navigate({ to: "/login" })}
+            className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg disabled:bg-gray-900 disabled:border-fuchsia-800/80 disabled:hover:border-fuchsia-800/80 hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
           >
             Cancel
           </button>
           <button
+            disabled={isChangingPassword}
             type="submit"
-            className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors border rounded-lg bg-mainAccent hover:bg-fuchsia-700 place-items-center border-mainAccent hover:border-fuchsia-700"
+            className="flex items-center justify-center w-1/2 h-full gap-3 py-2 mt-8 font-medium transition-colors border rounded-lg disabled:bg-fuchsia-700 bg-mainAccent hover:bg-fuchsia-800 border-mainAccent hover:border-fuchsia-700"
           >
-            Confirm
+            <p>Confirm</p>
+            {isChangingPassword && (
+              <div className="size-4 loader border-mainWhite border-[3px]" />
+            )}
           </button>
         </div>
       </form>

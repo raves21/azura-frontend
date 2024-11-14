@@ -17,13 +17,13 @@ function SignUpPage() {
   }, []);
 
   return (
-    <div className="z-10 flex flex-col items-center gap-8">
+    <>
       <h1 className="text-4xl font-bold text-mainWhite">Create an account</h1>
       {signUpStep === SignUpStep.USER_DETAILS ? (
         <UserDetailsForm />
       ) : signUpStep === SignUpStep.PASSWORD_CONFIRMATION ? (
         <PasswordConfirmationForm />
       ) : null}
-    </div>
+    </>
   );
 }

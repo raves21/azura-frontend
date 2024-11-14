@@ -10,9 +10,14 @@ export const Route = createFileRoute("/_auth/login/")({
 });
 
 function LoginPage() {
-  const [setSignUpValues, setSignUpStep] = useAuthStore(
-    useShallow((state) => [state.setSignUpValues, state.setSignUpStep])
-  );
+  const [setSignUpValues, setSignUpStep, setDetachedModeUserInfo] =
+    useAuthStore(
+      useShallow((state) => [
+        state.setSignUpValues,
+        state.setSignUpStep,
+        state.setDetachedModeUserInfo,
+      ])
+    );
 
   useEffect(() => {
     setSignUpValues({
@@ -22,12 +27,13 @@ function LoginPage() {
       username: "",
     });
     setSignUpStep(SignUpStep.USER_DETAILS);
+    setDetachedModeUserInfo(null);
   }, []);
 
   return (
-    <div className="z-10 flex flex-col items-center gap-8">
+    <>
       <h1 className="text-4xl font-bold text-mainWhite">Login</h1>
       <LoginForm />
-    </div>
+    </>
   );
 }
