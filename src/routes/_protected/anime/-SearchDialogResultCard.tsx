@@ -1,5 +1,5 @@
 import { getRatingScore } from "@/utils/functions/reusable_functions";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Anime, Status } from "@/utils/types/thirdParty/animeAnilist";
 import { statusLabels } from "@/utils/variables/anime";
 import { Link } from "@tanstack/react-router";
@@ -12,7 +12,7 @@ type SearchResultCardProps = {
 export default function SearchDialogResultCard({
   anime,
 }: SearchResultCardProps) {
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <Link
       to={`/anime/${anime.id}`}

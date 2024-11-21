@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import {
   AnilistAnimeStatus,
   Format,
@@ -40,7 +40,7 @@ type Filters = {
 };
 
 export default function FiltersDialog() {
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
   const {
     format: formatSearch,

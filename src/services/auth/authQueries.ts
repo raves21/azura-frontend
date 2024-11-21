@@ -153,3 +153,17 @@ export function useChangePassword() {
     },
   });
 }
+
+export function useLogout() {
+  return useMutation({
+    mutationFn: async () => {
+      await axios.post(`${BASE_URL}/auth/logout`, null, {
+        withCredentials: true,
+      });
+    },
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ["accessToken"] });
+      history.replaceState(null, "", "/login");
+    },
+  });
+}

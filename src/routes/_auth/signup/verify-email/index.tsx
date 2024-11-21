@@ -5,7 +5,7 @@ import { SignUpStep } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect } from "react";
 import { useCreateAccount, useLogin } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export const Route = createFileRoute("/_auth/signup/verify-email/")({
@@ -24,7 +24,7 @@ function VerifyEmailPage() {
   const { mutateAsync: createAccount, isPending: isCreatingAccount } =
     useCreateAccount();
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   useEffect(() => {
     if (signUpStep !== SignUpStep.VERIFY_EMAIL) {

@@ -14,7 +14,7 @@ import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
 import { ChangePasswordFormData } from "@/utils/types/auth/forms";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { useChangePassword } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 type ChangePasswordFormProps = {
@@ -26,7 +26,7 @@ export default function ChangePasswordForm({
 }: ChangePasswordFormProps) {
   const navigate = useNavigate();
   const { findAccountFoundUser } = useAuthStore();
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { mutateAsync: changePassword, isPending: isChangingPassword } =
     useChangePassword();
 

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import SearchDialogResults from "./-SearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import SearchDialogContainer from "@/components/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/shared/search/SearchDialogForm";
 
@@ -13,7 +13,7 @@ export default function SearchDialog() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce({ value: search, delay: 400 });
   const navigate = useNavigate();
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   useEffect(() => {
     if (searchInputRef.current) {

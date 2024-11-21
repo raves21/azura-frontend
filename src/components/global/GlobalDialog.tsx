@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useShallow } from "zustand/react/shallow";
 

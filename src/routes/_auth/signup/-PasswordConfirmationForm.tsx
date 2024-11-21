@@ -16,7 +16,7 @@ import { useShallow } from "zustand/react/shallow";
 import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
 import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
 import { useSendOTC } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 import axios from "axios";
 
@@ -29,7 +29,7 @@ export default function PasswordConfirmationForm() {
     ])
   );
 
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   const navigate = useNavigate();
   const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC();

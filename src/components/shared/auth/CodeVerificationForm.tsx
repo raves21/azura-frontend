@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useOTC, useVerifyOTC } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "../ErrorDialog";
 import { Check } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -37,7 +37,7 @@ export default function CodeVerificationForm({
   afterVerificationSuccessAction,
   email,
 }: CodeVerificationFormProps) {
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const {
@@ -71,7 +71,7 @@ export default function CodeVerificationForm({
 
   //this is for setting the verification error message.
   //this will only trigger when clicking the verify button, since
-  //a new verificationError (if any) from the useVerifyOTC will be passed in this component.
+  //a new verificationError (if any) from the useVerifyOTC will be produced.
   useEffect(() => {
     if (
       OTCVerificationError &&

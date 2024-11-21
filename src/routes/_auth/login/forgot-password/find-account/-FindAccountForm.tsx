@@ -16,7 +16,7 @@ import { findAccountFormSchema } from "@/utils/variables/formSchemas";
 import { FindAccountFormData } from "@/utils/types/auth/forms";
 import { useFindUserByEmail, useSendOTC } from "@/services/auth/authQueries";
 import { useShallow } from "zustand/react/shallow";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export default function FindAccountForm() {
@@ -27,7 +27,7 @@ export default function FindAccountForm() {
       state.setFindAccountFoundUser,
     ])
   );
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   const form = useForm<FindAccountFormData>({
     resolver: zodResolver(findAccountFormSchema),

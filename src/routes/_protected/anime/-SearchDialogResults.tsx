@@ -1,7 +1,7 @@
 import { MultipleAnimeResponse } from "@/utils/types/thirdParty/animeAnilist";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@tanstack/react-router";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import SearchDialogResultCard from "./-SearchDialogResultCard";
 
 type SearchResultsProps = {
@@ -17,7 +17,7 @@ export default function SearchDialogResults({
   error,
   query,
 }: SearchResultsProps) {
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   if (isLoading) {
     return (

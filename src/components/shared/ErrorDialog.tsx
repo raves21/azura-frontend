@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import { AxiosError } from "axios";
 
 type ErrorDialogProps = {
@@ -12,7 +12,7 @@ export default function ErrorDialog({
   customMessage,
   okButtonAction,
 }: ErrorDialogProps) {
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   let errorMessage: string;
   if (customMessage) {

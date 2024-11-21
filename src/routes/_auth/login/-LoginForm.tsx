@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 import { Link } from "@tanstack/react-router";
 import { loginFormSchema } from "@/utils/variables/formSchemas";
@@ -24,7 +24,7 @@ export default function LoginForm() {
       password: "",
     },
   });
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
 
   async function onSubmit(values: LoginFormData) {

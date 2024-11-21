@@ -10,7 +10,7 @@ import {
   Season,
   SortBy,
 } from "@/utils/types/thirdParty/animeAnilist";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import FiltersDialog from "./-FiltersDialog";
 import Pagination from "@/components/shared/Pagination";
 
@@ -43,7 +43,7 @@ function CatalogPage() {
   const { format, genres, page, query, season, sortBy, year, status } =
     Route.useSearch();
   const navigate = useNavigate();
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: filteredAnimes,
     isLoading: isFilteredAnimesLoading,

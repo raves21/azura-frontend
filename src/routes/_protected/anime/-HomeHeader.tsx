@@ -1,14 +1,18 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import SearchDialog from "./-SearchDialog";
 import { cn } from "@/lib/utils";
+import { useShallow } from "zustand/react/shallow";
+import SideMenuSheet from "@/components/shared/SideMenuSheet";
 
 export default function HomeHeader() {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
 
-  const { toggleOpenDialog } = useGlobalStore();
+  const [toggleOpenDialog, toggleOpenSheet] = useGlobalStore(
+    useShallow((state) => [state.toggleOpenDialog, state.toggleOpenSheet])
+  );
   const router = useRouter();
 
   function isRouteCurrent(route: string) {
@@ -36,7 +40,10 @@ export default function HomeHeader() {
     <div
       className={`flex font-medium items-center justify-between mx-auto px-2 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] py-4`}
     >
-      <button className="p-[6px]">
+      <button
+        className="p-[6px]"
+        onClick={() => toggleOpenSheet(<SideMenuSheet />)}
+      >
         <Menu />
       </button>
       <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">

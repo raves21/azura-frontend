@@ -4,7 +4,7 @@ import ChangePasswordForm from "./-ChangePasswordForm";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
 import { useLogin } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export const Route = createFileRoute(
@@ -16,7 +16,7 @@ export const Route = createFileRoute(
 function ChangePasswordPage() {
   const { forgotPasswordStep, findAccountFoundUser } = useAuthStore();
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
-  const { toggleOpenDialog } = useGlobalStore();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
 
   useEffect(() => {
