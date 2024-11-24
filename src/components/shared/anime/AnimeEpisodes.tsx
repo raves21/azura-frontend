@@ -1,6 +1,9 @@
-import { AnimeEpisodesData, Format } from "@/utils/types/animeAnilist";
+import {
+  AnimeEpisodesData,
+  Format,
+} from "@/utils/types/thirdParty/animeAnilist";
 import EpisodeCard from "../episode/EpisodeCard";
-import { useChunkAnimeEpisodes } from "@/api/animes";
+import { useChunkAnimeEpisodes } from "@/services/thirdParty/animeQueries";
 import { UseQueryResult } from "@tanstack/react-query";
 import CustomDropdown from "../CustomDropdown";
 import EpisodesLoading from "../episode/EpisodesLoading";

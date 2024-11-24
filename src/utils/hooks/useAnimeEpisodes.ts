@@ -1,6 +1,6 @@
 import { isEqual } from "radash";
 import { useEffect, useState, useRef } from "react";
-import { EpisodeChunk, EpisodeToBeRendered } from "../types/shared";
+import { EpisodeChunk, EpisodeToBeRendered } from "../types/thirdParty/shared";
 import { useScrollToElement } from "./useScrollToElement";
 
 type UseAnimeEpisodesArgs = {

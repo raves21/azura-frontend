@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Status } from "@/utils/types/animeAnilist";
+import { Status } from "@/utils/types/thirdParty/animeAnilist";
 import InfoItem from "../info/InfoItem";
 
 type InfoDetailsProps = {
@@ -9,7 +9,6 @@ type InfoDetailsProps = {
   type: string | undefined;
   status: string | undefined;
 };
-
 
 //!THIS COMPONENT IS UNUSED, MIGHT CHANGE MY MIND AND USE IT IN THE FUTURE, idk
 export default function AnimeInfoDetails({

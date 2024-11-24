@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Status } from "@/utils/types/animeAnilist";
+import { Status } from "@/utils/types/thirdParty/animeAnilist";
 
 type YearAndStatusProps = {
   year: number | undefined;
