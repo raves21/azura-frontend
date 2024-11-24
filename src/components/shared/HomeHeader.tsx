@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import SearchDialog from "./-SearchDialog";
+import SearchDialog from "../../routes/_protected/anime/-SearchDialog";
 import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheet from "@/components/shared/SideMenuSheet";
@@ -64,7 +64,9 @@ export default function HomeHeader() {
           Catalog
         </Link>
         <img src="/azura-logo.svg" className="size-12" />
-        <Link className="p-[6px]">Social</Link>
+        <Link to="/social" className="p-[6px]">
+          Social
+        </Link>
         <Link className="p-[6px]">Profile</Link>
       </div>
       <button
