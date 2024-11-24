@@ -184,9 +184,9 @@ export enum Status {
 }
 
 export type AnimeInfo = {
-  animeInfoAnilist: AnimeInfoAnilist
-  animeInfoAnify: AnimeInfoAnify
-}
+  animeInfoAnilist: AnimeInfoAnilist;
+  animeInfoAnify: AnimeInfoAnify;
+};
 
 export type AnimeEpisodesData = {
   anifyEps: Data[];
@@ -211,7 +211,9 @@ export type Relation = {
 };
 
 export type EpisodeStreamLinks = {
-  headers: Headers;
+  headers: {
+    Referrer: string;
+  };
   sources: Source[];
   download: string;
 };

@@ -14,7 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as IndexImport } from './routes/index'
-import { Route as ProtectedAnimeRouteImport } from './routes/_protected/anime/route'
+import { Route as ProtectedSocialIndexImport } from './routes/_protected/social/index'
 import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/index'
 import { Route as AuthSignupIndexImport } from './routes/_auth/signup/index'
 import { Route as AuthLoginIndexImport } from './routes/_auth/login/index'
@@ -45,14 +45,14 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProtectedAnimeRouteRoute = ProtectedAnimeRouteImport.update({
-  path: '/anime',
+const ProtectedSocialIndexRoute = ProtectedSocialIndexImport.update({
+  path: '/social/',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedAnimeIndexRoute = ProtectedAnimeIndexImport.update({
-  path: '/',
-  getParentRoute: () => ProtectedAnimeRouteRoute,
+  path: '/anime/',
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const AuthSignupIndexRoute = AuthSignupIndexImport.update({
@@ -72,15 +72,15 @@ const AuthDetachedModeIndexRoute = AuthDetachedModeIndexImport.update({
 
 const ProtectedAnimeCatalogIndexRoute = ProtectedAnimeCatalogIndexImport.update(
   {
-    path: '/catalog/',
-    getParentRoute: () => ProtectedAnimeRouteRoute,
+    path: '/anime/catalog/',
+    getParentRoute: () => ProtectedRouteRoute,
   } as any,
 )
 
 const ProtectedAnimeAnimeIdIndexRoute = ProtectedAnimeAnimeIdIndexImport.update(
   {
-    path: '/$animeId/',
-    getParentRoute: () => ProtectedAnimeRouteRoute,
+    path: '/anime/$animeId/',
+    getParentRoute: () => ProtectedRouteRoute,
   } as any,
 )
 
@@ -99,8 +99,8 @@ const AuthLoginForgotPasswordIndexRoute =
 
 const ProtectedAnimeAnimeIdWatchIndexRoute =
   ProtectedAnimeAnimeIdWatchIndexImport.update({
-    path: '/$animeId/watch/',
-    getParentRoute: () => ProtectedAnimeRouteRoute,
+    path: '/anime/$animeId/watch/',
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const AuthLoginForgotPasswordVerifyEmailIndexRoute =
@@ -146,13 +146,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRoute
     }
-    '/_protected/anime': {
-      id: '/_protected/anime'
-      path: '/anime'
-      fullPath: '/anime'
-      preLoaderRoute: typeof ProtectedAnimeRouteImport
-      parentRoute: typeof ProtectedRouteImport
-    }
     '/_auth/detached-mode/': {
       id: '/_auth/detached-mode/'
       path: '/detached-mode'
@@ -176,10 +169,17 @@ declare module '@tanstack/react-router' {
     }
     '/_protected/anime/': {
       id: '/_protected/anime/'
-      path: '/'
-      fullPath: '/anime/'
+      path: '/anime'
+      fullPath: '/anime'
       preLoaderRoute: typeof ProtectedAnimeIndexImport
-      parentRoute: typeof ProtectedAnimeRouteImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/social/': {
+      id: '/_protected/social/'
+      path: '/social'
+      fullPath: '/social'
+      preLoaderRoute: typeof ProtectedSocialIndexImport
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_auth/login/forgot-password/': {
       id: '/_auth/login/forgot-password/'
@@ -197,17 +197,17 @@ declare module '@tanstack/react-router' {
     }
     '/_protected/anime/$animeId/': {
       id: '/_protected/anime/$animeId/'
-      path: '/$animeId'
+      path: '/anime/$animeId'
       fullPath: '/anime/$animeId'
       preLoaderRoute: typeof ProtectedAnimeAnimeIdIndexImport
-      parentRoute: typeof ProtectedAnimeRouteImport
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/anime/catalog/': {
       id: '/_protected/anime/catalog/'
-      path: '/catalog'
+      path: '/anime/catalog'
       fullPath: '/anime/catalog'
       preLoaderRoute: typeof ProtectedAnimeCatalogIndexImport
-      parentRoute: typeof ProtectedAnimeRouteImport
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_auth/login/forgot-password/change-password/': {
       id: '/_auth/login/forgot-password/change-password/'
@@ -232,10 +232,10 @@ declare module '@tanstack/react-router' {
     }
     '/_protected/anime/$animeId/watch/': {
       id: '/_protected/anime/$animeId/watch/'
-      path: '/$animeId/watch'
+      path: '/anime/$animeId/watch'
       fullPath: '/anime/$animeId/watch'
       preLoaderRoute: typeof ProtectedAnimeAnimeIdWatchIndexImport
-      parentRoute: typeof ProtectedAnimeRouteImport
+      parentRoute: typeof ProtectedRouteImport
     }
   }
 }
@@ -255,12 +255,11 @@ export const routeTree = rootRoute.addChildren({
     AuthLoginForgotPasswordVerifyEmailIndexRoute,
   }),
   ProtectedRouteRoute: ProtectedRouteRoute.addChildren({
-    ProtectedAnimeRouteRoute: ProtectedAnimeRouteRoute.addChildren({
-      ProtectedAnimeIndexRoute,
-      ProtectedAnimeAnimeIdIndexRoute,
-      ProtectedAnimeCatalogIndexRoute,
-      ProtectedAnimeAnimeIdWatchIndexRoute,
-    }),
+    ProtectedAnimeIndexRoute,
+    ProtectedSocialIndexRoute,
+    ProtectedAnimeAnimeIdIndexRoute,
+    ProtectedAnimeCatalogIndexRoute,
+    ProtectedAnimeAnimeIdWatchIndexRoute,
   }),
 })
 
@@ -296,14 +295,8 @@ export const routeTree = rootRoute.addChildren({
     "/_protected": {
       "filePath": "_protected/route.tsx",
       "children": [
-        "/_protected/anime"
-      ]
-    },
-    "/_protected/anime": {
-      "filePath": "_protected/anime/route.tsx",
-      "parent": "/_protected",
-      "children": [
         "/_protected/anime/",
+        "/_protected/social/",
         "/_protected/anime/$animeId/",
         "/_protected/anime/catalog/",
         "/_protected/anime/$animeId/watch/"
@@ -323,7 +316,11 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/anime/": {
       "filePath": "_protected/anime/index.tsx",
-      "parent": "/_protected/anime"
+      "parent": "/_protected"
+    },
+    "/_protected/social/": {
+      "filePath": "_protected/social/index.tsx",
+      "parent": "/_protected"
     },
     "/_auth/login/forgot-password/": {
       "filePath": "_auth/login/forgot-password/index.tsx",
@@ -335,11 +332,11 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/anime/$animeId/": {
       "filePath": "_protected/anime/$animeId/index.tsx",
-      "parent": "/_protected/anime"
+      "parent": "/_protected"
     },
     "/_protected/anime/catalog/": {
       "filePath": "_protected/anime/catalog/index.tsx",
-      "parent": "/_protected/anime"
+      "parent": "/_protected"
     },
     "/_auth/login/forgot-password/change-password/": {
       "filePath": "_auth/login/forgot-password/change-password/index.tsx",
@@ -355,7 +352,7 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/anime/$animeId/watch/": {
       "filePath": "_protected/anime/$animeId/watch/index.tsx",
-      "parent": "/_protected/anime"
+      "parent": "/_protected"
     }
   }
 }

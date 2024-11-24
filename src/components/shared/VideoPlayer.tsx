@@ -10,13 +10,14 @@ import { cn } from "@/lib/utils";
 
 type VideoPlayerProps = HTMLAttributes<HTMLDivElement> & {
   streamLink: string | undefined;
+  headers?: string;
   className?: string;
   volume?: number;
   title?: string;
 };
 
 export const VideoPlayer = forwardRef<HTMLDivElement, VideoPlayerProps>(
-  ({ streamLink, className, volume, title, ...props }, ref) => {
+  ({ headers = "{}", streamLink, className, volume, title, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -32,7 +33,7 @@ export const VideoPlayer = forwardRef<HTMLDivElement, VideoPlayerProps>(
             playsInline
             className="rounded-none size-full"
             title={title}
-            src={streamLink}
+            src={`${import.meta.env.VITE_ANIME_PROXY_URL}/proxy?url=${btoa(streamLink)}&headers=${btoa(headers)}`}
             volume={0.08}
           >
             <MediaProvider>
