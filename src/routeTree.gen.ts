@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProtectedSocialRouteImport } from './routes/_protected/social/route'
 import { Route as ProtectedSocialIndexImport } from './routes/_protected/social/index'
 import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/index'
 import { Route as AuthSignupIndexImport } from './routes/_auth/signup/index'
@@ -45,9 +46,14 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProtectedSocialIndexRoute = ProtectedSocialIndexImport.update({
-  path: '/social/',
+const ProtectedSocialRouteRoute = ProtectedSocialRouteImport.update({
+  path: '/social',
   getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedSocialIndexRoute = ProtectedSocialIndexImport.update({
+  path: '/',
+  getParentRoute: () => ProtectedSocialRouteRoute,
 } as any)
 
 const ProtectedAnimeIndexRoute = ProtectedAnimeIndexImport.update({
@@ -146,6 +152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRoute
     }
+    '/_protected/social': {
+      id: '/_protected/social'
+      path: '/social'
+      fullPath: '/social'
+      preLoaderRoute: typeof ProtectedSocialRouteImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_auth/detached-mode/': {
       id: '/_auth/detached-mode/'
       path: '/detached-mode'
@@ -176,10 +189,10 @@ declare module '@tanstack/react-router' {
     }
     '/_protected/social/': {
       id: '/_protected/social/'
-      path: '/social'
-      fullPath: '/social'
+      path: '/'
+      fullPath: '/social/'
       preLoaderRoute: typeof ProtectedSocialIndexImport
-      parentRoute: typeof ProtectedRouteImport
+      parentRoute: typeof ProtectedSocialRouteImport
     }
     '/_auth/login/forgot-password/': {
       id: '/_auth/login/forgot-password/'
@@ -255,8 +268,10 @@ export const routeTree = rootRoute.addChildren({
     AuthLoginForgotPasswordVerifyEmailIndexRoute,
   }),
   ProtectedRouteRoute: ProtectedRouteRoute.addChildren({
+    ProtectedSocialRouteRoute: ProtectedSocialRouteRoute.addChildren({
+      ProtectedSocialIndexRoute,
+    }),
     ProtectedAnimeIndexRoute,
-    ProtectedSocialIndexRoute,
     ProtectedAnimeAnimeIdIndexRoute,
     ProtectedAnimeCatalogIndexRoute,
     ProtectedAnimeAnimeIdWatchIndexRoute,
@@ -295,11 +310,18 @@ export const routeTree = rootRoute.addChildren({
     "/_protected": {
       "filePath": "_protected/route.tsx",
       "children": [
+        "/_protected/social",
         "/_protected/anime/",
-        "/_protected/social/",
         "/_protected/anime/$animeId/",
         "/_protected/anime/catalog/",
         "/_protected/anime/$animeId/watch/"
+      ]
+    },
+    "/_protected/social": {
+      "filePath": "_protected/social/route.tsx",
+      "parent": "/_protected",
+      "children": [
+        "/_protected/social/"
       ]
     },
     "/_auth/detached-mode/": {
@@ -320,7 +342,7 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/social/": {
       "filePath": "_protected/social/index.tsx",
-      "parent": "/_protected"
+      "parent": "/_protected/social"
     },
     "/_auth/login/forgot-password/": {
       "filePath": "_auth/login/forgot-password/index.tsx",

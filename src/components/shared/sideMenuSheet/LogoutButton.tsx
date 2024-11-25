@@ -2,8 +2,9 @@ import { useLogout } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { LogOut } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
+import SideMenuSheetButton from "./SideMenuSheetButton";
 
-export default function MenuSheet() {
+export default function LogoutButton() {
   const {
     mutateAsync: logout,
     status: logoutStatus,
@@ -32,19 +33,15 @@ export default function MenuSheet() {
   if (logoutStatus === "success") {
     toggleOpenDialog(null);
   }
-
   return (
-    <div className="flex flex-col size-full bg-darkBg">
-      <button
-        onClick={async () => {
-          toggleOpenSheet(null);
-          await logout();
-        }}
-        className="flex items-center w-full gap-4 py-4 pl-5 mt-auto transition-colors hover:bg-mainAccent text-mainWhite"
-      >
-        <LogOut className="size-6 stroke-mainWhite" />
-        <p>Logout</p>
-      </button>
-    </div>
+    <SideMenuSheetButton
+      onClick={async () => {
+        toggleOpenSheet(null);
+        await logout();
+      }}
+    >
+      <LogOut className="size-6 stroke-mainWhite" />
+      <p>Logout</p>
+    </SideMenuSheetButton>
   );
 }

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import SearchDialog from "../../routes/_protected/anime/-SearchDialog";
 import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
-import SideMenuSheet from "@/components/shared/SideMenuSheet";
+import SideMenuSheet from "@/components/shared/sideMenuSheet/SideMenuSheet";
 
 export default function HomeHeader() {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
@@ -64,10 +64,15 @@ export default function HomeHeader() {
           Catalog
         </Link>
         <img src="/azura-logo.svg" className="size-12" />
-        <Link to="/social" className="p-[6px]">
+        <Link
+          to="/social"
+          className={cn("p-[6px]", {
+            "text-white": isRouteCurrent("social"),
+          })}
+        >
           Social
         </Link>
-        <Link className="p-[6px]">Profile</Link>
+        <Link className="p-[6px]">Settings</Link>
       </div>
       <button
         onClick={() => toggleOpenDialog(<SearchDialog />)}
