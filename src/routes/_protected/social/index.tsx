@@ -1,5 +1,5 @@
-import CreatePost from "@/components/shared/social/CreatePost";
-import Post from "@/components/shared/social/Post";
+import CreatePost from "@/components/shared/social/mainContent/post/CreatePost";
+import Post from "@/components/shared/social/mainContent/post/Post";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/")({
@@ -8,9 +8,9 @@ export const Route = createFileRoute("/_protected/social/")({
 
 function SocialPage() {
   return (
-    <div className="flex flex-col w-1/2 gap-3">
+    <div className="flex flex-col w-1/2 gap-4">
       <CreatePost />
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {Array.from({ length: 10 }).map((_) => (
           <Post />
         ))}

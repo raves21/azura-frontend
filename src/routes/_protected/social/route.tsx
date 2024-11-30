@@ -1,3 +1,6 @@
+import FollowSuggestions from "@/components/shared/social/profilePreviewAndFollowSuggestions/followSuggestions/FollowSuggestions";
+import ProfilePreview from "@/components/shared/social/profilePreviewAndFollowSuggestions/profilePreview/ProfilePreview";
+import Trending from "@/components/shared/social/trending/Trending";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social")({
@@ -7,9 +10,14 @@ export const Route = createFileRoute("/_protected/social")({
 function SocialPageLayout() {
   return (
     <main className="relative flex justify-center gap-4 pt-[105px] bg-darkBg text-mainWhite">
-      <div className="rounded-xl border border-gray-600 w-[25%] h-[110dvh]"></div>
+      <div className="rounded-xl w-[25%] space-y-4">
+        <ProfilePreview />
+        <FollowSuggestions />
+      </div>
       <Outlet />
-      <div className="rounded-xl border border-gray-600 w-[25%] h-[100dvh] sticky top-12"></div>
+      <div className="rounded-xl w-[25%] sticky top-12">
+        <Trending />
+      </div>
     </main>
   );
 }
