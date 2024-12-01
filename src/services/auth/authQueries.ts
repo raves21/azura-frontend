@@ -1,5 +1,10 @@
 import { api } from "@/utils/axiosInstance";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import axios from "axios";
 import { queryClient } from "@/Providers";
 import { LoginResponse, UserBasicInfo } from "@/utils/types/auth/auth";
@@ -30,20 +35,23 @@ export function useCurrentUser() {
   });
 }
 
-export function useOTC(email: string) {
+type OTCResponse = {
+  message: string;
+  statusCode: number;
+};
+
+export function useOTC(email: string): UseQueryResult<OTCResponse, Error> {
   return useQuery({
     queryKey: ["otc", email],
-    queryFn: async () => {
-      const response = await axios.post(`${BASE_URL}/otc/send`, { email });
-      return {
-        message: response.data.message,
-        statusCode: response.status,
-      };
-    },
   });
 }
 
-export function useSendOTC() {
+export function useSendOTC(): UseMutationResult<
+  OTCResponse,
+  Error,
+  string,
+  unknown
+> {
   return useMutation({
     mutationFn: async (email: string) => {
       const response = await axios.post(`${BASE_URL}/otc/send`, { email });

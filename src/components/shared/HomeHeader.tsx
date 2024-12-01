@@ -1,40 +1,20 @@
 import { useGlobalStore } from "@/utils/stores/globalStore";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useMatchRoute } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
-import { useEffect, useState } from "react";
 import SearchDialog from "../../routes/_protected/anime/-SearchDialog";
 import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheet from "@/components/shared/sideMenuSheet/SideMenuSheet";
+import useScrolledState from "@/utils/hooks/useScrolledState";
 
 export default function HomeHeader() {
-  const [isScrolledDown, setIsScrolledDown] = useState(false);
+  const { isScrolledDown } = useScrolledState();
 
   const [toggleOpenDialog, toggleOpenSheet] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenSheet])
   );
-  const router = useRouter();
 
-  function isRouteCurrent(route: string) {
-    const pathnameArray = router.latestLocation.pathname.split("/");
-    return pathnameArray[pathnameArray.length - 1] === route;
-  }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolledDown(true);
-      } else {
-        setIsScrolledDown(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const matchRoute = useMatchRoute();
 
   const DesktopHeader = (
     <div
@@ -49,16 +29,22 @@ export default function HomeHeader() {
       <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
         <Link
           to="/anime"
-          className={cn("p-[6px]", {
-            "text-white": isRouteCurrent("anime"),
-          })}
+          className={cn(
+            "p-[6px]",
+            {
+              "text-mainWhite": matchRoute({ to: "/anime", fuzzy: true }),
+            },
+            { "text-gray-300": matchRoute({ to: "/anime/catalog" }) }
+          )}
         >
           Anime
         </Link>
         <Link
           to="/anime/catalog"
           className={cn("p-[6px]", {
-            "text-white": isRouteCurrent("catalog"),
+            "text-mainWhite": matchRoute({
+              to: "/anime/catalog",
+            }),
           })}
         >
           Catalog
@@ -67,7 +53,7 @@ export default function HomeHeader() {
         <Link
           to="/social"
           className={cn("p-[6px]", {
-            "text-white": isRouteCurrent("social"),
+            "text-mainWhite": matchRoute({ to: "/social", fuzzy: true }),
           })}
         >
           Social

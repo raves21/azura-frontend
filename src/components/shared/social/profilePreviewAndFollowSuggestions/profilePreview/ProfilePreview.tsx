@@ -1,7 +1,7 @@
 export default function ProfilePreview() {
   return (
     <div className="flex flex-col w-full gap-5 overflow-hidden rounded-lg bg-socialPrimary">
-      <div className="relative top-0 w-full h-20">
+      <div className="relative top-0 w-full h-24">
         <img
           src="/sample-user-banner.jpg"
           className="absolute inset-0 object-cover size-full"

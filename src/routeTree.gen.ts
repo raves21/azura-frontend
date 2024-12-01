@@ -20,10 +20,13 @@ import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/in
 import { Route as AuthSignupIndexImport } from './routes/_auth/signup/index'
 import { Route as AuthLoginIndexImport } from './routes/_auth/login/index'
 import { Route as AuthDetachedModeIndexImport } from './routes/_auth/detached-mode/index'
+import { Route as ProtectedSocialProfileIndexImport } from './routes/_protected/social/profile/index'
 import { Route as ProtectedAnimeCatalogIndexImport } from './routes/_protected/anime/catalog/index'
 import { Route as ProtectedAnimeAnimeIdIndexImport } from './routes/_protected/anime/$animeId/index'
 import { Route as AuthSignupVerifyEmailIndexImport } from './routes/_auth/signup/verify-email/index'
 import { Route as AuthLoginForgotPasswordIndexImport } from './routes/_auth/login/forgot-password/index'
+import { Route as ProtectedSocialProfileUserNameRouteImport } from './routes/_protected/social/profile/$userName/route'
+import { Route as ProtectedSocialProfileUserNameIndexImport } from './routes/_protected/social/profile/$userName/index'
 import { Route as ProtectedAnimeAnimeIdWatchIndexImport } from './routes/_protected/anime/$animeId/watch/index'
 import { Route as AuthLoginForgotPasswordVerifyEmailIndexImport } from './routes/_auth/login/forgot-password/verify-email/index'
 import { Route as AuthLoginForgotPasswordFindAccountIndexImport } from './routes/_auth/login/forgot-password/find-account/index'
@@ -76,6 +79,12 @@ const AuthDetachedModeIndexRoute = AuthDetachedModeIndexImport.update({
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
+const ProtectedSocialProfileIndexRoute =
+  ProtectedSocialProfileIndexImport.update({
+    path: '/profile/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any)
+
 const ProtectedAnimeCatalogIndexRoute = ProtectedAnimeCatalogIndexImport.update(
   {
     path: '/anime/catalog/',
@@ -101,6 +110,18 @@ const AuthLoginForgotPasswordIndexRoute =
   AuthLoginForgotPasswordIndexImport.update({
     path: '/login/forgot-password/',
     getParentRoute: () => AuthRouteRoute,
+  } as any)
+
+const ProtectedSocialProfileUserNameRouteRoute =
+  ProtectedSocialProfileUserNameRouteImport.update({
+    path: '/profile/$userName',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any)
+
+const ProtectedSocialProfileUserNameIndexRoute =
+  ProtectedSocialProfileUserNameIndexImport.update({
+    path: '/',
+    getParentRoute: () => ProtectedSocialProfileUserNameRouteRoute,
   } as any)
 
 const ProtectedAnimeAnimeIdWatchIndexRoute =
@@ -194,6 +215,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialIndexImport
       parentRoute: typeof ProtectedSocialRouteImport
     }
+    '/_protected/social/profile/$userName': {
+      id: '/_protected/social/profile/$userName'
+      path: '/profile/$userName'
+      fullPath: '/social/profile/$userName'
+      preLoaderRoute: typeof ProtectedSocialProfileUserNameRouteImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
     '/_auth/login/forgot-password/': {
       id: '/_auth/login/forgot-password/'
       path: '/login/forgot-password'
@@ -221,6 +249,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/anime/catalog'
       preLoaderRoute: typeof ProtectedAnimeCatalogIndexImport
       parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/social/profile/': {
+      id: '/_protected/social/profile/'
+      path: '/profile'
+      fullPath: '/social/profile'
+      preLoaderRoute: typeof ProtectedSocialProfileIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
     }
     '/_auth/login/forgot-password/change-password/': {
       id: '/_auth/login/forgot-password/change-password/'
@@ -250,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAnimeAnimeIdWatchIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/social/profile/$userName/': {
+      id: '/_protected/social/profile/$userName/'
+      path: '/'
+      fullPath: '/social/profile/$userName/'
+      preLoaderRoute: typeof ProtectedSocialProfileUserNameIndexImport
+      parentRoute: typeof ProtectedSocialProfileUserNameRouteImport
+    }
   }
 }
 
@@ -270,6 +312,11 @@ export const routeTree = rootRoute.addChildren({
   ProtectedRouteRoute: ProtectedRouteRoute.addChildren({
     ProtectedSocialRouteRoute: ProtectedSocialRouteRoute.addChildren({
       ProtectedSocialIndexRoute,
+      ProtectedSocialProfileUserNameRouteRoute:
+        ProtectedSocialProfileUserNameRouteRoute.addChildren({
+          ProtectedSocialProfileUserNameIndexRoute,
+        }),
+      ProtectedSocialProfileIndexRoute,
     }),
     ProtectedAnimeIndexRoute,
     ProtectedAnimeAnimeIdIndexRoute,
@@ -321,7 +368,9 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/social/route.tsx",
       "parent": "/_protected",
       "children": [
-        "/_protected/social/"
+        "/_protected/social/",
+        "/_protected/social/profile/$userName",
+        "/_protected/social/profile/"
       ]
     },
     "/_auth/detached-mode/": {
@@ -344,6 +393,13 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/social/index.tsx",
       "parent": "/_protected/social"
     },
+    "/_protected/social/profile/$userName": {
+      "filePath": "_protected/social/profile/$userName/route.tsx",
+      "parent": "/_protected/social",
+      "children": [
+        "/_protected/social/profile/$userName/"
+      ]
+    },
     "/_auth/login/forgot-password/": {
       "filePath": "_auth/login/forgot-password/index.tsx",
       "parent": "/_auth"
@@ -360,6 +416,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/anime/catalog/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/social/profile/": {
+      "filePath": "_protected/social/profile/index.tsx",
+      "parent": "/_protected/social"
+    },
     "/_auth/login/forgot-password/change-password/": {
       "filePath": "_auth/login/forgot-password/change-password/index.tsx",
       "parent": "/_auth"
@@ -375,6 +435,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/anime/$animeId/watch/": {
       "filePath": "_protected/anime/$animeId/watch/index.tsx",
       "parent": "/_protected"
+    },
+    "/_protected/social/profile/$userName/": {
+      "filePath": "_protected/social/profile/$userName/index.tsx",
+      "parent": "/_protected/social/profile/$userName"
     }
   }
 }
