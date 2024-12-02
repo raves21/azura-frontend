@@ -1,6 +1,6 @@
 import { MediaType } from "@/utils/types/social/shared";
 import { Link } from "@tanstack/react-router";
-import { Cat, Tv, Clapperboard, Circle } from "lucide-react";
+import { Cat, Tv, Clapperboard } from "lucide-react";
 
 type CollectionItemProps = {
   type: MediaType;
@@ -42,12 +42,7 @@ export default function CollectionItem({
           ) : (
             <Tv className="size-4 stroke-lime-500" />
           )}
-          {year && (
-            <>
-              <Circle className="fill-gray-400 stroke-gray-400 size-1" />
-              <p>{year}</p>
-            </>
-          )}
+          {year && <p>{year}</p>}
         </div>
       </div>
     </Link>
