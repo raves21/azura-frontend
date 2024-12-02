@@ -18,7 +18,7 @@ import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
 import { useSendOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
-import axios from "axios";
+import { AxiosError } from "axios";
 
 export default function PasswordConfirmationForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -55,7 +55,7 @@ export default function PasswordConfirmationForm() {
         to: "/signup/verify-email",
       });
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (error instanceof AxiosError && error.response) {
         toggleOpenDialog(<ErrorDialog error={error} />);
       } else {
         toggleOpenDialog(

@@ -1,10 +1,5 @@
 import { api } from "@/utils/axiosInstance";
-import {
-  useMutation,
-  UseMutationResult,
-  useQuery,
-  UseQueryResult,
-} from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { queryClient } from "@/Providers";
 import { LoginResponse, UserBasicInfo } from "@/utils/types/auth/auth";
@@ -35,23 +30,20 @@ export function useCurrentUser() {
   });
 }
 
-type OTCResponse = {
-  message: string;
-  statusCode: number;
-};
-
-export function useOTC(email: string): UseQueryResult<OTCResponse, Error> {
+export function useOTC(email: string) {
   return useQuery({
     queryKey: ["otc", email],
+    queryFn: async () => {
+      const response = await axios.post(`${BASE_URL}/otc/send`, { email });
+      return {
+        message: response.data.message,
+        statusCode: response.status,
+      };
+    },
   });
 }
 
-export function useSendOTC(): UseMutationResult<
-  OTCResponse,
-  Error,
-  string,
-  unknown
-> {
+export function useSendOTC() {
   return useMutation({
     mutationFn: async (email: string) => {
       const response = await axios.post(`${BASE_URL}/otc/send`, { email });
@@ -109,13 +101,13 @@ export function useLogin() {
       email: string;
       password: string;
     }) => {
-      const { data } = await axios.post<LoginResponse>(
+      const { data } = await axios.post(
         `${BASE_URL}/auth/login`,
         { email, password },
         { withCredentials: true }
       );
 
-      return data;
+      return data as LoginResponse;
     },
     onSuccess: (result) => {
       if (result.isDetachedMode) {

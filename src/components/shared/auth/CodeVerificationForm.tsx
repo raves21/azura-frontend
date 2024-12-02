@@ -99,7 +99,10 @@ export default function CodeVerificationForm({
           toggleOpenDialog(
             <ErrorDialog
               error={error}
-              okButtonAction={() => navigate({ to: "/login" })}
+              okButtonAction={() => {
+                navigate({ to: "/login" });
+                toggleOpenDialog(null);
+              }}
             />
           );
           return;
@@ -115,7 +118,10 @@ export default function CodeVerificationForm({
       <ErrorDialog
         error={OTCError}
         customMessage="There was an error in resending the code. Please try again later."
-        okButtonAction={() => navigate({ to: "/login" })}
+        okButtonAction={() => {
+          navigate({ to: "/login" });
+          toggleOpenDialog(null);
+        }}
       />
     );
   }

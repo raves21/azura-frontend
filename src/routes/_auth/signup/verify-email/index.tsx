@@ -71,7 +71,10 @@ function VerifyEmailPage() {
           toggleOpenDialog(
             <ErrorDialog
               error={error}
-              okButtonAction={() => router.navigate({ to: "/login" })}
+              okButtonAction={() => {
+                router.navigate({ to: "/login" });
+                toggleOpenDialog(null);
+              }}
             />
           );
         }
