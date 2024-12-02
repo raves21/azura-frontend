@@ -14,7 +14,7 @@ export default function ProfilePreview() {
       <div className="flex flex-col gap-3 px-3 mt-4">
         <div className="flex flex-col items-center">
           <p className="text-lg font-semibold">Elon Musk</p>
-          <p className="text-lg text-gray-500">@elonmusk</p>
+          <p className="text-base text-gray-500">@elonmusk</p>
         </div>
         <p className="px-5 text-center text-gray-300 line-clamp-3">
           Let's make humanity interplanetary! 🚀

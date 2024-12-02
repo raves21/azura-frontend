@@ -1,14 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { ProfileTabType } from "./ProfileTabs";
+import { TProfileTab } from "./ProfileTabs";
 
-type ProfileTabProps = {
-  type: ProfileTabType;
-};
+type ProfileTabProps = TProfileTab;
 
-export default function ProfileTab({ type }: ProfileTabProps) {
+export default function ProfileTab({ name, linkProps }: ProfileTabProps) {
   return (
-    <Link className="grid flex-1 py-4 place-items-center hover:bg-socialPrimaryHover">
-      {type}
+    <Link
+      {...linkProps}
+      className="grid flex-1 py-4 place-items-center hover:bg-socialPrimaryHover"
+    >
+      {name}
     </Link>
   );
 }

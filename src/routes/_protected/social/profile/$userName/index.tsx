@@ -1,3 +1,4 @@
+import Post from "@/components/shared/social/mainContent/post/Post";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/profile/$userName/")({
@@ -5,5 +6,11 @@ export const Route = createFileRoute("/_protected/social/profile/$userName/")({
 });
 
 function UserProfilePage() {
-  return <></>;
+  return (
+    <div className="flex flex-col w-full gap-4">
+      {Array.from({ length: 5 }).map((_) => (
+        <Post />
+      ))}
+    </div>
+  );
 }

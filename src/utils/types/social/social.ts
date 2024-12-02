@@ -1,8 +1,8 @@
 import {
   CollectionPostAttachment,
   MediaPostAttachment,
-  Owner,
-  Privacy,
+  EntityOwner,
+  EntityPrivacy,
 } from "./shared";
 
 export type Posts = {
@@ -16,11 +16,11 @@ export type Posts = {
 export type Post = {
   id: string;
   content: string;
-  privacy: Privacy;
+  privacy: EntityPrivacy;
   totalLikes: number;
   totalComments: number;
   isLikedByCurrentUser: boolean;
-  owner: Owner;
+  owner: EntityOwner;
   media: MediaPostAttachment | null;
   collection: CollectionPostAttachment | null;
   createdAt: Date;

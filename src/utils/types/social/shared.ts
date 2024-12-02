@@ -1,5 +1,7 @@
 import { UserBasicInfo } from "../auth/auth";
 
+export type EntityPrivacy = "FRIENDS_ONLY" | "ONLY_ME" | "PUBLIC";
+
 export type MediaPostAttachment = {
   id: string;
   title: string;
@@ -9,13 +11,30 @@ export type MediaPostAttachment = {
   year: string;
 };
 
-export type CollectionPostAttachment = {
+export type CollectionPostAttachment = Omit<TCollection, "privacy">;
+
+export type TCollection = {
   id: string;
   name: string;
+  photo?: string;
   description: string;
+  privacy: EntityPrivacy;
   previewPosters: string[];
 };
 
-export type Owner = Omit<UserBasicInfo, "email" | "avatar">;
+export type CollectionDetails = Omit<TCollection, "previewPosters"> & {
+  owner: EntityOwner;
+  totalCollectionItems: number;
+};
 
-export type Privacy = "PUBLIC" | "FRIENDS_ONLY" | "ONLY_ME";
+export type ResponseWithMessage = {
+  message: string;
+};
+
+export type PaginatedResponse = ResponseWithMessage & {
+  page: number;
+  perPage: number;
+  totalPages: number;
+};
+
+export type EntityOwner = Omit<UserBasicInfo, "email" | "avatar">;
