@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useScrolledState() {
+export function useScrolledState() {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
 
   useEffect(() => {

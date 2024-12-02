@@ -1,11 +1,11 @@
-import Collection from "@/components/shared/social/mainContent/collection/Collection";
-import { TCollection } from "@/utils/types/social/shared";
+import Collections from "@/components/shared/social/mainContent/collection/Collections";
+import { TCollection } from "@/utils/types/social/social";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
   "/_protected/social/profile/$userName/collections/"
 )({
-  component: () => <ProfileCollectionsPage />,
+  component: () => <CollectionListPage />,
 });
 
 const tempCollections: TCollection[] = [
@@ -66,17 +66,6 @@ const tempCollections: TCollection[] = [
   },
 ];
 
-function ProfileCollectionsPage() {
-  return (
-    <div className="grid w-full grid-cols-3 gap-3 p-5 pb-8 rounded-lg bg-socialPrimary">
-      {tempCollections.map((collection) => (
-        <Collection
-          key={collection.id}
-          name={collection.name}
-          previewPosters={collection.previewPosters}
-          photo={collection.photo}
-        />
-      ))}
-    </div>
-  );
+function CollectionListPage() {
+  return <Collections collections={tempCollections} />;
 }

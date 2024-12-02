@@ -1,7 +1,7 @@
 export default function ProfileDetails() {
   return (
     <div className="flex flex-col gap-4 px-5">
-      <button className="self-end px-4 py-3 text-sm transition-colors border border-gray-600 rounded-full hover:border-mainAccent hover:text-mainAccent hover:bg-socialPrimaryHover">
+      <button className="self-end px-4 py-2 text-sm transition-colors border border-gray-600 rounded-full hover:border-mainAccent hover:text-mainAccent hover:bg-socialPrimaryHover">
         Edit Profile
       </button>
       <div className="flex flex-col">

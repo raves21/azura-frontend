@@ -32,6 +32,7 @@ import { Route as AuthLoginForgotPasswordVerifyEmailIndexImport } from './routes
 import { Route as AuthLoginForgotPasswordFindAccountIndexImport } from './routes/_auth/login/forgot-password/find-account/index'
 import { Route as AuthLoginForgotPasswordChangePasswordIndexImport } from './routes/_auth/login/forgot-password/change-password/index'
 import { Route as ProtectedSocialProfileUserNameCollectionsIndexImport } from './routes/_protected/social/profile/$userName/collections/index'
+import { Route as ProtectedSocialProfileUserNameCollectionsCollectionIdIndexImport } from './routes/_protected/social/profile/$userName_/collections/$collectionId/index'
 
 // Create/Update Routes
 
@@ -153,6 +154,12 @@ const ProtectedSocialProfileUserNameCollectionsIndexRoute =
   ProtectedSocialProfileUserNameCollectionsIndexImport.update({
     path: '/collections/',
     getParentRoute: () => ProtectedSocialProfileUserNameRouteRoute,
+  } as any)
+
+const ProtectedSocialProfileUserNameCollectionsCollectionIdIndexRoute =
+  ProtectedSocialProfileUserNameCollectionsCollectionIdIndexImport.update({
+    path: '/profile/$userName/collections/$collectionId/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -306,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialProfileUserNameCollectionsIndexImport
       parentRoute: typeof ProtectedSocialProfileUserNameRouteImport
     }
+    '/_protected/social/profile/$userName/collections/$collectionId/': {
+      id: '/_protected/social/profile/$userName/collections/$collectionId/'
+      path: '/profile/$userName/collections/$collectionId'
+      fullPath: '/social/profile/$userName/collections/$collectionId'
+      preLoaderRoute: typeof ProtectedSocialProfileUserNameCollectionsCollectionIdIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
   }
 }
 
@@ -332,6 +346,7 @@ export const routeTree = rootRoute.addChildren({
           ProtectedSocialProfileUserNameCollectionsIndexRoute,
         }),
       ProtectedSocialProfileIndexRoute,
+      ProtectedSocialProfileUserNameCollectionsCollectionIdIndexRoute,
     }),
     ProtectedAnimeIndexRoute,
     ProtectedAnimeAnimeIdIndexRoute,
@@ -385,7 +400,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_protected/social/",
         "/_protected/social/profile/$userName",
-        "/_protected/social/profile/"
+        "/_protected/social/profile/",
+        "/_protected/social/profile/$userName/collections/$collectionId/"
       ]
     },
     "/_auth/detached-mode/": {
@@ -459,6 +475,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/profile/$userName/collections/": {
       "filePath": "_protected/social/profile/$userName/collections/index.tsx",
       "parent": "/_protected/social/profile/$userName"
+    },
+    "/_protected/social/profile/$userName/collections/$collectionId/": {
+      "filePath": "_protected/social/profile/$userName_/collections/$collectionId/index.tsx",
+      "parent": "/_protected/social"
     }
   }
 }

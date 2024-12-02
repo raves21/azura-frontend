@@ -5,7 +5,7 @@ import SearchDialog from "../../routes/_protected/anime/-SearchDialog";
 import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheet from "@/components/shared/sideMenuSheet/SideMenuSheet";
-import useScrolledState from "@/utils/hooks/useScrolledState";
+import { useScrolledState } from "@/utils/hooks/useScrolledState";
 
 export default function HomeHeader() {
   const { isScrolledDown } = useScrolledState();
