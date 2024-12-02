@@ -8,7 +8,7 @@ type ProfileImagesProps = {
 
 export default function ProfileImages({ avatar, banner }: ProfileImagesProps) {
   return (
-    <div className="relative w-full h-52">
+    <div className="relative w-full h-48">
       <ProfileAvatar avatar={avatar} />
       <ProfileBanner banner={banner} />
     </div>
