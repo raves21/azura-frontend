@@ -1,5 +1,4 @@
 import { MediaType } from "@/utils/types/social/shared";
-import { Link } from "@tanstack/react-router";
 import { Cat, Tv, Clapperboard } from "lucide-react";
 
 type CollectionItemProps = {
@@ -16,7 +15,7 @@ export default function CollectionItem({
   year,
 }: CollectionItemProps) {
   return (
-    <Link className="space-y-3 group">
+    <button className="space-y-3 group">
       <div className="relative aspect-[3/4] min-h-[130px] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl">
         {image && (
           <>
@@ -34,7 +33,7 @@ export default function CollectionItem({
         <p className="text-xs mobile-l:text-sm font-medium text-[#E0E0E0] line-clamp-2">
           {title}
         </p>
-        <div className="flex items-center gap-2 text-xs text-gray-400">
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
           {type === "ANIME" ? (
             <Cat className="size-4 stroke-mainAccent" />
           ) : type === "MOVIE" ? (
@@ -45,6 +44,6 @@ export default function CollectionItem({
           {year && <p>{year}</p>}
         </div>
       </div>
-    </Link>
+    </button>
   );
 }

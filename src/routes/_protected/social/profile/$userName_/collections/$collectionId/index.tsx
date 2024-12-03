@@ -1,4 +1,5 @@
-import CollectionInfoHeader from "@/components/shared/social/mainContent/collection/CollectionInfoHeader";
+import BackButton from "@/components/shared/BackButton";
+import CollectionInfoHeader from "@/components/shared/social/mainContent/collection/collectionInfoHeader/CollectionInfoHeader";
 import CollectionItems from "@/components/shared/social/mainContent/collection/collectionItem/CollectionItems";
 import { TCollectionItem } from "@/utils/types/social/social";
 import { createFileRoute } from "@tanstack/react-router";
@@ -100,10 +101,16 @@ const tempCollectionItems: TCollectionItem[] = [
 function CollectionInfoPage() {
   return (
     <section className="flex flex-col w-full gap-8 p-5 mb-20 rounded-lg bg-socialPrimary">
-      <CollectionInfoHeader
-        collectionInfoName="goated movies OAT"
-        userName="elonmusk"
+      <BackButton
+        linkProps={{
+          to: "/social/profile/$userName/collections",
+          params: {
+            userName: "elonmusk",
+          },
+        }}
       />
+      <CollectionInfoHeader />
+      <div className="w-full mt-4 h-[0.5px] bg-socialTextSecondary/40" />
       <CollectionItems collectionItems={tempCollectionItems} />
     </section>
   );
