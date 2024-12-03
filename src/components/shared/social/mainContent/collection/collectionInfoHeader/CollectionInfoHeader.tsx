@@ -1,5 +1,4 @@
-import CollectionNameAndDescription from "./CollectionNameAndDescription";
-import CollectionOwnerInfo from "./CollectionOwner";
+import CollectionDetails from "./CollectionDetails";
 import CollectionPhoto from "./CollectionPhoto";
 
 const tempPreviewPosters = [
@@ -16,10 +15,7 @@ export default function CollectionInfoHeader() {
         type="previewPosters"
         previewPosters={tempPreviewPosters}
       />
-      <div className="flex flex-col justify-center">
-        <CollectionNameAndDescription name="goated movies OAT" description="" />
-        <CollectionOwnerInfo />
-      </div>
+      <CollectionDetails name="goated movies OAT" description="" />
     </div>
   );
 }

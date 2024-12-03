@@ -1,4 +1,5 @@
 import BackButton from "@/components/shared/BackButton";
+import CollectionActions from "@/components/shared/social/mainContent/collection/collectionInfoHeader/CollectionActions";
 import CollectionInfoHeader from "@/components/shared/social/mainContent/collection/collectionInfoHeader/CollectionInfoHeader";
 import CollectionItems from "@/components/shared/social/mainContent/collection/collectionItem/CollectionItems";
 import { TCollectionItem } from "@/utils/types/social/social";
@@ -110,7 +111,7 @@ function CollectionInfoPage() {
         }}
       />
       <CollectionInfoHeader />
-      <div className="w-full mt-4 h-[0.5px] bg-socialTextSecondary/40" />
+      <CollectionActions />
       <CollectionItems collectionItems={tempCollectionItems} />
     </section>
   );

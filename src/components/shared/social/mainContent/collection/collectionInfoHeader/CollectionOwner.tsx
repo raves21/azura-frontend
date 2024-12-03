@@ -13,7 +13,9 @@ export default function CollectionOwner() {
         src="/sample-user-pfp.png"
         className="object-cover rounded-full size-6"
       />
-      <p className="text-sm font-semibold group-hover:underline">raves</p>
+      <p className="overflow-hidden text-sm font-semibold whitespace-nowrap group-hover:underline max-w-44 text-ellipsis">
+        Elon Musk
+      </p>
     </Link>
   );
 }
