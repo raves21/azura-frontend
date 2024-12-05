@@ -108,6 +108,7 @@ function CollectionInfoPage() {
           params: {
             userName: "elonmusk",
           },
+          replace: true,
         }}
       />
       <CollectionInfoHeader />

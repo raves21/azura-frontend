@@ -1,16 +1,36 @@
+import { cn } from "@/lib/utils";
 import PostActions from "./PostActions";
 import PostContent from "./PostContent";
 import PostHeader from "./PostHeader";
+import { useNavigate } from "@tanstack/react-router";
 
-export default function Post() {
+type PostProps = {
+  className?: string;
+};
+
+export default function Post({ className }: PostProps) {
+  const navigate = useNavigate();
   return (
-    <div className="flex w-full gap-4 p-5 rounded-lg hover:cursor-pointer bg-socialPrimary hover:bg-socialPrimaryHover">
+    <div
+      onClick={() => {
+        navigate({
+          to: "/social/post/$postId",
+          params: {
+            postId: "123",
+          },
+        });
+      }}
+      className={cn(
+        "flex w-full gap-4 p-5 rounded-lg hover:cursor-pointer bg-socialPrimary hover:bg-socialPrimaryHover",
+        className
+      )}
+    >
       <img
         src="/sample-user-pfp.png"
         className="block object-cover rounded-full size-11"
       />
       <div className="flex flex-col flex-grow gap-3">
-        <PostHeader />
+        <PostHeader showPrivacy={false} />
         <PostContent />
         <PostActions />
       </div>

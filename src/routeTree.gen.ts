@@ -21,12 +21,14 @@ import { Route as AuthSignupIndexImport } from './routes/_auth/signup/index'
 import { Route as AuthLoginIndexImport } from './routes/_auth/login/index'
 import { Route as AuthDetachedModeIndexImport } from './routes/_auth/detached-mode/index'
 import { Route as ProtectedSocialProfileIndexImport } from './routes/_protected/social/profile/index'
+import { Route as ProtectedSocialPostIndexImport } from './routes/_protected/social/post/index'
 import { Route as ProtectedAnimeCatalogIndexImport } from './routes/_protected/anime/catalog/index'
 import { Route as ProtectedAnimeAnimeIdIndexImport } from './routes/_protected/anime/$animeId/index'
 import { Route as AuthSignupVerifyEmailIndexImport } from './routes/_auth/signup/verify-email/index'
 import { Route as AuthLoginForgotPasswordIndexImport } from './routes/_auth/login/forgot-password/index'
 import { Route as ProtectedSocialProfileUserNameRouteImport } from './routes/_protected/social/profile/$userName/route'
 import { Route as ProtectedSocialProfileUserNameIndexImport } from './routes/_protected/social/profile/$userName/index'
+import { Route as ProtectedSocialPostPostIdIndexImport } from './routes/_protected/social/post/$postId/index'
 import { Route as ProtectedAnimeAnimeIdWatchIndexImport } from './routes/_protected/anime/$animeId/watch/index'
 import { Route as AuthLoginForgotPasswordVerifyEmailIndexImport } from './routes/_auth/login/forgot-password/verify-email/index'
 import { Route as AuthLoginForgotPasswordFindAccountIndexImport } from './routes/_auth/login/forgot-password/find-account/index'
@@ -87,6 +89,11 @@ const ProtectedSocialProfileIndexRoute =
     getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
+const ProtectedSocialPostIndexRoute = ProtectedSocialPostIndexImport.update({
+  path: '/post/',
+  getParentRoute: () => ProtectedSocialRouteRoute,
+} as any)
+
 const ProtectedAnimeCatalogIndexRoute = ProtectedAnimeCatalogIndexImport.update(
   {
     path: '/anime/catalog/',
@@ -124,6 +131,12 @@ const ProtectedSocialProfileUserNameIndexRoute =
   ProtectedSocialProfileUserNameIndexImport.update({
     path: '/',
     getParentRoute: () => ProtectedSocialProfileUserNameRouteRoute,
+  } as any)
+
+const ProtectedSocialPostPostIdIndexRoute =
+  ProtectedSocialPostPostIdIndexImport.update({
+    path: '/post/$postId/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
 const ProtectedAnimeAnimeIdWatchIndexRoute =
@@ -264,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAnimeCatalogIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/social/post/': {
+      id: '/_protected/social/post/'
+      path: '/post'
+      fullPath: '/social/post'
+      preLoaderRoute: typeof ProtectedSocialPostIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
     '/_protected/social/profile/': {
       id: '/_protected/social/profile/'
       path: '/profile'
@@ -298,6 +318,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/anime/$animeId/watch'
       preLoaderRoute: typeof ProtectedAnimeAnimeIdWatchIndexImport
       parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/social/post/$postId/': {
+      id: '/_protected/social/post/$postId/'
+      path: '/post/$postId'
+      fullPath: '/social/post/$postId'
+      preLoaderRoute: typeof ProtectedSocialPostPostIdIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
     }
     '/_protected/social/profile/$userName/': {
       id: '/_protected/social/profile/$userName/'
@@ -345,7 +372,9 @@ export const routeTree = rootRoute.addChildren({
           ProtectedSocialProfileUserNameIndexRoute,
           ProtectedSocialProfileUserNameCollectionsIndexRoute,
         }),
+      ProtectedSocialPostIndexRoute,
       ProtectedSocialProfileIndexRoute,
+      ProtectedSocialPostPostIdIndexRoute,
       ProtectedSocialProfileUserNameCollectionsCollectionIdIndexRoute,
     }),
     ProtectedAnimeIndexRoute,
@@ -400,7 +429,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_protected/social/",
         "/_protected/social/profile/$userName",
+        "/_protected/social/post/",
         "/_protected/social/profile/",
+        "/_protected/social/post/$postId/",
         "/_protected/social/profile/$userName/collections/$collectionId/"
       ]
     },
@@ -448,6 +479,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/anime/catalog/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/social/post/": {
+      "filePath": "_protected/social/post/index.tsx",
+      "parent": "/_protected/social"
+    },
     "/_protected/social/profile/": {
       "filePath": "_protected/social/profile/index.tsx",
       "parent": "/_protected/social"
@@ -467,6 +502,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/anime/$animeId/watch/": {
       "filePath": "_protected/anime/$animeId/watch/index.tsx",
       "parent": "/_protected"
+    },
+    "/_protected/social/post/$postId/": {
+      "filePath": "_protected/social/post/$postId/index.tsx",
+      "parent": "/_protected/social"
     },
     "/_protected/social/profile/$userName/": {
       "filePath": "_protected/social/profile/$userName/index.tsx",
