@@ -1,4 +1,4 @@
-import ContentOptions from "@/components/shared/social/mainContent/content/ContentOptions";
+import ContentOptions from "@/components/shared/social/mainContent/contentOptions/ContentOptions";
 import CreatePost from "@/components/shared/social/mainContent/post/CreatePost";
 import Post from "@/components/shared/social/mainContent/post/Post";
 import { TContentOption } from "@/utils/types/social/shared";

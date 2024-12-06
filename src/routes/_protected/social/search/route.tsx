@@ -1,5 +1,5 @@
 import BackButton from "@/components/shared/BackButton";
-import ContentOptions from "@/components/shared/social/mainContent/content/ContentOptions";
+import ContentOptions from "@/components/shared/social/mainContent/contentOptions/ContentOptions";
 import { TContentOption } from "@/utils/types/social/shared";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 

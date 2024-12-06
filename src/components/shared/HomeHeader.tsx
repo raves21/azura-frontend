@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheet from "@/components/shared/sideMenuSheet/SideMenuSheet";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
+import SocialSearchDialog from "./social/searchDialog/SocialSearchDialog";
+import { ReactNode } from "react";
 
 export default function HomeHeader() {
   const { isScrolledDown } = useScrolledState();
@@ -15,6 +17,14 @@ export default function HomeHeader() {
   );
 
   const matchRoute = useMatchRoute();
+
+  let searchDialog: ReactNode;
+
+  if (matchRoute({ to: "/anime", fuzzy: true })) {
+    searchDialog = <SearchDialog />;
+  } else {
+    searchDialog = <SocialSearchDialog />;
+  }
 
   const DesktopHeader = (
     <div
@@ -61,7 +71,7 @@ export default function HomeHeader() {
         <Link className="p-[6px]">Settings</Link>
       </div>
       <button
-        onClick={() => toggleOpenDialog(<SearchDialog />)}
+        onClick={() => toggleOpenDialog(searchDialog)}
         className="p-[6px]"
       >
         <Search />
@@ -82,7 +92,7 @@ export default function HomeHeader() {
       <div className="flex items-center gap-4">
         <button
           className="p-[6px]"
-          onClick={() => toggleOpenDialog(<SearchDialog />)}
+          onClick={() => toggleOpenDialog(searchDialog)}
         >
           <Search className="size-6" />
         </button>

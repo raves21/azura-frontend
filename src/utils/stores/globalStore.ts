@@ -1,16 +1,21 @@
 import { create } from "zustand";
 import { ReactNode } from "@tanstack/react-router";
+import { SocialSearchOption } from "../types/social/shared";
 
 type GlobalStoreValues = {
   isDialogOpen: boolean;
   dialogContent: ReactNode | null;
   isSheetOpen: boolean;
   sheetContent: ReactNode | null;
+  selectedSocialSearchOption: SocialSearchOption;
 };
 
 type GlobalStoreActions = {
   toggleOpenDialog: (dialogContent: ReactNode | null) => void;
   toggleOpenSheet: (sheetContent: ReactNode | null) => void;
+  setSelectedSocialSearchOption: (
+    selectedSocialSearchOption: SocialSearchOption
+  ) => void;
 };
 
 type GlobalStore = GlobalStoreValues & GlobalStoreActions;
@@ -20,6 +25,7 @@ const globalStoreDefaultValues: GlobalStoreValues = {
   dialogContent: null,
   isSheetOpen: false,
   sheetContent: null,
+  selectedSocialSearchOption: "posts",
 };
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -54,4 +60,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
       }, 300);
     }
   },
+  setSelectedSocialSearchOption: (
+    selectedSocialSearchOption: SocialSearchOption
+  ) => set({ selectedSocialSearchOption }),
 }));
