@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { EntityPrivacy } from "@/utils/types/social/shared";
+import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import { Circle, Ellipsis, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 
@@ -12,9 +12,17 @@ type WithoutPostPrivacyProps = {
   showPrivacy: false;
 };
 
-type PostHeaderProps = WithPostPrivacyProps | WithoutPostPrivacyProps;
+type PostHeaderProps = {
+  owner: EntityOwner;
+  createdAt: Date;
+} & (WithPostPrivacyProps | WithoutPostPrivacyProps);
 
-export default function PostHeader({ showPrivacy, ...props }: PostHeaderProps) {
+export default function PostHeader({
+  showPrivacy,
+  owner,
+  createdAt,
+  ...props
+}: PostHeaderProps) {
   const withPostPrivacyProps = showPrivacy
     ? (props as WithPostPrivacyProps)
     : null;
@@ -25,8 +33,8 @@ export default function PostHeader({ showPrivacy, ...props }: PostHeaderProps) {
     <div className="flex items-start justify-between w-full">
       <div className="flex-col">
         <div className="flex items-center gap-3">
-          <p className="font-semibold">Elon Musk</p>
-          <p className="text-gray-500">@elonmusk</p>
+          <p className="font-semibold">{owner.username}</p>
+          <p className="text-gray-500">@{owner.handle}</p>
         </div>
         <div className="flex items-center gap-2 mt-1">
           {withPostPrivacyProps && (

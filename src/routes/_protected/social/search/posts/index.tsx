@@ -1,4 +1,5 @@
 import Post from "@/components/shared/social/mainContent/post/Post";
+import { tempPosts } from "@/utils/variables/temp";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/search/posts/")({
@@ -7,9 +8,9 @@ export const Route = createFileRoute("/_protected/social/search/posts/")({
 
 function PostsSearchResultsPage() {
   return (
-    <div className="flex flex-col w-full gap-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Post key={i} fromState="search-page" />
+    <div className="flex flex-col w-full gap-4 pb-24">
+      {tempPosts.map((post) => (
+        <Post key={post.id} post={post} fromState="search-page" />
       ))}
     </div>
   );

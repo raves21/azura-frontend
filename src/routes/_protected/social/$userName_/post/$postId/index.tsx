@@ -6,6 +6,7 @@ import {
   LinkProps,
   useRouterState,
 } from "@tanstack/react-router";
+import { tempPosts } from "@/utils/variables/temp";
 
 export const Route = createFileRoute(
   "/_protected/social/$userName/post/$postId/"
@@ -41,7 +42,7 @@ function PostInfoPage() {
           <BackButton linkProps={linkProps} />
           <p className="text-lg font-semibold">Post</p>
         </div>
-        <PostInfo />
+        <PostInfo post={tempPosts[1]} />
       </div>
       <PostComments />
     </div>

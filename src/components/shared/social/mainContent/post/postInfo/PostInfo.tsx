@@ -1,9 +1,15 @@
+import { TPost } from "@/utils/types/social/social";
 import PostActions from "../PostActions";
-import PostContent from "../PostContent";
+import PostWithoutAttachment from "../postContent/PostWithoutAttachment";
 import PostHeader from "../PostHeader";
 import PostLikers from "./PostLikers";
+import PostWithAttachment from "../postContent/PostWithAttachment";
 
-export default function PostInfo() {
+type PostInfoProps = {
+  post: TPost;
+};
+
+export default function PostInfo({ post }: PostInfoProps) {
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex w-full gap-4">
@@ -11,10 +17,29 @@ export default function PostInfo() {
           src="/sample-user-pfp.png"
           className="block object-cover rounded-full size-12"
         />
-        <PostHeader showPrivacy privacy="FRIENDS_ONLY" />
+        <PostHeader
+          createdAt={post.createdAt}
+          owner={post.owner}
+          showPrivacy
+          privacy={post.privacy}
+        />
       </div>
       <div className="my-1">
-        <PostContent />
+        {post.collection ? (
+          <PostWithAttachment
+            attachmentType="collection"
+            collection={post.collection}
+            content={post.content}
+          />
+        ) : post.media ? (
+          <PostWithAttachment
+            attachmentType="media"
+            media={post.media}
+            content={post.content}
+          />
+        ) : (
+          <PostWithoutAttachment content={post.content} />
+        )}
       </div>
       <div className="flex flex-col gap-2 mt-2">
         <PostLikers />

@@ -5,19 +5,19 @@ export type Posts = {
   page: number;
   perPage: number;
   totalPages: number;
-  data: Post[];
+  data: TPost[];
 };
 
-export type Post = {
+export type TPost = {
   id: string;
-  content: string;
+  content: string | null;
   privacy: EntityPrivacy;
   totalLikes: number;
   totalComments: number;
   isLikedByCurrentUser: boolean;
   owner: EntityOwner;
   media: Media | null;
-  collection: CollectionPostAttachment | null;
+  collection: TCollection | null;
   createdAt: Date;
 };
 
@@ -33,15 +33,18 @@ export type Media = {
   createdAt: Date;
 };
 
-export type CollectionPostAttachment = Omit<TCollection, "privacy">;
+export type PreviewPoster = {
+  coverImage: string | null;
+  posterImage: string | null;
+};
 
 export type TCollection = {
   id: string;
   name: string;
-  photo?: string;
+  photo: string | null;
   description: string;
   privacy: EntityPrivacy;
-  previewPosters: string[];
+  previewPosters: PreviewPoster[];
 };
 
 export type CollectionDetails = Omit<TCollection, "previewPosters"> & {
@@ -53,4 +56,22 @@ export type TCollectionItem = {
   id: string;
   collectionId: string;
   media: Media;
+};
+
+export type PostWithMediaAttachment = Pick<TPost, "content"> & {
+  attachmentType: "media";
+  media: Media;
+};
+
+export type PostWithCollectionAttachment = Pick<TPost, "content"> & {
+  attachmentType: "collection";
+  collection: TCollection;
+};
+
+export type TPostComment = {
+  id: string;
+  postId: string;
+  content: string;
+  author: EntityOwner;
+  createdAt: Date;
 };
