@@ -1,4 +1,5 @@
 import { UserBasicInfo } from "../auth/auth";
+import { LinkProps } from "@tanstack/react-router";
 
 export type EntityPrivacy = "FRIENDS_ONLY" | "ONLY_ME" | "PUBLIC";
 
@@ -15,3 +16,8 @@ export type PaginatedResponse = ResponseWithMessage & {
 export type EntityOwner = Omit<UserBasicInfo, "email" | "avatar">;
 
 export type MediaType = "ANIME" | "TV" | "MOVIE";
+
+export type TContentOption = {
+  name: string;
+  linkProps: LinkProps;
+};

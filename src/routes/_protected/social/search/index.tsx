@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_protected/social/search/')({
-  component: () => <div>Hello /_protected/social/search/!</div>
-})
+export const Route = createFileRoute("/_protected/social/search/")({
+  component: () => <Navigate to="/social" />,
+});

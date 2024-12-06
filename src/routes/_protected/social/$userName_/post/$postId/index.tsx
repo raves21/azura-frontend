@@ -21,7 +21,10 @@ function PostInfoPage() {
     linkProps = {
       to: "/social",
     };
-    //todo: add check for from search-page
+  } else if (postInfoState.from === "search-page") {
+    linkProps = {
+      to: "/social/search/posts",
+    };
   } else {
     linkProps = {
       to: "/social/$userName",

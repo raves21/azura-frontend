@@ -20,6 +20,7 @@ import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/in
 import { Route as AuthSignupIndexImport } from './routes/_auth/signup/index'
 import { Route as AuthLoginIndexImport } from './routes/_auth/login/index'
 import { Route as AuthDetachedModeIndexImport } from './routes/_auth/detached-mode/index'
+import { Route as ProtectedSocialSearchRouteImport } from './routes/_protected/social/search/route'
 import { Route as ProtectedSocialUserNameRouteImport } from './routes/_protected/social/$userName/route'
 import { Route as ProtectedSocialSearchIndexImport } from './routes/_protected/social/search/index'
 import { Route as ProtectedSocialUserNameIndexImport } from './routes/_protected/social/$userName/index'
@@ -27,6 +28,8 @@ import { Route as ProtectedAnimeCatalogIndexImport } from './routes/_protected/a
 import { Route as ProtectedAnimeAnimeIdIndexImport } from './routes/_protected/anime/$animeId/index'
 import { Route as AuthSignupVerifyEmailIndexImport } from './routes/_auth/signup/verify-email/index'
 import { Route as AuthLoginForgotPasswordIndexImport } from './routes/_auth/login/forgot-password/index'
+import { Route as ProtectedSocialSearchPostsIndexImport } from './routes/_protected/social/search/posts/index'
+import { Route as ProtectedSocialSearchPeopleIndexImport } from './routes/_protected/social/search/people/index'
 import { Route as ProtectedSocialUserNamePostIndexImport } from './routes/_protected/social/$userName_/post/index'
 import { Route as ProtectedSocialUserNameCollectionsIndexImport } from './routes/_protected/social/$userName/collections/index'
 import { Route as ProtectedAnimeAnimeIdWatchIndexImport } from './routes/_protected/anime/$animeId/watch/index'
@@ -83,6 +86,13 @@ const AuthDetachedModeIndexRoute = AuthDetachedModeIndexImport.update({
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
+const ProtectedSocialSearchRouteRoute = ProtectedSocialSearchRouteImport.update(
+  {
+    path: '/search',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any,
+)
+
 const ProtectedSocialUserNameRouteRoute =
   ProtectedSocialUserNameRouteImport.update({
     path: '/$userName',
@@ -91,8 +101,8 @@ const ProtectedSocialUserNameRouteRoute =
 
 const ProtectedSocialSearchIndexRoute = ProtectedSocialSearchIndexImport.update(
   {
-    path: '/search/',
-    getParentRoute: () => ProtectedSocialRouteRoute,
+    path: '/',
+    getParentRoute: () => ProtectedSocialSearchRouteRoute,
   } as any,
 )
 
@@ -127,6 +137,18 @@ const AuthLoginForgotPasswordIndexRoute =
   AuthLoginForgotPasswordIndexImport.update({
     path: '/login/forgot-password/',
     getParentRoute: () => AuthRouteRoute,
+  } as any)
+
+const ProtectedSocialSearchPostsIndexRoute =
+  ProtectedSocialSearchPostsIndexImport.update({
+    path: '/posts/',
+    getParentRoute: () => ProtectedSocialSearchRouteRoute,
+  } as any)
+
+const ProtectedSocialSearchPeopleIndexRoute =
+  ProtectedSocialSearchPeopleIndexImport.update({
+    path: '/people/',
+    getParentRoute: () => ProtectedSocialSearchRouteRoute,
   } as any)
 
 const ProtectedSocialUserNamePostIndexRoute =
@@ -216,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialUserNameRouteImport
       parentRoute: typeof ProtectedSocialRouteImport
     }
+    '/_protected/social/search': {
+      id: '/_protected/social/search'
+      path: '/search'
+      fullPath: '/social/search'
+      preLoaderRoute: typeof ProtectedSocialSearchRouteImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
     '/_auth/detached-mode/': {
       id: '/_auth/detached-mode/'
       path: '/detached-mode'
@@ -288,10 +317,10 @@ declare module '@tanstack/react-router' {
     }
     '/_protected/social/search/': {
       id: '/_protected/social/search/'
-      path: '/search'
-      fullPath: '/social/search'
+      path: '/'
+      fullPath: '/social/search/'
       preLoaderRoute: typeof ProtectedSocialSearchIndexImport
-      parentRoute: typeof ProtectedSocialRouteImport
+      parentRoute: typeof ProtectedSocialSearchRouteImport
     }
     '/_auth/login/forgot-password/change-password/': {
       id: '/_auth/login/forgot-password/change-password/'
@@ -335,6 +364,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialUserNamePostIndexImport
       parentRoute: typeof ProtectedSocialRouteImport
     }
+    '/_protected/social/search/people/': {
+      id: '/_protected/social/search/people/'
+      path: '/people'
+      fullPath: '/social/search/people'
+      preLoaderRoute: typeof ProtectedSocialSearchPeopleIndexImport
+      parentRoute: typeof ProtectedSocialSearchRouteImport
+    }
+    '/_protected/social/search/posts/': {
+      id: '/_protected/social/search/posts/'
+      path: '/posts'
+      fullPath: '/social/search/posts'
+      preLoaderRoute: typeof ProtectedSocialSearchPostsIndexImport
+      parentRoute: typeof ProtectedSocialSearchRouteImport
+    }
     '/_protected/social/$userName/collections/$collectionId/': {
       id: '/_protected/social/$userName/collections/$collectionId/'
       path: '/$userName/collections/$collectionId'
@@ -373,8 +416,13 @@ export const routeTree = rootRoute.addChildren({
           ProtectedSocialUserNameIndexRoute,
           ProtectedSocialUserNameCollectionsIndexRoute,
         }),
+      ProtectedSocialSearchRouteRoute:
+        ProtectedSocialSearchRouteRoute.addChildren({
+          ProtectedSocialSearchIndexRoute,
+          ProtectedSocialSearchPeopleIndexRoute,
+          ProtectedSocialSearchPostsIndexRoute,
+        }),
       ProtectedSocialIndexRoute,
-      ProtectedSocialSearchIndexRoute,
       ProtectedSocialUserNamePostIndexRoute,
       ProtectedSocialUserNameCollectionsCollectionIdIndexRoute,
       ProtectedSocialUserNamePostPostIdIndexRoute,
@@ -430,8 +478,8 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/_protected",
       "children": [
         "/_protected/social/$userName",
+        "/_protected/social/search",
         "/_protected/social/",
-        "/_protected/social/search/",
         "/_protected/social/$userName/post/",
         "/_protected/social/$userName/collections/$collectionId/",
         "/_protected/social/$userName/post/$postId/"
@@ -443,6 +491,15 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_protected/social/$userName/",
         "/_protected/social/$userName/collections/"
+      ]
+    },
+    "/_protected/social/search": {
+      "filePath": "_protected/social/search/route.tsx",
+      "parent": "/_protected/social",
+      "children": [
+        "/_protected/social/search/",
+        "/_protected/social/search/people/",
+        "/_protected/social/search/posts/"
       ]
     },
     "/_auth/detached-mode/": {
@@ -487,7 +544,7 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/social/search/": {
       "filePath": "_protected/social/search/index.tsx",
-      "parent": "/_protected/social"
+      "parent": "/_protected/social/search"
     },
     "/_auth/login/forgot-password/change-password/": {
       "filePath": "_auth/login/forgot-password/change-password/index.tsx",
@@ -512,6 +569,14 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/$userName/post/": {
       "filePath": "_protected/social/$userName_/post/index.tsx",
       "parent": "/_protected/social"
+    },
+    "/_protected/social/search/people/": {
+      "filePath": "_protected/social/search/people/index.tsx",
+      "parent": "/_protected/social/search"
+    },
+    "/_protected/social/search/posts/": {
+      "filePath": "_protected/social/search/posts/index.tsx",
+      "parent": "/_protected/social/search"
     },
     "/_protected/social/$userName/collections/$collectionId/": {
       "filePath": "_protected/social/$userName_/collections/$collectionId/index.tsx",
