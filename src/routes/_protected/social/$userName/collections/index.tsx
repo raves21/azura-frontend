@@ -3,9 +3,9 @@ import { TCollection } from "@/utils/types/social/social";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-  "/_protected/social/profile/$userName/collections/"
+  "/_protected/social/$userName/collections/"
 )({
-  component: () => <CollectionListPage />,
+  component: () => <CollectionsPage />,
 });
 
 const tempCollections: TCollection[] = [
@@ -66,6 +66,6 @@ const tempCollections: TCollection[] = [
   },
 ];
 
-function CollectionListPage() {
+function CollectionsPage() {
   return <Collections collections={tempCollections} />;
 }

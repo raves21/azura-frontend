@@ -14,7 +14,7 @@ function SocialPage() {
       <FeedOptions />
       <div className="flex flex-col gap-4">
         {Array.from({ length: 10 }).map((_) => (
-          <Post />
+          <Post fromState="home-page" />
         ))}
       </div>
     </div>

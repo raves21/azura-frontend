@@ -6,17 +6,26 @@ import { useNavigate } from "@tanstack/react-router";
 
 type PostProps = {
   className?: string;
+  fromState?: "home-page" | "user-page" | "search-page";
 };
 
-export default function Post({ className }: PostProps) {
+export default function Post({ className, fromState }: PostProps) {
   const navigate = useNavigate();
   return (
     <div
       onClick={() => {
         navigate({
-          to: "/social/post/$postId",
+          to: "/social/$userName/post/$postId",
           params: {
+            userName: "elonmusk",
             postId: "123",
+          },
+          state: {
+            postInfoState: fromState
+              ? {
+                  from: fromState,
+                }
+              : undefined,
           },
         });
       }}

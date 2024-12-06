@@ -6,7 +6,7 @@ import { TCollectionItem } from "@/utils/types/social/social";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-  "/_protected/social/profile/$userName/collections/$collectionId/"
+  "/_protected/social/$userName/collections/$collectionId/"
 )({
   component: () => <CollectionInfoPage />,
 });
@@ -104,11 +104,10 @@ function CollectionInfoPage() {
     <section className="flex flex-col w-full gap-8 p-5 mb-20 rounded-lg bg-socialPrimary">
       <BackButton
         linkProps={{
-          to: "/social/profile/$userName/collections",
+          to: "/social/$userName/collections",
           params: {
             userName: "elonmusk",
           },
-          replace: true,
         }}
       />
       <CollectionInfoHeader />

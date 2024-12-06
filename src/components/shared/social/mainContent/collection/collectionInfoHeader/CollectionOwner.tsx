@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 export default function CollectionOwner() {
   return (
     <Link
-      to="/social/profile/$userName"
+      to="/social/$userName"
       params={{
         userName: "elonmusk",
       }}

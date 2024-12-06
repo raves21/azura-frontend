@@ -12,7 +12,7 @@ const profileTabs: TProfileTab[] = [
   {
     name: "Posts",
     linkProps: {
-      to: "/social/profile/$userName",
+      to: "/social/$userName",
       params: {
         userName: "elonmusk",
       },
@@ -21,7 +21,7 @@ const profileTabs: TProfileTab[] = [
   {
     name: "Collections",
     linkProps: {
-      to: "/social/profile/$userName/collections",
+      to: "/social/$userName/collections",
       params: {
         userName: "elonmusk",
       },
