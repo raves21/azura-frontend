@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
+import { PreviewPoster } from "@/utils/types/social/social";
 import { Link, LinkProps } from "@tanstack/react-router";
 
 type CollectionProps = {
   name: string;
-  previewPosters: string[];
+  previewPosters: PreviewPoster[];
   photo?: string;
   linkProps: LinkProps;
 };
@@ -30,11 +31,21 @@ export default function Collection({
           <img src={photo} className="object-cover size-full" />
         ) : (
           previewPosters.map((previewPoster, index) => {
+            let imageSrc: string | undefined;
+
+            if (previewPoster.posterImage) {
+              imageSrc = previewPoster.posterImage;
+            } else if (previewPoster.coverImage) {
+              imageSrc = previewPoster.coverImage;
+            } else {
+              imageSrc = undefined;
+            }
+
             if (previewPostersLength <= 2) {
               return (
                 <img
                   key={index}
-                  src={previewPoster}
+                  src={imageSrc}
                   className="object-cover size-full"
                 />
               );
@@ -44,7 +55,7 @@ export default function Collection({
                   <div className="row-span-2">
                     <img
                       key={index}
-                      src={previewPoster}
+                      src={imageSrc}
                       className="object-cover size-full"
                     />
                   </div>
@@ -54,7 +65,7 @@ export default function Collection({
                 <div>
                   <img
                     key={index}
-                    src={previewPoster}
+                    src={imageSrc}
                     className="object-cover size-full"
                   />
                 </div>
@@ -64,7 +75,7 @@ export default function Collection({
               <div>
                 <img
                   key={index}
-                  src={previewPoster}
+                  src={imageSrc}
                   className="object-cover size-full"
                 />
               </div>

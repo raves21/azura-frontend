@@ -15,7 +15,7 @@ export type PaginatedResponse = ResponseWithMessage & {
   totalPages: number;
 };
 
-export type EntityOwner = Omit<UserBasicInfo, "email" | "avatar">;
+export type EntityOwner = Omit<UserBasicInfo, "email">;
 
 export type MediaType = "ANIME" | "TV" | "MOVIE";
 

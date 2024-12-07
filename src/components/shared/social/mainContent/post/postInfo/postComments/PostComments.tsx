@@ -1,6 +1,6 @@
 import { tempPostComments } from "@/utils/variables/temp";
 import CreateComment from "./CreateComment";
-import PostComment from "./postComment/PostComment";
+import PostComment from "./PostComment";
 
 export default function PostComments() {
   return (

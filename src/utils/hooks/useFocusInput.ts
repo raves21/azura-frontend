@@ -4,7 +4,8 @@ type UseFocusInputArgs = {
   deps: any[];
 };
 
-export function useFocusInput({ deps = [] }: UseFocusInputArgs) {
+export function useFocusInput(args?: UseFocusInputArgs) {
+  const deps = args?.deps ? args.deps : [];
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

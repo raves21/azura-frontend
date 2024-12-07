@@ -14,7 +14,7 @@ export default function SearchDialog() {
   const debouncedSearch = useDebounce({ value: search, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const { searchInputRef } = useFocusInput({ deps: [] });
+  const { searchInputRef } = useFocusInput();
 
   const {
     data: searchResults,

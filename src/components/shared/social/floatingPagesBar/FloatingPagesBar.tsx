@@ -37,6 +37,7 @@ export default function FloatingPagesBar() {
     <div className="fixed flex z-[200] overflow-hidden border rounded-full bg-socialPrimary bottom-5 border-socialTextSecondary">
       {floatingPagesBarItems.map((floatingPagesBarItem) => (
         <FloatingPagesBarItem
+          key={floatingPagesBarItem.name}
           name={floatingPagesBarItem.name}
           linkProps={floatingPagesBarItem.linkProps}
         />

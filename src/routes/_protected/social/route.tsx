@@ -12,7 +12,7 @@ function SocialPageLayout() {
   const matchRoute = useMatchRoute();
 
   return (
-    <main className="relative text-sm flex justify-center gap-4 pt-[105px] bg-darkBg text-mainWhite">
+    <main className="relative text-sm flex justify-center gap-4 pt-[105px] text-mainWhite">
       <FloatingPagesBar />
       <div className="flex-1 space-y-4 rounded-xl">
         {matchRoute({ to: "/social" }) && <ProfilePreview />}

@@ -9,10 +9,8 @@ type UseTipTapEditorArgs = {
   maxLength?: number;
 };
 
-export function useTipTapEditor({
-  placeholder,
-  maxLength,
-}: UseTipTapEditorArgs) {
+export function useTipTapEditor(args: UseTipTapEditorArgs) {
+  const { placeholder, maxLength } = args;
   const [inputLength, setInputLength] = useState(0);
   const editor = useEditor({
     extensions: [
