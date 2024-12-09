@@ -20,7 +20,7 @@ export default function Collections({ collections }: CollectionsProps) {
           key={collection.id}
           name={collection.name}
           previewPosters={collection.previewPosters}
-          photo={collection.photo ? collection.photo : undefined}
+          photo={collection.photo}
         />
       ))}
     </div>

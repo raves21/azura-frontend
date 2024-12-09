@@ -1,5 +1,5 @@
 import CollectionDetails from "./CollectionDetails";
-import CollectionPhoto from "./CollectionPhoto";
+import CollectionPhoto from "../CollectionPhoto";
 
 const tempPreviewPosters = [
   "https://artworks.thetvdb.com/banners/v4/series/79481/posters/6149bfa178b20.jpg",
