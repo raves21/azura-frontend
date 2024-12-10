@@ -12,7 +12,9 @@ export default function CollectionItems({
     <div className="grid grid-cols-3 gap-x-4 gap-y-5">
       {collectionItems.map((collectionItem) => (
         <CollectionItem
-          image={collectionItem.media.posterImage}
+          image={
+            collectionItem.media.posterImage || collectionItem.media.coverImage
+          }
           key={collectionItem.id}
           title={collectionItem.media.title}
           type={collectionItem.media.type}

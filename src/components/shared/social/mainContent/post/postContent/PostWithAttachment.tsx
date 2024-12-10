@@ -9,14 +9,19 @@ type PostWithAttachmentProps =
   | PostWithCollectionAttachment
   | PostWithMediaAttachment;
 
-export default function PostWithAttachment(props: PostWithAttachmentProps) {
+export default function PostWithAttachment({
+  ...props
+}: PostWithAttachmentProps) {
   return (
     <div className="flex flex-col w-full gap-3">
       {props.content && <p className="text-gray-300">{props.content}</p>}
       {props.attachmentType === "media" ? (
         <MediaAttachment media={props.media} />
       ) : (
-        <CollectionAttachment collection={props.collection} />
+        <CollectionAttachment
+          owner={props.owner}
+          collection={props.collection}
+        />
       )}
     </div>
   );

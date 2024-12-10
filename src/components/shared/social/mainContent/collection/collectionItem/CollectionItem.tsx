@@ -3,7 +3,7 @@ import { Cat, Tv, Clapperboard } from "lucide-react";
 
 type CollectionItemProps = {
   type: MediaType;
-  image: string | undefined;
+  image: string | null;
   title: string;
   year: string;
 };

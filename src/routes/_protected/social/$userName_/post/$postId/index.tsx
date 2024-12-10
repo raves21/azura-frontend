@@ -7,7 +7,6 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { tempPosts } from "@/utils/variables/temp";
-import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 
 export const Route = createFileRoute(
   "/_protected/social/$userName/post/$postId/"
@@ -16,8 +15,6 @@ export const Route = createFileRoute(
 });
 
 function PostInfoPage() {
-  useCustomScrollRestoration();
-
   let linkProps: LinkProps;
   const { postInfoState } = useRouterState({ select: (s) => s.location.state });
 

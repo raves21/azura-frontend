@@ -32,11 +32,10 @@ export default function CollectionPhoto({
     );
   }
 
-  if (type === "photo" || props.previewPosters.length < 2) {
-    const photo = type === "photo" ? props.photo : props.previewPosters[0];
+  if (type === "photo") {
     return (
       <img
-        src={photo}
+        src={props.photo}
         className={cn(
           "aspect-[1/1] object-cover size-52 shrink-0 rounded-md",
           className

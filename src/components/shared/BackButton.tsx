@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { LinkProps, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Circle } from "lucide-react";
 
 type BackButtonProps = {
   linkProps: LinkProps;
@@ -23,9 +23,9 @@ export default function BackButton({
           arrowIconClassName
         )}
       />
-      <div
+      <Circle
         className={cn(
-          "bg-gray-700/20 size-[150%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+          "fill-gray-700/20 stroke-none size-[150%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
           hoverCircleClassName
         )}
       />

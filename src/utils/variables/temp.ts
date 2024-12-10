@@ -23,9 +23,11 @@ export const tempPosts: TPost[] = [
     media: {
       id: "media1",
       title: "Attack on Titan",
+      description:
+        "Many years ago, the last remnants of humanity were forced to retreat behind the towering walls of a fortified city to escape the massive, man-eating Titans that roamed the land outside their fortress. Only the heroic members of the Scouting Legion dared to stray beyond the safety of the walls – but even those brave warriors seldom returned alive. Those within the city clung to the illusion of a peaceful existence until the day that dream was shattered, and their slim chance at survival was reduced to one horrifying choice: kill – or be devoured!",
       type: "ANIME",
       posterImage:
-        "https://image.tmdb.org/t/p/original/2Eq2CYTV8cAJeddla6vFgIlxIH6.jpg",
+        "https://image.tmdb.org/t/p/original/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
       coverImage:
         "https://image.tmdb.org/t/p/original/rqbCbjB19amtOtFQbb3K2lgm2zv.jpg",
       year: "2013",
@@ -54,9 +56,9 @@ export const tempPosts: TPost[] = [
       id: "collection1",
       name: "Top Movies",
       privacy: "PUBLIC",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/en/c/c7/Chill_guy_original_artwork.jpg",
-      description: "A collection of must-watch movies!",
+      photo: null,
+      description:
+        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum id voluptatem reiciendis corporis iusto cumque veritatis voluptatum, inventore officia perspiciatis quod in ratione autem molestias.",
       previewPosters: [
         {
           posterImage:
@@ -91,11 +93,13 @@ export const tempPosts: TPost[] = [
     media: {
       id: "media2",
       title: "Breaking Bad",
+      description:
+        "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
       type: "TV",
       posterImage:
         "https://image.tmdb.org/t/p/original/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
       coverImage:
-        "https://image.tmdb.org/t/p/original/7cqKGQMnNabzOpi7qaIgZvQ7NGV.jpg",
+        "https://image.tmdb.org/t/p/original/gc8PfyTqzqltKPW3X0cIVUGmagz.jpg",
       year: "2008",
       rating: "9.8",
       status: "Completed",
@@ -311,6 +315,8 @@ export const tempCollectionItems: TCollectionItem[] = [
       rating: "8.8",
       status: null,
       title: "Death Note",
+      description:
+        "Light Yagami is an ace student with great prospects—and he’s bored out of his mind. But all that changes when he finds the Death Note, a notebook dropped by a rogue Shinigami death god. Any human whose name is written in the notebook dies, and Light has vowed to use the power of the Death Note to rid the world of evil. But will Light succeed in his noble goal, or will the Death Note turn him into the very thing he fights against?",
       type: "ANIME",
       year: "2006",
     },
@@ -328,6 +334,8 @@ export const tempCollectionItems: TCollectionItem[] = [
       rating: "8.5",
       status: null,
       title: "The Wild Robot",
+      description:
+        "After a shipwreck, an intelligent robot called Roz is stranded on an uninhabited island. To survive the harsh environment, Roz bonds with the island's animals and cares for an orphaned baby goose.",
       type: "MOVIE",
       year: "2024",
     },
@@ -345,6 +353,8 @@ export const tempCollectionItems: TCollectionItem[] = [
       rating: "8.8",
       status: null,
       title: "Alien: Romulus",
+      description:
+        "While scavenging the deep ends of a derelict space station, a group of young space colonizers come face to face with the most terrifying life form in the universe.",
       type: "MOVIE",
       year: "2024",
     },
@@ -362,6 +372,8 @@ export const tempCollectionItems: TCollectionItem[] = [
       rating: "8.8",
       status: null,
       title: "The Boys",
+      description:
+        "A group of vigilantes known informally as “The Boys” set out to take down corrupt superheroes with no more than blue-collar grit and a willingness to fight dirty.",
       type: "TV",
       year: "2006",
     },
@@ -379,6 +391,8 @@ export const tempCollectionItems: TCollectionItem[] = [
       rating: "8.8",
       status: null,
       title: "Your Name.",
+      description:
+        "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
       type: "ANIME",
       year: "2016",
     },

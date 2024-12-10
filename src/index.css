@@ -147,3 +147,12 @@ body {
 .tiptap.ProseMirror {
   outline: none;
 }
+
+.gradient1 {
+  background: rgb(3, 7, 18);
+  background: linear-gradient(
+    0deg,
+    rgba(3, 7, 18, 1) 11%,
+    rgba(0, 212, 255, 0) 100%
+  );
+}

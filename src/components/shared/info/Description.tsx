@@ -1,35 +1,44 @@
 import { motion } from "framer-motion";
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 
 type DescriptionProps = {
   description: string | undefined;
-  descriptionHeight: number;
-  descriptionRef: React.MutableRefObject<HTMLDivElement | null>;
-  readMore: boolean;
-  setReadMore: (value: React.SetStateAction<boolean>) => void;
   className?: string;
-  showDescriptionLabel: boolean
+  adjustHeightBasedOnWidth?: boolean;
+  showDescriptionLabel: boolean;
 };
 
 export default function Description({
-  descriptionHeight,
-  descriptionRef,
-  readMore,
-  setReadMore,
   className,
   description,
-  showDescriptionLabel
+  adjustHeightBasedOnWidth,
+  showDescriptionLabel,
 }: DescriptionProps) {
+  const [readMore, setReadMore] = useState(false);
+  const descriptionRef = useRef<HTMLDivElement | null>(null);
+  const [descriptionHeight, setDescriptionHeight] = useState(0);
+
+  const windowWidth = useWindowWidth();
+
+  useEffect(
+    () => {
+      if (descriptionRef.current) {
+        setDescriptionHeight(
+          descriptionRef.current.getBoundingClientRect().height
+        );
+      }
+    },
+    adjustHeightBasedOnWidth ? [windowWidth] : []
+  );
+
   return (
-    <div
-      className={cn(
-        "relative gap-3 mt-2 w-[75%]",
-        className
+    <div className={cn("relative gap-3 mt-2 w-[75%]", className)}>
+      {showDescriptionLabel && (
+        <p className="mb-3 text-lg font-semibold lg:hidden">Description</p>
       )}
-    >
-      {showDescriptionLabel && <p className="mb-3 text-lg font-semibold lg:hidden">Description</p>}
       <motion.div
         initial={{
           height: "80px",

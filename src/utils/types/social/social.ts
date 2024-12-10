@@ -24,9 +24,10 @@ export type TPost = {
 export type Media = {
   id: string;
   title: string;
+  description: string;
   type: MediaType;
-  posterImage: string;
-  coverImage: string;
+  posterImage: string | null;
+  coverImage: string | null;
   year: string;
   rating: string;
   status: string | null;
@@ -66,6 +67,7 @@ export type PostWithMediaAttachment = Pick<TPost, "content"> & {
 export type PostWithCollectionAttachment = Pick<TPost, "content"> & {
   attachmentType: "collection";
   collection: TCollection;
+  owner: EntityOwner;
 };
 
 export type TPostComment = {

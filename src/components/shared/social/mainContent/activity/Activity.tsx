@@ -5,7 +5,6 @@ import { LinkProps, useNavigate } from "@tanstack/react-router";
 import UserAvatar from "../../UserAvatar";
 import ActivityHeader from "./ActivityHeader";
 import PostWithAttachment from "../post/postContent/PostWithAttachment";
-import PostWithoutAttachment from "../post/postContent/PostWithoutAttachment";
 import PostActions from "../post/PostActions";
 
 type PostActivityProps = {
@@ -66,6 +65,7 @@ export default function Activity({
           <>
             {props.post.collection ? (
               <PostWithAttachment
+                owner={props.post.owner}
                 attachmentType="collection"
                 collection={props.post.collection}
                 content={props.post.content}
@@ -77,12 +77,12 @@ export default function Activity({
                 content={props.post.content}
               />
             ) : (
-              <PostWithoutAttachment content={props.post.content} />
+              <p className="w-full text-gray-300">{props.post.content}</p>
             )}
             <PostActions />
           </>
         ) : (
-          <p className="w-full mt-1">{props.comment.content}</p>
+          <p className="w-full mt-1 text-gray-300">{props.comment.content}</p>
         )}
       </div>
     </div>

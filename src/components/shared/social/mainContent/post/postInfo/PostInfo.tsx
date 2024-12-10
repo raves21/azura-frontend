@@ -1,6 +1,5 @@
 import { TPost } from "@/utils/types/social/social";
 import PostActions from "../PostActions";
-import PostWithoutAttachment from "../postContent/PostWithoutAttachment";
 import PostLikers from "./PostLikers";
 import PostWithAttachment from "../postContent/PostWithAttachment";
 import ActivityHeader from "../../activity/ActivityHeader";
@@ -25,6 +24,7 @@ export default function PostInfo({ post }: PostInfoProps) {
       <div className="my-1">
         {post.collection ? (
           <PostWithAttachment
+            owner={post.owner}
             attachmentType="collection"
             collection={post.collection}
             content={post.content}
@@ -36,7 +36,7 @@ export default function PostInfo({ post }: PostInfoProps) {
             content={post.content}
           />
         ) : (
-          <PostWithoutAttachment content={post.content} />
+          <p className="w-full text-gray-300">{post.content}</p>
         )}
       </div>
       <div className="flex flex-col gap-2 mt-2">
