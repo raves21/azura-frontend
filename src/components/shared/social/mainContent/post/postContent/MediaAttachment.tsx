@@ -1,6 +1,6 @@
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Media } from "@/utils/types/social/social";
-import { Cat, Circle, Clapperboard, Star, Tv } from "lucide-react";
+import { Cat, Circle, Clapperboard, Tv } from "lucide-react";
 import MediaAttachmentPreviewDialog from "./MediaAttachmentPreviewDialog";
 
 type MediaAttachmentProps = {
@@ -8,8 +8,7 @@ type MediaAttachmentProps = {
 };
 
 export default function MediaAttachment({ media }: MediaAttachmentProps) {
-  const { coverImage, posterImage, title, rating, type, year, description } =
-    media;
+  const { coverImage, posterImage, title, type, year, description } = media;
   let attachmentBg = coverImage ?? posterImage ?? "/no-image-2.jpg";
   let attachmentPoster = posterImage ?? coverImage ?? "/no-image.png";
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -42,17 +41,10 @@ export default function MediaAttachment({ media }: MediaAttachmentProps) {
                 <Clapperboard className="size-4 stroke-cyan-500" />
               )}
               {type === "TV" && <Tv className="size-4 stroke-lime-500" />}
-              <p>
-                {type === "ANIME" ? "Anime" : type === "MOVIE" ? "Movie" : "TV"}
-              </p>
+              <p>{type}</p>
             </div>
             <Circle className="size-1 stroke-none fill-gray-400" />
             <p>{year}</p>
-            <Circle className="size-1 stroke-none fill-gray-400" />
-            <div className="flex items-center gap-1">
-              <Star className="size-[14px] stroke-none fill-yellow-500" />
-              <p>{rating}</p>
-            </div>
           </div>
           <p className="line-clamp-3 text-socialTextSecondary">{description}</p>
         </div>

@@ -45,10 +45,12 @@ export default function MediaAttachmentPreviewDialog({
         }}
         className="fixed z-30 group"
       >
+        <div className="absolute bg-mainAccent/20 group-hover:opacity-100 transition-opacity opacity-0 size-[150%] rounded-full top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2" />
         <X className="transition-colors size-8 stroke-mainWhite group-hover:stroke-mainAccent" />
       </button>
-      <button>
-        <SquareArrowOutUpRight className="absolute z-30 transition-colors size-7 stroke-mainWhite hover:stroke-mainAccent top-4 left-4" />
+      <button className="absolute z-30 group top-4 left-4">
+        <div className="absolute bg-mainAccent/20 group-hover:opacity-100 transition-opacity opacity-0 size-[180%] rounded-full top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2" />
+        <SquareArrowOutUpRight className="transition-colors size-7 stroke-mainWhite group-hover:stroke-mainAccent" />
       </button>
       <div className="absolute w-full h-80">
         <div className="absolute z-10 size-full bg-gradient-to-t from-gray-950 to-transparent from-[8%]" />
