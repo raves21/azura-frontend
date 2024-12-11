@@ -1,36 +1,49 @@
-import Description from "@/components/shared/info/Description";
+import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Media } from "@/utils/types/social/social";
+import Description from "@/components/shared/info/Description";
 import {
-  Cat,
-  Circle,
-  Clapperboard,
-  SquareArrowOutUpRight,
-  Star,
-  Tv,
   X,
+  SquareArrowOutUpRight,
+  Circle,
+  Cat,
+  Clapperboard,
+  Tv,
+  Star,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
-type MediaAttachmentPreviewDialogProps = {
+type MediaAttachmentPreviewProps = {
   media: Media;
 };
 
-export default function MediaAttachmentPreviewDialog({
+export default function MediaAttachmentPreview({
   media,
-}: MediaAttachmentPreviewDialogProps) {
+}: MediaAttachmentPreviewProps) {
   const { coverImage, description, posterImage, year, rating, title, type } =
     media;
   const heroImage = coverImage ?? posterImage ?? "/no-image-2.jpg";
 
+  const windowWidth = useWindowWidth();
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+  const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
+    useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
+  );
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);
     }
   }, []);
+
+  function closePopup() {
+    if (windowWidth < 1024) {
+      toggleOpenDrawer(null);
+    } else {
+      toggleOpenDialog(null);
+    }
+  }
 
   return (
     <div
@@ -38,9 +51,10 @@ export default function MediaAttachmentPreviewDialog({
       className="text-gray-300 overflow-y-auto aspect-[5/4] flex flex-col relative h-[550px] rounded-lg bg-gray-950"
     >
       <button
-        onClick={() => toggleOpenDialog(null)}
+        onClick={closePopup}
         style={{
-          marginLeft: containerWidth - 10,
+          marginLeft:
+            windowWidth < 1024 ? containerWidth - 40 : containerWidth - 10,
           marginTop: 12,
         }}
         className="fixed z-30 group"
@@ -56,10 +70,8 @@ export default function MediaAttachmentPreviewDialog({
         <div className="absolute z-10 size-full bg-gradient-to-t from-gray-950 to-transparent from-[8%]" />
         <img src={heroImage} className="absolute object-cover size-full" />
       </div>
-      <div className="flex flex-col w-full gap-3 px-6 mt-64">
-        <h1 className="z-20 pb-1 text-5xl font-semibold line-clamp-2 h-fit">
-          {title}
-        </h1>
+      <div className="z-20 flex flex-col w-full gap-3 px-2 pb-24 mt-64 sm:px-6">
+        <h1 className="text-3xl font-semibold line-clamp-2 h-fit">{title}</h1>
         <div className="flex flex-wrap items-center w-full gap-3">
           <p>{year}</p>
           <Circle className="size-1 stroke-none fill-gray-400" />

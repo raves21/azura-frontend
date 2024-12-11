@@ -1,4 +1,5 @@
 import FloatingPagesBar from "@/components/shared/social/floatingPagesBar/FloatingPagesBar";
+import FloatingCreateCommentBar from "@/components/shared/social/mainContent/post/postInfo/postComments/FloatingCreateCommentBar";
 import FollowSuggestions from "@/components/shared/social/profilePreviewAndFollowSuggestions/followSuggestions/FollowSuggestions";
 import ProfilePreview from "@/components/shared/social/profilePreviewAndFollowSuggestions/profilePreview/ProfilePreview";
 import Trending from "@/components/shared/social/trending/Trending";
@@ -12,16 +13,19 @@ function SocialPageLayout() {
   const matchRoute = useMatchRoute();
 
   return (
-    <main className="relative text-sm flex justify-center gap-4 pt-[105px] text-mainWhite">
+    <main className="relative text-sm flex justify-center gap-4 pt-[75px] sm:pt-[105px] text-mainWhite">
+      {matchRoute({ to: "/social/$userName/post/$postId" }) && (
+        <FloatingCreateCommentBar />
+      )}
       <FloatingPagesBar />
-      <div className="flex-1 space-y-4 rounded-xl">
+      <div className="flex-1 hidden space-y-4 rounded-xl xl:block">
         {matchRoute({ to: "/social" }) && <ProfilePreview />}
         <FollowSuggestions />
       </div>
-      <div className="w-[50%]">
+      <div className="w-full lg:w-[65%] xl:w-[50%]">
         <Outlet />
       </div>
-      <div className="sticky flex-1 rounded-xl top-12">
+      <div className="flex-1 hidden max-h-full overflow-y-auto rounded-xl lg:block">
         <Trending />
       </div>
     </main>

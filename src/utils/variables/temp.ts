@@ -61,16 +61,16 @@ export const tempPosts: TPost[] = [
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum id voluptatem reiciendis corporis iusto cumque veritatis voluptatum, inventore officia perspiciatis quod in ratione autem molestias.",
       previewPosters: [
         {
-          posterImage:
-            "https://image.tmdb.org/t/p/original/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
-          coverImage:
-            "https://image.tmdb.org/t/p/original/gc8PfyTqzqltKPW3X0cIVUGmagz.jpg",
-        },
-        {
           coverImage:
             "https://image.tmdb.org/t/p/original/iJaSpQNZ8GsqVDWfbCXmyZQXZ5l.jpg",
           posterImage:
             "https://image.tmdb.org/t/p/original/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
+        },
+        {
+          posterImage:
+            "https://image.tmdb.org/t/p/original/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+          coverImage:
+            "https://image.tmdb.org/t/p/original/gc8PfyTqzqltKPW3X0cIVUGmagz.jpg",
         },
       ],
     },

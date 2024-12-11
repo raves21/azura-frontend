@@ -36,11 +36,14 @@ function PostInfoPage() {
   }
 
   return (
-    <div className="flex flex-col w-full gap-4 mb-24 overflow-hidden text-base rounded-lg bg-socialPrimary">
-      <div className="flex flex-col w-full gap-8 p-5">
-        <div className="flex items-center gap-6">
-          <BackButton linkProps={linkProps} />
-          <p className="text-lg font-semibold">Post</p>
+    <div className="flex flex-col w-full gap-2 mb-24 overflow-hidden text-base rounded-lg bg-socialPrimary">
+      <div className="flex flex-col w-full gap-8 px-3 py-4 sm:p-5">
+        <div className="flex items-center gap-4 mobile-l:gap-5">
+          <BackButton
+            arrowIconClassName="size-6 mobile-m:size-[26px]"
+            linkProps={linkProps}
+          />
+          <p className="text-base font-semibold mobile-m:text-lg">Post</p>
         </div>
         <PostInfo post={tempPosts[1]} />
       </div>

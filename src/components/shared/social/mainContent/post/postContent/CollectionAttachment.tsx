@@ -1,9 +1,8 @@
 import { TCollection } from "@/utils/types/social/social";
 import CollectionPhoto from "../../collection/CollectionPhoto";
-import { LibraryBig, SquareArrowOutUpRight } from "lucide-react";
+import { LibraryBig } from "lucide-react";
 import UserAvatar from "../../../UserAvatar";
 import { cn } from "@/lib/utils";
-import { useMatchRoute } from "@tanstack/react-router";
 import { EntityOwner } from "@/utils/types/social/shared";
 
 type CollectionAttachmentProps = {
@@ -15,7 +14,6 @@ export default function CollectionAttachment({
   collection,
   owner,
 }: CollectionAttachmentProps) {
-  const matchRoute = useMatchRoute();
   let attachmentBg: string | null | undefined;
   let attachmentPreviewPosters = collection.previewPosters
     .map((poster) => poster.posterImage)
@@ -41,16 +39,16 @@ export default function CollectionAttachment({
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="relative w-full h-56 overflow-hidden bg-gray-800 rounded-lg"
+      className="relative w-full h-32 overflow-hidden bg-gray-800 rounded-lg mobile-m:h-36 xl:h-56"
     >
       <div className="absolute size-full">
-        <div className="absolute z-10 backdrop-blur-sm bg-black/70 size-full" />
+        <div className="absolute z-10 rounded-lg backdrop-blur-[1.5px] bg-black/70 size-full" />
         <img
           src={attachmentBg ?? "/no-image-2.png"}
           className="absolute object-cover size-full"
         />
       </div>
-      <div className="absolute z-20 flex items-center gap-6 px-5 size-full">
+      <div className="absolute z-20 flex items-center gap-3 px-3 mobile-m:gap-5 sm:gap-6 md:px-5 size-full">
         {collection.photo ? (
           <CollectionPhoto
             type="photo"
@@ -64,25 +62,20 @@ export default function CollectionAttachment({
             className="h-[65%] w-auto rounded-lg"
           />
         )}
-        <div className="flex flex-col flex-grow gap-3">
+        <div className="flex flex-col flex-grow gap-[5px] mobile-m:gap-2">
           <div className="flex items-center gap-1">
-            <LibraryBig className="stroke-blue-500 size-5 shrink-0" />
-            <p className="mr-auto text-xl font-semibold line-clamp-1">
-              Lorem ipsum
+            <LibraryBig className="stroke-blue-500 size-4 mobile-m:size-5 shrink-0" />
+            <p className="mr-auto text-sm font-semibold mobile-m:text-lg sm:text-xl line-clamp-1">
+              {collection.name}
             </p>
-            <SquareArrowOutUpRight className="transition-colors shrink-0 size-5 stroke-mainWhite hover:stroke-mainAccent" />
           </div>
-          <div className="flex items-center gap-2">
-            <UserAvatar src={owner.avatar} className={cn("size-4")} />
-            <p
-              className={cn("font-medium text-xs", {
-                "text-sm": matchRoute({ to: "/social/$userName/post/$postId" }),
-              })}
-            >
+          <div className="flex items-center gap-2 text-[10px] mobile-l:text-xs">
+            <UserAvatar src={owner.avatar} imageClassName="size-4 md:size-4" />
+            <p className={cn("font-medium mobile-m:text-xs line-clamp-1")}>
               {owner.handle}
             </p>
           </div>
-          <p className="mt-1 line-clamp-3 text-socialTextSecondary text-[14px]">
+          <p className="text-xxs mobile-m:text-xs mobile-m:mt-1 line-clamp-2 sm:line-clamp-3 text-socialTextSecondary sm:text-[14px]">
             {collection.description}
           </p>
         </div>

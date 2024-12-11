@@ -3,14 +3,23 @@ import { Heart, MessageCircle, Circle } from "lucide-react";
 import { useState } from "react";
 
 type PostActionsProps = {
+  className?: string;
   iconClassName?: string;
 };
 
-export default function PostActions({ iconClassName }: PostActionsProps) {
+export default function PostActions({
+  className,
+  iconClassName,
+}: PostActionsProps) {
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="flex items-center w-full gap-5 mt-2 text-gray-500">
+    <div
+      className={cn(
+        "flex items-center w-full gap-5 mt-2 text-gray-500",
+        className
+      )}
+    >
       <button className="flex items-center gap-2 group">
         <div className="relative">
           <MessageCircle

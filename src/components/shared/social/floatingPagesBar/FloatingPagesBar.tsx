@@ -34,7 +34,7 @@ const floatingPagesBarItems: TFloatingPagesBarItem[] = [
 
 export default function FloatingPagesBar() {
   return (
-    <div className="fixed flex z-[200] overflow-hidden border rounded-full bg-socialPrimary bottom-5 border-socialTextSecondary">
+    <div className="hidden fixed lg:flex z-[200] overflow-hidden border rounded-full bg-socialPrimary bottom-5 border-socialTextSecondary">
       {floatingPagesBarItems.map((floatingPagesBarItem) => (
         <FloatingPagesBarItem
           key={floatingPagesBarItem.name}

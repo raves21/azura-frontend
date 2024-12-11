@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import { Circle, Ellipsis, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
+import UserAvatar from "../../UserAvatar";
 
 type WithPostPrivacyProps = {
   showPrivacy: true;
@@ -16,12 +17,14 @@ type WithoutPostPrivacyProps = {
 type PostHeaderProps = {
   owner: EntityOwner;
   createdAt: Date;
+  className?: string;
 } & (WithPostPrivacyProps | WithoutPostPrivacyProps);
 
 export default function ActivityHeader({
   showPrivacy,
   owner,
   createdAt,
+  className,
   ...props
 }: PostHeaderProps) {
   const withPostPrivacyProps = showPrivacy
@@ -31,13 +34,14 @@ export default function ActivityHeader({
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
   return (
-    <div className="flex items-start justify-between w-full">
-      <div className="flex-col">
-        <div className="flex items-center gap-3">
+    <div className={cn("flex items-start w-full gap-2", className)}>
+      <UserAvatar src={owner.avatar} imageClassName="mobile-m:size-10" />
+      <div className="flex flex-col mr-auto">
+        <div className="flex items-center gap-2 text-sm mobile-l:gap-3">
           <p className="font-semibold">{owner.username}</p>
           <p className="text-gray-500">@{owner.handle}</p>
         </div>
-        <div className="flex items-center gap-2 mt-1">
+        <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1">
           {withPostPrivacyProps && (
             <>
               <div
@@ -47,7 +51,7 @@ export default function ActivityHeader({
               >
                 {withPostPrivacyProps.privacy === "FRIENDS_ONLY" && (
                   <>
-                    <Users className="size-4 stroke-socialTextSecondary" />
+                    <Users className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
@@ -62,7 +66,7 @@ export default function ActivityHeader({
                 )}
                 {withPostPrivacyProps.privacy === "ONLY_ME" && (
                   <>
-                    <Lock className="size-4 stroke-socialTextSecondary" />
+                    <Lock className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
@@ -77,7 +81,7 @@ export default function ActivityHeader({
                 )}
                 {withPostPrivacyProps.privacy === "PUBLIC" && (
                   <>
-                    <Globe className="size-4 stroke-socialTextSecondary" />
+                    <Globe className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",

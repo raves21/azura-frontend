@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TPost, TPostComment } from "@/utils/types/social/social";
 import { LinkProps, useNavigate } from "@tanstack/react-router";
-import UserAvatar from "../../UserAvatar";
 import ActivityHeader from "./ActivityHeader";
 import PostWithAttachment from "../post/postContent/PostWithAttachment";
 import PostActions from "../post/PostActions";
@@ -40,11 +39,10 @@ export default function Activity({
         type === "post" ? () => navigate({ ...props.linkProps }) : undefined
       }
       className={cn(
-        "flex w-full gap-4 p-5 rounded-lg hover:cursor-pointer bg-socialPrimary hover:bg-socialPrimaryHover",
+        "flex w-full gap-2 text-sm mobile-m:text-base md:gap-4 px-3 py-4 mobile-l:p-5 rounded-lg hover:cursor-pointer bg-socialPrimary hover:bg-socialPrimaryHover",
         { "rounded-none": type === "comment" }
       )}
     >
-      <UserAvatar src={entityOwner.avatar} />
       <div className="flex flex-col flex-grow gap-3">
         {showPrivacy ? (
           <ActivityHeader
