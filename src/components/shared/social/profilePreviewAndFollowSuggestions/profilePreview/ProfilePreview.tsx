@@ -1,6 +1,6 @@
 export default function ProfilePreview() {
   return (
-    <div className="flex flex-col w-full gap-5 overflow-hidden rounded-lg bg-socialPrimary">
+    <div className="flex flex-col w-full gap-5 overflow-hidden text-base rounded-lg bg-socialPrimary">
       <div className="relative top-0 w-full h-24">
         <img
           src="/sample-user-banner.jpg"
@@ -31,7 +31,7 @@ export default function ProfilePreview() {
             <p className="text-socialTextSecondary">Followers</p>
           </div>
         </div>
-        <button className="grid w-full py-4 text-blue-500 rounded-bl-lg rounded-br-lg place-items-center hover:bg-socialPrimaryHover">
+        <button className="grid w-full py-4 text-sm text-blue-500 rounded-bl-lg rounded-br-lg place-items-center hover:bg-socialPrimaryHover">
           My Profile
         </button>
       </div>

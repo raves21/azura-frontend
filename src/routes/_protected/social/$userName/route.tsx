@@ -9,8 +9,8 @@ export const Route = createFileRoute("/_protected/social/$userName")({
 
 function UserProfilePageLayout() {
   return (
-    <main className="flex flex-col w-full gap-4 pb-10">
-      <div className="flex flex-col w-full gap-3 overflow-hidden bg-socialPrimary">
+    <main className="flex flex-col w-full gap-3 pb-10">
+      <div className="flex flex-col w-full gap-2 overflow-hidden rounded-lg mobile-m:gap-3 bg-socialPrimary">
         <ProfileImages
           avatar="/sample-user-pfp.png"
           banner="/sample-user-banner.jpg"

@@ -29,13 +29,13 @@ function SocialPage() {
   useCustomScrollRestoration();
 
   return (
-    <div className="flex flex-col w-full gap-4 pb-24">
+    <div className="flex flex-col w-full gap-3 pb-24">
       <CreatePost />
       <ContentOptions
         contentOptions={feedOptions}
         defaultOption={feedOptions[0]}
       />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3 ">
         {tempPosts.map((post) => (
           <Post key={post.id} post={post} fromState="home-page" />
         ))}

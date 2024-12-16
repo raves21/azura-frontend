@@ -22,45 +22,47 @@ export default function CollectionPhoto({
 
   if (type === "previewPosters" && props.previewPosters.length === 0) {
     return (
-      <img
-        src="/no-image.png"
+      <div
         className={cn(
-          "aspect-[1/1] object-cover size-52 shrink-0 rounded-md",
+          "aspect-[1/1] size-52 shrink-0 rounded-md overflow-hidden",
           className
         )}
-      />
+      >
+        <img src="/no-image.png" className="object-cover size-full" />
+      </div>
     );
   }
 
   if (type === "photo") {
     return (
-      <img
-        src={props.photo}
+      <div
         className={cn(
-          "aspect-[1/1] object-cover size-52 shrink-0 rounded-md",
+          "aspect-[1/1] size-52 shrink-0 rounded-md overflow-hidden",
           className
         )}
-      />
+      >
+        <img src={props.photo} className="object-cover size-full" />
+      </div>
     );
   }
   return (
     <div
       className={cn(
-        "grid shrink-0 aspect-[1/1] size-52 rounded-md overflow-hidden grid-cols-2",
+        "grid shrink-0 aspect-[1/1] gap-[0.5px] size-52 rounded-md overflow-hidden grid-cols-2",
         className
       )}
     >
       {props.previewPosters.map((poster, index) => {
         if (props.previewPosters.length === 3 && index === 0) {
           return (
-            <div className="row-span-2 overflow-hidden size-full" key={poster}>
-              <img className="inset-0 object-cover size-full" src={poster} />
+            <div className="row-span-2 overflow-hidden" key={poster}>
+              <img className="object-cover size-full" src={poster} />
             </div>
           );
         }
         return (
-          <div className="overflow-hidden size-full" key={poster}>
-            <img className="inset-0 object-cover size-full" src={poster} />
+          <div className="overflow-hidden" key={poster}>
+            <img className="object-cover size-full" src={poster} />
           </div>
         );
       })}

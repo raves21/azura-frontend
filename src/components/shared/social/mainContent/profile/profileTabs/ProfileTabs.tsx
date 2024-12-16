@@ -31,9 +31,13 @@ const profileTabs: TProfileTab[] = [
 
 export default function ProfileTabs() {
   return (
-    <div className="flex w-full mt-4">
+    <div className="flex w-full mt-4 text-sm mobile-m:text-md sm:text-base">
       {profileTabs.map((profileTab) => (
-        <ProfileTab name={profileTab.name} linkProps={profileTab.linkProps} />
+        <ProfileTab
+          key={profileTab.name}
+          name={profileTab.name}
+          linkProps={profileTab.linkProps}
+        />
       ))}
     </div>
   );

@@ -19,7 +19,7 @@ export default function UserAvatar({
       <img
         src={src}
         className={cn(
-          "block size-[38px] object-cover rounded-full md:size-11",
+          "block size-[38px] object-cover rounded-full",
           imageClassName
         )}
       />

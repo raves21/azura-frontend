@@ -7,7 +7,7 @@ type CollectionsProps = {
 
 export default function Collections({ collections }: CollectionsProps) {
   return (
-    <div className="grid w-full grid-cols-3 gap-3 p-5 pb-8 rounded-lg bg-socialPrimary">
+    <div className="grid w-full grid-cols-2 gap-2 p-3 pb-8 rounded-lg mobile-l:gap-3 sm:p-5 sm:grid-cols-3 bg-socialPrimary">
       {collections.map((collection) => (
         <Collection
           linkProps={{
@@ -19,7 +19,11 @@ export default function Collections({ collections }: CollectionsProps) {
           }}
           key={collection.id}
           name={collection.name}
-          previewPosters={collection.previewPosters}
+          previewPosters={
+            collection.previewMedias
+              .map((previewMedia) => previewMedia.posterImage)
+              .filter(Boolean) as string[]
+          }
           photo={collection.photo}
         />
       ))}

@@ -13,7 +13,7 @@ function SocialPageLayout() {
   const matchRoute = useMatchRoute();
 
   return (
-    <main className="relative text-sm flex justify-center gap-4 pt-[75px] sm:pt-[105px] text-mainWhite">
+    <main className="relative text-sm flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
       {matchRoute({ to: "/social/$userName/post/$postId" }) && (
         <FloatingCreateCommentBar />
       )}
@@ -22,10 +22,10 @@ function SocialPageLayout() {
         {matchRoute({ to: "/social" }) && <ProfilePreview />}
         <FollowSuggestions />
       </div>
-      <div className="w-full lg:w-[65%] xl:w-[50%]">
+      <div className="w-full md:w-[68%] xl:w-[50%]">
         <Outlet />
       </div>
-      <div className="flex-1 hidden max-h-full overflow-y-auto rounded-xl lg:block">
+      <div className="flex-1 hidden overflow-y-auto rounded-xl md:block">
         <Trending />
       </div>
     </main>

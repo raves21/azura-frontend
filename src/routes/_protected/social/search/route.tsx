@@ -30,8 +30,8 @@ const searchPageOptions: TContentOption[] = [
 
 function SearchPageLayout() {
   return (
-    <section className="flex flex-col w-full gap-4">
-      <div className="flex items-center gap-6 p-5 text-xl font-semibold rounded-lg bg-socialPrimary">
+    <section className="flex flex-col w-full gap-3">
+      <div className="flex items-center gap-6 p-3 text-base font-semibold rounded-lg mobile-l:text-lg sm:p-5 sm:text-xl bg-socialPrimary">
         <BackButton
           linkProps={{
             //todo: pass from state before going in /search, so that it will know where to navigate back

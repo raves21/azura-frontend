@@ -1,6 +1,6 @@
 export default function CreatePost() {
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg mobile-m:py-4 md:p-5 bg-socialPrimary">
+    <div className="flex items-center gap-3 p-3 rounded-lg mobile-m:py-4 sm:p-5 bg-socialPrimary">
       <img
         src="/sample-user-pfp.png"
         className="object-cover rounded-full size-[38px] md:size-11"

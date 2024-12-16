@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useMatchRoute } from "@tanstack/react-router";
 import { Heart, MessageCircle, Circle } from "lucide-react";
 import { useState } from "react";
 
@@ -12,11 +13,13 @@ export default function PostActions({
   iconClassName,
 }: PostActionsProps) {
   const [liked, setLiked] = useState(false);
+  const matchRoute = useMatchRoute();
 
   return (
     <div
       className={cn(
         "flex items-center w-full gap-5 mt-2 text-gray-500",
+        { "sm:pl-14": !matchRoute({ to: "/social/$userName/post/$postId" }) },
         className
       )}
     >

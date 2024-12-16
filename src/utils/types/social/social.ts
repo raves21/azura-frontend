@@ -34,10 +34,10 @@ export type Media = {
   createdAt: Date;
 };
 
-export type PreviewPoster = {
-  coverImage: string | null;
-  posterImage: string | null;
-};
+export type PreviewMedia = Pick<
+  Media,
+  "title" | "type" | "year" | "coverImage" | "posterImage"
+>;
 
 export type TCollection = {
   id: string;
@@ -45,12 +45,8 @@ export type TCollection = {
   photo: string | null;
   description: string;
   privacy: EntityPrivacy;
-  previewPosters: PreviewPoster[];
-};
-
-export type CollectionDetails = Omit<TCollection, "previewPosters"> & {
+  previewMedias: PreviewMedia[];
   owner: EntityOwner;
-  totalCollectionItems: number;
 };
 
 export type TCollectionItem = {

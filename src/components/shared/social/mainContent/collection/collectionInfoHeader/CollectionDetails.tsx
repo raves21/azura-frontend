@@ -1,41 +1,32 @@
 import { Circle } from "lucide-react";
 import CollectionOwner from "./CollectionOwner";
 import CollectionPrivacy from "./CollectionPrivacy";
-import { cn } from "@/lib/utils";
+import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 
 type CollectionNameAndDescriptionProps = {
   name: string;
   description: string;
+  owner: EntityOwner;
+  privacy: EntityPrivacy;
 };
 
 export default function CollectionDetails({
   name,
   description,
+  owner,
+  privacy,
 }: CollectionNameAndDescriptionProps) {
-  let nameStyle = "";
-  let descriptionStyle = "";
-
-  const collectionNameArray = name.split(" ");
-  if (
-    (collectionNameArray.length === 1 && name.length > 8) ||
-    collectionNameArray.length >= 3
-  ) {
-    nameStyle = "text-3xl line-clamp-3";
-    descriptionStyle = "line-clamp-2";
-  } else {
-    nameStyle = "text-5xl line-clamp-1";
-    descriptionStyle = "line-clamp-3";
-  }
-
   return (
-    <div className="flex flex-col gap-5">
-      <p className={cn("font-bold", nameStyle)}>{name}</p>
+    <div className="flex flex-col items-center gap-5 sm:items-start">
+      <p className="text-xl font-bold text-center 570:px-12 sm:px-0 lg:text-3xl sm:text-start mobile-m:text-2xl line-clamp-3">
+        {name}
+      </p>
       <div className="flex items-center gap-3">
-        <CollectionOwner />
+        <CollectionOwner avatar={owner.avatar} userName={owner.username} />
         <Circle className="size-[6px] stroke-none fill-socialTextSecondary" />
-        <CollectionPrivacy privacy="PUBLIC" />
+        <CollectionPrivacy privacy={privacy} />
       </div>
-      <p className={cn("text-sm text-socialTextSecondary", descriptionStyle)}>
+      <p className="text-sm text-socialTextSecondary line-clamp-4 sm:line-clamp-3">
         {description ? description : "No description"}
       </p>
     </div>

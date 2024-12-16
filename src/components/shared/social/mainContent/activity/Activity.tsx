@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TPost, TPostComment } from "@/utils/types/social/social";
-import { LinkProps, useNavigate } from "@tanstack/react-router";
+import { LinkProps, useMatchRoute, useNavigate } from "@tanstack/react-router";
 import ActivityHeader from "./ActivityHeader";
 import PostWithAttachment from "../post/postContent/PostWithAttachment";
 import PostActions from "../post/PostActions";
@@ -27,6 +27,8 @@ export default function Activity({
   ...props
 }: ActivityProps) {
   const { type } = props;
+  const matchRoute = useMatchRoute();
+  const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
   const navigate = useNavigate();
   const entityOwner =
     type === "comment" ? props.comment.author : props.post.owner;
@@ -40,7 +42,7 @@ export default function Activity({
       }
       className={cn(
         "flex w-full gap-2 text-sm mobile-m:text-base md:gap-4 px-3 py-4 mobile-l:p-5 rounded-lg hover:cursor-pointer bg-socialPrimary hover:bg-socialPrimaryHover",
-        { "rounded-none": type === "comment" }
+        { "rounded-none py-5": type === "comment" }
       )}
     >
       <div className="flex flex-col flex-grow gap-3">
@@ -75,12 +77,20 @@ export default function Activity({
                 content={props.post.content}
               />
             ) : (
-              <p className="w-full text-gray-300">{props.post.content}</p>
+              <p
+                className={cn("w-full text-gray-300 text-sm mobile-m:text-md", {
+                  "sm:pl-14": !isPostInfoPage,
+                })}
+              >
+                {props.post.content}
+              </p>
             )}
             <PostActions />
           </>
         ) : (
-          <p className="w-full mt-1 text-gray-300">{props.comment.content}</p>
+          <p className="w-full mt-1 text-sm text-gray-300 mobile-m:text-md">
+            {props.comment.content}
+          </p>
         )}
       </div>
     </div>

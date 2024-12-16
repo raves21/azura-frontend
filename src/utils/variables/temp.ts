@@ -54,19 +54,31 @@ export const tempPosts: TPost[] = [
     media: null,
     collection: {
       id: "collection1",
+      owner: {
+        id: "user2",
+        username: "Ria Cordero",
+        handle: "riacordero",
+        avatar: "https://i.redd.it/91ofcs730ij61.png",
+      },
       name: "Top Movies",
       privacy: "PUBLIC",
       photo: null,
       description:
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum id voluptatem reiciendis corporis iusto cumque veritatis voluptatum, inventore officia perspiciatis quod in ratione autem molestias.",
-      previewPosters: [
+      previewMedias: [
         {
+          title: "Alien Romulus",
+          type: "MOVIE",
+          year: "2024",
           coverImage:
             "https://image.tmdb.org/t/p/original/iJaSpQNZ8GsqVDWfbCXmyZQXZ5l.jpg",
           posterImage:
             "https://image.tmdb.org/t/p/original/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
         },
         {
+          title: "Breaking Bad",
+          type: "TV",
+          year: "2008",
           posterImage:
             "https://image.tmdb.org/t/p/original/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
           coverImage:
@@ -175,26 +187,38 @@ export const tempCollections: TCollection[] = [
     name: "my top 10 movies",
     photo: null,
     description: "This is my most favorite movies",
-    previewPosters: [
+    previewMedias: [
       {
+        title: "The Wild Robot",
+        type: "MOVIE",
+        year: "2024",
         posterImage:
           "https://image.tmdb.org/t/p/original/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/mQZJoIhTEkNhCYAqcHrQqhENLdu.jpg",
       },
       {
+        title: "Venom: The Last Dance",
+        type: "MOVIE",
+        year: "2024",
         posterImage:
           "https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/VuukZLgaCrho2Ar8Scl9HtV3yD.jpg",
       },
       {
+        title: "Fight Club",
+        type: "MOVIE",
+        year: "1999",
         posterImage:
           "https://image.tmdb.org/t/p/original/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/hZkgoQYus5vegHoetLkCJzb17zJ.jpg",
       },
       {
+        title: "Arena Wars",
+        type: "MOVIE",
+        year: "2024",
         posterImage:
           "https://image.tmdb.org/t/p/original/4dRtXjk1rcsZlaMJpBn6Nh9cTfO.jpg",
         coverImage:
@@ -202,32 +226,45 @@ export const tempCollections: TCollection[] = [
       },
     ],
     privacy: "FRIENDS_ONLY",
+    owner: tempPosts[0].owner,
   },
   {
     id: "2",
     name: "goated films",
     description: "ts goated",
     photo: null,
-    previewPosters: [
+    previewMedias: [
       {
+        title: "The Substance",
+        type: "MOVIE",
+        year: "2024",
         coverImage:
           "https://image.tmdb.org/t/p/original/7h6TqPB3ESmjuVbxCxAeB1c9OB1.jpg",
         posterImage:
           "https://image.tmdb.org/t/p/original/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
       },
       {
+        title: "Alien Romulus",
+        type: "MOVIE",
+        year: "2024",
         coverImage:
           "https://image.tmdb.org/t/p/original/iJaSpQNZ8GsqVDWfbCXmyZQXZ5l.jpg",
         posterImage:
           "https://image.tmdb.org/t/p/original/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
       },
       {
+        title: "Moana",
+        type: "MOVIE",
+        year: "2024",
         coverImage:
           "https://image.tmdb.org/t/p/original/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
         posterImage:
           "https://image.tmdb.org/t/p/original/4YZpsylmjHbqeWzjKpUEF8gcLNW.jpg",
       },
       {
+        title: "Despicable Me 4",
+        year: "2024",
+        type: "MOVIE",
         coverImage:
           "https://image.tmdb.org/t/p/original/lgkPzcOSnTvjeMnuFzozRO5HHw1.jpg",
         posterImage:
@@ -235,35 +272,46 @@ export const tempCollections: TCollection[] = [
       },
     ],
     privacy: "PUBLIC",
+    owner: tempPosts[0].owner,
   },
   {
     id: "3",
     name: "bruh",
     description: "idk",
-    previewPosters: [],
+    previewMedias: [],
     photo:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRere1avdwT5CfQCpT0bRsT24SnWZFRMMOZXw&s",
     privacy: "FRIENDS_ONLY",
+    owner: tempPosts[0].owner,
   },
   {
     id: "4",
     name: "best anime",
     description: "best animes OAT",
     photo: null,
-    previewPosters: [
+    previewMedias: [
       {
+        title: "Your Name",
+        year: "2016",
+        type: "MOVIE",
         posterImage:
           "https://image.tmdb.org/t/p/original/vfJFJPepRKapMd5G2ro7klIRysq.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg",
       },
       {
+        title: "A Silent Voice",
+        year: "2017",
+        type: "MOVIE",
         posterImage:
           "https://image.tmdb.org/t/p/original/tuFaWiqX0TXoWu7DGNcmX3UW7sT.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/5lAMQMWpXMsirvtLLvW7cJgEPkU.jpg",
       },
       {
+        title: "Bleach: The Movie",
+        year: "2014",
+        type: "MOVIE",
         posterImage:
           "https://image.tmdb.org/t/p/original/pd7V5iCB19VBPJkihxFXFwSRW2M.jpg",
         coverImage:
@@ -271,26 +319,36 @@ export const tempCollections: TCollection[] = [
       },
     ],
     privacy: "FRIENDS_ONLY",
+    owner: tempPosts[0].owner,
   },
   {
     id: "5",
     name: "just shrek lorem ipsum dolor sit amet lorem ipsum dolor",
     photo: null,
     description: "just shrek lorem ipsum dolor sit amet",
-    previewPosters: [
+    previewMedias: [
       {
+        title: "Shrek",
+        year: "2002",
+        type: "MOVIE",
         posterImage:
           "https://image.tmdb.org/t/p/original/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/sRvXNDItGlWCqtO3j6wks52FmbD.jpg",
       },
       {
+        title: "Shrek 2",
+        year: "2004",
+        type: "MOVIE",
         posterImage:
           "https://image.tmdb.org/t/p/original/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg",
         coverImage:
           "https://image.tmdb.org/t/p/original/8ohobj5lAIbl5XWw11FywS3IRrS.jpg",
       },
       {
+        title: "Shrek Forever After",
+        year: "2011",
+        type: "MOVIE",
         posterImage:
           "https://image.tmdb.org/t/p/original/6HrfPZtKcGmX2tUWW3cnciZTaSD.jpg",
         coverImage:
@@ -298,6 +356,7 @@ export const tempCollections: TCollection[] = [
       },
     ],
     privacy: "FRIENDS_ONLY",
+    owner: tempPosts[0].owner,
   },
 ];
 

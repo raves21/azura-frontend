@@ -5,6 +5,7 @@ import {
 import MediaAttachment from "./MediaAttachment";
 import CollectionAttachment from "./CollectionAttachment";
 import { cn } from "@/lib/utils";
+import { useMatchRoute } from "@tanstack/react-router";
 
 type PostWithAttachmentProps = {
   contentClassName?: string;
@@ -14,10 +15,23 @@ export default function PostWithAttachment({
   contentClassName,
   ...props
 }: PostWithAttachmentProps) {
+  const matchRoute = useMatchRoute();
+
   return (
-    <div className="flex flex-col w-full gap-3">
+    <div
+      className={cn("flex flex-col w-full gap-3", {
+        "sm:pl-14": !matchRoute({ to: "/social/$userName/post/$postId" }),
+      })}
+    >
       {props.content && (
-        <p className={cn("text-gray-300", contentClassName)}>{props.content}</p>
+        <p
+          className={cn(
+            "text-gray-300 text-sm mobile-m:text-md sm:text-base",
+            contentClassName
+          )}
+        >
+          {props.content}
+        </p>
       )}
       {props.attachmentType === "media" ? (
         <MediaAttachment media={props.media} />

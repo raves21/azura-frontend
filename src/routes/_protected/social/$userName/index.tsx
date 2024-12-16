@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_protected/social/$userName/")({
 function UserProfilePage() {
   useCustomScrollRestoration("userProfilePage");
   return (
-    <div className="flex flex-col w-full gap-4 pb-24">
+    <div className="flex flex-col w-full gap-3 pb-24">
       {tempPosts.map((post) => (
         <Post key={post.id} post={post} fromState="user-page" />
       ))}

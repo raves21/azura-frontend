@@ -18,7 +18,8 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        xxs: ["10px", "14px"],
+        "2xs": ["10px", "14px"],
+        md: ["15px", "22px"],
       },
       gridTemplateColumns: {
         "auto-fill-45": "repeat(auto-fill, minmax(45px, 1fr))",

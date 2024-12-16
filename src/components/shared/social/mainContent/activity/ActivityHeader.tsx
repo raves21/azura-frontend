@@ -34,10 +34,18 @@ export default function ActivityHeader({
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
   return (
-    <div className={cn("flex items-start w-full gap-2", className)}>
-      <UserAvatar src={owner.avatar} imageClassName="mobile-m:size-10" />
+    <div
+      className={cn(
+        "flex items-start w-full text-sm sm:text-base gap-2 sm:gap-3",
+        className
+      )}
+    >
+      <UserAvatar
+        src={owner.avatar}
+        imageClassName="mobile-m:size-10 sm:size-11"
+      />
       <div className="flex flex-col mr-auto">
-        <div className="flex items-center gap-2 text-sm mobile-l:gap-3">
+        <div className="flex items-center gap-2 mobile-l:gap-3">
           <p className="font-semibold">{owner.username}</p>
           <p className="text-gray-500">@{owner.handle}</p>
         </div>
@@ -99,7 +107,7 @@ export default function ActivityHeader({
             </>
           )}
 
-          <p className="text-sm text-gray-500">2 hours ago</p>
+          <p className="text-gray-500">2 hours ago</p>
         </div>
       </div>
       {owner.handle === "rikitiu" && (

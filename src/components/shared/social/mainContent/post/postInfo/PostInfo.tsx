@@ -27,17 +27,17 @@ export default function PostInfo({ post }: PostInfoProps) {
             attachmentType="collection"
             collection={post.collection}
             content={post.content}
-            contentClassName="text-sm mobile-m:text-base"
+            contentClassName="text-sm mobile-m:text-md"
           />
         ) : post.media ? (
           <PostWithAttachment
             attachmentType="media"
             media={post.media}
             content={post.content}
-            contentClassName="text-sm mobile-m:text-base"
+            contentClassName="text-sm mobile-m:text-md"
           />
         ) : (
-          <p className="w-full text-sm text-gray-300 mobile-m:text-base">
+          <p className="w-full text-sm text-gray-300 mobile-m:text-md">
             {post.content}
           </p>
         )}

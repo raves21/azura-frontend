@@ -7,6 +7,7 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { tempPosts } from "@/utils/variables/temp";
+import { useEffect } from "react";
 
 export const Route = createFileRoute(
   "/_protected/social/$userName/post/$postId/"
@@ -35,6 +36,10 @@ function PostInfoPage() {
     };
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="flex flex-col w-full gap-2 mb-24 overflow-hidden text-base rounded-lg bg-socialPrimary">
       <div className="flex flex-col w-full gap-8 px-3 py-4 sm:p-5">
@@ -45,7 +50,7 @@ function PostInfoPage() {
           />
           <p className="text-base font-semibold mobile-m:text-lg">Post</p>
         </div>
-        <PostInfo post={tempPosts[1]} />
+        <PostInfo post={tempPosts[2]} />
       </div>
       <PostComments />
     </div>

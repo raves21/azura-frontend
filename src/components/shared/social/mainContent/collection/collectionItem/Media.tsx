@@ -1,4 +1,5 @@
 import { MediaType } from "@/utils/types/social/shared";
+import { LinkProps, Link } from "@tanstack/react-router";
 import { Cat, Tv, Clapperboard } from "lucide-react";
 
 type CollectionItemProps = {
@@ -6,16 +7,18 @@ type CollectionItemProps = {
   image: string | null;
   title: string;
   year: string;
+  linkProps: LinkProps;
 };
 
-export default function CollectionItem({
+export default function Media({
   type,
   image,
   title,
   year,
+  linkProps,
 }: CollectionItemProps) {
   return (
-    <button className="space-y-3 group">
+    <Link {...linkProps} className="block space-y-3 group">
       <div className="relative aspect-[3/4] min-h-[130px] overflow-hidden bg-gray-600 rounded-md lg:rounded-xl">
         {image && (
           <>
@@ -30,7 +33,7 @@ export default function CollectionItem({
         )}
       </div>
       <div className="space-y-2">
-        <p className="text-xs mobile-l:text-sm font-medium text-[#E0E0E0] line-clamp-2">
+        <p className="text-xs text-center mobile-l:text-sm font-medium text-[#E0E0E0] line-clamp-2">
           {title}
         </p>
         <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
@@ -44,6 +47,6 @@ export default function CollectionItem({
           {year && <p>{year}</p>}
         </div>
       </div>
-    </button>
+    </Link>
   );
 }
