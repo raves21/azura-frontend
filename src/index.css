@@ -82,6 +82,7 @@ html,
 body {
   overflow-x: hidden;
   background: #100c14;
+  /* scroll-behavior: smooth; */
 }
 
 @layer utilities {
@@ -133,4 +134,25 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap.ProseMirror {
+  outline: none;
+}
+
+.gradient1 {
+  background: rgb(3, 7, 18);
+  background: linear-gradient(
+    0deg,
+    rgba(3, 7, 18, 1) 11%,
+    rgba(0, 212, 255, 0) 100%
+  );
 }

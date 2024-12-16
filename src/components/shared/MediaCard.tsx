@@ -1,5 +1,6 @@
 import { Link, LinkProps } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
+import { Circle } from "lucide-react";
 
 type MediaCard = {
   linkProps: LinkProps;
@@ -47,7 +48,7 @@ export default function MediaCard({
             return (
               <Fragment key={subLabel}>
                 <p>{subLabel}</p>
-                <div className="bg-gray-400 rounded-full size-1"></div>
+                <Circle className="fill-gray-400 stroke-gray-400 size-1" />
               </Fragment>
             );
           })}

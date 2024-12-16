@@ -1,40 +1,30 @@
 import { useGlobalStore } from "@/utils/stores/globalStore";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useMatchRoute } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
-import { useEffect, useState } from "react";
 import SearchDialog from "../../routes/_protected/anime/-SearchDialog";
 import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
-import SideMenuSheet from "@/components/shared/SideMenuSheet";
+import SideMenuSheet from "@/components/shared/sideMenuSheet/SideMenuSheet";
+import { useScrolledState } from "@/utils/hooks/useScrolledState";
+import SocialSearchDialog from "./social/searchDialog/SocialSearchDialog";
+import { ReactNode } from "react";
 
 export default function HomeHeader() {
-  const [isScrolledDown, setIsScrolledDown] = useState(false);
+  const { isScrolledDown } = useScrolledState();
 
   const [toggleOpenDialog, toggleOpenSheet] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenSheet])
   );
-  const router = useRouter();
 
-  function isRouteCurrent(route: string) {
-    const pathnameArray = router.latestLocation.pathname.split("/");
-    return pathnameArray[pathnameArray.length - 1] === route;
+  const matchRoute = useMatchRoute();
+
+  let searchDialog: ReactNode;
+
+  if (matchRoute({ to: "/anime", fuzzy: true })) {
+    searchDialog = <SearchDialog />;
+  } else {
+    searchDialog = <SocialSearchDialog />;
   }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolledDown(true);
-      } else {
-        setIsScrolledDown(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   const DesktopHeader = (
     <div
@@ -49,28 +39,39 @@ export default function HomeHeader() {
       <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
         <Link
           to="/anime"
-          className={cn("p-[6px]", {
-            "text-white": isRouteCurrent("anime"),
-          })}
+          className={cn(
+            "p-[6px]",
+            {
+              "text-mainWhite": matchRoute({ to: "/anime", fuzzy: true }),
+            },
+            { "text-gray-300": matchRoute({ to: "/anime/catalog" }) }
+          )}
         >
           Anime
         </Link>
         <Link
           to="/anime/catalog"
           className={cn("p-[6px]", {
-            "text-white": isRouteCurrent("catalog"),
+            "text-mainWhite": matchRoute({
+              to: "/anime/catalog",
+            }),
           })}
         >
           Catalog
         </Link>
         <img src="/azura-logo.svg" className="size-12" />
-        <Link to="/social" className="p-[6px]">
+        <Link
+          to="/social"
+          className={cn("p-[6px]", {
+            "text-mainWhite": matchRoute({ to: "/social", fuzzy: true }),
+          })}
+        >
           Social
         </Link>
-        <Link className="p-[6px]">Profile</Link>
+        <Link className="p-[6px]">Settings</Link>
       </div>
       <button
-        onClick={() => toggleOpenDialog(<SearchDialog />)}
+        onClick={() => toggleOpenDialog(searchDialog)}
         className="p-[6px]"
       >
         <Search />
@@ -91,7 +92,7 @@ export default function HomeHeader() {
       <div className="flex items-center gap-4">
         <button
           className="p-[6px]"
-          onClick={() => toggleOpenDialog(<SearchDialog />)}
+          onClick={() => toggleOpenDialog(searchDialog)}
         >
           <Search className="size-6" />
         </button>

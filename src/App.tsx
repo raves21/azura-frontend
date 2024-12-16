@@ -16,13 +16,8 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
   interface HistoryState {
-    animeInfoPageNavigationState?: {
-      id: string;
-      image: string;
-      cover: string;
-      genres: string[];
-      description: string;
-      type: string;
+    postInfoState?: {
+      from: "home-page" | "user-page" | "search-page";
     };
   }
 }

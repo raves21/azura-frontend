@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { getRatingScore } from "@/utils/functions/reusable_functions";
 import { cn } from "@/lib/utils";
 
@@ -12,17 +12,13 @@ type WatchPageVariant = {
 };
 
 type StarsRatingProps = {
-  starsFillWidthRef: React.MutableRefObject<HTMLDivElement | null>;
   rating: number | undefined | null;
-  starsFillWidthPercentage: number;
   className?: string;
   starsClassName?: string;
   ratingLabelClassName?: string;
 } & (InfoPageVariant | WatchPageVariant);
 
 export default function Rating({
-  starsFillWidthPercentage,
-  starsFillWidthRef,
   rating,
   className,
   starsClassName,
@@ -32,6 +28,15 @@ export default function Rating({
 }: StarsRatingProps) {
   const infoPageProps =
     variant === "infoPage" ? (props as InfoPageVariant) : null;
+
+  const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);
+  const starsFillWidthRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (starsFillWidthRef.current && rating) {
+      setStarsFillWidthPercentage(rating * 10);
+    }
+  }, []);
 
   return (
     <div
@@ -56,7 +61,8 @@ export default function Rating({
         className={cn(
           "relative w-32 h-6 bg-gray-500 lg:-ml-2",
           {
-            "w-20 h-full mobile-m:w-24 sm:w-28 lg:w-32 lg:h-5 xl:h-6": variant === "watchPage",
+            "w-20 h-full mobile-m:w-24 sm:w-28 lg:w-32 lg:h-5 xl:h-6":
+              variant === "watchPage",
             "w-24": variant === "infoPage" && infoPageProps?.isMobile,
           },
           starsClassName
@@ -74,7 +80,8 @@ export default function Rating({
         className={cn(
           "font-semibold lg:text-lg",
           {
-            "text-xs mobile-l:text-sm sm:text-base md:text-lg": variant === "watchPage",
+            "text-xs mobile-l:text-sm sm:text-base md:text-lg":
+              variant === "watchPage",
           },
           ratingLabelClassName
         )}

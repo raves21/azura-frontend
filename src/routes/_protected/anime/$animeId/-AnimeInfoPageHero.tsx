@@ -17,7 +17,6 @@ import Title from "@/components/shared/info/Title";
 import InfoDetails from "@/components/shared/info/InfoDetails";
 import { cn } from "@/lib/utils";
 import InfoItem from "@/components/shared/info/InfoItem";
-import { useInfoPageHero } from "@/utils/hooks/useInfoPageHero";
 import {
   animeCancelledStatus,
   animeCompletedStatus,
@@ -53,15 +52,6 @@ export default function AnimeInfoPageHero({
   animeId,
   episodesQuery,
 }: AnimeHeroComponentProps) {
-  const {
-    descriptionHeight,
-    descriptionRef,
-    readMore,
-    setReadMore,
-    starsFillWidthPercentage,
-    starsFillWidthRef,
-  } = useInfoPageHero({ rating: rating });
-
   const navigate = useNavigate();
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
     useChunkAnimeEpisodes(episodesQuery.data);
@@ -73,13 +63,7 @@ export default function AnimeInfoPageHero({
         <InfoSectionPoster image={image} variant="infoPage" />
         <div className="relative flex flex-col items-center flex-1 gap-3 mt-3 lg:mt-0 lg:items-start">
           <Title title={title} variant="infoPage" />
-          <Rating
-            variant="infoPage"
-            rating={rating}
-            starsFillWidthPercentage={starsFillWidthPercentage}
-            starsFillWidthRef={starsFillWidthRef}
-            isMobile={false}
-          />
+          <Rating variant="infoPage" rating={rating} isMobile={false} />
           <InfoDetails isMobile={false}>
             <div className="flex gap-10">
               <InfoItem label="Year:" info={year?.toString()} />
@@ -140,10 +124,6 @@ export default function AnimeInfoPageHero({
 
           <Description
             description={description}
-            descriptionHeight={descriptionHeight}
-            descriptionRef={descriptionRef}
-            readMore={readMore}
-            setReadMore={setReadMore}
             className="w-full gap-3 mt-5 lg:mt-0 lg:w-[75%] xl:w-[70%]"
             showDescriptionLabel
           />
@@ -181,13 +161,7 @@ export default function AnimeInfoPageHero({
             />
             <div className="flex items-center gap-2">
               <p className="text-gray-400">Score:</p>
-              <Rating
-                variant="infoPage"
-                isMobile
-                starsFillWidthPercentage={starsFillWidthPercentage}
-                starsFillWidthRef={starsFillWidthRef}
-                rating={rating}
-              />
+              <Rating variant="infoPage" isMobile rating={rating} />
             </div>
           </InfoDetails>
         </div>

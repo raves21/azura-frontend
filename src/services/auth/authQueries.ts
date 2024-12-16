@@ -101,13 +101,13 @@ export function useLogin() {
       email: string;
       password: string;
     }) => {
-      const { data } = await axios.post<LoginResponse>(
+      const { data } = await axios.post(
         `${BASE_URL}/auth/login`,
         { email, password },
         { withCredentials: true }
       );
 
-      return data;
+      return data as LoginResponse;
     },
     onSuccess: (result) => {
       if (result.isDetachedMode) {

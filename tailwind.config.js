@@ -17,6 +17,10 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        "2xs": ["10px", "14px"],
+        md: ["15px", "22px"],
+      },
       gridTemplateColumns: {
         "auto-fill-45": "repeat(auto-fill, minmax(45px, 1fr))",
       },
@@ -31,6 +35,9 @@ module.exports = {
         darkBg: "#100c14",
         mainAccent: "#c026d3",
         mainWhite: "#f6f4f4",
+        socialPrimary: "#111827",
+        socialPrimaryHover: "#131A2A",
+        socialTextSecondary: "#6b7280",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

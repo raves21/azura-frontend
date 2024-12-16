@@ -1,5 +1,3 @@
-import { useState, useEffect, useRef } from "react";
-import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import Description from "@/components/shared/info/Description";
 import Rating from "@/components/shared/info/Rating";
 import InfoSectionBackgroundImage from "@/components/shared/info/InfoSectionBackgroundImage";
@@ -40,35 +38,6 @@ export default function EpisodeAnimeInfo({
   genres,
   rating,
 }: AnimeInfoProps) {
-  const [desktopDescriptionHeight, setDesktopDescriptionHeight] = useState(0);
-  const desktopDescriptionRef = useRef<HTMLDivElement | null>(null);
-  const [readMore, setReadMore] = useState(false);
-  const [starsFillWidthPercentage, setStarsFillWidthPercentage] = useState(0);
-  const starsFillWidthRef = useRef<HTMLDivElement | null>(null);
-  const [mobileDesriptionHeight, setMobileDesriptionHeight] = useState(0);
-  const mobileDesriptionRef = useRef<HTMLDivElement | null>(null);
-
-  const windowWidth = useWindowWidth();
-
-  useEffect(() => {
-    if (starsFillWidthRef.current && rating) {
-      setStarsFillWidthPercentage(rating * 10);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (desktopDescriptionRef.current) {
-      setDesktopDescriptionHeight(
-        desktopDescriptionRef.current.getBoundingClientRect().height
-      );
-    }
-    if (mobileDesriptionRef.current) {
-      setMobileDesriptionHeight(
-        mobileDesriptionRef.current.getBoundingClientRect().height
-      );
-    }
-  }, [windowWidth]);
-
   return (
     <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justfy-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />
@@ -77,12 +46,7 @@ export default function EpisodeAnimeInfo({
         <section className="z-10 flex flex-col flex-1 gap-2 sm:gap-3">
           <Title title={title} variant="watchPage" />
           <div className="flex flex-col gap-2 mobile-m:gap-4">
-            <Rating
-              variant="watchPage"
-              rating={rating}
-              starsFillWidthPercentage={starsFillWidthPercentage}
-              starsFillWidthRef={starsFillWidthRef}
-            />
+            <Rating variant="watchPage" rating={rating} />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
               <InfoItem label="Year:" info={year?.toString()} />
               <InfoItem
@@ -117,12 +81,9 @@ export default function EpisodeAnimeInfo({
             />
           </div>
           <Description
+            adjustHeightBasedOnWidth
             showDescriptionLabel={false}
             description={description}
-            descriptionHeight={desktopDescriptionHeight}
-            descriptionRef={desktopDescriptionRef}
-            readMore={readMore}
-            setReadMore={setReadMore}
             className="hidden lg:block"
           />
         </section>
@@ -135,12 +96,9 @@ export default function EpisodeAnimeInfo({
           variant="watchPage"
         />
         <Description
+          adjustHeightBasedOnWidth
           showDescriptionLabel={false}
           description={description}
-          descriptionHeight={mobileDesriptionHeight}
-          descriptionRef={mobileDesriptionRef}
-          readMore={readMore}
-          setReadMore={setReadMore}
           className="w-full text-sm lg:hidden sm:text-base"
         />
       </div>
