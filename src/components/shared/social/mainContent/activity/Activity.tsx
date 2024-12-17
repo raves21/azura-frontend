@@ -5,6 +5,7 @@ import { LinkProps, useMatchRoute, useNavigate } from "@tanstack/react-router";
 import ActivityHeader from "./ActivityHeader";
 import PostWithAttachment from "../post/postContent/PostWithAttachment";
 import PostActions from "../post/PostActions";
+import ActivityContentRenderer from "./ActivityContentRenderer";
 
 type PostActivityProps = {
   type: "post";
@@ -27,6 +28,8 @@ export default function Activity({
   ...props
 }: ActivityProps) {
   const { type } = props;
+  const samplePostContent =
+    "Hello world wtf what i am not from this <mention>\nworld!\n\n\nshameless plug\ni am your father luke";
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
   const navigate = useNavigate();
@@ -82,7 +85,8 @@ export default function Activity({
                   "sm:pl-14": !isPostInfoPage,
                 })}
               >
-                {props.post.content}
+                {/* {props.post.content} */}
+                <ActivityContentRenderer content={samplePostContent} />
               </p>
             )}
             <PostActions />

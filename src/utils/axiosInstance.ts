@@ -1,7 +1,6 @@
 import axios from "axios";
 import { queryClient } from "@/Providers";
 import { RefreshResponse } from "./types/auth/auth";
-import { useAuthStore } from "./stores/authStore";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
@@ -70,7 +69,6 @@ api.interceptors.response.use(
     } catch (refreshError) {
       // If refresh token is expired/invalid, set the accesstoken to null
       queryClient.setQueryData(["refreshJWT"], null);
-      useAuthStore.getState().setCurrentUser(null);
       history.replaceState(null, "", "/login");
       return Promise.reject(refreshError);
     } finally {
