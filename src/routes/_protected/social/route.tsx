@@ -11,7 +11,6 @@ export const Route = createFileRoute("/_protected/social")({
 
 function SocialPageLayout() {
   const matchRoute = useMatchRoute();
-
   return (
     <main className="relative text-sm flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
       {matchRoute({ to: "/social/$userName/post/$postId" }) && (

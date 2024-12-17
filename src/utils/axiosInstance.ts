@@ -1,11 +1,7 @@
 import axios from "axios";
 import { queryClient } from "@/Providers";
-
-type RefreshResponse = {
-  data: {
-    accessToken: string;
-  };
-};
+import { RefreshResponse } from "./types/auth/auth";
+import { useAuthStore } from "./stores/authStore";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
@@ -15,9 +11,9 @@ const api = axios.create({
 // Request interceptor to add Authorization header
 api.interceptors.request.use(
   (config) => {
-    const accessToken = queryClient.getQueryData(["accessToken"]);
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const data = queryClient.getQueryData(["refreshJWT"]) as RefreshResponse;
+    if (data) {
+      config.headers.Authorization = `Bearer ${data.accessToken}`;
     }
     return config;
   },
@@ -60,20 +56,21 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const response = await axios.get<RefreshResponse>(
+      const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/refresh`,
         {
           withCredentials: true,
         }
       );
-      const { accessToken } = response.data.data;
-      queryClient.setQueryData(["accessToken"], accessToken);
-      onRefreshSuccess(accessToken);
-      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+      const data = response.data as RefreshResponse;
+      queryClient.setQueryData(["refreshJWT"], data);
+      onRefreshSuccess(data.accessToken);
+      originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
       return api(originalRequest);
     } catch (refreshError) {
       // If refresh token is expired/invalid, set the accesstoken to null
-      queryClient.setQueryData(["accessToken"], null);
+      queryClient.setQueryData(["refreshJWT"], null);
+      useAuthStore.getState().setCurrentUser(null);
       history.replaceState(null, "", "/login");
       return Promise.reject(refreshError);
     } finally {

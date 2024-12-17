@@ -1,6 +1,6 @@
 import PulseCheckJWT from "@/components/shared/auth/PulseCheckJWT";
 import StaticLoadingPage from "@/components/shared/StaticLoadingPage";
-import { useAccessToken } from "@/services/auth/authQueries";
+import { useRefreshJWT } from "@/services/auth/authQueries";
 import {
   createFileRoute,
   Navigate,
@@ -9,19 +9,25 @@ import {
 } from "@tanstack/react-router";
 import HomeHeader from "../../components/shared/HomeHeader";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/utils/stores/authStore";
 
 export const Route = createFileRoute("/_protected")({
   component: () => <Protected />,
 });
 
 function Protected() {
-  const { data, isLoading, error } = useAccessToken();
+  const { data, isLoading, error } = useRefreshJWT();
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
   const matchRoute = useMatchRoute();
 
   if (isLoading) return <StaticLoadingPage />;
-  if (error) return <Navigate to="/login" />;
+  if (error) {
+    setCurrentUser(null);
+    return <Navigate to="/login" />;
+  }
 
   if (data) {
+    setCurrentUser(data.currentUserBasicInfo);
     return (
       <PulseCheckJWT>
         <div className="max-w-full w-dvw bg-darkBg text-mainWhite">

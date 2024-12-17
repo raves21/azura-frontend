@@ -1,6 +1,6 @@
 import StaticLoadingPage from "@/components/shared/StaticLoadingPage";
 import Waves from "@/components/shared/Waves";
-import { useAccessToken } from "@/services/auth/authQueries";
+import { useRefreshJWT } from "@/services/auth/authQueries";
 import {
   createFileRoute,
   Link,
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_auth")({
 
 function AuthLayout() {
   const { data: accessToken, isLoading: isAccessTokenLoading } =
-    useAccessToken();
+    useRefreshJWT();
 
   if (isAccessTokenLoading) {
     return <StaticLoadingPage />;

@@ -3,7 +3,12 @@ export type UserBasicInfo = {
   username: string;
   email: string;
   handle: string;
-  avatar: string;
+  avatar: string | null;
+};
+
+export type RefreshResponse = {
+  currentUserBasicInfo: UserBasicInfo;
+  accessToken: string;
 };
 
 type UserSession = {
@@ -18,7 +23,6 @@ export type LoginResponseDetachedMode = {
   isDetachedMode: true;
   data: {
     user: UserBasicInfo;
-    accessToken: never;
     sessions: UserSession[];
   };
 };
@@ -28,7 +32,6 @@ export type LoginResponseRegular = {
   isDetachedMode: false;
   data: {
     user: UserBasicInfo;
-    sessions: never;
     accessToken: string;
   };
 };
