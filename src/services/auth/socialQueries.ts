@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/utils/axiosInstance";
-import { Posts } from "@/utils/types/social/social";
+import { CurrentUserProfile, Posts } from "@/utils/types/social/social";
 
 export function useForYouFeed(page: number) {
   return useQuery({
@@ -8,6 +8,16 @@ export function useForYouFeed(page: number) {
     queryFn: async () => {
       const { data } = await api.get("/feed/for-you");
       return data as Posts;
+    },
+  });
+}
+
+export function useCurrentUserProfile() {
+  return useQuery({
+    queryKey: ["currentUser"],
+    queryFn: async () => {
+      const { data } = await api.get("/users/me");
+      return data.data as CurrentUserProfile;
     },
   });
 }

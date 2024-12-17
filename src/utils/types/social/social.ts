@@ -1,12 +1,16 @@
-import { EntityOwner, EntityPrivacy, MediaType } from "./shared";
+import { UserBasicInfo } from "../auth/auth";
+import {
+  EntityOwner,
+  EntityPrivacy,
+  MediaType,
+  PaginatedResponse,
+  ResponseWithMessage,
+} from "./shared";
 
-export type Posts = {
-  message: string;
-  page: number;
-  perPage: number;
-  totalPages: number;
-  data: TPost[];
-};
+export type Posts = ResponseWithMessage &
+  PaginatedResponse & {
+    data: TPost[];
+  };
 
 export type TPost = {
   id: string;
@@ -72,4 +76,13 @@ export type TPostComment = {
   content: string;
   author: EntityOwner;
   createdAt: Date;
+};
+
+export type CurrentUserProfile = UserBasicInfo & {
+  banner: string | null;
+  bio: string | null;
+  createdAt: Date;
+  totalFollowers: number;
+  totalFollowing: number;
+  sessionId: number;
 };

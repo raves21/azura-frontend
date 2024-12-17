@@ -1,32 +1,26 @@
-import { api } from "@/utils/axiosInstance";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { queryClient } from "@/Providers";
-import { LoginResponse, UserBasicInfo } from "@/utils/types/auth/auth";
+import {
+  LoginResponse,
+  RefreshResponse,
+  UserBasicInfo,
+} from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/authStore";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-export function useAccessToken() {
+export function useRefreshJWT() {
   return useQuery({
-    queryKey: ["accessToken"],
+    queryKey: ["refreshJWT"],
     queryFn: async () => {
       const { data } = await axios.get(`${BASE_URL}/refresh`, {
         withCredentials: true,
       });
-      return data.data.accessToken;
+      console.log("JWT REFRESHED", data);
+      return data.data as RefreshResponse;
     },
     retryOnMount: false,
-  });
-}
-
-export function useCurrentUser() {
-  return useQuery({
-    queryKey: ["currentUser"],
-    queryFn: async () => {
-      const { data } = await api.get("/users/me");
-      return data.data;
-    },
   });
 }
 
@@ -114,7 +108,7 @@ export function useLogin() {
         useAuthStore.getState().setDetachedModeUserInfo(result);
         history.replaceState(null, "", "/detached-mode");
       } else {
-        queryClient.setQueryData(["accessToken"], result.data.accessToken);
+        queryClient.setQueryData(["refreshJWT"], result.data.accessToken);
         history.replaceState(null, "", "/anime");
       }
     },
@@ -162,7 +156,7 @@ export function useLogout() {
       });
     },
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["accessToken"] });
+      queryClient.removeQueries({ queryKey: ["refreshJWT"] });
       history.replaceState(null, "", "/login");
     },
   });
