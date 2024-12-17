@@ -1,14 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { api } from "@/utils/axiosInstance";
-import { CurrentUserProfile, Posts } from "@/utils/types/social/social";
+import { CurrentUserProfile, PostsRequest } from "@/utils/types/social/social";
 
-export function useForYouFeed(page: number) {
-  return useQuery({
-    queryKey: ["for-you-feed", page],
-    queryFn: async () => {
-      const { data } = await api.get("/feed/for-you");
-      return data as Posts;
+export function useForYouFeed() {
+  return useInfiniteQuery({
+    queryKey: ["forYouFeed"],
+    queryFn: async ({ pageParam }: { pageParam: number }) => {
+      const { data } = await api.get(`/feed/for-you?page=${pageParam}`);
+      return data as PostsRequest;
     },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
 

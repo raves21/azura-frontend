@@ -7,13 +7,28 @@ export default function ActivityContentRenderer({
   content: string;
 }) {
   const navigate = useNavigate();
+  const tokens = content.split(/(\s+)/);
+  const hashtagRegex = /#\w+/g;
+  const mentionRegex = /mention/g;
+  const newlineRegex = /\n/g;
+
   return (
     <>
-      {content.split(/(\s+)/).map((word, index) => {
-        if (/mention/g.test(word)) {
+      {tokens.map((token, index) => {
+        if (hashtagRegex.test(token)) {
           return (
             <button
-              key={`button-${index}`}
+              key={`hashtag-${index}`}
+              className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"
+            >
+              {token}
+            </button>
+          );
+        }
+        if (mentionRegex.test(token)) {
+          return (
+            <button
+              key={`mention-${index}`}
               onClick={(e) => {
                 e.stopPropagation();
                 navigate({
@@ -29,9 +44,9 @@ export default function ActivityContentRenderer({
             </button>
           );
         }
-        if (/\n/g.test(word)) {
+        if (newlineRegex.test(token)) {
           const toBeRendered: ReactNode[] = [];
-          word.split("").map((char) => {
+          token.split("").map((char) => {
             if (char === "\n") {
               toBeRendered.push(<br />);
             } else {
@@ -42,7 +57,7 @@ export default function ActivityContentRenderer({
             <Fragment key={`element-${index}-${elIndex}`}>{element}</Fragment>
           ));
         }
-        return <Fragment key={`word-${index}`}>{word}</Fragment>;
+        return <Fragment key={`word-${index}`}>{token}</Fragment>;
       })}
     </>
   );

@@ -88,7 +88,10 @@ export default function CollectionAttachment({
             </p>
           </div>
           <div className="flex items-center gap-2 text-[10px] mobile-l:text-xs">
-            <UserAvatar src={owner.avatar} imageClassName="size-4 md:size-4" />
+            <UserAvatar
+              src={owner.avatar || "/sample-user-pfp.png"}
+              imageClassName="size-4 md:size-4"
+            />
             <p
               className={cn(
                 "font-medium mobile-m:text-xs sm:text-sm line-clamp-1"

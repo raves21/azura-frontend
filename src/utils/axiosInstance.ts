@@ -1,6 +1,7 @@
 import axios from "axios";
 import { queryClient } from "@/Providers";
 import { RefreshResponse } from "./types/auth/auth";
+import { useAuthStore } from "./stores/authStore";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
@@ -61,7 +62,7 @@ api.interceptors.response.use(
           withCredentials: true,
         }
       );
-      const data = response.data as RefreshResponse;
+      const data = response.data.data as RefreshResponse;
       queryClient.setQueryData(["refreshJWT"], data);
       onRefreshSuccess(data.accessToken);
       originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
@@ -69,6 +70,7 @@ api.interceptors.response.use(
     } catch (refreshError) {
       // If refresh token is expired/invalid, set the accesstoken to null
       queryClient.setQueryData(["refreshJWT"], null);
+      useAuthStore.getState().setCurrentUser(null);
       history.replaceState(null, "", "/login");
       return Promise.reject(refreshError);
     } finally {

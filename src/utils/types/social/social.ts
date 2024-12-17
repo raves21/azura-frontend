@@ -7,7 +7,7 @@ import {
   ResponseWithMessage,
 } from "./shared";
 
-export type Posts = ResponseWithMessage &
+export type PostsRequest = ResponseWithMessage &
   PaginatedResponse & {
     data: TPost[];
   };

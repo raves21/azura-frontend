@@ -28,8 +28,6 @@ export default function Activity({
   ...props
 }: ActivityProps) {
   const { type } = props;
-  const samplePostContent =
-    "Hello world wtf what i am not from this <mention>\nworld!\n\n\nshameless plug\ni am your father luke";
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
   const navigate = useNavigate();
@@ -85,8 +83,7 @@ export default function Activity({
                   "sm:pl-14": !isPostInfoPage,
                 })}
               >
-                {/* {props.post.content} */}
-                <ActivityContentRenderer content={samplePostContent} />
+                <ActivityContentRenderer content={props.post.content!} />
               </p>
             )}
             <PostActions />

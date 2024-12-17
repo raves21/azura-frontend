@@ -6,6 +6,7 @@ import MediaAttachment from "./MediaAttachment";
 import CollectionAttachment from "./CollectionAttachment";
 import { cn } from "@/lib/utils";
 import { useMatchRoute } from "@tanstack/react-router";
+import ActivityContentRenderer from "../../activity/ActivityContentRenderer";
 
 type PostWithAttachmentProps = {
   contentClassName?: string;
@@ -30,7 +31,7 @@ export default function PostWithAttachment({
             contentClassName
           )}
         >
-          {props.content}
+          <ActivityContentRenderer content={props.content} />
         </p>
       )}
       {props.attachmentType === "media" ? (
