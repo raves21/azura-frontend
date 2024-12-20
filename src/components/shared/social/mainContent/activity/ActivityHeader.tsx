@@ -3,6 +3,7 @@ import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import { Circle, Ellipsis, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 import UserAvatar from "../../UserAvatar";
+import { useCurrentUser } from "@/utils/hooks/useCurrentUser";
 
 type WithPostPrivacyProps = {
   showPrivacy: true;
@@ -33,6 +34,8 @@ export default function ActivityHeader({
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
+  const currentUser = useCurrentUser();
+
   return (
     <div
       className={cn(
@@ -41,7 +44,7 @@ export default function ActivityHeader({
       )}
     >
       <UserAvatar
-        src={owner.avatar}
+        src={owner.avatar ?? "/no-image-2.jpg"}
         imageClassName="mobile-m:size-10 sm:size-11"
       />
       <div className="flex flex-col mr-auto">
@@ -110,7 +113,7 @@ export default function ActivityHeader({
           <p className="text-gray-500">2 hours ago</p>
         </div>
       </div>
-      {owner.handle === "rikitiu" && (
+      {owner.id === currentUser.id && (
         <button>
           <Ellipsis className="size-6 stroke-gray-500" />
         </button>

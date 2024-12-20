@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCurrentUserProfile } from "@/services/auth/socialQueries";
-import { useAuthStore } from "@/utils/stores/authStore";
-import { Link, Navigate } from "@tanstack/react-router";
+import { useCurrentUser } from "@/utils/hooks/useCurrentUser";
+import { Link } from "@tanstack/react-router";
 
 export default function ProfilePreview() {
   const {
@@ -9,9 +9,7 @@ export default function ProfilePreview() {
     isLoading: isCurrentUserProfileLoading,
     error: currentUserProfileError,
   } = useCurrentUserProfile();
-  const currentUser = useAuthStore((state) => state.currentUser);
-
-  if (!currentUser) return <Navigate to="/login" replace />;
+  const currentUser = useCurrentUser();
 
   if (isCurrentUserProfileLoading) {
     return (

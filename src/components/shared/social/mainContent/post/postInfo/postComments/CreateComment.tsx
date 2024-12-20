@@ -4,11 +4,11 @@ import { EditorContent } from "@tiptap/react";
 import UserAvatar from "@/components/shared/social/UserAvatar";
 import { EntityOwner } from "@/utils/types/social/shared";
 
-type CreateComment = {
+type CreateCommentProps = {
   author: EntityOwner;
 };
 
-export default function CreateComment({ author }: CreateComment) {
+export default function CreateComment({ author }: CreateCommentProps) {
   const { editor, editorContentInitialWidth, editorContentRef } =
     useTipTapEditor({
       placeholder: "Write a comment...",
@@ -17,7 +17,10 @@ export default function CreateComment({ author }: CreateComment) {
 
   return (
     <div className="flex items-center gap-2 px-3 mobile-m:px-5">
-      <UserAvatar src={author.avatar} className="hidden sm:block" />
+      <UserAvatar
+        src={author.avatar ?? "/no-image-2.jpg"}
+        className="hidden sm:block"
+      />
       <div className="relative flex items-end w-full">
         <div className="w-full">
           <EditorContent
