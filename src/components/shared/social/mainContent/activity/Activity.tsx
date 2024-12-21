@@ -79,9 +79,12 @@ export default function Activity({
               />
             ) : (
               <p
-                className={cn("w-full text-gray-300 text-sm mobile-m:text-md", {
-                  "sm:pl-14": !isPostInfoPage,
-                })}
+                className={cn(
+                  "w-full text-gray-300 line-clamp-5 text-sm mobile-m:text-md",
+                  {
+                    "sm:pl-14": !isPostInfoPage,
+                  }
+                )}
               >
                 <ActivityContentRenderer content={props.post.content!} />
               </p>

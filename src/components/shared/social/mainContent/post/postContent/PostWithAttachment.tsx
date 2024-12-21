@@ -27,7 +27,7 @@ export default function PostWithAttachment({
       {props.content && (
         <p
           className={cn(
-            "text-gray-300 text-sm mobile-m:text-md sm:text-base",
+            "text-gray-300 line-clamp-2 text-sm mobile-m:text-md sm:text-base",
             contentClassName
           )}
         >

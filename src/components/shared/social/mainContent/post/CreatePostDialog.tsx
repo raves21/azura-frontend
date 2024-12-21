@@ -7,6 +7,7 @@ import { useAuthStore } from "@/utils/stores/authStore";
 import { tempCollectionItems } from "@/utils/variables/temp";
 import { Navigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useCreatePost } from "@/services/auth/socialQueries";
 
 export default function CreatePostDialog() {
   // const tempCollectionAttachment = tempCollections[1];
@@ -26,6 +27,8 @@ export default function CreatePostDialog() {
         },
       },
     });
+
+  const { mutateAsync: createPost, status: createPostStatus } = useCreatePost();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [isTempMediaAttached, setIsTempMediaAttached] = useState(false);
@@ -105,10 +108,20 @@ export default function CreatePostDialog() {
           <Smile className="box-content self-start p-2 transition-colors stroke-socialTextSecondary size-7 hover:cursor-pointer hover:stroke-mainAccent" />
         </div>
         <button
-          disabled={!inputText}
+          onClick={async () => {
+            await createPost({
+              owner: currentUser,
+              collectionId: null,
+              content: inputText,
+              media: null,
+              privacy: "PUBLIC",
+            });
+            toggleOpenDialog(null);
+          }}
+          disabled={!inputText || createPostStatus === "pending"}
           className="grid py-2 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
-          Post
+          {createPostStatus === "pending" ? "Posting..." : "Post"}
         </button>
       </div>
     </div>
