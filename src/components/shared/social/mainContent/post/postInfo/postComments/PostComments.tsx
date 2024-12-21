@@ -1,13 +1,15 @@
 import { tempPostComments } from "@/utils/variables/temp";
 import PostComment from "./PostComment";
+import { useAuthStore } from "@/utils/stores/authStore";
+import { Navigate } from "@tanstack/react-router";
 import CreateComment from "./CreateComment";
-import { useCurrentUser } from "@/utils/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 import { useMatchRoute } from "@tanstack/react-router";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 
 export default function PostComments() {
-  const currentUser = useCurrentUser();
+  const currentUser = useAuthStore((state) => state.currentUser);
+  if (!currentUser) return <Navigate to="/login" replace />;
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
   const windowWidth = useWindowWidth();

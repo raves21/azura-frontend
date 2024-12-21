@@ -11,6 +11,7 @@ type CreateCommentProps = {
 export default function CreateComment({ author }: CreateCommentProps) {
   const { editor, editorContentInitialWidth, editorContentRef } =
     useTipTapEditor({
+      focusOnMount: false,
       placeholder: "Write a comment...",
       maxLength: 200,
     });
@@ -25,7 +26,7 @@ export default function CreateComment({ author }: CreateCommentProps) {
         <div className="w-full">
           <EditorContent
             style={{
-              maxWidth: editorContentInitialWidth,
+              maxWidth: editorContentInitialWidth || "auto",
             }}
             ref={editorContentRef}
             editor={editor}

@@ -108,7 +108,12 @@ export function useLogin() {
         useAuthStore.getState().setDetachedModeUserInfo(result);
         history.replaceState(null, "", "/detached-mode");
       } else {
-        queryClient.setQueryData(["refreshJWT"], result.data.accessToken);
+        const refreshJWTInitialData: RefreshResponse = {
+          accessToken: result.data.accessToken,
+          currentUserBasicInfo: result.data.user,
+        };
+        queryClient.setQueryData(["refreshJWT"], refreshJWTInitialData);
+        useAuthStore.getState().setCurrentUser(result.data.user);
         history.replaceState(null, "", "/anime");
       }
     },

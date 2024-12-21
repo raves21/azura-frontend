@@ -3,7 +3,8 @@ import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import { Circle, Ellipsis, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 import UserAvatar from "../../UserAvatar";
-import { useCurrentUser } from "@/utils/hooks/useCurrentUser";
+import { useAuthStore } from "@/utils/stores/authStore";
+import { Navigate } from "@tanstack/react-router";
 
 type WithPostPrivacyProps = {
   showPrivacy: true;
@@ -34,7 +35,8 @@ export default function ActivityHeader({
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
-  const currentUser = useCurrentUser();
+  const currentUser = useAuthStore((state) => state.currentUser);
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
     <div

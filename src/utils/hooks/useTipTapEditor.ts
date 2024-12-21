@@ -3,16 +3,25 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useRef, useState, useEffect } from "react";
 import CharacterCount from "@tiptap/extension-character-count";
+import { EditorProps } from "@tiptap/pm/view";
 
 type UseTipTapEditorArgs = {
   placeholder?: string;
   maxLength?: number;
+  editorProps?: EditorProps;
+  focusOnMount: boolean;
 };
 
-export function useTipTapEditor(args: UseTipTapEditorArgs) {
-  const { placeholder, maxLength } = args;
+export function useTipTapEditor({
+  placeholder,
+  maxLength,
+  editorProps,
+  focusOnMount,
+}: UseTipTapEditorArgs) {
   const [inputLength, setInputLength] = useState(0);
+  const [inputText, setInputText] = useState("");
   const editor = useEditor({
+    editorProps: { ...editorProps },
     extensions: [
       StarterKit.configure({
         bold: false,
@@ -27,20 +36,36 @@ export function useTipTapEditor(args: UseTipTapEditorArgs) {
     ],
     onUpdate: ({ editor }) => {
       const inputText = editor.getText({ blockSeparator: "\n" });
+      setInputText(inputText);
       setInputLength(inputText.length);
     },
   });
 
   const editorContentRef = useRef<HTMLDivElement | null>(null);
   const [editorContentInitialWidth, setEditorContentInitialWidth] = useState(0);
+  const [editorContentInitialHeight, setEditorContentInitialHeight] =
+    useState(0);
 
   useEffect(() => {
+    if (editor && focusOnMount) {
+      editor.commands.focus();
+    }
     if (editorContentRef.current) {
       setEditorContentInitialWidth(
         editorContentRef.current.getBoundingClientRect().width
       );
+      setEditorContentInitialHeight(
+        editorContentRef.current.getBoundingClientRect().height
+      );
     }
   }, []);
 
-  return { editor, editorContentRef, editorContentInitialWidth, inputLength };
+  return {
+    editor,
+    editorContentRef,
+    editorContentInitialWidth,
+    editorContentInitialHeight,
+    inputLength,
+    inputText,
+  };
 }
