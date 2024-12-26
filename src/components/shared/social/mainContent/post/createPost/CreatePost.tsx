@@ -1,5 +1,5 @@
 import { useGlobalStore } from "@/utils/stores/globalStore";
-import CreatePostDialog from "./CreatePostDialog";
+import CreatePostDialog from "./createPostDialog/CreatePostDialog";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { Navigate } from "@tanstack/react-router";
 

@@ -7,7 +7,6 @@ import { useHandleClickOutside } from "@/utils/hooks/useHandleClickOutside";
 type CustomDropdownProps<T> = {
   menuItems: T[];
   menuItemLabelNames?: string[];
-  menuEnumItemLabelNames?: Record<string, string>;
   onSelectItem: (item: T) => void;
   currentlySelected: T | null;
   menuContentMaxHeight: number;
@@ -21,7 +20,6 @@ export default function CustomDropdown<T>({
   menuItems,
   onSelectItem,
   currentlySelected,
-  menuEnumItemLabelNames,
   menuItemLabelNames,
   dropdownTriggerClassName,
   menuContentClassName,
@@ -53,11 +51,9 @@ export default function CustomDropdown<T>({
       >
         <p className="font-medium">
           {currentlySelected
-            ? menuEnumItemLabelNames
-              ? menuEnumItemLabelNames[currentlySelected as string]
-              : menuItemLabelNames
-                ? menuItemLabelNames[menuItems.indexOf(currentlySelected)]
-                : `${currentlySelected}`
+            ? menuItemLabelNames
+              ? menuItemLabelNames[menuItems.indexOf(currentlySelected)]
+              : `${currentlySelected}`
             : "Any"}
         </p>
         <ChevronDown
@@ -65,11 +61,9 @@ export default function CustomDropdown<T>({
         />
       </button>
       <motion.div
-        style={{
-          maxHeight: menuContentMaxHeight,
-        }}
         initial={{
           height: 0,
+          maxHeight: menuContentMaxHeight,
         }}
         ref={dropdownMenuListRef}
         animate={{
@@ -87,7 +81,7 @@ export default function CustomDropdown<T>({
         }}
         className={cn(
           "absolute w-fit z-40 overflow-x-hidden top-[50px] right-0 rounded-lg bg-black overflow-y-auto",
-          dropdownMenuListHeight! < menuContentMaxHeight && "hide-scrollbar",
+          { "hide-scrollbar": dropdownMenuListHeight! < menuContentMaxHeight },
           { "border border-gray-400": isOpen && showMenuContentBorder },
           menuContentClassName
         )}
@@ -103,15 +97,11 @@ export default function CustomDropdown<T>({
               "w-full px-3 py-2 text-gray-400 text-start lg:hover:text-mainAccent whitespace-nowrap",
               menuItemClassName,
               {
-                "text-mainAccent":
-                  (menuEnumItemLabelNames &&
-                    menuEnumItemLabelNames[currentlySelected as string] ===
-                      menuItem) ||
-                  currentlySelected === menuItem,
+                "text-mainAccent": currentlySelected === menuItem,
               }
             )}
           >
-            {`${menuEnumItemLabelNames ? menuEnumItemLabelNames[menuItem as string] : menuItemLabelNames ? menuItemLabelNames[i] : menuItem}`}
+            {`${menuItemLabelNames ? menuItemLabelNames[i] : menuItem}`}
           </button>
         ))}
       </motion.div>
