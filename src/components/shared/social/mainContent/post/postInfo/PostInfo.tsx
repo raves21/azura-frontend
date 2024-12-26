@@ -44,7 +44,14 @@ export default function PostInfo({ post }: PostInfoProps) {
       </div>
       <div className="flex flex-col gap-2 mt-1 mobile-m:mt-2">
         <PostLikers />
-        <PostActions className="text-sm" iconClassName="size-5" />
+        <PostActions
+          postId={post.id}
+          className="text-sm"
+          iconClassName="size-5"
+          isLikedByCurrentUser={false}
+          totalComments={14}
+          totalLikes={2}
+        />
       </div>
     </div>
   );

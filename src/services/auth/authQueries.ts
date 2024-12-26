@@ -104,6 +104,7 @@ export function useLogin() {
       return data as LoginResponse;
     },
     onSuccess: (result) => {
+      queryClient.clear();
       if (result.isDetachedMode) {
         useAuthStore.getState().setDetachedModeUserInfo(result);
         history.replaceState(null, "", "/detached-mode");

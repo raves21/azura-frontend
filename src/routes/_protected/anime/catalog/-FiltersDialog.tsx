@@ -7,7 +7,7 @@ import {
   SortBy,
 } from "@/utils/types/thirdParty/animeAnilist";
 import FilterPill from "@/components/shared/catalog/FilterPill";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import CustomDropdown from "@/components/shared/customDropdown/CustomDropdown";
 import {
   formatLabels,
@@ -79,26 +79,26 @@ export default function FiltersDialog() {
     year: selectedYear,
   });
 
-  function selectGenre(genre: Genre) {
+  const selectGenre = useCallback((genre: Genre) => {
     setSelectedGenres([...selectedGenres, genre]);
-  }
+  }, []);
 
-  function deselectGenre(genre: Genre) {
+  const deselectGenre = useCallback((genre: Genre) => {
     setSelectedGenres(
       selectedGenres.filter((selectedGenre) => selectedGenre !== genre)
     );
-  }
+  }, []);
 
-  function clearFilters() {
+  const clearFilters = useCallback(() => {
     setSelectedGenres([]);
     setSelectedFormat(undefined);
     setSelectedSeason(undefined);
     setSelectedSortBy(SortBy.TRENDING_DESC);
     setSelectedStatus(undefined);
     setSelectedYear(undefined);
-  }
+  }, []);
 
-  function applyFilters() {
+  const applyFilters = useCallback(() => {
     const appliedFilters: Filters = {
       sortBy: selectedSortBy ?? SortBy.TRENDING_DESC,
       format: selectedFormat ?? undefined,
@@ -125,7 +125,7 @@ export default function FiltersDialog() {
       });
     }
     toggleOpenDialog(null);
-  }
+  }, []);
 
   return (
     <div className="max-w-full w-dvw bg-black/50">

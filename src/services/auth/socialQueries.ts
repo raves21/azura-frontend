@@ -19,6 +19,10 @@ import {
   ResponseWithMessage,
 } from "@/utils/types/social/shared";
 import { queryClient } from "@/Providers";
+import {
+  likePostCacheMutation,
+  unlikePostCacheMutation,
+} from "@/utils/functions/reusable_functions";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -121,7 +125,8 @@ export function useCreatePost() {
         queryFilter,
         // @ts-ignore
         (oldData) => {
-          const firstPage = oldData?.pages[0];
+          if (!oldData) return oldData;
+          const firstPage = oldData.pages[0];
           if (firstPage) {
             return {
               pageParams: oldData.pageParams,
@@ -135,6 +140,32 @@ export function useCreatePost() {
           }
         }
       );
+    },
+  });
+}
+
+export function useLikePost() {
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      console.log("LIKING POST...");
+      return await api.post(`posts/${postId}/likes`);
+    },
+    onSuccess: () => console.log("POST LIKED!"),
+    onError: async (_, postId) => {
+      await unlikePostCacheMutation(postId);
+    },
+  });
+}
+
+export function useUnLikePost() {
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      console.log("UNLIKING POST...");
+      return await api.delete(`posts/${postId}/likes`);
+    },
+    onSuccess: () => console.log("POST UNLIKED!"),
+    onError: async (_, postId) => {
+      await likePostCacheMutation(postId);
     },
   });
 }

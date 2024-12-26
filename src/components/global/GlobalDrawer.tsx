@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/drawer";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { useShallow } from "zustand/react/shallow";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 export default function GlobalDrawer() {
   const [toggleOpenDrawer, isDrawerOpen, drawerContent] = useGlobalStore(
@@ -20,10 +21,12 @@ export default function GlobalDrawer() {
   return (
     <Drawer open={isDrawerOpen} onOpenChange={toggleOpenDrawer}>
       <DrawerContent className="bg-gray-800 font-montserrat">
-        <DrawerHeader className="hidden">
-          <DrawerTitle></DrawerTitle>
-          <DrawerDescription></DrawerDescription>
-        </DrawerHeader>
+        <VisuallyHidden.Root>
+          <DrawerHeader>
+            <DrawerTitle></DrawerTitle>
+            <DrawerDescription></DrawerDescription>
+          </DrawerHeader>
+        </VisuallyHidden.Root>
         {drawerContent}
       </DrawerContent>
     </Drawer>

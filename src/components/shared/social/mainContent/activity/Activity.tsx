@@ -89,7 +89,12 @@ export default function Activity({
                 <ActivityContentRenderer content={props.post.content!} />
               </p>
             )}
-            <PostActions />
+            <PostActions
+              postId={props.post.id}
+              totalComments={props.post.totalComments}
+              totalLikes={props.post.totalLikes}
+              isLikedByCurrentUser={props.post.isLikedByCurrentUser}
+            />
           </>
         ) : (
           <p className="w-full mt-1 text-sm text-gray-300 mobile-m:text-md">
