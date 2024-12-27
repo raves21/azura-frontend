@@ -64,16 +64,10 @@ function SocialPage() {
       );
     } else {
       renderedResult = (
-        <div className="flex flex-col gap-3 ">
-          {forYouFeed.pages.map((page) => {
-            return (
-              <div key={page.page} className="flex flex-col w-full gap-3">
-                {page.data.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </div>
-            );
-          })}
+        <div className="flex flex-col w-full gap-3">
+          {forYouFeed.pages.map((page) =>
+            page.data.map((post) => <Post key={post.id} post={post} />)
+          )}
           {forYouFeed.pages.length !== 0 &&
             forYouFeed.pages[0].data.length !== 0 && (
               <div ref={ref} className="w-full">

@@ -4,7 +4,7 @@ import { Circle, Ellipsis, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 import UserAvatar from "../../UserAvatar";
 import { useAuthStore } from "@/utils/stores/authStore";
-import { Navigate } from "@tanstack/react-router";
+import { LinkProps, Navigate } from "@tanstack/react-router";
 
 type WithPostPrivacyProps = {
   showPrivacy: true;
@@ -20,6 +20,7 @@ type PostHeaderProps = {
   owner: EntityOwner;
   createdAt: Date;
   className?: string;
+  linkProps: LinkProps;
 } & (WithPostPrivacyProps | WithoutPostPrivacyProps);
 
 export default function ActivityHeader({
@@ -27,6 +28,7 @@ export default function ActivityHeader({
   owner,
   createdAt,
   className,
+  linkProps,
   ...props
 }: PostHeaderProps) {
   const withPostPrivacyProps = showPrivacy
@@ -46,6 +48,7 @@ export default function ActivityHeader({
       )}
     >
       <UserAvatar
+        linkProps={linkProps}
         src={owner.avatar}
         imageClassName="mobile-m:size-10 sm:size-11"
       />

@@ -8,7 +8,7 @@ export default function FloatingCreateCommentBar() {
 
   return (
     <div className="fixed bottom-0 w-full py-4 border-t-[0.5px] lg:hidden bg-socialPrimary border-socialTextSecondary/50">
-      <CreateComment author={currentUser} />
+      <CreateComment isFloatingCommentBar author={currentUser} />
     </div>
   );
 }

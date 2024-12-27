@@ -3,16 +3,27 @@ import PostActions from "../PostActions";
 import PostLikers from "./PostLikers";
 import PostWithAttachment from "../postContent/PostWithAttachment";
 import ActivityHeader from "../../activity/ActivityHeader";
+import { useParams } from "@tanstack/react-router";
 
 type PostInfoProps = {
   post: TPostInfo;
 };
 
 export default function PostInfo({ post }: PostInfoProps) {
+  const { userName } = useParams({
+    from: "/_protected/social/$userName/post/$postId/",
+  });
+
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex w-full gap-4">
         <ActivityHeader
+          linkProps={{
+            to: "/social/$userName",
+            params: {
+              userName,
+            },
+          }}
           createdAt={post.createdAt}
           owner={post.owner}
           showPrivacy

@@ -20,11 +20,13 @@ type CommentActivityProps = {
 type ActivityProps = {
   showPrivacy: boolean;
   privacy?: EntityPrivacy;
+  ownerProfileLinkProps: LinkProps;
 } & (PostActivityProps | CommentActivityProps);
 
 export default function Activity({
   showPrivacy,
   privacy,
+  ownerProfileLinkProps,
   ...props
 }: ActivityProps) {
   const { type } = props;
@@ -42,13 +44,20 @@ export default function Activity({
         type === "post" ? () => navigate({ ...props.linkProps }) : undefined
       }
       className={cn(
-        "flex w-full gap-2 text-sm mobile-m:text-base md:gap-4 px-3 py-4 mobile-l:p-5 rounded-lg hover:cursor-pointer bg-socialPrimary hover:bg-socialPrimaryHover",
-        { "rounded-none py-5": type === "comment" }
+        "flex w-full gap-2 text-sm mobile-m:text-base md:gap-4 px-3 mobile-l:p-5",
+        {
+          "rounded-none py-5": type === "comment",
+        },
+        {
+          "bg-socialPrimary hover:bg-socialPrimaryHover rounded-lg py-4 hover:cursor-pointer":
+            type === "post",
+        }
       )}
     >
       <div className="flex flex-col flex-grow gap-3">
         {showPrivacy ? (
           <ActivityHeader
+            linkProps={ownerProfileLinkProps}
             owner={entityOwner}
             createdAt={createdAt}
             showPrivacy
@@ -56,6 +65,7 @@ export default function Activity({
           />
         ) : (
           <ActivityHeader
+            linkProps={ownerProfileLinkProps}
             owner={entityOwner}
             createdAt={createdAt}
             showPrivacy={false}

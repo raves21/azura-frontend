@@ -1,11 +1,11 @@
-import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { useShallow } from "zustand/react/shallow";
 import { X, SquareArrowOutUpRight } from "lucide-react";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 export default function PreviewContainer({ children }: PropsWithChildren) {
-  const windowWidth = useWindowWidth();
+  const { isTablet } = useWindowBreakpoints();
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
@@ -18,10 +18,10 @@ export default function PreviewContainer({ children }: PropsWithChildren) {
   }, []);
 
   function closePopup() {
-    if (windowWidth < 768) {
-      toggleOpenDrawer(null);
-    } else {
+    if (isTablet) {
       toggleOpenDialog(null);
+    } else {
+      toggleOpenDrawer(null);
     }
   }
   return (
@@ -32,8 +32,7 @@ export default function PreviewContainer({ children }: PropsWithChildren) {
       <button
         onClick={closePopup}
         style={{
-          marginLeft:
-            windowWidth < 768 ? containerWidth - 40 : containerWidth - 10,
+          marginLeft: !isTablet ? containerWidth - 40 : containerWidth - 10,
           marginTop: 12,
         }}
         className="fixed z-30 group"

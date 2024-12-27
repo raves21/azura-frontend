@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { useShallow } from "zustand/react/shallow";
-import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import CollectionPreview from "../../previewPopup/CollectionPreview";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type CollectionAttachmentProps = {
   collection: TCollection;
@@ -41,16 +41,16 @@ export default function CollectionAttachment({
   const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
   );
-  const windowWidth = useWindowWidth();
+  const { isTablet } = useWindowBreakpoints();
 
   function openCollectionPreviewPopup(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) {
     e.stopPropagation();
-    if (windowWidth < 768) {
-      toggleOpenDrawer(<CollectionPreview collection={collection} />);
-    } else {
+    if (isTablet) {
       toggleOpenDialog(<CollectionPreview collection={collection} />);
+    } else {
+      toggleOpenDrawer(<CollectionPreview collection={collection} />);
     }
   }
 

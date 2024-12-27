@@ -60,6 +60,14 @@ export function useTipTapEditor({
     }
   }, []);
 
+  function clearInputText() {
+    if (editor) {
+      editor.commands.clearContent();
+      setInputLength(0);
+      setInputText("");
+    }
+  }
+
   return {
     editor,
     editorContentRef,
@@ -67,5 +75,6 @@ export function useTipTapEditor({
     editorContentInitialHeight,
     inputLength,
     inputText,
+    clearInputText,
   };
 }

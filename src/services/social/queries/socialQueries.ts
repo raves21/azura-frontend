@@ -12,7 +12,6 @@ import {
   Media,
   PostsRequest,
   TCollection,
-  TPost,
   TPostInfo,
 } from "@/utils/types/social/social";
 import {
@@ -22,13 +21,17 @@ import {
 } from "@/utils/types/social/shared";
 import { queryClient } from "@/Providers";
 import {
-  unlikePostCacheMutation,
-  likePostCacheMutation,
+  invalidateQueryBeforeLoad,
+  postReactionCacheMutation,
+  postInfoPageTotalCommentsCacheMutation,
+  postTotalCommentsCacheMutation,
+  createPostPostsCacheMutation,
 } from "../functions/socialFunctions";
+import { useAuthStore } from "@/utils/stores/authStore";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
-    queryKey: ["forYouFeed"],
+    queryKey: ["posts", "forYouFeed"],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
       const { data } = await api.get(`/feed/for-you?page=${pageParam}`);
       return data as PostsRequest;
@@ -78,96 +81,16 @@ export function useCreatePost() {
       };
     },
     onSuccess: async (result, variables) => {
-      const { content, media, privacy, owner } = variables;
-      const { collection, createdAt, id } = result;
-      const queryFilter: QueryFilters = { queryKey: ["forYouFeed"] };
-      await queryClient.cancelQueries(queryFilter);
-      let newPost: TPost;
-      if (media) {
-        newPost = {
-          id,
-          totalComments: 0,
-          totalLikes: 0,
-          collection: null,
-          content,
-          createdAt,
-          isLikedByCurrentUser: false,
-          media,
-          owner,
-          privacy,
-        };
-      } else if (collection) {
-        newPost = {
-          id,
-          totalComments: 0,
-          totalLikes: 0,
-          collection,
-          content,
-          createdAt,
-          isLikedByCurrentUser: false,
-          media: null,
-          owner,
-          privacy,
-        };
-      } else {
-        newPost = {
-          id,
-          totalComments: 0,
-          totalLikes: 0,
-          collection: null,
-          content,
-          createdAt,
-          isLikedByCurrentUser: false,
-          media: null,
-          owner,
-          privacy,
-        };
-      }
-      queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
-        queryFilter,
-        (oldData) => {
-          const firstPage = oldData?.pages[0];
-          //if there are already existing posts
-          if (firstPage && firstPage.data.length > 0) {
-            return {
-              pageParams: oldData.pageParams,
-              pages: [
-                {
-                  data: [newPost, ...firstPage.data],
-                  //totalPages is ofcourse not accurate, this is just to make typescript happy.
-                  //this wont affect anything. (source: trust me bro)
-                  totalPages: oldData.pages[0].totalPages,
-                  message: "new post created in cache",
-                  page: 1,
-                  perPage: 10,
-                },
-                ...oldData.pages.slice(1),
-              ],
-            };
-          }
-          //if there are no posts yet
-          else {
-            return {
-              pageParams: [1],
-              pages: [
-                {
-                  data: [newPost],
-                  message: "success creating the first post",
-                  page: 1,
-                  perPage: 10,
-                  totalPages: 1,
-                },
-              ],
-            };
-          }
-        }
-      );
-
-      queryClient.invalidateQueries({
-        queryKey: queryFilter.queryKey,
+      const forYouFeedQueryFilter: QueryFilters = {
         predicate(query) {
-          return !query.state.data;
+          return query.queryKey.includes("forYouFeed");
         },
+      };
+      //todo: also mutate the posts in currentUser profile
+      await createPostPostsCacheMutation({
+        queryFilter: forYouFeedQueryFilter,
+        result,
+        variables,
       });
     },
   });
@@ -180,7 +103,7 @@ export function useLikePost() {
     },
     onError: async (_, postId) => {
       //revert post state back to unliked if it throws an error
-      await unlikePostCacheMutation(postId);
+      await postReactionCacheMutation({ postId, type: "like" });
     },
   });
 }
@@ -192,7 +115,7 @@ export function useUnLikePost() {
     },
     onError: async (_, postId) => {
       //revert post state back to liked if it throws an error
-      await likePostCacheMutation(postId);
+      await postReactionCacheMutation({ postId, type: "unlike" });
     },
   });
 }
@@ -212,12 +135,88 @@ export function usePostComments(postId: string) {
     queryKey: ["postComments", postId],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
       const { data } = await api.get(
-        `/posts/${postId}/comments?page=${pageParam}`
+        `/posts/${postId}/comments?page=${pageParam}&perPage=5`
       );
       return data as CommentsRequest;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+type CreatePostCommentArgs = {
+  postId: string;
+  content: string;
+};
+
+export function useCreatePostComment() {
+  return useMutation({
+    mutationFn: async ({ postId, content }: CreatePostCommentArgs) => {
+      const { data } = await api.post(`/posts/${postId}/comments`, { content });
+      return data.data as { id: string };
+    },
+    onSuccess: async (result, variables) => {
+      const { id } = result;
+      const { postId, content } = variables;
+      const currentUser = useAuthStore.getState().currentUser!;
+      const newComment = {
+        author: currentUser,
+        content,
+        createdAt: new Date(),
+        postId,
+        id,
+      };
+      const queryFilter: QueryFilters = { queryKey: ["postComments", postId] };
+      await queryClient.cancelQueries(queryFilter);
+
+      queryClient.setQueriesData<InfiniteData<CommentsRequest, unknown>>(
+        queryFilter,
+        (oldData) => {
+          const firstPage = oldData?.pages[0];
+          //if there are already existing comments
+          if (firstPage && firstPage.data.length > 0) {
+            return {
+              pageParams: oldData.pageParams,
+              pages: [
+                {
+                  data: [newComment, ...firstPage.data],
+                  totalPages: oldData.pages[0].totalPages,
+                  message: "new post created in cache",
+                  page: 1,
+                  perPage: 5,
+                },
+                ...oldData.pages.slice(1),
+              ],
+            };
+          }
+          //if there are no commnets yet
+          else {
+            return {
+              pageParams: [1],
+              pages: [
+                {
+                  data: [newComment],
+                  message: "created first comment in cache",
+                  page: 1,
+                  perPage: 5,
+                  totalPages: 1,
+                },
+              ],
+            };
+          }
+        }
+      );
+
+      invalidateQueryBeforeLoad(queryFilter.queryKey);
+      await postTotalCommentsCacheMutation({
+        postId,
+        incrementTotalComments: true,
+      });
+      await postInfoPageTotalCommentsCacheMutation({
+        postId,
+        incrementTotalComments: true,
+      });
+    },
   });
 }

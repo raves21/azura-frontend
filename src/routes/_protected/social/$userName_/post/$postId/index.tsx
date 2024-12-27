@@ -10,9 +10,7 @@ import {
 import { useEffect } from "react";
 import PostInfoSkeleton from "@/components/shared/loadingSkeletons/social/PostInfoSkeleton";
 import { usePostInfo } from "@/services/social/queries/socialQueries";
-import CreateComment from "@/components/shared/social/mainContent/post/postInfo/postComments/CreateComment";
 import { useAuthStore } from "@/utils/stores/authStore";
-import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 
 export const Route = createFileRoute(
   "/_protected/social/$userName/post/$postId/"
@@ -45,9 +43,6 @@ function PostInfoPage() {
       },
     };
   }
-
-  const windowWidth = useWindowWidth();
-  const isDesktop = windowWidth >= 1024;
 
   const {
     data: postInfo,
@@ -95,7 +90,6 @@ function PostInfoPage() {
           </div>
           <PostInfo post={postInfo} />
         </div>
-        {isDesktop && <CreateComment author={currentUser} />}
         <PostComments />
       </div>
     );

@@ -1,9 +1,9 @@
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Circle, Clapperboard, Tv } from "lucide-react";
-import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { useShallow } from "zustand/react/shallow";
 import MediaPreview from "../../previewPopup/MediaPreview";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type MediaAttachmentProps = {
   media: Media;
@@ -15,19 +15,20 @@ export default function MediaAttachment({ media }: MediaAttachmentProps) {
   let attachmentBg = coverImage ?? posterImage ?? "/no-image-2.jpg";
   let attachmentPoster = posterImage ?? coverImage ?? "/no-image.png";
 
-  const windowWidth = useWindowWidth();
   const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
   );
+
+  const { isTablet } = useWindowBreakpoints();
 
   function openMediaPreviewPopup(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) {
     e.stopPropagation();
-    if (windowWidth < 768) {
-      toggleOpenDrawer(<MediaPreview media={media} />);
-    } else {
+    if (isTablet) {
       toggleOpenDialog(<MediaPreview media={media} />);
+    } else {
+      toggleOpenDrawer(<MediaPreview media={media} />);
     }
   }
 

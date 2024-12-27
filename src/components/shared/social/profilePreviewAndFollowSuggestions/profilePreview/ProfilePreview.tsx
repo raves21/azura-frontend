@@ -3,6 +3,7 @@ import { useCurrentUserProfile } from "@/services/social/queries/socialQueries";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { Navigate } from "@tanstack/react-router";
+import UserAvatar from "../../UserAvatar";
 
 export default function ProfilePreview() {
   const {
@@ -64,9 +65,15 @@ export default function ProfilePreview() {
             src={currentUserProfile.banner ?? "/no-image-2.jpg"}
             className="absolute inset-0 object-cover size-full"
           />
-          <img
-            src={currentUserProfile.avatar ?? "/no-image.png"}
-            className="absolute object-cover -translate-x-1/2 rounded-full -bottom-[30%] size-16 left-1/2"
+          <UserAvatar
+            linkProps={{
+              to: "/social/$userName",
+              params: {
+                userName: currentUser.handle,
+              },
+            }}
+            src={currentUserProfile.avatar}
+            imageClassName="absolute object-cover border-[0.5px] border-socialPrimary -translate-x-1/2 rounded-full -bottom-[30%] size-16 left-1/2"
           />
         </div>
         <div className="flex flex-col gap-3 px-3 mt-4">
