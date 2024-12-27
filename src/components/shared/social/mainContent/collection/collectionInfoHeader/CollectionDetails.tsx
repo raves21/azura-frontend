@@ -22,7 +22,10 @@ export default function CollectionDetails({
         {name}
       </p>
       <div className="flex items-center gap-3">
-        <CollectionOwner avatar={owner.avatar} userName={owner.username} />
+        <CollectionOwner
+          avatar={owner.avatar || "/no-image-2.jpg"}
+          userName={owner.username}
+        />
         <Circle className="size-[6px] stroke-none fill-socialTextSecondary" />
         <CollectionPrivacy privacy={privacy} />
       </div>

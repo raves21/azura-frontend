@@ -1,26 +1,26 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
-  AnilistAnimeStatus,
-  AnimeInfoAnilist,
-  EpisodeStreamLinks,
-  Format,
-  MultipleAnimeResponse,
-  Season,
-  SortBy,
-  Episode,
-  AnimeEpisodesData,
-} from "../../utils/types/thirdParty/animeAnilist";
-import {
   EpisodeToBeRendered,
   EpisodeChunk,
 } from "@/utils/types/thirdParty/shared";
 import { AnimeInfoAnify, Data } from "@/utils/types/thirdParty/animeAnify";
+import { AnimeInfoAnizip } from "@/utils/types/thirdParty/animeAnizip";
+import {
+  SortBy,
+  AnilistAnimeStatus,
+  MultipleAnimeResponse,
+  Season,
+  Format,
+  AnimeInfoAnilist,
+  Episode,
+  EpisodeStreamLinks,
+  AnimeEpisodesData,
+} from "@/utils/types/thirdParty/animeAnilist";
 import {
   chunkEpisodes,
   getEpisodesToBeRendered,
-} from "@/utils/functions/reusable_functions";
-import { AnimeInfoAnizip } from "@/utils/types/thirdParty/animeAnizip";
+} from "../functions/animeFunctions";
 
 // const frequentlyChanging = {
 //   gcTime: 180 * (60 * 1000), //3 hrs

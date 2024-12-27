@@ -7,11 +7,13 @@ import {
 } from "@tanstack/react-query";
 import { api } from "@/utils/axiosInstance";
 import {
+  CommentsRequest,
   CurrentUserProfile,
   Media,
   PostsRequest,
   TCollection,
   TPost,
+  TPostInfo,
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -20,9 +22,9 @@ import {
 } from "@/utils/types/social/shared";
 import { queryClient } from "@/Providers";
 import {
-  likePostCacheMutation,
   unlikePostCacheMutation,
-} from "@/utils/functions/reusable_functions";
+  likePostCacheMutation,
+} from "../functions/socialFunctions";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -69,15 +71,15 @@ export function useCreatePost() {
         collectionId,
         privacy,
       });
-      return data as ResponseWithMessage & {
+      return data.data as ResponseWithMessage & {
         collection: TCollection | null;
         id: string;
         createdAt: Date;
       };
     },
-    onSuccess: async (data, variables) => {
+    onSuccess: async (result, variables) => {
       const { content, media, privacy, owner } = variables;
-      const { collection, createdAt, id } = data;
+      const { collection, createdAt, id } = result;
       const queryFilter: QueryFilters = { queryKey: ["forYouFeed"] };
       await queryClient.cancelQueries(queryFilter);
       let newPost: TPost;
@@ -123,23 +125,50 @@ export function useCreatePost() {
       }
       queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
         queryFilter,
-        // @ts-ignore
         (oldData) => {
-          if (!oldData) return oldData;
-          const firstPage = oldData.pages[0];
-          if (firstPage) {
+          const firstPage = oldData?.pages[0];
+          //if there are already existing posts
+          if (firstPage && firstPage.data.length > 0) {
             return {
               pageParams: oldData.pageParams,
               pages: [
                 {
                   data: [newPost, ...firstPage.data],
+                  //totalPages is ofcourse not accurate, this is just to make typescript happy.
+                  //this wont affect anything. (source: trust me bro)
+                  totalPages: oldData.pages[0].totalPages,
+                  message: "new post created in cache",
+                  page: 1,
+                  perPage: 10,
                 },
                 ...oldData.pages.slice(1),
               ],
             };
           }
+          //if there are no posts yet
+          else {
+            return {
+              pageParams: [1],
+              pages: [
+                {
+                  data: [newPost],
+                  message: "success creating the first post",
+                  page: 1,
+                  perPage: 10,
+                  totalPages: 1,
+                },
+              ],
+            };
+          }
         }
       );
+
+      queryClient.invalidateQueries({
+        queryKey: queryFilter.queryKey,
+        predicate(query) {
+          return !query.state.data;
+        },
+      });
     },
   });
 }
@@ -147,11 +176,10 @@ export function useCreatePost() {
 export function useLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
-      console.log("LIKING POST...");
       return await api.post(`posts/${postId}/likes`);
     },
-    onSuccess: () => console.log("POST LIKED!"),
     onError: async (_, postId) => {
+      //revert post state back to unliked if it throws an error
       await unlikePostCacheMutation(postId);
     },
   });
@@ -160,12 +188,36 @@ export function useLikePost() {
 export function useUnLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
-      console.log("UNLIKING POST...");
       return await api.delete(`posts/${postId}/likes`);
     },
-    onSuccess: () => console.log("POST UNLIKED!"),
     onError: async (_, postId) => {
+      //revert post state back to liked if it throws an error
       await likePostCacheMutation(postId);
     },
+  });
+}
+
+export function usePostInfo(postId: string) {
+  return useQuery({
+    queryKey: ["postInfo", postId],
+    queryFn: async () => {
+      const { data } = await api.get(`/posts/${postId}`);
+      return data.data as TPostInfo;
+    },
+  });
+}
+
+export function usePostComments(postId: string) {
+  return useInfiniteQuery({
+    queryKey: ["postComments", postId],
+    queryFn: async ({ pageParam }: { pageParam: number }) => {
+      const { data } = await api.get(
+        `/posts/${postId}/comments?page=${pageParam}`
+      );
+      return data as CommentsRequest;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }

@@ -80,7 +80,7 @@ export default function Activity({
             ) : (
               <p
                 className={cn(
-                  "w-full text-gray-300 line-clamp-5 text-sm mobile-m:text-md",
+                  "w-full text-gray-300 line-clamp-5 text-sm mobile-m:text-md sm:text-base",
                   {
                     "sm:pl-14": !isPostInfoPage,
                   }

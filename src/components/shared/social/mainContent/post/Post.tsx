@@ -15,8 +15,8 @@ export default function Post({ fromState, post }: PostProps) {
       linkProps={{
         to: "/social/$userName/post/$postId",
         params: {
-          userName: "riacordero",
-          postId: "1231231",
+          userName: post.owner.handle,
+          postId: post.id,
         },
         state: {
           postInfoState: fromState ? { from: fromState } : undefined,

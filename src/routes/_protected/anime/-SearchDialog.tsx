@@ -1,4 +1,3 @@
-import { useSearchAnime } from "@/services/thirdParty/animeQueries";
 import { useDebounce } from "@/utils/hooks/useDebounce";
 import { useState } from "react";
 import SearchDialogResults from "./-SearchDialogResults";
@@ -8,6 +7,7 @@ import { useGlobalStore } from "@/utils/stores/globalStore";
 import SearchDialogContainer from "@/components/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
+import { useSearchAnime } from "@/services/thirdParty/anime/queries/animeQueries";
 
 export default function SearchDialog() {
   const [search, setSearch] = useState("");

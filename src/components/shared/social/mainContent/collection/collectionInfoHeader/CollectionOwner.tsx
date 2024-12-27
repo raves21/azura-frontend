@@ -1,4 +1,3 @@
-import { EntityOwner } from "@/utils/types/social/shared";
 import { Link } from "@tanstack/react-router";
 
 type CollectionOwnerProps = {

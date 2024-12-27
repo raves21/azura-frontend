@@ -1,10 +1,10 @@
-import { Data } from "../types/thirdParty/animeAnify";
-import { Episode } from "../types/thirdParty/animeAnilist";
-import { EpisodeToBeRendered, EpisodeChunk } from "../types/thirdParty/shared";
-import { AnimeInfoAnizip } from "../types/thirdParty/animeAnizip";
-import { queryClient } from "@/Providers";
-import { QueryFilters, InfiniteData } from "@tanstack/react-query";
-import { PostsRequest } from "../types/social/social";
+import { Data } from "@/utils/types/thirdParty/animeAnify";
+import { Episode } from "@/utils/types/thirdParty/animeAnilist";
+import { AnimeInfoAnizip } from "@/utils/types/thirdParty/animeAnizip";
+import {
+  EpisodeToBeRendered,
+  EpisodeChunk,
+} from "@/utils/types/thirdParty/shared";
 
 export function chunkEpisodes(
   eps: EpisodeToBeRendered[] | null,
@@ -82,64 +82,4 @@ export function getRatingScore(rating: number) {
   const decimal = (rating * 10).toString().split(".")[1];
   if (!decimal || decimal.length < 1) return (0.05 * (rating * 10)).toFixed(1);
   return (0.05 * (rating * 10)).toFixed(2);
-}
-
-export async function likePostCacheMutation(postId: string) {
-  const queryFilter: QueryFilters = { queryKey: ["forYouFeed"] };
-  await queryClient.cancelQueries(queryFilter);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
-    queryFilter,
-    (oldData) => {
-      if (!oldData) return oldData;
-
-      const newPages = oldData.pages.map((page) => ({
-        ...page,
-        data: page.data.map((post) => {
-          if (post.id === postId) {
-            return {
-              ...post,
-              totalLikes: post.totalLikes + 1,
-              isLikedByCurrentUser: true,
-            };
-          }
-          return post;
-        }),
-      }));
-
-      return {
-        pageParams: oldData.pageParams,
-        pages: newPages,
-      };
-    }
-  );
-}
-
-export async function unlikePostCacheMutation(postId: string) {
-  const queryFilter: QueryFilters = { queryKey: ["forYouFeed"] };
-  await queryClient.cancelQueries(queryFilter);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
-    queryFilter,
-    (oldData) => {
-      if (!oldData) return oldData;
-
-      const newPages = oldData.pages.map((page) => ({
-        ...page,
-        data: page.data.map((post) => {
-          if (post.id === postId) {
-            return {
-              ...post,
-              totalLikes: post.totalLikes - 1,
-              isLikedByCurrentUser: false,
-            };
-          }
-          return post;
-        }),
-      }));
-
-      return {
-        pageParams: oldData.pageParams,
-        pages: newPages,
-      };
-    }
-  );
 }

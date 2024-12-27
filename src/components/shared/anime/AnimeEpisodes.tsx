@@ -3,7 +3,7 @@ import {
   Format,
 } from "@/utils/types/thirdParty/animeAnilist";
 import EpisodeCard from "../episode/EpisodeCard";
-import { useChunkAnimeEpisodes } from "@/services/thirdParty/animeQueries";
+import { useChunkAnimeEpisodes } from "@/services/thirdParty/anime/queries/animeQueries";
 import { UseQueryResult } from "@tanstack/react-query";
 import CustomDropdown from "../customDropdown/CustomDropdown";
 import EpisodesLoading from "../episode/EpisodesLoading";

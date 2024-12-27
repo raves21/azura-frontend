@@ -1,5 +1,5 @@
 import UserAvatar from "@/components/shared/social/UserAvatar";
-import { useCreatePost } from "@/services/auth/socialQueries";
+import { useCreatePost } from "@/services/social/queries/socialQueries";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { useCreatePostStore } from "@/utils/stores/createPostStore";
@@ -31,7 +31,7 @@ export default function CreatePostPage() {
     useTipTapEditor({
       focusOnMount: true,
       maxLength: 500,
-      placeholder: `What's the vibe today, ${currentUser.username.split(" ").slice(0, 2)}?`,
+      placeholder: `What's the vibe today, ${currentUser.username.split(" ").slice(0, 2).join(" ")}?`,
       editorProps: {
         attributes: {
           class: "flex-grow h-full",
@@ -47,10 +47,7 @@ export default function CreatePostPage() {
   return (
     <div className="flex flex-col flex-grow w-full gap-4 p-4">
       <div className="flex items-center w-full gap-3">
-        <UserAvatar
-          src={currentUser.avatar ?? "/no-image.jpg"}
-          imageClassName="size-12"
-        />
+        <UserAvatar src={currentUser.avatar} imageClassName="size-12" />
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <p>{currentUser.username}</p>

@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCurrentUserProfile } from "@/services/auth/socialQueries";
+import { useCurrentUserProfile } from "@/services/social/queries/socialQueries";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { Navigate } from "@tanstack/react-router";

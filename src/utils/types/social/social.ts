@@ -12,6 +12,11 @@ export type PostsRequest = ResponseWithMessage &
     data: TPost[];
   };
 
+export type CommentsRequest = ResponseWithMessage &
+  PaginatedResponse & {
+    data: TPostComment[];
+  };
+
 export type TPost = {
   id: string;
   content: string | null;
@@ -23,6 +28,10 @@ export type TPost = {
   media: Media | null;
   collection: TCollection | null;
   createdAt: Date;
+};
+
+export type TPostInfo = TPost & {
+  postFirstLiker: Pick<EntityOwner, "avatar" | "username"> | null;
 };
 
 export type Media = {

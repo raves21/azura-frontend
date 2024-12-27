@@ -1,9 +1,14 @@
 import { cn } from "@/lib/utils";
-import { useLikePost, useUnLikePost } from "@/services/auth/socialQueries";
 import {
-  likePostCacheMutation,
   unlikePostCacheMutation,
-} from "@/utils/functions/reusable_functions";
+  likePostCacheMutation,
+  postInfoPageUnLikePostCacheMutation,
+  postInfoPageLikePostCacheMutation,
+} from "@/services/social/functions/socialFunctions";
+import {
+  useLikePost,
+  useUnLikePost,
+} from "@/services/social/queries/socialQueries";
 import { useMatchRoute } from "@tanstack/react-router";
 import { Heart, MessageCircle, Circle } from "lucide-react";
 
@@ -27,9 +32,24 @@ export default function PostActions({
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
 
-  //TODO: add debounce
+  //TODO: add debounce when liking/unliking a post, to avoid spamming the server
   const { mutateAsync: likePost } = useLikePost();
   const { mutateAsync: unlikePost } = useUnLikePost();
+
+  async function handleLikeUnlike(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.stopPropagation();
+    if (isLikedByCurrentUser) {
+      await postInfoPageUnLikePostCacheMutation(postId);
+      await unlikePostCacheMutation(postId);
+      await unlikePost(postId);
+    } else {
+      await postInfoPageLikePostCacheMutation(postId);
+      await likePostCacheMutation(postId);
+      await likePost(postId);
+    }
+  }
 
   return (
     <div
@@ -54,16 +74,7 @@ export default function PostActions({
         )}
       </button>
       <button
-        onClick={async (e) => {
-          e.stopPropagation();
-          if (isLikedByCurrentUser) {
-            await unlikePostCacheMutation(postId);
-            await unlikePost(postId);
-          } else {
-            await likePostCacheMutation(postId);
-            await likePost(postId);
-          }
-        }}
+        onClick={handleLikeUnlike}
         className="flex items-center gap-2 group"
       >
         <div className="relative">

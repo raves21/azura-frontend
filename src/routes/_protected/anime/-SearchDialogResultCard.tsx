@@ -1,4 +1,4 @@
-import { getRatingScore } from "@/utils/functions/reusable_functions";
+import { getRatingScore } from "@/services/thirdParty/anime/functions/animeFunctions";
 import { useGlobalStore } from "@/utils/stores/globalStore";
 import { Anime, Status } from "@/utils/types/thirdParty/animeAnilist";
 import { statusLabels } from "@/utils/variables/anime";

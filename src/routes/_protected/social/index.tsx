@@ -1,8 +1,8 @@
+import PostsSkeleton from "@/components/shared/loadingSkeletons/social/PostsSkeleton";
 import ContentOptions from "@/components/shared/social/mainContent/contentOptions/ContentOptions";
 import CreatePost from "@/components/shared/social/mainContent/post/createPost/CreatePost";
 import Post from "@/components/shared/social/mainContent/post/Post";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useForYouFeed } from "@/services/auth/socialQueries";
+import { useForYouFeed } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { TContentOption } from "@/utils/types/social/shared";
@@ -44,16 +44,7 @@ function SocialPage() {
   let renderedResult: ReactNode;
 
   if (isForYouFeedLoading) {
-    renderedResult = (
-      <div className="flex flex-col w-full gap-3">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <Skeleton
-            key={index}
-            className="w-full h-48 rounded-lg bg-socialPrimary"
-          />
-        ))}
-      </div>
-    );
+    renderedResult = <PostsSkeleton loadingType="loadingAllPosts" />;
   }
 
   if (forYouFeedError) {
@@ -65,9 +56,11 @@ function SocialPage() {
   }
 
   if (forYouFeed) {
-    if (forYouFeed.pages.length === 0) {
+    if (forYouFeed.pages[0].data.length === 0) {
       renderedResult = (
-        <p className="w-full mt-28 tex-center">No posts to show</p>
+        <p className="w-full mt-16 text-lg font-medium text-center">
+          No posts yet.
+        </p>
       );
     } else {
       renderedResult = (
@@ -81,15 +74,18 @@ function SocialPage() {
               </div>
             );
           })}
-          <div ref={ref} className="w-full">
-            {isFetchingNextPage ? (
-              <Skeleton className="w-full h-48 rounded-lg bg-socialPrimary" />
-            ) : (
-              <p className="w-full mt-8 text-lg font-medium text-center">
-                You're all caught up!
-              </p>
+          {forYouFeed.pages.length !== 0 &&
+            forYouFeed.pages[0].data.length !== 0 && (
+              <div ref={ref} className="w-full">
+                {isFetchingNextPage ? (
+                  <PostsSkeleton loadingType="fetchingNextPage" />
+                ) : (
+                  <p className="w-full mt-8 text-lg font-medium text-center">
+                    You're all caught up!
+                  </p>
+                )}
+              </div>
             )}
-          </div>
         </div>
       );
     }

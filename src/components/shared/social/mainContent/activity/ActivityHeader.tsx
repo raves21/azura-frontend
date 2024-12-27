@@ -46,12 +46,14 @@ export default function ActivityHeader({
       )}
     >
       <UserAvatar
-        src={owner.avatar ?? "/no-image-2.jpg"}
+        src={owner.avatar}
         imageClassName="mobile-m:size-10 sm:size-11"
       />
       <div className="flex flex-col mr-auto">
         <div className="flex items-center gap-2 mobile-l:gap-3">
-          <p className="font-semibold">{owner.username}</p>
+          <p className="font-semibold text-ellipsis whitespace-nowrap overflow-hidden max-w-[130px] mobile-m:max-w-[150px] mobile-l:max-w-[200px] sm:max-w-[380px] md:max-w-[250px] lg:max-w-[380px]">
+            {owner.username}
+          </p>
           <p className="text-gray-500">@{owner.handle}</p>
         </div>
         <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1">

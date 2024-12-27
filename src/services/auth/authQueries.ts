@@ -162,7 +162,7 @@ export function useLogout() {
       });
     },
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["refreshJWT"] });
+      queryClient.clear();
       history.replaceState(null, "", "/login");
     },
   });
