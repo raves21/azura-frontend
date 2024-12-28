@@ -21,11 +21,11 @@ import {
 } from "@/utils/types/social/shared";
 import { queryClient } from "@/Providers";
 import {
-  invalidateQueryBeforeLoad,
   postReactionCacheMutation,
-  postInfoPageTotalCommentsCacheMutation,
+  postInfoTotalCommentsCacheMutation,
   postTotalCommentsCacheMutation,
   createPostPostsCacheMutation,
+  postInfoReactionCacheMutation,
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/authStore";
 
@@ -99,11 +99,15 @@ export function useCreatePost() {
 export function useLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
+      //mutate the cache
+      await postInfoReactionCacheMutation({ postId, type: "like" });
+      await postReactionCacheMutation({ postId, type: "like" });
+      //run the api call
       return await api.post(`posts/${postId}/likes`);
     },
     onError: async (_, postId) => {
-      //revert post state back to unliked if it throws an error
-      await postReactionCacheMutation({ postId, type: "like" });
+      //revert post cache state back to unliked if it throws an error
+      await postReactionCacheMutation({ postId, type: "unlike" });
     },
   });
 }
@@ -111,11 +115,15 @@ export function useLikePost() {
 export function useUnLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
+      //mutate the cache
+      await postInfoReactionCacheMutation({ postId, type: "unlike" });
+      await postReactionCacheMutation({ postId, type: "unlike" });
+      //run the api call
       return await api.delete(`posts/${postId}/likes`);
     },
     onError: async (_, postId) => {
-      //revert post state back to liked if it throws an error
-      await postReactionCacheMutation({ postId, type: "unlike" });
+      //revert post cache state back to liked if it throws an error
+      await postReactionCacheMutation({ postId, type: "like" });
     },
   });
 }
@@ -208,12 +216,11 @@ export function useCreatePostComment() {
         }
       );
 
-      invalidateQueryBeforeLoad(queryFilter.queryKey);
       await postTotalCommentsCacheMutation({
         postId,
         incrementTotalComments: true,
       });
-      await postInfoPageTotalCommentsCacheMutation({
+      await postInfoTotalCommentsCacheMutation({
         postId,
         incrementTotalComments: true,
       });

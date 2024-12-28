@@ -7,7 +7,6 @@ import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestora
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { TContentOption } from "@/utils/types/social/shared";
 import { createFileRoute } from "@tanstack/react-router";
-import { ReactNode } from "react";
 
 export const Route = createFileRoute("/_protected/social/")({
   component: () => <SocialPage />,
@@ -41,58 +40,47 @@ function SocialPage() {
 
   const ref = useFetchNextPageInView(fetchNextPage);
 
-  let renderedResult: ReactNode;
-
   if (isForYouFeedLoading) {
-    renderedResult = <PostsSkeleton loadingType="loadingAllPosts" />;
+    return <PostsSkeleton loadingType="loadingAllPosts" />;
   }
 
   if (forYouFeedError) {
-    renderedResult = (
-      <p className="w-full mt-28 tex-center">
+    return (
+      <div className="w-full pb-24 text-lg font-medium text-center pt-28">
         There was an error fetching the feed.
-      </p>
+      </div>
     );
   }
 
   if (forYouFeed) {
-    if (forYouFeed.pages[0].data.length === 0) {
-      renderedResult = (
-        <p className="w-full mt-16 text-lg font-medium text-center">
-          No posts yet.
-        </p>
-      );
-    } else {
-      renderedResult = (
-        <div className="flex flex-col w-full gap-3">
-          {forYouFeed.pages.map((page) =>
-            page.data.map((post) => <Post key={post.id} post={post} />)
-          )}
-          {forYouFeed.pages.length !== 0 &&
-            forYouFeed.pages[0].data.length !== 0 && (
-              <div ref={ref} className="w-full">
-                {isFetchingNextPage ? (
-                  <PostsSkeleton loadingType="fetchingNextPage" />
-                ) : (
-                  <p className="w-full mt-8 text-lg font-medium text-center">
-                    You're all caught up!
-                  </p>
-                )}
-              </div>
+    return (
+      <div className="flex flex-col w-full gap-3 pb-24">
+        <CreatePost />
+        <ContentOptions
+          contentOptions={feedOptions}
+          defaultOption={feedOptions[0]}
+        />
+        {forYouFeed.pages[0].data.length === 0 ? (
+          <p className="w-full mt-16 text-lg font-medium text-center">
+            No posts yet.
+          </p>
+        ) : (
+          <div className="flex flex-col w-full gap-3">
+            {forYouFeed.pages.map((page) =>
+              page.data.map((post) => <Post key={post.id} post={post} />)
             )}
-        </div>
-      );
-    }
+            <div ref={ref}>
+              {isFetchingNextPage ? (
+                <PostsSkeleton loadingType="fetchingNextPage" />
+              ) : (
+                <p className="w-full mt-8 text-lg font-medium text-center">
+                  You're all caught up!
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
-
-  return (
-    <div className="flex flex-col w-full gap-3 pb-24">
-      <CreatePost />
-      <ContentOptions
-        contentOptions={feedOptions}
-        defaultOption={feedOptions[0]}
-      />
-      {renderedResult}
-    </div>
-  );
 }

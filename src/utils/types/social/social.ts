@@ -31,7 +31,7 @@ export type TPost = {
 };
 
 export type TPostInfo = TPost & {
-  postFirstLiker: Pick<EntityOwner, "avatar" | "username"> | null;
+  postFirstLikers: Omit<EntityOwner, "handle">[] | null;
 };
 
 export type Media = {

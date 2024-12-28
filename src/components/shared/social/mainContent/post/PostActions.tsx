@@ -1,9 +1,5 @@
 import { cn } from "@/lib/utils";
 import {
-  postReactionCacheMutation,
-  postInfoPagePostReactionCacheMutation,
-} from "@/services/social/functions/socialFunctions";
-import {
   useLikePost,
   useUnLikePost,
 } from "@/services/social/queries/socialQueries";
@@ -34,18 +30,14 @@ export default function PostActions({
   const { mutateAsync: likePost } = useLikePost();
   const { mutateAsync: unlikePost } = useUnLikePost();
 
-  async function handleLikeUnlike(
+  async function handlePostReaction(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     postId: string
   ) {
     e.stopPropagation();
     if (isLikedByCurrentUser) {
-      await postInfoPagePostReactionCacheMutation({ postId, type: "unlike" });
-      await postReactionCacheMutation({ postId, type: "unlike" });
       await unlikePost(postId);
     } else {
-      await postInfoPagePostReactionCacheMutation({ postId, type: "like" });
-      await postReactionCacheMutation({ postId, type: "like" });
       await likePost(postId);
     }
   }
@@ -73,7 +65,7 @@ export default function PostActions({
         )}
       </button>
       <button
-        onClick={async (e) => await handleLikeUnlike(e, postId)}
+        onClick={async (e) => await handlePostReaction(e, postId)}
         className="flex items-center gap-2 group"
       >
         <div className="relative">

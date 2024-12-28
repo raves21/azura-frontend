@@ -8,8 +8,7 @@ import {
   TPost,
   TPostInfo,
 } from "@/utils/types/social/social";
-import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
-import { isEqual } from "radash";
+import { QueryFilters, InfiniteData } from "@tanstack/react-query";
 
 const POSTS_QUERY_FILTER: QueryFilters = {
   predicate(query) {
@@ -114,8 +113,6 @@ export async function createPostPostsCacheMutation({
       }
     }
   );
-
-  invalidateQueryBeforeLoad(queryFilter.queryKey);
 }
 
 type LikeUnlikePostCacheMutation = {
@@ -131,10 +128,6 @@ export async function postReactionCacheMutation({
   queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
-      //this return undefined statement and all other ones like these below
-      //serves no purpose other than to keep typescript happy.
-      //of course this will not be executed because in order to like/unlike a post,
-      //the cache with the queryFilter's queryKey must first exist.
       if (!oldData) return undefined;
 
       const newPages = oldData.pages.map((page) => ({
@@ -165,38 +158,56 @@ type PostInfoPageLikeUnlikePostCacheMutationArgs = {
   type: "like" | "unlike";
 };
 
-export async function postInfoPagePostReactionCacheMutation({
+export async function postInfoReactionCacheMutation({
   postId,
   type,
 }: PostInfoPageLikeUnlikePostCacheMutationArgs) {
   queryClient.setQueryData<TPostInfo>(["postInfo", postId], (oldData) => {
-    if (!oldData) return undefined;
-
-    const currentUser = useAuthStore.getState().currentUser!;
+    const currentUser = useAuthStore.getState().currentUser;
+    if (!oldData || !currentUser) return undefined;
 
     if (type === "like") {
       return {
         ...oldData,
         totalLikes: oldData.totalLikes + 1,
         isLikedByCurrentUser: true,
-        postFirstLiker: oldData.postFirstLiker ?? {
-          avatar: currentUser.avatar,
-          username: currentUser.username,
-        },
+        postFirstLikers: oldData.postFirstLikers ?? [
+          {
+            avatar: currentUser.avatar,
+            username: currentUser.username,
+            id: currentUser.id,
+          },
+        ],
+      };
+    } else {
+      let postFirstLikers: Omit<EntityOwner, "handle">[] | null =
+        oldData.postFirstLikers;
+
+      //*note: postFirstLikers array has max 2 people (the first and the second liker),
+      //*but we only show one (the very first) in the ui. The other guy is reserved for
+      //*the case where the current user is the first post liker and if he unlikes the post,
+      //*Then we can set the other guy (the second liker) as the new first post liker
+      if (oldData.postFirstLikers) {
+        const postFirstLikersCount = oldData.postFirstLikers.length;
+        //if there are two postFirstLikers
+        if (postFirstLikersCount >= 1) {
+          //if the first post liker is the current user himself
+          if (oldData.postFirstLikers[0].id === currentUser.id) {
+            postFirstLikers =
+              postFirstLikersCount === 1
+                ? null
+                : oldData.postFirstLikers.slice(1);
+          }
+        }
+      }
+
+      return {
+        ...oldData,
+        totalLikes: oldData.totalLikes - 1,
+        isLikedByCurrentUser: false,
+        postFirstLikers,
       };
     }
-
-    return {
-      ...oldData,
-      totalLikes: oldData.totalLikes - 1,
-      isLikedByCurrentUser: false,
-      postFirstLiker: isEqual(oldData.postFirstLiker, {
-        avatar: currentUser.avatar,
-        username: currentUser.username,
-      })
-        ? null
-        : oldData.postFirstLiker,
-    };
   });
 }
 
@@ -205,7 +216,7 @@ type PostInfoPageTotalCommentsCacheMutationArgs = {
   incrementTotalComments: boolean;
 };
 
-export async function postInfoPageTotalCommentsCacheMutation({
+export async function postInfoTotalCommentsCacheMutation({
   postId,
   incrementTotalComments,
 }: PostInfoPageTotalCommentsCacheMutationArgs) {
@@ -257,15 +268,4 @@ export async function postTotalCommentsCacheMutation({
       };
     }
   );
-}
-
-export function invalidateQueryBeforeLoad(queryKey?: QueryKey) {
-  //to handle a rare scenario where a user creates a post/comment/collection
-  //before the posts/comments/collection it is loaded
-  queryClient.invalidateQueries({
-    queryKey,
-    predicate(query) {
-      return !query.state.data;
-    },
-  });
 }

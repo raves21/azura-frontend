@@ -54,9 +54,9 @@ export default function PostInfo({ post }: PostInfoProps) {
         )}
       </div>
       <div className="flex flex-col gap-2 mt-1 mobile-m:mt-2">
-        {post.postFirstLiker && (
+        {post.postFirstLikers && (
           <PostLikers
-            postFirstLiker={post.postFirstLiker}
+            postFirstLikers={post.postFirstLikers}
             totalLikes={post.totalLikes}
           />
         )}
