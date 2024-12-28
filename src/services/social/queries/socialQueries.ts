@@ -8,7 +8,7 @@ import {
 import { api } from "@/utils/axiosInstance";
 import {
   CommentsRequest,
-  CurrentUserProfile,
+  UserProfile,
   Media,
   PostsRequest,
   TCollection,
@@ -26,8 +26,10 @@ import {
   postTotalCommentsCacheMutation,
   createPostPostsCacheMutation,
   postInfoReactionCacheMutation,
+  deletePostCacheMutation,
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/authStore";
+import { UserBasicInfo } from "@/utils/types/auth/auth";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -42,12 +44,18 @@ export function useForYouFeed() {
   });
 }
 
-export function useCurrentUserProfile() {
+export function useUserProfile(userId: string, currentUser: UserBasicInfo) {
   return useQuery({
-    queryKey: ["currentUser"],
+    queryKey: ["userProfile", userId],
     queryFn: async () => {
-      const { data } = await api.get("/users/me");
-      return data.data as CurrentUserProfile;
+      let url: string;
+      if (currentUser.id === userId) {
+        url = "/users/me";
+      } else {
+        url = `/users/${userId}`;
+      }
+      const { data } = await api.get(url);
+      return data.data as UserProfile;
     },
   });
 }
@@ -224,6 +232,18 @@ export function useCreatePostComment() {
         postId,
         incrementTotalComments: true,
       });
+    },
+  });
+}
+
+export function useDeletePost(postId: string | null) {
+  return useMutation({
+    mutationKey: ["deletePost", postId],
+    mutationFn: async (postId: string) => {
+      return await api.delete(`/posts/${postId}`);
+    },
+    onSuccess: async (_, postId) => {
+      await deletePostCacheMutation(postId);
     },
   });
 }

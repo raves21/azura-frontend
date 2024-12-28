@@ -18,17 +18,14 @@ export default function PostInfo({ post }: PostInfoProps) {
     <div className="flex flex-col w-full gap-4">
       <div className="flex w-full gap-4">
         <ActivityHeader
+          type="post"
+          post={post}
           linkProps={{
             to: "/social/$userName",
             params: {
               userName,
             },
           }}
-          createdAt={post.createdAt}
-          owner={post.owner}
-          showPrivacy
-          privacy={post.privacy}
-          className="gap-[10px]"
         />
       </div>
       <div className="my-1">

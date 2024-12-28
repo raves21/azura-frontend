@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TPost, TPostComment } from "@/utils/types/social/social";
 import { LinkProps, useMatchRoute, useNavigate } from "@tanstack/react-router";
 import ActivityHeader from "./ActivityHeader";
@@ -18,14 +17,10 @@ type CommentActivityProps = {
 };
 
 type ActivityProps = {
-  showPrivacy: boolean;
-  privacy?: EntityPrivacy;
   ownerProfileLinkProps: LinkProps;
 } & (PostActivityProps | CommentActivityProps);
 
 export default function Activity({
-  showPrivacy,
-  privacy,
   ownerProfileLinkProps,
   ...props
 }: ActivityProps) {
@@ -33,10 +28,6 @@ export default function Activity({
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
   const navigate = useNavigate();
-  const entityOwner =
-    type === "comment" ? props.comment.author : props.post.owner;
-  const createdAt =
-    type === "comment" ? props.comment.createdAt : props.post.createdAt;
 
   return (
     <div
@@ -55,21 +46,17 @@ export default function Activity({
       )}
     >
       <div className="flex flex-col flex-grow gap-3">
-        {showPrivacy ? (
+        {props.type === "post" ? (
           <ActivityHeader
+            type="post"
+            post={props.post}
             linkProps={ownerProfileLinkProps}
-            owner={entityOwner}
-            createdAt={createdAt}
-            showPrivacy
-            privacy={privacy!}
           />
         ) : (
           <ActivityHeader
+            type="comment"
+            comment={props.comment}
             linkProps={ownerProfileLinkProps}
-            owner={entityOwner}
-            createdAt={createdAt}
-            showPrivacy={false}
-            privacy={undefined}
           />
         )}
         {props.type === "post" ? (

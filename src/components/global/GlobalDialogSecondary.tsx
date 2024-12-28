@@ -19,9 +19,9 @@ export default function GlobalDialogSecondary() {
     <Dialog
       open={isDialogSecondaryOpen}
       onClose={() => toggleOpenDialogSecondary(null)}
-      className="relative z-[900]"
+      className="relative z-[300]"
     >
-      <div className="fixed font-montserrat inset-0 grid place-items-center w-dvw overflow-x-hidden hide-scrollbar overflow-y-auto bg-black/85 backdrop-blur-[1px]">
+      <div className="fixed inset-0 grid overflow-x-hidden overflow-y-auto bg-black/85 font-montserrat place-items-center w-dvw hide-scrollbar backdrop-blur-[1px]">
         <DialogPanel
           transition
           className="duration-150 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"

@@ -1,8 +1,10 @@
 import { useLogout } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/globalStore";
-import { LogOut } from "lucide-react";
+import { LoaderCircle, LogOut } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheetButton from "./SideMenuSheetButton";
+import { useEffect } from "react";
+import ErrorDialog from "../ErrorDialog";
 
 export default function LogoutButton() {
   const {
@@ -10,29 +12,40 @@ export default function LogoutButton() {
     status: logoutStatus,
     error: logoutError,
   } = useLogout();
-  const [toggleOpenSheet, toggleOpenDialog] = useGlobalStore(
-    useShallow((state) => [state.toggleOpenSheet, state.toggleOpenDialog])
-  );
-
-  if (logoutStatus === "pending") {
-    toggleOpenDialog(
-      <div className="size-[500px] grid place-items-center text-mainWhite bg-darkBg">
-        logging out...
-      </div>
+  const [toggleOpenSheet, toggleOpenDialog, toggleOpenDialogSecondary] =
+    useGlobalStore(
+      useShallow((state) => [
+        state.toggleOpenSheet,
+        state.toggleOpenDialog,
+        state.toggleOpenDialogSecondary,
+      ])
     );
-  }
 
-  if (logoutStatus === "error") {
-    toggleOpenDialog(
-      <div className="size-[500px] grid place-items-center text-mainWhite bg-darkBg">
-        Logout Error: {logoutError.message}
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (logoutStatus === "pending") {
+      toggleOpenDialog(
+        <div className="flex flex-col items-center justify-center gap-6 space-around text-2xl font-semibold rounded-lg w-[300px] text-mainAccent aspect-square bg-darkBg">
+          <LoaderCircle className="group-disabled:stroke-mainAccent/50 animate-spin size-16 stroke-mainAccent" />
+          <p>Logging out</p>
+        </div>
+      );
+    }
 
-  if (logoutStatus === "success") {
-    toggleOpenDialog(null);
-  }
+    if (logoutStatus === "error") {
+      toggleOpenDialog(null);
+      toggleOpenDialogSecondary(
+        <ErrorDialog
+          error={logoutError}
+          okButtonAction={() => toggleOpenDialogSecondary(null)}
+        />
+      );
+    }
+
+    if (logoutStatus === "success") {
+      toggleOpenDialog(null);
+    }
+  }, [logoutStatus]);
+
   return (
     <SideMenuSheetButton
       onClick={async () => {

@@ -1,39 +1,47 @@
 import { cn } from "@/lib/utils";
-import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
-import { Circle, Ellipsis, Users, Globe, Lock } from "lucide-react";
+import { Circle, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 import UserAvatar from "../../UserAvatar";
 import { useAuthStore } from "@/utils/stores/authStore";
-import { LinkProps, Navigate } from "@tanstack/react-router";
+import { LinkProps, Navigate, useMatchRoute } from "@tanstack/react-router";
+import { TPost, TPostComment } from "@/utils/types/social/social";
+import PostOptionsDropdown from "./PostOptionsDropdown";
 
-type WithPostPrivacyProps = {
-  showPrivacy: true;
-  privacy: EntityPrivacy;
+type PostProps = {
+  type: "post";
+  post: TPost;
 };
 
-type WithoutPostPrivacyProps = {
-  showPrivacy: false;
-  privacy: undefined;
+type CommentProps = {
+  type: "comment";
+  comment: TPostComment;
 };
 
-type PostHeaderProps = {
-  owner: EntityOwner;
-  createdAt: Date;
+type ActivityHeaderProps = {
   className?: string;
   linkProps: LinkProps;
-} & (WithPostPrivacyProps | WithoutPostPrivacyProps);
+} & (PostProps | CommentProps);
 
 export default function ActivityHeader({
-  showPrivacy,
-  owner,
-  createdAt,
   className,
   linkProps,
   ...props
-}: PostHeaderProps) {
-  const withPostPrivacyProps = showPrivacy
-    ? (props as WithPostPrivacyProps)
-    : null;
+}: ActivityHeaderProps) {
+  const avatar =
+    props.type === "post"
+      ? props.post.owner.avatar
+      : props.comment.author.avatar;
+  const username =
+    props.type === "post"
+      ? props.post.owner.username
+      : props.comment.author.username;
+  const handle =
+    props.type === "post"
+      ? props.post.owner.handle
+      : props.comment.author.handle;
+
+  const matchRoute = useMatchRoute();
+  const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
@@ -43,31 +51,31 @@ export default function ActivityHeader({
   return (
     <div
       className={cn(
-        "flex items-start w-full text-sm sm:text-base gap-2 sm:gap-3",
+        "flex w-full text-sm sm:text-base gap-2 sm:gap-3",
         className
       )}
     >
       <UserAvatar
         linkProps={linkProps}
-        src={owner.avatar}
+        src={avatar}
         imageClassName="mobile-m:size-10 sm:size-11"
       />
       <div className="flex flex-col mr-auto">
         <div className="flex items-center gap-2 mobile-l:gap-3">
           <p className="font-semibold text-ellipsis whitespace-nowrap overflow-hidden max-w-[130px] mobile-m:max-w-[150px] mobile-l:max-w-[200px] sm:max-w-[380px] md:max-w-[250px] lg:max-w-[380px]">
-            {owner.username}
+            {username}
           </p>
-          <p className="text-gray-500">@{owner.handle}</p>
+          <p className="text-gray-500">@{handle}</p>
         </div>
-        <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1">
-          {withPostPrivacyProps && (
+        <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1 sm:mt-0">
+          {isPostInfoPage && props.type === "post" && (
             <>
               <div
                 onMouseEnter={() => setIsPrivacyHovered(true)}
                 onMouseLeave={() => setIsPrivacyHovered(false)}
                 className="relative"
               >
-                {withPostPrivacyProps.privacy === "FRIENDS_ONLY" && (
+                {props.post.privacy === "FRIENDS_ONLY" && (
                   <>
                     <Users className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
@@ -82,7 +90,7 @@ export default function ActivityHeader({
                     </p>
                   </>
                 )}
-                {withPostPrivacyProps.privacy === "ONLY_ME" && (
+                {props.post.privacy === "ONLY_ME" && (
                   <>
                     <Lock className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
@@ -97,7 +105,7 @@ export default function ActivityHeader({
                     </p>
                   </>
                 )}
-                {withPostPrivacyProps.privacy === "PUBLIC" && (
+                {props.post.privacy === "PUBLIC" && (
                   <>
                     <Globe className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
@@ -116,14 +124,11 @@ export default function ActivityHeader({
               <Circle className="stroke-none fill-socialTextSecondary size-1" />
             </>
           )}
-
           <p className="text-gray-500">2 hours ago</p>
         </div>
       </div>
-      {owner.id === currentUser.id && (
-        <button>
-          <Ellipsis className="size-6 stroke-gray-500" />
-        </button>
+      {props.type === "post" && props.post.owner.id === currentUser.id && (
+        <PostOptionsDropdown post={props.post} />
       )}
     </div>
   );

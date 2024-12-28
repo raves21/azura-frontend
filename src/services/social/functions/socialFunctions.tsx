@@ -269,3 +269,23 @@ export async function postTotalCommentsCacheMutation({
     }
   );
 }
+
+export async function deletePostCacheMutation(postId: string) {
+  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
+  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+    POSTS_QUERY_FILTER,
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.filter((post) => post.id !== postId),
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages,
+      };
+    }
+  );
+}

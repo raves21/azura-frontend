@@ -86,12 +86,13 @@ export type TPostComment = {
   author: EntityOwner;
   createdAt: Date;
 };
-
-export type CurrentUserProfile = UserBasicInfo & {
+export type UserProfile = UserBasicInfo & {
   banner: string | null;
   bio: string | null;
   createdAt: Date;
   totalFollowers: number;
   totalFollowing: number;
-  sessionId: number;
+  followsYou: boolean;
+  followedByYou: boolean;
+  sessionId: string;
 };
