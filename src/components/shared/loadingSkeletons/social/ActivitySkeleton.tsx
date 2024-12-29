@@ -19,7 +19,9 @@ export default function ActivitySkeleton({
   ...props
 }: ActivitySkeletonProps) {
   const matchRoute = useMatchRoute();
-  const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
+  const isPostInfoPage = matchRoute({
+    to: "/social/$userHandle/posts/$postId",
+  });
 
   const postProps = type === "post" ? (props as PostProps) : undefined;
 

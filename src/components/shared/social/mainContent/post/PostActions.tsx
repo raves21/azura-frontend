@@ -24,7 +24,9 @@ export default function PostActions({
   postId,
 }: PostActionsProps) {
   const matchRoute = useMatchRoute();
-  const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
+  const isPostInfoPage = matchRoute({
+    to: "/social/$userHandle/posts/$postId",
+  });
 
   //TODO: add debounce when liking/unliking a post, to avoid spamming the server
   const { mutateAsync: likePost } = useLikePost();

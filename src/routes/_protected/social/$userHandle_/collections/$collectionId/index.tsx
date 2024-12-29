@@ -7,7 +7,7 @@ import { tempCollectionItems, tempCollections } from "@/utils/variables/temp";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-  "/_protected/social/$userName/collections/$collectionId/"
+  "/_protected/social/$userHandle/collections/$collectionId/"
 )({
   component: () => <CollectionInfoPage />,
 });
@@ -18,9 +18,9 @@ function CollectionInfoPage() {
     <section className="flex flex-col w-full gap-8 p-3 mb-20 rounded-lg sm:p-5 bg-socialPrimary">
       <BackButton
         linkProps={{
-          to: "/social/$userName/collections",
+          to: "/social/$userHandle/collections",
           params: {
-            userName: "elonmusk",
+            userHandle: "elonmusk",
           },
         }}
       />

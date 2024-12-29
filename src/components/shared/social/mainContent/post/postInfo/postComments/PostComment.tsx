@@ -10,11 +10,10 @@ export default function PostComment({ comment }: PostCommentProps) {
     <Activity
       type="comment"
       comment={comment}
-      showPrivacy={false}
       ownerProfileLinkProps={{
-        to: "/social/$userName",
+        to: "/social/$userHandle",
         params: {
-          userName: comment.author.handle,
+          userHandle: comment.author.handle,
         },
       }}
     />

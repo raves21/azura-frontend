@@ -11,9 +11,9 @@ export default function Collections({ collections }: CollectionsProps) {
       {collections.map((collection) => (
         <Collection
           linkProps={{
-            to: "/social/$userName/collections/$collectionId",
+            to: "/social/$userHandle/collections/$collectionId",
             params: {
-              userName: "elonmusk",
+              userHandle: "elonmusk",
               collectionId: "661268fc-54e4-49d1-889c-7cbed98104cb",
             },
           }}

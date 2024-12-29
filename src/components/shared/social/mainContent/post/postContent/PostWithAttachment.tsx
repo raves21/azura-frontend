@@ -21,7 +21,7 @@ export default function PostWithAttachment({
   return (
     <div
       className={cn("flex flex-col w-full gap-3", {
-        "sm:pl-14": !matchRoute({ to: "/social/$userName/post/$postId" }),
+        "sm:pl-14": !matchRoute({ to: "/social/$userHandle/posts/$postId" }),
       })}
     >
       {props.content && (

@@ -14,7 +14,7 @@ export default function PostComments() {
   if (!currentUser) return <Navigate to="/login" replace />;
 
   const { postId } = useParams({
-    from: "/_protected/social/$userName/post/$postId/",
+    from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   const {

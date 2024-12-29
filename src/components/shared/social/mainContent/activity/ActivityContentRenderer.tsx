@@ -32,9 +32,9 @@ export default function ActivityContentRenderer({
               onClick={(e) => {
                 e.stopPropagation();
                 navigate({
-                  to: "/social/$userName",
+                  to: "/social/$userHandle",
                   params: {
-                    userName: "geromepenalosa",
+                    userHandle: "geromepenalosa",
                   },
                 });
               }}

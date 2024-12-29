@@ -18,9 +18,9 @@ const floatingPagesBarItems: TFloatingPagesBarItem[] = [
   {
     name: "Profile",
     linkProps: {
-      to: "/social/$userName",
+      to: "/social/$userHandle",
       params: {
-        userName: "elonmusk",
+        userHandle: "elonmusk",
       },
     },
   },

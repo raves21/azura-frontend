@@ -68,9 +68,9 @@ export default function ProfilePreview() {
           />
           <UserAvatar
             linkProps={{
-              to: "/social/$userName",
+              to: "/social/$userHandle",
               params: {
-                userName: currentUser.handle,
+                userHandle: currentUser.handle,
               },
             }}
             src={currentUserProfile.avatar}

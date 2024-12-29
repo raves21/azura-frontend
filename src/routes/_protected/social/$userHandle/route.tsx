@@ -3,7 +3,7 @@ import ProfileImages from "@/components/shared/social/mainContent/profile/profil
 import ProfileTabs from "@/components/shared/social/mainContent/profile/profileTabs/ProfileTabs";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_protected/social/$userName")({
+export const Route = createFileRoute("/_protected/social/$userHandle")({
   component: () => <UserProfilePageLayout />,
 });
 

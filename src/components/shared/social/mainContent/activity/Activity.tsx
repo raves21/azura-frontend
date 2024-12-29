@@ -26,7 +26,9 @@ export default function Activity({
 }: ActivityProps) {
   const { type } = props;
   const matchRoute = useMatchRoute();
-  const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
+  const isPostInfoPage = matchRoute({
+    to: "/social/$userHandle/posts/$postId",
+  });
   const navigate = useNavigate();
 
   return (

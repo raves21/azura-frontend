@@ -2,24 +2,24 @@ import { Link } from "@tanstack/react-router";
 
 type CollectionOwnerProps = {
   avatar: string;
-  userName: string;
+  userHandle: string;
 };
 
 export default function CollectionOwner({
   avatar,
-  userName,
+  userHandle,
 }: CollectionOwnerProps) {
   return (
     <Link
-      to="/social/$userName"
+      to="/social/$userHandle"
       params={{
-        userName,
+        userHandle,
       }}
       className="flex items-center gap-2 mt-auto group"
     >
       <img src={avatar} className="object-cover rounded-full size-6" />
       <p className="overflow-hidden text-sm font-semibold whitespace-nowrap group-hover:underline max-w-44 text-ellipsis">
-        {userName}
+        {userHandle}
       </p>
     </Link>
   );

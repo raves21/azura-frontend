@@ -3,7 +3,7 @@ import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestora
 import { tempPosts } from "@/utils/variables/temp";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_protected/social/$userName/")({
+export const Route = createFileRoute("/_protected/social/$userHandle/")({
   component: () => <UserProfilePage />,
 });
 

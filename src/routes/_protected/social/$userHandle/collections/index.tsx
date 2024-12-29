@@ -4,7 +4,7 @@ import { tempCollections } from "@/utils/variables/temp";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 
 export const Route = createFileRoute(
-  "/_protected/social/$userName/collections/"
+  "/_protected/social/$userHandle/collections/"
 )({
   component: () => <CollectionsPage />,
 });

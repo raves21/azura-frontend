@@ -13,13 +13,13 @@ import { usePostInfo } from "@/services/social/queries/socialQueries";
 import { useAuthStore } from "@/utils/stores/authStore";
 
 export const Route = createFileRoute(
-  "/_protected/social/$userName/post/$postId/"
+  "/_protected/social/$userHandle/posts/$postId/"
 )({
   component: () => <PostInfoPage />,
 });
 
 function PostInfoPage() {
-  const { postId, userName } = Route.useParams();
+  const { postId, userHandle } = Route.useParams();
 
   const currentUser = useAuthStore((state) => state.currentUser);
   if (!currentUser) return <Navigate to="/login" replace />;
@@ -37,9 +37,9 @@ function PostInfoPage() {
     };
   } else {
     linkProps = {
-      to: "/social/$userName",
+      to: "/social/$userHandle",
       params: {
-        userName,
+        userHandle,
       },
     };
   }

@@ -12,18 +12,18 @@ const profileTabs: TProfileTab[] = [
   {
     name: "Posts",
     linkProps: {
-      to: "/social/$userName",
+      to: "/social/$userHandle",
       params: {
-        userName: "elonmusk",
+        userHandle: "elonmusk",
       },
     },
   },
   {
     name: "Collections",
     linkProps: {
-      to: "/social/$userName/collections",
+      to: "/social/$userHandle/collections",
       params: {
-        userName: "elonmusk",
+        userHandle: "elonmusk",
       },
     },
   },

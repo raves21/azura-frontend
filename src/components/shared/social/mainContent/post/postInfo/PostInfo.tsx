@@ -10,8 +10,8 @@ type PostInfoProps = {
 };
 
 export default function PostInfo({ post }: PostInfoProps) {
-  const { userName } = useParams({
-    from: "/_protected/social/$userName/post/$postId/",
+  const { userHandle } = useParams({
+    from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   return (
@@ -21,9 +21,9 @@ export default function PostInfo({ post }: PostInfoProps) {
           type="post"
           post={post}
           linkProps={{
-            to: "/social/$userName",
+            to: "/social/$userHandle",
             params: {
-              userName,
+              userHandle,
             },
           }}
         />

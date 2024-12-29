@@ -13,9 +13,9 @@ export default function CreatePost() {
     <div className="flex items-center gap-3 p-3 rounded-lg mobile-m:py-4 sm:p-5 bg-socialPrimary">
       <UserAvatar
         linkProps={{
-          to: "/social/$userName",
+          to: "/social/$userHandle",
           params: {
-            userName: currentUser.handle,
+            userHandle: currentUser.handle,
           },
         }}
         src={currentUser.avatar}

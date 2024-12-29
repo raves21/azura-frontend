@@ -11,11 +11,16 @@ export default function Post({ fromState, post }: PostProps) {
     <Activity
       type="post"
       post={post}
-      showPrivacy={false}
-      linkProps={{
-        to: "/social/$userName/post/$postId",
+      ownerProfileLinkProps={{
+        to: "/social/$userHandle",
         params: {
-          userName: post.owner.handle,
+          userHandle: post.owner.handle,
+        },
+      }}
+      linkProps={{
+        to: "/social/$userHandle/posts/$postId",
+        params: {
+          userHandle: post.owner.handle,
           postId: post.id,
         },
         state: {

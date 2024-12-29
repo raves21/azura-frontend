@@ -41,7 +41,9 @@ export default function ActivityHeader({
       : props.comment.author.handle;
 
   const matchRoute = useMatchRoute();
-  const isPostInfoPage = matchRoute({ to: "/social/$userName/post/$postId" });
+  const isPostInfoPage = matchRoute({
+    to: "/social/$userHandle/posts/$postId",
+  });
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 

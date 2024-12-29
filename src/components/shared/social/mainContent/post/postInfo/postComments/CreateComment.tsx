@@ -35,7 +35,7 @@ export default function CreateComment({
   });
 
   const { postId } = useParams({
-    from: "/_protected/social/$userName/post/$postId/",
+    from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   const { isMobileMedium } = useWindowBreakpoints();
@@ -60,9 +60,9 @@ export default function CreateComment({
     >
       <UserAvatar
         linkProps={{
-          to: "/social/$userName",
+          to: "/social/$userHandle",
           params: {
-            userName: currentUser.handle,
+            userHandle: currentUser.handle,
           },
         }}
         src={author.avatar ?? "/no-image-2.jpg"}
