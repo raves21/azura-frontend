@@ -45,7 +45,7 @@ export default function PostOptionsDropdown({
             toggleOpenDialog(
               <DeleteConfirmationDialog
                 mutationKey={["deletePost", post.id]}
-                deleteAction={async () => await deletePost(post.id)}
+                deleteAction={() => deletePost(post.id)}
                 nameOfResourceToDelete="post"
               />
             );

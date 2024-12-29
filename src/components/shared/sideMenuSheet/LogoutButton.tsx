@@ -12,14 +12,9 @@ export default function LogoutButton() {
     status: logoutStatus,
     error: logoutError,
   } = useLogout();
-  const [toggleOpenSheet, toggleOpenDialog, toggleOpenDialogSecondary] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.toggleOpenSheet,
-        state.toggleOpenDialog,
-        state.toggleOpenDialogSecondary,
-      ])
-    );
+  const [toggleOpenSheet, toggleOpenDialog] = useGlobalStore(
+    useShallow((state) => [state.toggleOpenSheet, state.toggleOpenDialog])
+  );
 
   useEffect(() => {
     if (logoutStatus === "pending") {
@@ -33,12 +28,9 @@ export default function LogoutButton() {
 
     if (logoutStatus === "error") {
       toggleOpenDialog(null);
-      toggleOpenDialogSecondary(
-        <ErrorDialog
-          error={logoutError}
-          okButtonAction={() => toggleOpenDialogSecondary(null)}
-        />
-      );
+      setTimeout(() => {
+        toggleOpenDialog(<ErrorDialog error={logoutError} />);
+      }, 180);
     }
 
     if (logoutStatus === "success") {

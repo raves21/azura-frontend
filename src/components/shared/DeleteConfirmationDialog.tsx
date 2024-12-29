@@ -3,7 +3,6 @@ import { useGlobalStore } from "@/utils/stores/globalStore";
 import { useMutationState } from "@tanstack/react-query";
 import { LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
-import { useShallow } from "zustand/react/shallow";
 import ErrorDialog from "./ErrorDialog";
 import { MutationKey } from "@tanstack/react-query";
 
@@ -18,12 +17,7 @@ export default function DeleteConfirmationDialog({
   deleteAction,
   mutationKey,
 }: DeleteConfirmationDialogProps) {
-  const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
-    useShallow((state) => [
-      state.toggleOpenDialog,
-      state.toggleOpenDialogSecondary,
-    ])
-  );
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   const deleteStatus = useMutationState({
     filters: { mutationKey },
@@ -45,12 +39,9 @@ export default function DeleteConfirmationDialog({
     }
     if (isDeleteError) {
       toggleOpenDialog(null);
-      toggleOpenDialogSecondary(
-        <ErrorDialog
-          error={deleteError[0]}
-          okButtonAction={() => toggleOpenDialogSecondary(null)}
-        />
-      );
+      setTimeout(() => {
+        toggleOpenDialog(<ErrorDialog error={deleteError[0]} />);
+      }, 180);
     }
   }, [deleteStatus, deleteError]);
 
@@ -83,7 +74,7 @@ export default function DeleteConfirmationDialog({
             await deleteAction();
           }}
           disabled={isDeleting}
-          className="flex items-center gap-2 px-8 py-3 font-medium rounded-lg disabled:bg-mainAccent/60 bg-mainAccent hover:bg-fuchsia-700"
+          className="flex items-center gap-2 px-8 py-3 font-medium bg-red-500 rounded-lg disabled:bg-red-500/60 hover:bg-red-700"
         >
           <p className={cn({ "text-gray-400": isDeleting })}>Delete</p>
           {isDeleting && (
