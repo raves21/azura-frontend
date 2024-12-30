@@ -13,7 +13,7 @@ export default function ProfilePreview() {
     data: currentUserProfile,
     isLoading: isCurrentUserProfileLoading,
     error: currentUserProfileError,
-  } = useUserProfile(currentUser.id, currentUser);
+  } = useUserProfile(currentUser.id, currentUser.id);
 
   if (isCurrentUserProfileLoading) {
     return (

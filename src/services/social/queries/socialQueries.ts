@@ -13,6 +13,7 @@ import {
   PostsRequest,
   TCollection,
   TPostInfo,
+  CollectionsRequest,
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -29,7 +30,6 @@ import {
   deletePostCacheMutation,
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/authStore";
-import { UserBasicInfo } from "@/utils/types/auth/auth";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -44,12 +44,12 @@ export function useForYouFeed() {
   });
 }
 
-export function useUserProfile(userId: string, currentUser: UserBasicInfo) {
+export function useUserProfile(userId: string, currentUserId: string) {
   return useQuery({
     queryKey: ["userProfile", userId],
     queryFn: async () => {
       let url: string;
-      if (currentUser.id === userId) {
+      if (currentUserId === userId) {
         url = "/users/me";
       } else {
         url = `/users/${userId}`;
@@ -94,9 +94,17 @@ export function useCreatePost() {
           return query.queryKey.includes("forYouFeed");
         },
       };
-      //todo: also mutate the posts in currentUser profile
+      const currentUserProfilePostsQueryFilter: QueryFilters = {
+        queryKey: ["posts", "userProfilePosts", variables.owner.handle],
+        exact: true,
+      };
       await createPostPostsCacheMutation({
         queryFilter: forYouFeedQueryFilter,
+        result,
+        variables,
+      });
+      await createPostPostsCacheMutation({
+        queryFilter: currentUserProfilePostsQueryFilter,
         result,
         variables,
       });
@@ -245,5 +253,49 @@ export function useDeletePost(postId: string | null) {
     onSuccess: async (_, postId) => {
       await deletePostCacheMutation(postId);
     },
+  });
+}
+
+export function useUserProfilePosts(
+  userHandle: string,
+  currentUserHandle: string
+) {
+  return useInfiniteQuery({
+    queryKey: ["posts", "userProfilePosts", userHandle],
+    queryFn: async () => {
+      let url: string;
+      if (userHandle === currentUserHandle) {
+        url = "/posts/user/me";
+      } else {
+        url = `/posts/user/${userHandle}`;
+      }
+      const { data } = await api.get(url);
+      return data as PostsRequest;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useUserCollections(
+  userHandle: string,
+  currentUserHandle: string
+) {
+  return useInfiniteQuery({
+    queryKey: ["collections", "userCollections", userHandle],
+    queryFn: async () => {
+      let url: string;
+      if (userHandle === currentUserHandle) {
+        url = "/collections/user/me";
+      } else {
+        url = `/collections/user/${userHandle}`;
+      }
+      const { data } = await api.get(url);
+      return data as CollectionsRequest;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }

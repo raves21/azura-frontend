@@ -1,3 +1,4 @@
+import FeedPostsSkeleton from "@/components/shared/loadingSkeletons/social/FeedPostsSkeleton";
 import PostsSkeleton from "@/components/shared/loadingSkeletons/social/PostsSkeleton";
 import ContentOptions from "@/components/shared/social/mainContent/contentOptions/ContentOptions";
 import CreatePost from "@/components/shared/social/mainContent/post/createPost/CreatePost";
@@ -41,7 +42,7 @@ function SocialPage() {
   const ref = useFetchNextPageInView(fetchNextPage);
 
   if (isForYouFeedLoading) {
-    return <PostsSkeleton loadingType="loadingAllPosts" />;
+    return <FeedPostsSkeleton />;
   }
 
   if (forYouFeedError) {

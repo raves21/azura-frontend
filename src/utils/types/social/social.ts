@@ -17,6 +17,13 @@ export type CommentsRequest = ResponseWithMessage &
     data: TPostComment[];
   };
 
+export type CollectionsRequest = ResponseWithMessage &
+  PaginatedResponse & {
+    data: CollectionListItem[];
+  };
+
+export type CollectionListItem = Omit<TCollection, "privacy" | "description">;
+
 export type TPost = {
   id: string;
   content: string | null;
