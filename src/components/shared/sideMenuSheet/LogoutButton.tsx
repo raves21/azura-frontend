@@ -1,5 +1,5 @@
 import { useLogout } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { LoaderCircle, LogOut } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheetButton from "./SideMenuSheetButton";

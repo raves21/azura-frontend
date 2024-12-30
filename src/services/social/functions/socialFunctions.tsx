@@ -1,5 +1,5 @@
 import { queryClient } from "@/Providers";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
   Media,
@@ -8,7 +8,7 @@ import {
   TPost,
   TPostInfo,
 } from "@/utils/types/social/social";
-import { QueryFilters, InfiniteData } from "@tanstack/react-query";
+import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
 
 const POSTS_QUERY_FILTER: QueryFilters = {
   predicate(query) {
@@ -16,15 +16,17 @@ const POSTS_QUERY_FILTER: QueryFilters = {
   },
 };
 
+const POST_INFO_QUERY_KEY = (postId: string): QueryKey => ["postInfo", postId];
+
 type CreatePostPostsCacheMutation = {
   queryFilter: QueryFilters;
   variables: {
-    content: string;
+    content: string | null;
     media: Media | null;
     privacy: EntityPrivacy;
     owner: EntityOwner;
   };
-  result: { collection: TCollection | null; createdAt: Date; id: string };
+  result: { collection: TCollection | null; id: string };
 };
 
 export async function createPostPostsCacheMutation({
@@ -33,7 +35,7 @@ export async function createPostPostsCacheMutation({
   result,
 }: CreatePostPostsCacheMutation) {
   const { content, media, owner, privacy } = variables;
-  const { collection, createdAt, id } = result;
+  const { collection, id } = result;
   await queryClient.cancelQueries(queryFilter);
   let newPost: TPost;
   if (media) {
@@ -43,7 +45,7 @@ export async function createPostPostsCacheMutation({
       totalLikes: 0,
       collection: null,
       content,
-      createdAt,
+      createdAt: new Date(),
       isLikedByCurrentUser: false,
       media,
       owner,
@@ -56,7 +58,7 @@ export async function createPostPostsCacheMutation({
       totalLikes: 0,
       collection,
       content,
-      createdAt,
+      createdAt: new Date(),
       isLikedByCurrentUser: false,
       media: null,
       owner,
@@ -69,7 +71,7 @@ export async function createPostPostsCacheMutation({
       totalLikes: 0,
       collection: null,
       content,
-      createdAt,
+      createdAt: new Date(),
       isLikedByCurrentUser: false,
       media: null,
       owner,
@@ -162,53 +164,56 @@ export async function postInfoReactionCacheMutation({
   postId,
   type,
 }: PostInfoPageLikeUnlikePostCacheMutationArgs) {
-  queryClient.setQueryData<TPostInfo>(["postInfo", postId], (oldData) => {
-    const currentUser = useAuthStore.getState().currentUser;
-    if (!oldData || !currentUser) return undefined;
+  queryClient.setQueryData<TPostInfo>(
+    POST_INFO_QUERY_KEY(postId),
+    (oldData) => {
+      const currentUser = useAuthStore.getState().currentUser;
+      if (!oldData || !currentUser) return undefined;
 
-    if (type === "like") {
-      return {
-        ...oldData,
-        totalLikes: oldData.totalLikes + 1,
-        isLikedByCurrentUser: true,
-        postFirstLikers: oldData.postFirstLikers ?? [
-          {
-            avatar: currentUser.avatar,
-            username: currentUser.username,
-            id: currentUser.id,
-          },
-        ],
-      };
-    } else {
-      let postFirstLikers: Omit<EntityOwner, "handle">[] | null =
-        oldData.postFirstLikers;
+      if (type === "like") {
+        return {
+          ...oldData,
+          totalLikes: oldData.totalLikes + 1,
+          isLikedByCurrentUser: true,
+          postFirstLikers: oldData.postFirstLikers ?? [
+            {
+              avatar: currentUser.avatar,
+              username: currentUser.username,
+              id: currentUser.id,
+            },
+          ],
+        };
+      } else {
+        let postFirstLikers: Omit<EntityOwner, "handle">[] | null =
+          oldData.postFirstLikers;
 
-      //*note: postFirstLikers array has max 2 people (the first and the second liker),
-      //*but we only show one (the very first) in the ui. The other guy is reserved for
-      //*the case where the current user is the first post liker and if he unlikes the post,
-      //*Then we can set the other guy (the second liker) as the new first post liker
-      if (oldData.postFirstLikers) {
-        const postFirstLikersCount = oldData.postFirstLikers.length;
-        //if there are two postFirstLikers
-        if (postFirstLikersCount >= 1) {
-          //if the first post liker is the current user himself
-          if (oldData.postFirstLikers[0].id === currentUser.id) {
-            postFirstLikers =
-              postFirstLikersCount === 1
-                ? null
-                : oldData.postFirstLikers.slice(1);
+        //*note: postFirstLikers array has max 2 people (the first and the second liker),
+        //*but we only show one (the very first) in the ui. The other guy is reserved for
+        //*the case where the current user is the first post liker and if he unlikes the post,
+        //*Then we can set the other guy (the second liker) as the new first post liker
+        if (oldData.postFirstLikers) {
+          const postFirstLikersCount = oldData.postFirstLikers.length;
+          //if there are two postFirstLikers
+          if (postFirstLikersCount >= 1) {
+            //if the first post liker is the current user himself
+            if (oldData.postFirstLikers[0].id === currentUser.id) {
+              postFirstLikers =
+                postFirstLikersCount === 1
+                  ? null
+                  : oldData.postFirstLikers.slice(1);
+            }
           }
         }
-      }
 
-      return {
-        ...oldData,
-        totalLikes: oldData.totalLikes - 1,
-        isLikedByCurrentUser: false,
-        postFirstLikers,
-      };
+        return {
+          ...oldData,
+          totalLikes: oldData.totalLikes - 1,
+          isLikedByCurrentUser: false,
+          postFirstLikers,
+        };
+      }
     }
-  });
+  );
 }
 
 type PostInfoPageTotalCommentsCacheMutationArgs = {
@@ -220,16 +225,19 @@ export async function postInfoTotalCommentsCacheMutation({
   postId,
   incrementTotalComments,
 }: PostInfoPageTotalCommentsCacheMutationArgs) {
-  queryClient.setQueryData<TPostInfo>(["postInfo", postId], (oldData) => {
-    if (!oldData) return undefined;
+  queryClient.setQueryData<TPostInfo>(
+    POST_INFO_QUERY_KEY(postId),
+    (oldData) => {
+      if (!oldData) return undefined;
 
-    return {
-      ...oldData,
-      totalComments: incrementTotalComments
-        ? oldData.totalComments + 1
-        : oldData.totalComments - 1,
-    };
-  });
+      return {
+        ...oldData,
+        totalComments: incrementTotalComments
+          ? oldData.totalComments + 1
+          : oldData.totalComments - 1,
+      };
+    }
+  );
 }
 
 type PostTotalCommentsCacheMutationArgs = {
@@ -270,7 +278,7 @@ export async function postTotalCommentsCacheMutation({
   );
 }
 
-export async function deletePostCacheMutation(postId: string) {
+export async function deletePostPostsCacheMutation(postId: string) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
   queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
     POSTS_QUERY_FILTER,
@@ -285,6 +293,54 @@ export async function deletePostCacheMutation(postId: string) {
       return {
         pageParams: oldData.pageParams,
         pages: newPages,
+      };
+    }
+  );
+}
+
+export async function editPostPostsCacheMutation(postToEdit: TPost) {
+  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
+  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+    POSTS_QUERY_FILTER,
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.map((post) => {
+          if (post.id === postToEdit.id) {
+            return {
+              ...post,
+              content: postToEdit.content,
+              media: postToEdit.media,
+              collection: postToEdit.collection,
+              privacy: postToEdit.privacy,
+            };
+          }
+          return post;
+        }),
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages,
+      };
+    }
+  );
+}
+
+export async function editPostPostInfoCacheMutation(postToEdit: TPost) {
+  queryClient.setQueryData<TPostInfo>(
+    POST_INFO_QUERY_KEY(postToEdit.id),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        content: postToEdit.content,
+        media: postToEdit.media,
+        collection: postToEdit.collection,
+        privacy: postToEdit.privacy,
       };
     }
   );

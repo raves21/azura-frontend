@@ -1,9 +1,20 @@
-import { useEditor } from "@tiptap/react";
+import { Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useRef, useState, useEffect } from "react";
 import CharacterCount from "@tiptap/extension-character-count";
 import { EditorProps } from "@tiptap/pm/view";
+
+export type UseTipTapEditorReturnType = {
+  editor: Editor | null;
+  editorContentRef: React.MutableRefObject<HTMLDivElement | null>;
+  editorContentInitialWidth: number;
+  editorContentInitialHeight: number;
+  inputLength: number;
+  inputText: string | null;
+  setInputText: React.Dispatch<React.SetStateAction<string | null>>;
+  clearInputText: () => void;
+};
 
 type UseTipTapEditorArgs = {
   placeholder?: string;
@@ -17,9 +28,9 @@ export function useTipTapEditor({
   maxLength,
   editorProps,
   focusOnMount,
-}: UseTipTapEditorArgs) {
+}: UseTipTapEditorArgs): UseTipTapEditorReturnType {
   const [inputLength, setInputLength] = useState(0);
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState<string | null>(null);
   const editor = useEditor({
     editorProps: { ...editorProps },
     extensions: [
@@ -75,6 +86,7 @@ export function useTipTapEditor({
     editorContentInitialHeight,
     inputLength,
     inputText,
+    setInputText,
     clearInputText,
   };
 }

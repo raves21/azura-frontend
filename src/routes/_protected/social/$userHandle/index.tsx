@@ -3,7 +3,7 @@ import Post from "@/components/shared/social/mainContent/post/Post";
 import { useUserProfilePosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 

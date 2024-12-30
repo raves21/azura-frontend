@@ -1,36 +1,36 @@
 import { create } from "zustand";
 import { EntityPrivacy } from "../types/social/shared";
 
-type CreatePostPage =
-  | "createPost"
+type ManagePostPage =
+  | "managePost"
   | "selectPrivacy"
   | "selectMediaAttachment"
   | "selectCollectionAttachment";
 
-type CreatePostStoreValues = {
-  createPostPage: CreatePostPage;
+type ManagePostStoreValues = {
+  managePostPage: ManagePostPage;
   selectedPrivacy: EntityPrivacy;
 };
 
-type CreatePostStoreActions = {
-  setCreatePostPage: (createPostPage: CreatePostPage) => void;
+type ManagePostStoreActions = {
+  setManagePostPage: (managePostPage: ManagePostPage) => void;
   setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) => void;
 };
 
-type CreatePostStore = CreatePostStoreValues & CreatePostStoreActions;
+type ManagePostStore = ManagePostStoreValues & ManagePostStoreActions;
 
 const defaultCreatePostPrivacyPreference = localStorage.getItem(
   "defaultCreatePostPrivacyPreference"
 ) as EntityPrivacy;
-const createPostStoreDefaultValues: CreatePostStoreValues = {
-  createPostPage: "createPost",
+const managePostStoreDefaultValues: ManagePostStoreValues = {
+  managePostPage: "managePost",
   selectedPrivacy: defaultCreatePostPrivacyPreference || "PUBLIC",
 };
 
-export const useCreatePostStore = create<CreatePostStore>((set) => ({
-  ...createPostStoreDefaultValues,
-  setCreatePostPage: (createPostPage: CreatePostPage) =>
-    set({ createPostPage }),
+export const useManagePostStore = create<ManagePostStore>((set) => ({
+  ...managePostStoreDefaultValues,
+  setManagePostPage: (managePostPage: ManagePostPage) =>
+    set({ managePostPage }),
   setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) =>
     set({ selectedPrivacy }),
 }));

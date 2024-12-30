@@ -14,6 +14,7 @@ import {
   TCollection,
   TPostInfo,
   CollectionsRequest,
+  TPost,
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -27,9 +28,11 @@ import {
   postTotalCommentsCacheMutation,
   createPostPostsCacheMutation,
   postInfoReactionCacheMutation,
-  deletePostCacheMutation,
+  deletePostPostsCacheMutation,
+  editPostPostsCacheMutation,
+  editPostPostInfoCacheMutation,
 } from "../functions/socialFunctions";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -61,7 +64,7 @@ export function useUserProfile(userHandle: string, currentUserHandle: string) {
 }
 
 type CreatePostArgs = {
-  content: string;
+  content: string | null;
   media: Media | null;
   collectionId: string | null;
   privacy: EntityPrivacy;
@@ -85,7 +88,6 @@ export function useCreatePost() {
       return data.data as ResponseWithMessage & {
         collection: TCollection | null;
         id: string;
-        createdAt: Date;
       };
     },
     onSuccess: async (result, variables) => {
@@ -251,7 +253,7 @@ export function useDeletePost(postId: string | null) {
       return await api.delete(`/posts/${postId}`);
     },
     onSuccess: async (_, postId) => {
-      await deletePostCacheMutation(postId);
+      await deletePostPostsCacheMutation(postId);
     },
   });
 }
@@ -297,5 +299,23 @@ export function useUserCollections(
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useEditPost() {
+  return useMutation({
+    mutationFn: async (postToEdit: TPost) => {
+      const { id, content, privacy, media, collection } = postToEdit;
+      return await api.put(`/posts/${id}`, {
+        content,
+        privacy,
+        media,
+        collectionId: collection?.id ?? null,
+      });
+    },
+    onSuccess: async (_, postToEdit) => {
+      await editPostPostsCacheMutation(postToEdit);
+      await editPostPostInfoCacheMutation(postToEdit);
+    },
   });
 }

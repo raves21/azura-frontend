@@ -4,7 +4,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 

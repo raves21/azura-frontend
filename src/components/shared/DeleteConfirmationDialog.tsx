@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useMutationState } from "@tanstack/react-query";
 import { LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
@@ -59,7 +59,7 @@ export default function DeleteConfirmationDialog({
         </button>
       </div>
       <p className="mt-2">
-        This will delete this {nameOfResourceToDelete.toLowerCase()}&nbsp;
+        This will delete this {nameOfResourceToDelete.toLowerCase() + " "}
         permanently. You cannot undo this action.
       </p>
       <div className="flex items-center justify-end gap-3 mt-3">

@@ -1,5 +1,5 @@
 import CreateComment from "./CreateComment";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
 
 export default function FloatingCreateCommentBar() {

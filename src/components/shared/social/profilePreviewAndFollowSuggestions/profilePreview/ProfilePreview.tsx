@@ -1,10 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUserProfile } from "@/services/social/queries/socialQueries";
 import { Link } from "@tanstack/react-router";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../UserAvatar";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ViewProfileImageDialog from "../../ViewProfileImageDialog";
 
 export default function ProfilePreview() {

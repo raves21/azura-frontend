@@ -1,7 +1,7 @@
 import axios from "axios";
 import { queryClient } from "@/Providers";
 import { RefreshResponse } from "./types/auth/auth";
-import { useAuthStore } from "./stores/authStore";
+import { useAuthStore } from "./stores/useAuthStore";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_BASE_URL,

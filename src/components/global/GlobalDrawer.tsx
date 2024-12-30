@@ -5,7 +5,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 

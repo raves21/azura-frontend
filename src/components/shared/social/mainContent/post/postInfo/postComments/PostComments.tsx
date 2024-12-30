@@ -1,5 +1,5 @@
 import PostComment from "./PostComment";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate, useParams } from "@tanstack/react-router";
 import { usePostComments } from "@/services/social/queries/socialQueries";
 import PostCommentsSkeleton from "@/components/shared/loadingSkeletons/social/PostCommentsSkeleton";

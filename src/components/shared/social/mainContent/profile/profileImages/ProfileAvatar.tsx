@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ViewProfileImageDialog from "../../../ViewProfileImageDialog";
 
 type ProfileAvatarProps = {

@@ -7,7 +7,7 @@ import { useCreatePostComment } from "@/services/social/queries/socialQueries";
 import { Navigate, useParams } from "@tanstack/react-router";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 type CreateCommentProps = {
   author: EntityOwner;

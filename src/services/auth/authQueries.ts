@@ -6,7 +6,7 @@ import {
   RefreshResponse,
   UserBasicInfo,
 } from "@/utils/types/auth/auth";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 

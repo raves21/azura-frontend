@@ -3,7 +3,7 @@ import ProfileDetails from "@/components/shared/social/mainContent/profile/profi
 import ProfileImages from "@/components/shared/social/mainContent/profile/profileImages/ProfileImages";
 import ProfileTabs from "@/components/shared/social/mainContent/profile/profileTabs/ProfileTabs";
 import { useUserProfile } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/$userHandle")({

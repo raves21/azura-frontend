@@ -4,7 +4,7 @@ import { LibraryBig } from "lucide-react";
 import UserAvatar from "../../../UserAvatar";
 import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import CollectionPreview from "../../previewPopup/CollectionPreview";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";

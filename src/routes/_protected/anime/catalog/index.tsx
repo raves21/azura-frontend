@@ -10,7 +10,7 @@ import {
   Season,
   SortBy,
 } from "@/utils/types/thirdParty/animeAnilist";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import FiltersDialog from "./-FiltersDialog";
 import Pagination from "@/components/shared/Pagination";
 

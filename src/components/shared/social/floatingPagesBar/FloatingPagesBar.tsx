@@ -1,6 +1,6 @@
 import { LinkProps, Navigate } from "@tanstack/react-router";
 import FloatingPagesBarItem from "./FloatingPagesBarItem";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 type PageName = "Home" | "Profile" | "Notifications";
 

@@ -1,7 +1,7 @@
 import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useUserCollections } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import UserCollectionsSkeleton from "@/components/shared/loadingSkeletons/social/UserCollectionsSkeleton";
 import Collection from "@/components/shared/social/mainContent/collection/Collection";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";

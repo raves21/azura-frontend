@@ -7,8 +7,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
 import { useDeletePost } from "@/services/social/queries/socialQueries";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import DeleteConfirmationDialog from "@/components/shared/DeleteConfirmationDialog";
+import ManagePostDialog from "../post/managePost/managePostDialog/ManagePostDialog";
 
 type PostOptionsDropdownProps = {
   post: TPost;
@@ -35,7 +36,15 @@ export default function PostOptionsDropdown({
         align="end"
         className="border-[0.5px] p-[3px] w-[150px] border-socialTextSecondary/30 font-montserrat text-mainWhite bg-socialPrimary"
       >
-        <DropdownMenuItem className="flex items-center w-full gap-3 py-2 font-medium hover:cursor-pointer group hover:bg-gray-700">
+        <DropdownMenuItem
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleOpenDialog(
+              <ManagePostDialog type="editPost" postToEdit={post} />
+            );
+          }}
+          className="flex items-center w-full gap-3 py-2 font-medium hover:cursor-pointer group hover:bg-gray-700"
+        >
           <Pencil className="size-5 group-hover:fill-mainWhite" />
           <p>Edit</p>
         </DropdownMenuItem>

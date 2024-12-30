@@ -10,7 +10,7 @@ import {
 import { useEffect } from "react";
 import PostInfoSkeleton from "@/components/shared/loadingSkeletons/social/PostInfoSkeleton";
 import { usePostInfo } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/posts/$postId/"

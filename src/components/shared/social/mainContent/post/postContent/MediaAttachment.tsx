@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Circle, Clapperboard, Tv } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";

@@ -1,6 +1,6 @@
-import { useGlobalStore } from "@/utils/stores/globalStore";
-import CreatePostDialog from "./createPostDialog/CreatePostDialog";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ManagePostDialog from "./managePostDialog/ManagePostDialog";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../../UserAvatar";
 
@@ -22,7 +22,7 @@ export default function CreatePost() {
         imageClassName="md:size-11"
       />
       <button
-        onClick={() => toggleOpenDialog(<CreatePostDialog />)}
+        onClick={() => toggleOpenDialog(<ManagePostDialog type="createPost" />)}
         className="flex-grow py-2 mobile-m:text-base px-3 md:p-3 rounded-lg bg-gray-800 hover:bg-[#323b4a] text-start"
       >
         <p>

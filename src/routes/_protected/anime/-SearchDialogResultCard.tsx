@@ -1,5 +1,5 @@
 import { getRatingScore } from "@/services/thirdParty/anime/functions/animeFunctions";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Anime, Status } from "@/utils/types/thirdParty/animeAnilist";
 import { statusLabels } from "@/utils/variables/anime";
 import { Link } from "@tanstack/react-router";

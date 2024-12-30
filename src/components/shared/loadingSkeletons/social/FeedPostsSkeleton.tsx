@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import PostsSkeleton from "./PostsSkeleton";
 
 export default function FeedPostsSkeleton() {
   return (
@@ -8,6 +9,7 @@ export default function FeedPostsSkeleton() {
         <Skeleton className="flex-grow text-transparent bg-gray-700 rounded-lg h-9 mobile-m:text-base md:p-3" />
       </Skeleton>
       <Skeleton className="flex w-full text-transparent rounded-lg h-9 bg-socialPrimary" />
+      <PostsSkeleton loadingType="loadingAllPosts" />
     </div>
   );
 }

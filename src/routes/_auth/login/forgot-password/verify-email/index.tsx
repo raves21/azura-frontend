@@ -1,5 +1,5 @@
 import CodeVerificationForm from "@/components/shared/auth/CodeVerificationForm";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";

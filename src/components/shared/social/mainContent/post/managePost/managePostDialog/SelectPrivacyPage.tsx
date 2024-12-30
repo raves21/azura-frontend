@@ -1,17 +1,17 @@
 import { cn } from "@/lib/utils";
-import { useCreatePostStore } from "@/utils/stores/createPostStore";
+import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { Users, Globe, Lock, Circle, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SelectPrivacyPage() {
-  const [selectedPrivacy, setSelectedPrivacy, setCreatePostPage] =
-    useCreatePostStore(
+  const [selectedPrivacy, setSelectedPrivacy, setManagePostPage] =
+    useManagePostStore(
       useShallow((state) => [
         state.selectedPrivacy,
         state.setSelectedPrivacy,
-        state.setCreatePostPage,
+        state.setManagePostPage,
       ])
     );
 
@@ -138,7 +138,7 @@ export default function SelectPrivacyPage() {
       <button
         onClick={() => {
           setSelectedPrivacy(selectionSelectedPrivacy);
-          setCreatePostPage("createPost");
+          setManagePostPage("managePost");
         }}
         className="grid py-2 font-semibold transition-colors bg-mainAccent rounded-xl place-items-center text-mainWhite"
       >

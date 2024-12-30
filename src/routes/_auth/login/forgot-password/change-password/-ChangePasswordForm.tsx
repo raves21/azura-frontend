@@ -12,9 +12,9 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
 import { ChangePasswordFormData } from "@/utils/types/auth/forms";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useChangePassword } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 type ChangePasswordFormProps = {

@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link, useMatchRoute } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import SearchDialog from "../../routes/_protected/anime/-SearchDialog";

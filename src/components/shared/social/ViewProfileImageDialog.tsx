@@ -1,4 +1,4 @@
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 

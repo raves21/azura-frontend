@@ -1,7 +1,7 @@
 import FeedPostsSkeleton from "@/components/shared/loadingSkeletons/social/FeedPostsSkeleton";
 import PostsSkeleton from "@/components/shared/loadingSkeletons/social/PostsSkeleton";
 import ContentOptions from "@/components/shared/social/mainContent/contentOptions/ContentOptions";
-import CreatePost from "@/components/shared/social/mainContent/post/createPost/CreatePost";
+import CreatePost from "@/components/shared/social/mainContent/post/managePost/CreatePost";
 import Post from "@/components/shared/social/mainContent/post/Post";
 import { useForYouFeed } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";

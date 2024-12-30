@@ -3,7 +3,7 @@ import { useState } from "react";
 import SearchDialogResults from "./-SearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import SearchDialogContainer from "@/components/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
