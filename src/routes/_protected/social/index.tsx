@@ -8,6 +8,7 @@ import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestora
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { TContentOption } from "@/utils/types/social/shared";
 import { createFileRoute } from "@tanstack/react-router";
+import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/")({
   component: () => <SocialPage />,
@@ -67,10 +68,14 @@ function SocialPage() {
           </p>
         ) : (
           <div className="flex flex-col w-full gap-3">
-            {forYouFeed.pages.map((page) =>
-              page.data.map((post) => <Post key={post.id} post={post} />)
-            )}
-            <div ref={ref}>
+            {forYouFeed.pages.map((page) => (
+              <Fragment key={page.page}>
+                {page.data.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
+              </Fragment>
+            ))}
+            <div ref={ref} key={"bottom of page"}>
               {isFetchingNextPage ? (
                 <PostsSkeleton loadingType="fetchingNextPage" />
               ) : (

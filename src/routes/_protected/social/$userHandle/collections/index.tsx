@@ -5,6 +5,7 @@ import { useAuthStore } from "@/utils/stores/authStore";
 import UserCollectionsSkeleton from "@/components/shared/loadingSkeletons/social/UserCollectionsSkeleton";
 import Collection from "@/components/shared/social/mainContent/collection/Collection";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
+import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/"
@@ -54,7 +55,7 @@ function CollectionsPage() {
     return (
       <div className="grid w-full grid-cols-2 gap-2 p-3 pb-8 rounded-lg sm:grid-cols-3 mobile-l:gap-3 sm:p-5 bg-socialPrimary">
         {userCollections.pages.map((page) => (
-          <>
+          <Fragment key={page.page}>
             {page.data.map((collection) => (
               <Collection
                 linkProps={{
@@ -75,11 +76,11 @@ function CollectionsPage() {
               />
             ))}
             {isFetchingNextPage && (
-              <div ref={ref}>
+              <div ref={ref} key={"bottom of page"}>
                 <UserCollectionsSkeleton />
               </div>
             )}
-          </>
+          </Fragment>
         ))}
       </div>
     );

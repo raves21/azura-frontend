@@ -5,6 +5,7 @@ import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestora
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/$userHandle/")({
   component: () => <UserProfilePage />,
@@ -52,16 +53,16 @@ function UserProfilePage() {
     return (
       <div className="flex flex-col w-full gap-3 pb-24">
         {userProfilePosts.pages.map((page) => (
-          <>
+          <Fragment key={page.page}>
             {page.data.map((post) => (
-              <Post post={post} fromState="user-page" />
+              <Post key={post.id} post={post} fromState="user-page" />
             ))}
             {isFetchingNextPage && (
-              <div ref={ref}>
+              <div ref={ref} key={"bottom of page"}>
                 <PostsSkeleton loadingType="fetchingNextPage" />
               </div>
             )}
-          </>
+          </Fragment>
         ))}
       </div>
     );

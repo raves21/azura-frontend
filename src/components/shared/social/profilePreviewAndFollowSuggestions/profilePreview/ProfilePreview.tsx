@@ -4,10 +4,14 @@ import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/utils/stores/authStore";
 import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../UserAvatar";
+import { useGlobalStore } from "@/utils/stores/globalStore";
+import ViewProfileImageDialog from "../../ViewProfileImageDialog";
 
 export default function ProfilePreview() {
   const currentUser = useAuthStore((state) => state.currentUser);
   if (!currentUser) return <Navigate to="/login" replace />;
+
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   const {
     data: currentUserProfile,
@@ -63,18 +67,28 @@ export default function ProfilePreview() {
       <div className="flex flex-col w-full gap-5 overflow-hidden text-base rounded-lg bg-socialPrimary">
         <div className="relative top-0 w-full h-24">
           <img
+            onClick={() =>
+              toggleOpenDialog(
+                <ViewProfileImageDialog
+                  src={currentUserProfile.banner ?? "/no-image-2.jpg"}
+                  type="banner"
+                />
+              )
+            }
             src={currentUserProfile.banner ?? "/no-image-2.jpg"}
-            className="absolute inset-0 object-cover size-full"
+            className="absolute inset-0 object-cover size-full hover:cursor-pointer"
           />
           <UserAvatar
-            linkProps={{
-              to: "/social/$userHandle",
-              params: {
-                userHandle: currentUser.handle,
-              },
-            }}
+            onClick={() =>
+              toggleOpenDialog(
+                <ViewProfileImageDialog
+                  src={currentUserProfile.avatar ?? "/no-image-2.jpg"}
+                  type="avatar"
+                />
+              )
+            }
             src={currentUserProfile.avatar}
-            imageClassName="absolute object-cover border-[0.5px] border-socialPrimary -translate-x-1/2 rounded-full -bottom-[30%] size-16 left-1/2"
+            imageClassName="absolute object-cover border-[0.5px] hover:cursor-pointer border-socialPrimary -translate-x-1/2 rounded-full -bottom-[30%] size-16 left-1/2"
           />
         </div>
         <div className="flex flex-col gap-3 px-3 mt-4">

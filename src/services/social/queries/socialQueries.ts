@@ -44,15 +44,15 @@ export function useForYouFeed() {
   });
 }
 
-export function useUserProfile(userId: string, currentUserId: string) {
+export function useUserProfile(userHandle: string, currentUserHandle: string) {
   return useQuery({
-    queryKey: ["userProfile", userId],
+    queryKey: ["userProfile", userHandle],
     queryFn: async () => {
       let url: string;
-      if (currentUserId === userId) {
+      if (userHandle === currentUserHandle) {
         url = "/users/me";
       } else {
-        url = `/users/${userId}`;
+        url = `/users/${userHandle}`;
       }
       const { data } = await api.get(url);
       return data.data as UserProfile;

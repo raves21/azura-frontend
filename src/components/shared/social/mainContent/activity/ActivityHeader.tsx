@@ -3,7 +3,12 @@ import { Circle, Users, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 import UserAvatar from "../../UserAvatar";
 import { useAuthStore } from "@/utils/stores/authStore";
-import { LinkProps, Navigate, useMatchRoute } from "@tanstack/react-router";
+import {
+  LinkProps,
+  Navigate,
+  useMatchRoute,
+  Link,
+} from "@tanstack/react-router";
 import { TPost, TPostComment } from "@/utils/types/social/social";
 import PostOptionsDropdown from "./PostOptionsDropdown";
 
@@ -64,9 +69,16 @@ export default function ActivityHeader({
       />
       <div className="flex flex-col mr-auto">
         <div className="flex items-center gap-2 mobile-l:gap-3">
-          <p className="font-semibold text-ellipsis whitespace-nowrap overflow-hidden max-w-[130px] mobile-m:max-w-[150px] mobile-l:max-w-[200px] sm:max-w-[380px] md:max-w-[250px] lg:max-w-[380px]">
+          <Link
+            onClick={(e) => e.stopPropagation()}
+            to="/social/$userHandle"
+            params={{
+              userHandle: handle,
+            }}
+            className="font-semibold hover:underline hover:decoration-[0.5px] hover:underline-offset-4 hover:decoration-mainWhite text-ellipsis whitespace-nowrap overflow-hidden max-w-[130px] mobile-m:max-w-[150px] mobile-l:max-w-[200px] sm:max-w-[380px] md:max-w-[250px] lg:max-w-[380px]"
+          >
             {username}
-          </p>
+          </Link>
           <p className="text-gray-500">@{handle}</p>
         </div>
         <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1 sm:mt-0">
