@@ -55,11 +55,13 @@ export function useSendOTC() {
   });
 }
 
+type UseVerifyOTCArgs = { email: string; otc: string }
+
 export function useVerifyOTC() {
   return useMutation({
-    mutationFn: async ({ email, otc }: { email: string; otc: string }) => {
+    mutationFn: async ({ email, otc }: UseVerifyOTCArgs) => {
       await axios.get(`${BASE_URL}/otc/verify?email=${email}&otc=${otc}`);
-    },
+    }
   });
 }
 

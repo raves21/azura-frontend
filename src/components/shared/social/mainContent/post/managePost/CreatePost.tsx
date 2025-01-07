@@ -6,8 +6,8 @@ import UserAvatar from "../../../UserAvatar";
 
 export default function CreatePost() {
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
     <div className="flex items-center gap-3 p-3 rounded-lg mobile-m:py-4 sm:p-5 bg-socialPrimary">
@@ -15,8 +15,8 @@ export default function CreatePost() {
         linkProps={{
           to: "/social/$userHandle",
           params: {
-            userHandle: currentUser.handle,
-          },
+            userHandle: currentUser.handle
+          }
         }}
         src={currentUser.avatar}
         imageClassName="md:size-11"

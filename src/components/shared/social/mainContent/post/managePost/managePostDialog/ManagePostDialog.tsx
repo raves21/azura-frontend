@@ -24,14 +24,13 @@ type ManagePostDialogProps = EditPostProps | CreatePostProps;
 
 export default function ManagePostDialog(props: ManagePostDialogProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
 
   const [managePostPage, setManagePostPage, setSelectedPrivacy] =
     useManagePostStore(
       useShallow((state) => [
         state.managePostPage,
         state.setManagePostPage,
-        state.setSelectedPrivacy,
+        state.setSelectedPrivacy
       ])
     );
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -39,12 +38,12 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
   const tipTapEditor = useTipTapEditor({
     focusOnMount: true,
     maxLength: 500,
-    placeholder: `What's the vibe today, ${currentUser.username.split(" ").slice(0, 2).join(" ")}?`,
+    placeholder: `What's the vibe today, ${currentUser?.username.split(" ").slice(0, 2).join(" ")}?`,
     editorProps: {
       attributes: {
-        class: "flex-grow h-full",
-      },
-    },
+        class: "flex-grow h-full"
+      }
+    }
   });
 
   useEffect(() => {
@@ -72,6 +71,8 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
       setSelectedPrivacy(privacy);
     }
   }, []);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   let currentPage: ReactNode;
   if (managePostPage === "managePost") {

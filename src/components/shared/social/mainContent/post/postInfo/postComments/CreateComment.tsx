@@ -16,10 +16,9 @@ type CreateCommentProps = {
 
 export default function CreateComment({
   author,
-  isFloatingCommentBar,
+  isFloatingCommentBar
 }: CreateCommentProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
 
   const {
     editor,
@@ -27,21 +26,24 @@ export default function CreateComment({
     editorContentInitialHeight,
     editorContentRef,
     inputText,
-    clearInputText,
+    clearInputText
   } = useTipTapEditor({
     focusOnMount: false,
     placeholder: "Write a comment...",
-    maxLength: 200,
+    maxLength: 200
   });
 
   const { postId } = useParams({
-    from: "/_protected/social/$userHandle/posts/$postId/",
+    from: "/_protected/social/$userHandle/posts/$postId/"
   });
 
   const { isMobileMedium } = useWindowBreakpoints();
 
   const { mutateAsync: createComment, status: createCommentStatus } =
     useCreatePostComment();
+
+  if (!currentUser) return <Navigate to="/login" replace />;
+
   const isSendingComment = createCommentStatus === "pending";
 
   async function handleCreateComment(inputText: string) {
@@ -52,18 +54,18 @@ export default function CreateComment({
   return (
     <div
       style={{
-        minHeight: editorContentInitialHeight || "auto",
+        minHeight: editorContentInitialHeight || "auto"
       }}
       className={cn("relative flex items-start gap-2 px-3 mobile-m:px-5", {
-        "px-1 mobile-m:px-2": isFloatingCommentBar,
+        "px-1 mobile-m:px-2": isFloatingCommentBar
       })}
     >
       <UserAvatar
         linkProps={{
           to: "/social/$userHandle",
           params: {
-            userHandle: currentUser.handle,
-          },
+            userHandle: currentUser.handle
+          }
         }}
         src={author.avatar ?? "/no-image-2.jpg"}
         className="hidden sm:block"
@@ -73,7 +75,7 @@ export default function CreateComment({
           <EditorContent
             style={{
               maxWidth: editorContentInitialWidth || "auto",
-              width: isSendingComment ? editorContentInitialWidth - 40 : "auto",
+              width: isSendingComment ? editorContentInitialWidth - 40 : "auto"
             }}
             ref={editorContentRef}
             editor={editor}
@@ -86,7 +88,7 @@ export default function CreateComment({
       </div>
       {isMobileMedium ? (
         <button
-          onClick={async () => await handleCreateComment(inputText)}
+          onClick={async () => await handleCreateComment(inputText!)}
           disabled={!inputText || isSendingComment}
           className="px-4 py-2 flex items-center gap-2 disabled:bg-mainAccent/50 transition-colors group disabled:text-gray-400 mt-[2px] text-sm font-medium rounded-full bg-mainAccent"
         >
@@ -97,7 +99,7 @@ export default function CreateComment({
         </button>
       ) : (
         <button
-          onClick={async () => await handleCreateComment(inputText)}
+          onClick={async () => await handleCreateComment(inputText!)}
           disabled={!inputText || isSendingComment}
           className="absolute grid right-2 group place-items-center top-1"
         >

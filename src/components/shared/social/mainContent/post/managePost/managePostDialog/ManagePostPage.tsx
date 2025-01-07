@@ -30,7 +30,6 @@ type ManagePostPageProps = {
 export default function ManagePostPage({ tipTapEditor, ...props }: ManagePostPageProps) {
   const { editor, editorContentRef, editorContentInitialHeight, inputText } = tipTapEditor;
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
 
   const tempMediaAttachment = tempCollectionItems[1].media;
   const [setManagePostPage, selectedPrivacy] = useManagePostStore(useShallow((state) => [state.setManagePostPage, state.selectedPrivacy]));
@@ -49,6 +48,9 @@ export default function ManagePostPage({ tipTapEditor, ...props }: ManagePostPag
       toggleOpenDialogSecondary(<ErrorDialog error={editPostError} okButtonAction={() => toggleOpenDialogSecondary(null)} />);
     }
   }, [createPostError, editPostError]);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
+
 
   let editedPost: TPost;
   let originalPost: TPost;

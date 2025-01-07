@@ -10,24 +10,25 @@ import { Fragment } from "react/jsx-runtime";
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/"
 )({
-  component: () => <CollectionsPage />,
+  component: () => <CollectionsPage />
 });
 
 function CollectionsPage() {
   const { userHandle } = useParams({ from: "/_protected/social/$userHandle" });
   useCustomScrollRestoration(`userProfilePage-${userHandle}`);
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
 
   const {
     data: userCollections,
     isLoading: isUserCollectionsLoading,
     error: userCollectionsError,
     isFetchingNextPage,
-    fetchNextPage,
-  } = useUserCollections(userHandle, currentUser.handle);
+    fetchNextPage
+  } = useUserCollections(userHandle, currentUser?.handle);
 
   const ref = useFetchNextPageInView(fetchNextPage);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   if (isUserCollectionsLoading) {
     return <UserCollectionsSkeleton />;
@@ -62,8 +63,8 @@ function CollectionsPage() {
                   to: "/social/$userHandle/collections/$collectionId",
                   params: {
                     userHandle: userHandle,
-                    collectionId: collection.id,
-                  },
+                    collectionId: collection.id
+                  }
                 }}
                 key={collection.id}
                 name={collection.name}

@@ -1,6 +1,8 @@
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link } from "@tanstack/react-router";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
+import EditProfileDialog from "../editProfileDialog/EditProfileDialog";
 
 type CurrentUserProps = {
   isCurrentUser: true;
@@ -16,6 +18,8 @@ type ProfileDetailsProps = {
   userName: string;
   handle: string;
   bio: string | null;
+  avatar: string | null;
+  banner: string | null;
   totalFollowers: number;
   totalFollowing: number;
 } & (CurrentUserProps | NotCurrentUserProps);
@@ -24,6 +28,8 @@ export default function ProfileDetails({
   userName,
   handle,
   bio,
+  avatar,
+  banner,
   totalFollowers,
   totalFollowing,
   ...props
@@ -35,10 +41,24 @@ export default function ProfileDetails({
   const [isHoveringFollowingButton, setIsHoveringFollowingButton] =
     useState(false);
 
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
   return (
     <div className="flex flex-col gap-4 px-3 sm:px-5">
       {!notCurrentUserProps ? (
-        <button className="self-end px-4 py-2 font-semibold transition-colors border border-gray-600 rounded-full sm:px-5 lg:text-md lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs hover:border-mainAccent hover:text-mainAccent hover:bg-socialPrimaryHover">
+        <button
+          onClick={() =>
+            toggleOpenDialog(
+              <EditProfileDialog
+                avatar={avatar}
+                banner={banner}
+                bio={bio}
+                userName={userName}
+              />
+            )
+          }
+          className="self-end px-4 py-2 font-semibold transition-colors border border-gray-600 rounded-full sm:px-5 lg:text-md lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs hover:border-mainAccent hover:text-mainAccent hover:bg-socialPrimaryHover"
+        >
           Edit Profile
         </button>
       ) : notCurrentUserProps.isFollowedByCurrentUser ? (

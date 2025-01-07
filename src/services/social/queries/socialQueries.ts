@@ -3,7 +3,7 @@ import {
   QueryFilters,
   useInfiniteQuery,
   useMutation,
-  useQuery,
+  useQuery
 } from "@tanstack/react-query";
 import { api } from "@/utils/axiosInstance";
 import {
@@ -14,12 +14,12 @@ import {
   TCollection,
   TPostInfo,
   CollectionsRequest,
-  TPost,
+  TPost
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
   EntityPrivacy,
-  ResponseWithMessage,
+  ResponseWithMessage
 } from "@/utils/types/social/shared";
 import { queryClient } from "@/Providers";
 import {
@@ -30,7 +30,7 @@ import {
   postInfoReactionCacheMutation,
   deletePostPostsCacheMutation,
   editPostPostsCacheMutation,
-  editPostPostInfoCacheMutation,
+  editPostPostInfoCacheMutation
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -43,11 +43,14 @@ export function useForYouFeed() {
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
-      result.page === result.totalPages ? undefined : result.page + 1,
+      result.page === result.totalPages ? undefined : result.page + 1
   });
 }
 
-export function useUserProfile(userHandle: string, currentUserHandle: string) {
+export function useUserProfile(
+  userHandle?: string,
+  currentUserHandle?: string
+) {
   return useQuery({
     queryKey: ["userProfile", userHandle],
     queryFn: async () => {
@@ -60,6 +63,7 @@ export function useUserProfile(userHandle: string, currentUserHandle: string) {
       const { data } = await api.get(url);
       return data.data as UserProfile;
     },
+    enabled: !!userHandle || !!currentUserHandle
   });
 }
 
@@ -77,13 +81,13 @@ export function useCreatePost() {
       content,
       media,
       collectionId,
-      privacy,
+      privacy
     }: CreatePostArgs) => {
       const { data } = await api.post("/posts", {
         content,
         media,
         collectionId,
-        privacy,
+        privacy
       });
       return data.data as ResponseWithMessage & {
         collection: TCollection | null;
@@ -94,23 +98,23 @@ export function useCreatePost() {
       const forYouFeedQueryFilter: QueryFilters = {
         predicate(query) {
           return query.queryKey.includes("forYouFeed");
-        },
+        }
       };
       const currentUserProfilePostsQueryFilter: QueryFilters = {
         queryKey: ["posts", "userProfilePosts", variables.owner.handle],
-        exact: true,
+        exact: true
       };
       await createPostPostsCacheMutation({
         queryFilter: forYouFeedQueryFilter,
         result,
-        variables,
+        variables
       });
       await createPostPostsCacheMutation({
         queryFilter: currentUserProfilePostsQueryFilter,
         result,
-        variables,
+        variables
       });
-    },
+    }
   });
 }
 
@@ -126,7 +130,7 @@ export function useLikePost() {
     onError: async (_, postId) => {
       //revert post cache state back to unliked if it throws an error
       await postReactionCacheMutation({ postId, type: "unlike" });
-    },
+    }
   });
 }
 
@@ -142,7 +146,7 @@ export function useUnLikePost() {
     onError: async (_, postId) => {
       //revert post cache state back to liked if it throws an error
       await postReactionCacheMutation({ postId, type: "like" });
-    },
+    }
   });
 }
 
@@ -152,7 +156,7 @@ export function usePostInfo(postId: string) {
     queryFn: async () => {
       const { data } = await api.get(`/posts/${postId}`);
       return data.data as TPostInfo;
-    },
+    }
   });
 }
 
@@ -167,7 +171,7 @@ export function usePostComments(postId: string) {
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
-      result.page === result.totalPages ? undefined : result.page + 1,
+      result.page === result.totalPages ? undefined : result.page + 1
   });
 }
 
@@ -191,7 +195,7 @@ export function useCreatePostComment() {
         content,
         createdAt: new Date(),
         postId,
-        id,
+        id
       };
       const queryFilter: QueryFilters = { queryKey: ["postComments", postId] };
       await queryClient.cancelQueries(queryFilter);
@@ -210,10 +214,10 @@ export function useCreatePostComment() {
                   totalPages: oldData.pages[0].totalPages,
                   message: "new post created in cache",
                   page: 1,
-                  perPage: 5,
+                  perPage: 5
                 },
-                ...oldData.pages.slice(1),
-              ],
+                ...oldData.pages.slice(1)
+              ]
             };
           }
           //if there are no commnets yet
@@ -226,9 +230,9 @@ export function useCreatePostComment() {
                   message: "created first comment in cache",
                   page: 1,
                   perPage: 5,
-                  totalPages: 1,
-                },
-              ],
+                  totalPages: 1
+                }
+              ]
             };
           }
         }
@@ -236,13 +240,13 @@ export function useCreatePostComment() {
 
       await postTotalCommentsCacheMutation({
         postId,
-        incrementTotalComments: true,
+        incrementTotalComments: true
       });
       await postInfoTotalCommentsCacheMutation({
         postId,
-        incrementTotalComments: true,
+        incrementTotalComments: true
       });
-    },
+    }
   });
 }
 
@@ -254,13 +258,13 @@ export function useDeletePost(postId: string | null) {
     },
     onSuccess: async (_, postId) => {
       await deletePostPostsCacheMutation(postId);
-    },
+    }
   });
 }
 
 export function useUserProfilePosts(
   userHandle: string,
-  currentUserHandle: string
+  currentUserHandle?: string
 ) {
   return useInfiniteQuery({
     queryKey: ["posts", "userProfilePosts", userHandle],
@@ -277,12 +281,13 @@ export function useUserProfilePosts(
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!currentUserHandle
   });
 }
 
 export function useUserCollections(
   userHandle: string,
-  currentUserHandle: string
+  currentUserHandle?: string
 ) {
   return useInfiniteQuery({
     queryKey: ["collections", "userCollections", userHandle],
@@ -299,6 +304,7 @@ export function useUserCollections(
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!currentUserHandle
   });
 }
 
@@ -310,12 +316,12 @@ export function useEditPost() {
         content,
         privacy,
         media,
-        collectionId: collection?.id ?? null,
+        collectionId: collection?.id ?? null
       });
     },
     onSuccess: async (_, postToEdit) => {
       await editPostPostsCacheMutation(postToEdit);
       await editPostPostInfoCacheMutation(postToEdit);
-    },
+    }
   });
 }

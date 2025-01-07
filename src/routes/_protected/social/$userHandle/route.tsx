@@ -7,18 +7,20 @@ import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/$userHandle")({
-  component: () => <UserProfilePageLayout />,
+  component: () => <UserProfilePageLayout />
 });
 
 function UserProfilePageLayout() {
   const { userHandle } = Route.useParams();
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
+
   const {
     data: userProfile,
     isLoading: isUserProfileLoading,
-    error: userProfileError,
-  } = useUserProfile(userHandle, currentUser.handle);
+    error: userProfileError
+  } = useUserProfile(userHandle, currentUser?.handle);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   if (isUserProfileLoading) {
     return <UserProfileSkeleton />;
@@ -44,6 +46,8 @@ function UserProfilePageLayout() {
           {isCurrentUser ? (
             <ProfileDetails
               isCurrentUser
+              avatar={userProfile.avatar}
+              banner={userProfile.banner}
               bio={userProfile.bio}
               handle={userProfile.handle}
               totalFollowers={userProfile.totalFollowers}
@@ -53,6 +57,8 @@ function UserProfilePageLayout() {
           ) : (
             <ProfileDetails
               isCurrentUser={false}
+              avatar={userProfile.avatar}
+              banner={userProfile.banner}
               followsCurrentUser={userProfile.followsYou}
               isFollowedByCurrentUser={userProfile.followedByYou}
               bio={userProfile.bio}

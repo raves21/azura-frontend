@@ -8,24 +8,25 @@ import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/$userHandle/")({
-  component: () => <UserProfilePage />,
+  component: () => <UserProfilePage />
 });
 
 function UserProfilePage() {
   const { userHandle } = Route.useParams();
   useCustomScrollRestoration(`userProfilePage-${userHandle}`);
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
 
   const {
     data: userProfilePosts,
     isLoading: isUserProfilePostsLoading,
     error: userProfilePostsError,
     isFetchingNextPage,
-    fetchNextPage,
-  } = useUserProfilePosts(userHandle, currentUser.handle);
+    fetchNextPage
+  } = useUserProfilePosts(userHandle, currentUser?.handle);
 
   const ref = useFetchNextPageInView(fetchNextPage);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   if (isUserProfilePostsLoading) {
     return <PostsSkeleton loadingType="loadingAllPosts" />;

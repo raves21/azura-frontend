@@ -11,10 +11,9 @@ import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 
 export default function PostComments() {
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
 
   const { postId } = useParams({
-    from: "/_protected/social/$userHandle/posts/$postId/",
+    from: "/_protected/social/$userHandle/posts/$postId/"
   });
 
   const {
@@ -22,12 +21,14 @@ export default function PostComments() {
     isLoading: isCommentsLoading,
     error: commentsError,
     isFetchingNextPage,
-    fetchNextPage,
+    fetchNextPage
   } = usePostComments(postId);
 
   const { isDesktopSmall } = useWindowBreakpoints();
 
   const ref = useFetchNextPageInView(fetchNextPage);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   let renderedResult: ReactNode;
 

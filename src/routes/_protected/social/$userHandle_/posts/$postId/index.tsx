@@ -5,7 +5,7 @@ import {
   createFileRoute,
   LinkProps,
   Navigate,
-  useRouterState,
+  useRouterState
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import PostInfoSkeleton from "@/components/shared/loadingSkeletons/social/PostInfoSkeleton";
@@ -15,44 +15,44 @@ import { useAuthStore } from "@/utils/stores/useAuthStore";
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/posts/$postId/"
 )({
-  component: () => <PostInfoPage />,
+  component: () => <PostInfoPage />
 });
 
 function PostInfoPage() {
   const { postId, userHandle } = Route.useParams();
 
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
-
-  let linkProps: LinkProps;
-  const { postInfoState } = useRouterState({ select: (s) => s.location.state });
-
-  if (!postInfoState || (postInfoState && postInfoState.from === "home-page")) {
-    linkProps = {
-      to: "/social",
-    };
-  } else if (postInfoState.from === "search-page") {
-    linkProps = {
-      to: "/social/search/posts",
-    };
-  } else {
-    linkProps = {
-      to: "/social/$userHandle",
-      params: {
-        userHandle,
-      },
-    };
-  }
-
   const {
     data: postInfo,
     isLoading: isPostInfoLoading,
-    error: postInfoError,
+    error: postInfoError
   } = usePostInfo(postId);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  let linkProps: LinkProps;
+  const { postInfoState } = useRouterState({ select: (s) => s.location.state });
+
+  if (!currentUser) return <Navigate to="/login" replace />;
+
+  if (!postInfoState || (postInfoState && postInfoState.from === "home-page")) {
+    linkProps = {
+      to: "/social"
+    };
+  } else if (postInfoState.from === "search-page") {
+    linkProps = {
+      to: "/social/search/posts"
+    };
+  } else {
+    linkProps = {
+      to: "/social/$userHandle",
+      params: {
+        userHandle
+      }
+    };
+  }
 
   if (isPostInfoLoading) {
     return <PostInfoSkeleton linkProps={linkProps} withAttachment={false} />;

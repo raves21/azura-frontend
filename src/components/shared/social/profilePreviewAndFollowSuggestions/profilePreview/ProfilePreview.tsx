@@ -9,15 +9,14 @@ import ViewProfileImageDialog from "../../ViewProfileImageDialog";
 
 export default function ProfilePreview() {
   const currentUser = useAuthStore((state) => state.currentUser);
-  if (!currentUser) return <Navigate to="/login" replace />;
-
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-
   const {
     data: currentUserProfile,
     isLoading: isCurrentUserProfileLoading,
-    error: currentUserProfileError,
-  } = useUserProfile(currentUser.id, currentUser.id);
+    error: currentUserProfileError
+  } = useUserProfile(currentUser?.id, currentUser?.id);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   if (isCurrentUserProfileLoading) {
     return (
