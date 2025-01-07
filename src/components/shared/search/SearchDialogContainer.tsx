@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useMatchRoute } from "@tanstack/react-router";
 import { PropsWithChildren } from "react";
 import { useShallow } from "zustand/react/shallow";

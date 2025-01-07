@@ -11,10 +11,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useShallow } from "zustand/react/shallow";
 import { userDetailsFormSchema } from "@/utils/variables/formSchemas";
 import { UserDetailsFormData } from "@/utils/types/auth/forms";
+import { cn } from "@/lib/utils";
 
 export default function UserDetailsForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -35,7 +36,6 @@ export default function UserDetailsForm() {
   });
 
   async function onSubmit(values: UserDetailsFormData) {
-    console.log("BRUH");
     setSignUpValues({
       ...values,
       password: signUpValues.password,
@@ -61,7 +61,7 @@ export default function UserDetailsForm() {
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="Display Name"
+                    placeholder="Username"
                     {...field}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
                   />
@@ -73,18 +73,26 @@ export default function UserDetailsForm() {
             control={form.control}
             name="handle"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="relative">
                 <FormLabel className="flex items-center justify-between w-full">
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="Username"
+                    placeholder="Handle"
                     {...field}
-                    className="font-medium bg-gray-800 border-none text-mainWhite"
+                    className="pl-8 font-medium bg-gray-800 border-none text-mainWhite"
                   />
                 </FormControl>
+                <p
+                  className={cn(
+                    "absolute font-medium text-slate-500 bottom-[9px] transition-colors left-[11px]",
+                    { "text-mainWhite": !!form.watch().handle.trim() }
+                  )}
+                >
+                  @
+                </p>
               </FormItem>
             )}
           />

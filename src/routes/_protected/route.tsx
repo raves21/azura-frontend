@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 import HomeHeader from "../../components/shared/HomeHeader";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export const Route = createFileRoute("/_protected")({
   component: () => <Protected />,

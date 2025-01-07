@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { getRatingScore } from "@/utils/functions/reusable_functions";
 import { cn } from "@/lib/utils";
+import { getRatingScore } from "@/services/thirdParty/anime/functions/animeFunctions";
 
 type InfoPageVariant = {
   variant: "infoPage";

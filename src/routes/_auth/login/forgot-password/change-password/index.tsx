@@ -1,10 +1,10 @@
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import ChangePasswordForm from "./-ChangePasswordForm";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
 import { useLogin } from "@/services/auth/authQueries";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export const Route = createFileRoute(

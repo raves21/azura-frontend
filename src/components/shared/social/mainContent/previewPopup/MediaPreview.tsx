@@ -8,8 +8,8 @@ type MediaPreviewProps = {
 };
 
 export default function MediaPreview({ media }: MediaPreviewProps) {
-  const { coverImage, description, posterImage, year, rating, title, type } =
-    media;
+  const { coverImage, posterImage, year, rating, title, type } = media;
+  media.description = media.description.replace("\\", "");
   const heroImage = coverImage ?? posterImage ?? "/no-image-2.jpg";
 
   return (
@@ -40,7 +40,7 @@ export default function MediaPreview({ media }: MediaPreviewProps) {
           </div>
         </div>
         <Description
-          description={description}
+          description={media.description}
           showDescriptionLabel={false}
           className="w-full text-sm mobile-m:text-base"
         />

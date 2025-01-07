@@ -6,7 +6,7 @@ import {
   RefreshResponse,
   UserBasicInfo,
 } from "@/utils/types/auth/auth";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -104,11 +104,17 @@ export function useLogin() {
       return data as LoginResponse;
     },
     onSuccess: (result) => {
+      queryClient.clear();
       if (result.isDetachedMode) {
         useAuthStore.getState().setDetachedModeUserInfo(result);
         history.replaceState(null, "", "/detached-mode");
       } else {
-        queryClient.setQueryData(["refreshJWT"], result.data.accessToken);
+        const refreshJWTInitialData: RefreshResponse = {
+          accessToken: result.data.accessToken,
+          currentUserBasicInfo: result.data.user,
+        };
+        queryClient.setQueryData(["refreshJWT"], refreshJWTInitialData);
+        useAuthStore.getState().setCurrentUser(result.data.user);
         history.replaceState(null, "", "/anime");
       }
     },
@@ -156,7 +162,7 @@ export function useLogout() {
       });
     },
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["refreshJWT"] });
+      queryClient.clear();
       history.replaceState(null, "", "/login");
     },
   });

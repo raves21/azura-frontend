@@ -4,10 +4,10 @@ import { LibraryBig } from "lucide-react";
 import UserAvatar from "../../../UserAvatar";
 import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
-import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import CollectionPreview from "../../previewPopup/CollectionPreview";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type CollectionAttachmentProps = {
   collection: TCollection;
@@ -41,16 +41,16 @@ export default function CollectionAttachment({
   const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
   );
-  const windowWidth = useWindowWidth();
+  const { isTablet } = useWindowBreakpoints();
 
   function openCollectionPreviewPopup(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) {
     e.stopPropagation();
-    if (windowWidth < 768) {
-      toggleOpenDrawer(<CollectionPreview collection={collection} />);
-    } else {
+    if (isTablet) {
       toggleOpenDialog(<CollectionPreview collection={collection} />);
+    } else {
+      toggleOpenDrawer(<CollectionPreview collection={collection} />);
     }
   }
 
@@ -88,7 +88,10 @@ export default function CollectionAttachment({
             </p>
           </div>
           <div className="flex items-center gap-2 text-[10px] mobile-l:text-xs">
-            <UserAvatar src={owner.avatar} imageClassName="size-4 md:size-4" />
+            <UserAvatar
+              src={owner.avatar || "/sample-user-pfp.png"}
+              imageClassName="size-4 md:size-4"
+            />
             <p
               className={cn(
                 "font-medium mobile-m:text-xs sm:text-sm line-clamp-1"

@@ -6,7 +6,7 @@ import {
   Status,
 } from "../types/thirdParty/animeAnilist";
 
-export const sortByLabels: Record<string, string> = {
+export const sortByLabels: Record<SortBy, string> = {
   [SortBy.TRENDING_DESC]: "Trending",
   [SortBy.POPULARITY_DESC]: "Popularity",
   [SortBy.FAVOURITES_DESC]: "Favourite",
@@ -16,7 +16,7 @@ export const sortByLabels: Record<string, string> = {
   [SortBy.START_DATE_DESC]: "Release Date",
 };
 
-export const formatLabels: Record<string, string> = {
+export const formatLabels: Record<Format, string> = {
   [Format.TV]: "TV",
   [Format.TV_SHORT]: "TV Short",
   [Format.OVA]: "OVA",
@@ -26,7 +26,7 @@ export const formatLabels: Record<string, string> = {
   [Format.MUSIC]: "Music",
 };
 
-export const anilistAnimeStatusLabels: Record<string, string> = {
+export const anilistAnimeStatusLabels: Record<AnilistAnimeStatus, string> = {
   [AnilistAnimeStatus.RELEASING]: "Ongoing",
   [AnilistAnimeStatus.FINISHED]: "Completed",
   [AnilistAnimeStatus.NOT_YET_RELEASED]: "Upcoming",
@@ -44,7 +44,7 @@ export const statusLabels: Record<string, string> = {
   [Status.HIATUS]: "Hiatus",
 };
 
-export const seasonLabels: Record<string, string> = {
+export const seasonLabels: Record<Season, string> = {
   [Season.WINTER]: "Winter",
   [Season.SPRING]: "Spring",
   [Season.SUMMER]: "Summer",

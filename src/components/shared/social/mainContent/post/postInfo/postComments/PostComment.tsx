@@ -6,5 +6,16 @@ type PostCommentProps = {
 };
 
 export default function PostComment({ comment }: PostCommentProps) {
-  return <Activity type="comment" comment={comment} showPrivacy={false} />;
+  return (
+    <Activity
+      type="comment"
+      comment={comment}
+      ownerProfileLinkProps={{
+        to: "/social/$userHandle",
+        params: {
+          userHandle: comment.author.handle,
+        },
+      }}
+    />
+  );
 }

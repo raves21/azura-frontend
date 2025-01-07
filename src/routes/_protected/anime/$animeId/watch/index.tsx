@@ -14,7 +14,7 @@ import {
   useFetchAnimeInfo,
   useChunkAnimeEpisodes,
   useEpisodeInfo,
-} from "@/services/thirdParty/animeQueries";
+} from "@/services/thirdParty/anime/queries/animeQueries";
 import EpisodeTitleAndNumber from "@/components/shared/episode/EpisodeTitleAndNumber";
 import { Genre } from "@/utils/types/thirdParty/animeAnilist";
 import MediaCard from "@/components/shared/MediaCard";

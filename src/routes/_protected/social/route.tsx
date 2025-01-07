@@ -12,8 +12,8 @@ export const Route = createFileRoute("/_protected/social")({
 function SocialPageLayout() {
   const matchRoute = useMatchRoute();
   return (
-    <main className="relative text-sm flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
-      {matchRoute({ to: "/social/$userName/post/$postId" }) && (
+    <main className="relative text-sm pb-10 flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
+      {matchRoute({ to: "/social/$userHandle/posts/$postId" }) && (
         <FloatingCreateCommentBar />
       )}
       <FloatingPagesBar />

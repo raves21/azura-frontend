@@ -1,7 +1,7 @@
 import {
   useFetchAnimeEpisodes,
   useFetchAnimeInfo,
-} from "@/services/thirdParty/animeQueries";
+} from "@/services/thirdParty/anime/queries/animeQueries";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeInfoPageHero from "./-AnimeInfoPageHero";
 import AnimeEpisodes from "@/components/shared/anime/AnimeEpisodes";

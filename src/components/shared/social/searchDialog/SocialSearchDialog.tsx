@@ -4,7 +4,7 @@ import { useDebounce } from "@/utils/hooks/useDebounce";
 import { useEffect, useState } from "react";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import SearchDialogContainer from "../../search/SearchDialogContainer";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 
 export default function SocialSearchDialog() {

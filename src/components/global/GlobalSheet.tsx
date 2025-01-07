@@ -4,8 +4,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 export default function GlobalSheet() {
   const [isSheetOpen, sheetContent, toggleOpenSheet] = useGlobalStore(
@@ -19,9 +20,11 @@ export default function GlobalSheet() {
   return (
     <Sheet open={isSheetOpen} onOpenChange={toggleOpenSheet}>
       <SheetContent side="left" className="p-0 border-0 font-montserrat">
-        <SheetHeader className="hidden">
-          <SheetTitle></SheetTitle>
-        </SheetHeader>
+        <VisuallyHidden.Root>
+          <SheetHeader className="hidden">
+            <SheetTitle></SheetTitle>
+          </SheetHeader>
+        </VisuallyHidden.Root>
         {sheetContent}
       </SheetContent>
     </Sheet>

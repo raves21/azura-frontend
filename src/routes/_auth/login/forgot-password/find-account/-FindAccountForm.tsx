@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
-import { useAuthStore } from "@/utils/stores/authStore";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { findAccountFormSchema } from "@/utils/variables/formSchemas";
 import { FindAccountFormData } from "@/utils/types/auth/forms";
 import { useFindUserByEmail, useSendOTC } from "@/services/auth/authQueries";
 import { useShallow } from "zustand/react/shallow";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 
 export default function FindAccountForm() {

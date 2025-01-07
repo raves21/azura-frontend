@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/shared/ErrorDialog";
 import { Link } from "@tanstack/react-router";
 import { loginFormSchema } from "@/utils/variables/formSchemas";

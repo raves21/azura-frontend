@@ -2,13 +2,13 @@ import ProfileAvatar from "./ProfileAvatar";
 import ProfileBanner from "./ProfileBanner";
 
 type ProfileImagesProps = {
-  avatar: string;
-  banner: string;
+  avatar: string | null;
+  banner: string | null;
 };
 
 export default function ProfileImages({ avatar, banner }: ProfileImagesProps) {
   return (
-    <div className="relative w-full h-28 md:h-48 sm:h-40">
+    <div className="relative w-full h-28 sm:h-44 md:h-48">
       <ProfileAvatar avatar={avatar} />
       <ProfileBanner banner={banner} />
     </div>

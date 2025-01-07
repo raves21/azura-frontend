@@ -4,7 +4,7 @@ import {
   Status,
 } from "@/utils/types/thirdParty/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
-import { useChunkAnimeEpisodes } from "@/services/thirdParty/animeQueries";
+import { useChunkAnimeEpisodes } from "@/services/thirdParty/anime/queries/animeQueries";
 import InfoSectionBackgroundImage from "@/components/shared/info/InfoSectionBackgroundImage";
 import Rating from "@/components/shared/info/Rating";
 import Description from "@/components/shared/info/Description";

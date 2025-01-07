@@ -1,17 +1,23 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCurrentUserProfile } from "@/services/auth/socialQueries";
-import { useAuthStore } from "@/utils/stores/authStore";
-import { Link, Navigate } from "@tanstack/react-router";
+import { useUserProfile } from "@/services/social/queries/socialQueries";
+import { Link } from "@tanstack/react-router";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { Navigate } from "@tanstack/react-router";
+import UserAvatar from "../../UserAvatar";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import ViewProfileImageDialog from "../../ViewProfileImageDialog";
 
 export default function ProfilePreview() {
+  const currentUser = useAuthStore((state) => state.currentUser);
+  if (!currentUser) return <Navigate to="/login" replace />;
+
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
   const {
     data: currentUserProfile,
     isLoading: isCurrentUserProfileLoading,
     error: currentUserProfileError,
-  } = useCurrentUserProfile();
-  const currentUser = useAuthStore((state) => state.currentUser);
-
-  if (!currentUser) return <Navigate to="/login" replace />;
+  } = useUserProfile(currentUser.id, currentUser.id);
 
   if (isCurrentUserProfileLoading) {
     return (
@@ -61,12 +67,28 @@ export default function ProfilePreview() {
       <div className="flex flex-col w-full gap-5 overflow-hidden text-base rounded-lg bg-socialPrimary">
         <div className="relative top-0 w-full h-24">
           <img
+            onClick={() =>
+              toggleOpenDialog(
+                <ViewProfileImageDialog
+                  src={currentUserProfile.banner ?? "/no-image-2.jpg"}
+                  type="banner"
+                />
+              )
+            }
             src={currentUserProfile.banner ?? "/no-image-2.jpg"}
-            className="absolute inset-0 object-cover size-full"
+            className="absolute inset-0 object-cover size-full hover:cursor-pointer"
           />
-          <img
-            src={currentUserProfile.avatar ?? "/no-image.png"}
-            className="absolute object-cover -translate-x-1/2 rounded-full -bottom-[30%] size-16 left-1/2"
+          <UserAvatar
+            onClick={() =>
+              toggleOpenDialog(
+                <ViewProfileImageDialog
+                  src={currentUserProfile.avatar ?? "/no-image-2.jpg"}
+                  type="avatar"
+                />
+              )
+            }
+            src={currentUserProfile.avatar}
+            imageClassName="absolute object-cover border-[0.5px] hover:cursor-pointer border-socialPrimary -translate-x-1/2 rounded-full -bottom-[30%] size-16 left-1/2"
           />
         </div>
         <div className="flex flex-col gap-3 px-3 mt-4">

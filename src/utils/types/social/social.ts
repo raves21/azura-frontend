@@ -7,10 +7,22 @@ import {
   ResponseWithMessage,
 } from "./shared";
 
-export type Posts = ResponseWithMessage &
+export type PostsRequest = ResponseWithMessage &
   PaginatedResponse & {
     data: TPost[];
   };
+
+export type CommentsRequest = ResponseWithMessage &
+  PaginatedResponse & {
+    data: TPostComment[];
+  };
+
+export type CollectionsRequest = ResponseWithMessage &
+  PaginatedResponse & {
+    data: CollectionListItem[];
+  };
+
+export type CollectionListItem = Omit<TCollection, "privacy" | "description">;
 
 export type TPost = {
   id: string;
@@ -23,6 +35,10 @@ export type TPost = {
   media: Media | null;
   collection: TCollection | null;
   createdAt: Date;
+};
+
+export type TPostInfo = TPost & {
+  postFirstLikers: Omit<EntityOwner, "handle">[] | null;
 };
 
 export type Media = {
@@ -77,12 +93,13 @@ export type TPostComment = {
   author: EntityOwner;
   createdAt: Date;
 };
-
-export type CurrentUserProfile = UserBasicInfo & {
+export type UserProfile = UserBasicInfo & {
   banner: string | null;
   bio: string | null;
   createdAt: Date;
   totalFollowers: number;
   totalFollowing: number;
-  sessionId: number;
+  followsYou: boolean;
+  followedByYou: boolean;
+  sessionId: string;
 };

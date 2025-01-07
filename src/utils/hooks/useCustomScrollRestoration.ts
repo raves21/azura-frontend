@@ -8,7 +8,7 @@ type ScrollPosition = {
 
 export function useCustomScrollRestoration(key?: string) {
   const { pathname } = useLocation();
-  const scrollPositionKey = key ? key : pathname;
+  const scrollPositionKey = key || pathname;
 
   useEffect(() => {
     const savedScrollPosition = sessionStorage.getItem(scrollPositionKey);

@@ -1,7 +1,7 @@
 import { MultipleAnimeResponse } from "@/utils/types/thirdParty/animeAnilist";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@tanstack/react-router";
-import { useGlobalStore } from "@/utils/stores/globalStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import SearchDialogResultCard from "./-SearchDialogResultCard";
 
 type SearchResultsProps = {
