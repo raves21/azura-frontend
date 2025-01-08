@@ -1,4 +1,4 @@
-import { Editor, useEditor } from "@tiptap/react";
+import { AnyExtension, Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useRef, useState, useEffect } from "react";
@@ -20,6 +20,8 @@ type UseTipTapEditorArgs = {
   placeholder?: string;
   maxLength?: number;
   editorProps?: EditorProps;
+  noNewLine?: boolean;
+  customExtensions?: AnyExtension[];
   focusOnMount: boolean;
 };
 
@@ -27,29 +29,32 @@ export function useTipTapEditor({
   placeholder,
   maxLength,
   editorProps,
-  focusOnMount,
+  customExtensions = [],
+  focusOnMount
 }: UseTipTapEditorArgs): UseTipTapEditorReturnType {
   const [inputLength, setInputLength] = useState(0);
   const [inputText, setInputText] = useState<string | null>(null);
+
   const editor = useEditor({
     editorProps: { ...editorProps },
     extensions: [
       StarterKit.configure({
         bold: false,
-        italic: false,
+        italic: false
       }),
       Placeholder.configure({
-        placeholder,
+        placeholder
       }),
       CharacterCount.configure({
-        limit: maxLength,
+        limit: maxLength
       }),
+      ...customExtensions
     ],
     onUpdate: ({ editor }) => {
       const inputText = editor.getText({ blockSeparator: "\n" });
       setInputText(inputText);
       setInputLength(inputText.length);
-    },
+    }
   });
 
   const editorContentRef = useRef<HTMLDivElement | null>(null);
@@ -87,6 +92,6 @@ export function useTipTapEditor({
     inputLength,
     inputText,
     setInputText,
-    clearInputText,
+    clearInputText
   };
 }
