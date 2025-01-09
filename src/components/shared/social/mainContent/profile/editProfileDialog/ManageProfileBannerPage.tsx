@@ -15,22 +15,21 @@ export default function ManageProfileBannerPage() {
     ])
   );
 
-  const [inputText, setInputText] = useState("");
+  const [bannerImagePreview, setBannerImagePreview] =
+    useState(editProfileBanner);
+  const [bannerURLInputText, setBannerURLInputText] =
+    useState(editProfileBanner);
 
   useEffect(() => {
-    if (editProfileBanner) setInputText(editProfileBanner);
-  }, []);
-
-  useEffect(() => {
-    if (editProfileBanner) setInputText(editProfileBanner);
-  }, [inputText]);
+    setBannerImagePreview(bannerURLInputText);
+  }, [bannerURLInputText]);
 
   return (
     <div className="flex flex-col flex-grow gap-24 overflow-y-auto">
       <div className="relative w-full h-48 shrink-0">
         <div className="absolute size-full">
-          {editProfileBanner ? (
-            <img src={editProfileBanner} className="object-cover size-full" />
+          {bannerImagePreview ? (
+            <img src={bannerImagePreview} className="object-cover size-full" />
           ) : (
             <div className="grid border-b size-full border-socialTextSecondary place-items-center text-md">
               No Image
@@ -61,7 +60,7 @@ export default function ManageProfileBannerPage() {
           </div>
           <input
             placeholder="e.g: https://some-image-url.jpg"
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => setBannerURLInputText(e.target.value)}
             className="rounded-md border-[0.5px] border-socialTextSecondary px-3 py-3 bg-socialPrimary focus:outline-none"
           />
         </div>
