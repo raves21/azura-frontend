@@ -26,7 +26,7 @@ export default function CreateComment({
     editorContentInitialHeight,
     editorContentRef,
     inputText,
-    clearInputText
+    clearEditorContent
   } = useTipTapEditor({
     focusOnMount: false,
     placeholder: "Write a comment...",
@@ -48,7 +48,7 @@ export default function CreateComment({
 
   async function handleCreateComment(inputText: string) {
     await createComment({ content: inputText, postId });
-    clearInputText();
+    clearEditorContent();
   }
 
   return (

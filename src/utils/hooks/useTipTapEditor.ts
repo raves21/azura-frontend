@@ -13,7 +13,8 @@ export type UseTipTapEditorReturnType = {
   inputLength: number;
   inputText: string | null;
   setInputText: React.Dispatch<React.SetStateAction<string | null>>;
-  clearInputText: () => void;
+  setEditorContent: (text: string | null) => void;
+  clearEditorContent: () => void;
 };
 
 type UseTipTapEditorArgs = {
@@ -51,9 +52,9 @@ export function useTipTapEditor({
       ...customExtensions
     ],
     onUpdate: ({ editor }) => {
-      const inputText = editor.getText({ blockSeparator: "\n" });
-      setInputText(inputText);
-      setInputLength(inputText.length);
+      const text = editor.getText({ blockSeparator: "\n" });
+      setInputText(text);
+      setInputLength(text.length);
     }
   });
 
@@ -76,7 +77,14 @@ export function useTipTapEditor({
     }
   }, []);
 
-  function clearInputText() {
+  function setEditorContent(text: string | null) {
+    if (editor) {
+      editor.commands.setContent(text);
+      setInputText(text);
+    }
+  }
+
+  function clearEditorContent() {
     if (editor) {
       editor.commands.clearContent();
       setInputLength(0);
@@ -92,6 +100,7 @@ export function useTipTapEditor({
     inputLength,
     inputText,
     setInputText,
-    clearInputText
+    setEditorContent,
+    clearEditorContent
   };
 }

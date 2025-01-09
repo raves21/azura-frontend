@@ -65,8 +65,7 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
     } else {
       const { content, privacy } = props.postToEdit;
       if (tipTapEditor && tipTapEditor.editor) {
-        tipTapEditor.editor.commands.setContent(content);
-        tipTapEditor.setInputText(content);
+        tipTapEditor.setEditorContent(content)
       }
       setSelectedPrivacy(privacy);
     }

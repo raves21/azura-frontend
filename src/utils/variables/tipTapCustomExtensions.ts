@@ -1,7 +1,7 @@
 import { Extension } from "@tiptap/core";
 import { Plugin, PluginKey } from "prosemirror-state";
 
-export const NoNewLine = Extension.create({
+export const DisableNewLine = Extension.create({
   name: "no_new_line",
 
   addProseMirrorPlugins() {
