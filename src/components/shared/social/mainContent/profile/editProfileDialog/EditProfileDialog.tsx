@@ -6,6 +6,7 @@ import EditProfilePage from "./EditProfilePage";
 import ManageProfileBannerPage from "./ManageProfileBannerPage";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
+import ManageProfileAvatar from "./ManageProfileAvatar";
 
 type EditProfileDialogProps = {
   avatar: string | null;
@@ -21,11 +22,23 @@ export default function EditProfileDialog({
   bio
 }: EditProfileDialogProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const [editProfilePage, setEditProfilePage] = useEditProfileStore(
-    useShallow((state) => [state.editProfilePage, state.setEditProfilePage])
+  const [
+    editProfilePage,
+    setEditProfilePage,
+    setEditProfileAvatar,
+    setEditProfileBanner
+  ] = useEditProfileStore(
+    useShallow((state) => [
+      state.editProfilePage,
+      state.setEditProfilePage,
+      state.setEditProfileAvatar,
+      state.setEditProfileBanner
+    ])
   );
 
   useEffect(() => {
+    setEditProfileAvatar(null);
+    setEditProfileBanner(null);
     setEditProfilePage("editProfilePage");
   }, []);
 
@@ -41,9 +54,12 @@ export default function EditProfileDialog({
         userName={userName}
       />
     );
-  } else {
+  } else if (editProfilePage === "manageBannerPage") {
     headerTitle = "Manage Profile Banner";
     currentPage = <ManageProfileBannerPage />;
+  } else {
+    headerTitle = "Manage Profile Avatar";
+    currentPage = <ManageProfileAvatar />;
   }
 
   return (
@@ -68,9 +84,6 @@ export default function EditProfileDialog({
         )}
       </header>
       {currentPage}
-      <button className="grid py-2 m-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite">
-        {userName}
-      </button>
     </main>
   );
 }
