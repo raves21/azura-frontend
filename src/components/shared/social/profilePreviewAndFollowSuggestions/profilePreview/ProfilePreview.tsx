@@ -6,6 +6,7 @@ import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../UserAvatar";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ViewProfileImageDialog from "../../ViewProfileImageDialog";
+import UserBioRenderer from "../../mainContent/profile/profileDetails/UserBioRenderer";
 
 export default function ProfilePreview() {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -100,7 +101,11 @@ export default function ProfilePreview() {
             </p>
           </div>
           <p className="px-5 text-center text-gray-300 line-clamp-3">
-            {currentUserProfile.bio ?? "No bio"}
+            {currentUserProfile.bio ? (
+              <UserBioRenderer content={currentUserProfile.bio} />
+            ) : (
+              <em>No bio</em>
+            )}
           </p>
         </div>
         <div className="space-y-2">
