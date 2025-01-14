@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useShallow } from "zustand/react/shallow";
+import { LoaderCircle } from "lucide-react";
 
 export default function ManageProfileBannerPage() {
   const [
@@ -20,6 +21,7 @@ export default function ManageProfileBannerPage() {
   const [bannerURLInputText, setBannerURLInputText] =
     useState(editProfileBanner);
   const [isImageError, setIsImageError] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
 
   function handleConfirmBanner(bannerURL: string | null) {
     if (isImageError) {
@@ -30,19 +32,42 @@ export default function ManageProfileBannerPage() {
     setEditProfilePage("editProfilePage");
   }
 
+  function handleImageLoadError() {
+    setIsImageError(true);
+    setIsImageLoading(false);
+  }
+
+  function handleImageLoadSuccess() {
+    setIsImageError(false);
+    setIsImageLoading(false);
+  }
+
+  function handleURLInputChange(inputText: string) {
+    if (inputText === "") {
+      setBannerURLInputText(null);
+      setIsImageLoading(false);
+    } else {
+      setBannerURLInputText(inputText);
+      setIsImageLoading(true);
+      setIsImageError(false);
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col flex-grow gap-[93px] overflow-y-auto">
         <div className="relative w-full h-48 shrink-0">
           <div className="absolute size-full">
+            {isImageLoading && (
+              <div className="absolute flex items-center justify-center gap-2 -translate-x-1/2 -translate-y-1/2 border-b size-full top-1/2 left-1/2 border-mainAccent text-md">
+                <p className="font-medium text-md">Loading</p>
+                <LoaderCircle className="animate-spin size-5 stroke-mainAccent" />
+              </div>
+            )}
             {bannerURLInputText && (
               <img
-                onError={() => {
-                  setIsImageError(true);
-                }}
-                onLoad={() => {
-                  setIsImageError(false);
-                }}
+                onError={handleImageLoadError}
+                onLoad={handleImageLoadSuccess}
                 src={bannerURLInputText}
                 className="object-cover size-full"
               />
@@ -76,7 +101,7 @@ export default function ManageProfileBannerPage() {
             <input
               value={bannerURLInputText || ""}
               placeholder="e.g: https://some-image-url.jpg"
-              onChange={(e) => setBannerURLInputText(e.target.value)}
+              onChange={(e) => handleURLInputChange(e.currentTarget.value)}
               className="rounded-md border-[0.5px] border-socialTextSecondary px-3 py-3 bg-socialPrimary focus:outline-none"
             />
           </div>

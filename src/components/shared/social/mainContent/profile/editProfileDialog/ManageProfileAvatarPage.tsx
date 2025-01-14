@@ -1,9 +1,10 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useShallow } from "zustand/react/shallow";
 import { cn } from "@/lib/utils";
+import { LoaderCircle } from "lucide-react";
 
-export default function ManageProfileAvatar() {
+export default function ManageProfileAvatarPage() {
   const [
     editProfileBanner,
     editProfileAvatar,
@@ -17,10 +18,20 @@ export default function ManageProfileAvatar() {
       state.setEditProfilePage
     ])
   );
-
   const [avatarURLInputText, setAvatarURLInputText] =
     useState(editProfileAvatar);
   const [isImageError, setIsImageError] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
+  function handleImageLoadSuccess() {
+    setIsImageError(false);
+    setIsImageLoading(false);
+  }
+
+  function handleImageLoadError() {
+    setIsImageError(true);
+    setIsImageLoading(false);
+  }
 
   function handleConfirmAvatar(avatarURL: string | null) {
     if (isImageError) {
@@ -29,6 +40,17 @@ export default function ManageProfileAvatar() {
       setEditProfileAvatar(avatarURL);
     }
     setEditProfilePage("editProfilePage");
+  }
+
+  function handleURLInputChange(inputText: string) {
+    if (inputText === "") {
+      setAvatarURLInputText(null);
+      setIsImageLoading(false);
+    } else {
+      setAvatarURLInputText(inputText);
+      setIsImageLoading(true);
+      setIsImageError(false);
+    }
   }
 
   return (
@@ -44,17 +66,23 @@ export default function ManageProfileAvatar() {
           <div
             className={cn(
               "absolute -bottom-[38%] left-4 size-[120px] rounded-full overflow-hidden border-4 box-content",
-              !avatarURLInputText || isImageError
+              !avatarURLInputText || isImageError || isImageLoading
                 ? "border-mainAccent"
                 : "border-socialPrimary"
             )}
           >
+            {isImageLoading && (
+              <div className="absolute flex items-center justify-center gap-2 -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 size-full bg-socialPrimary">
+                <p className="font-medium text-md">Loading</p>
+                <LoaderCircle className="animate-spin size-5 stroke-mainAccent" />
+              </div>
+            )}
             {avatarURLInputText && (
               <img
                 src={avatarURLInputText}
                 className="absolute object-cover size-full"
-                onError={() => setIsImageError(true)}
-                onLoad={() => setIsImageError(false)}
+                onError={handleImageLoadError}
+                onLoad={handleImageLoadSuccess}
               />
             )}
             {(!avatarURLInputText || isImageError) && (
@@ -79,13 +107,7 @@ export default function ManageProfileAvatar() {
             <input
               value={avatarURLInputText || ""}
               placeholder="e.g: https://some-image-url.jpg"
-              onChange={(e) => {
-                if (e.currentTarget.value === "") {
-                  setAvatarURLInputText(null);
-                } else {
-                  setAvatarURLInputText(e.target.value);
-                }
-              }}
+              onChange={(e) => handleURLInputChange(e.currentTarget.value)}
               className="rounded-md border-[0.5px] border-socialTextSecondary px-3 py-3 bg-socialPrimary focus:outline-none"
             />
           </div>

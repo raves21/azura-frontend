@@ -1,8 +1,12 @@
+import { useEditUserProfile } from "@/services/social/queries/socialQueries";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { Navigate } from "@tanstack/react-router";
 import { EditorContent } from "@tiptap/react";
-import { ImageUp, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ImageUp, LoaderCircle, X } from "lucide-react";
+import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 type EditProfilePageProps = {
@@ -18,16 +22,28 @@ export default function EditProfilePage({
   userName,
   bio
 }: EditProfilePageProps) {
+  const [currentUser, setCurrentUser] = useAuthStore(
+    useShallow((state) => [state.currentUser, state.setCurrentUser])
+  );
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
+    editProfileUsername,
+    editProfileBio,
     editProfileAvatar,
     editProfileBanner,
+    setEditProfileUsername,
+    setEditProfileBio,
     setEditProfileAvatar,
     setEditProfileBanner,
     setEditProfilePage
   ] = useEditProfileStore(
     useShallow((state) => [
+      state.editProfileUsername,
+      state.editProfileBio,
       state.editProfileAvatar,
       state.editProfileBanner,
+      state.setEditProfileUsername,
+      state.setEditProfileBio,
       state.setEditProfileAvatar,
       state.setEditProfileBanner,
       state.setEditProfilePage
@@ -37,8 +53,8 @@ export default function EditProfilePage({
   const {
     editor: bioEditor,
     editorContentRef: bioEditorRef,
-    // inputText: bioInput,
     inputLength: bioInputLength,
+    inputText: bioInput,
     setEditorContent: setBioInput,
     editorContentInitialHeight: bioEditorInitialHeight
   } = useTipTapEditor({
@@ -52,17 +68,54 @@ export default function EditProfilePage({
     }
   });
 
-  const [userNameInput, setUserNameInput] = useState(userName);
+  const { mutateAsync: editProfile, status: editProfileStatus } =
+    useEditUserProfile();
 
-  //initialize values
+  // initialize values on mount:
+  // only set the state to the default ones (the one the user already has)
+  // if the user hasnt made any changes yet (the global/zustand states contains the changes the user made)
   useEffect(() => {
-    if (bio) setBioInput(bio);
-
-    // only set the state of the avatar and banner to the default ones (the one the user already has)
-    // if the user hasnt made any changes to it yet
+    if (bio && !editProfileBio) {
+      setBioInput(bio);
+    }
+    if (editProfileBio) {
+      setBioInput(editProfileBio);
+    }
+    if (userName && !editProfileUsername) {
+      setEditProfileUsername(userName);
+    }
     if (avatar && !editProfileAvatar) setEditProfileAvatar(avatar);
     if (banner && !editProfileBanner) setEditProfileBanner(banner);
   }, []);
+
+  // for setting editProfileBio based on bioInput
+  useEffect(() => {
+    if (bioInput === "") {
+      setEditProfileBio(null);
+    } else {
+      setEditProfileBio(bioInput);
+    }
+  }, [bioInput]);
+
+  async function saveChanges(userHandle: string) {
+    await editProfile({
+      userHandle: userHandle,
+      avatar: editProfileAvatar,
+      banner: editProfileBanner,
+      bio: editProfileBio,
+      username: editProfileUsername
+    });
+    if (currentUser) {
+      setCurrentUser({
+        ...currentUser,
+        avatar: editProfileAvatar,
+        username: editProfileUsername
+      });
+    }
+    toggleOpenDialog(null);
+  }
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -118,16 +171,20 @@ export default function EditProfilePage({
         <div className="flex flex-col gap-6 px-5 mb-8">
           <div className="flex flex-col w-full gap-2">
             <div className="flex justify-between">
-              <p className="font-medium">Username</p>
+              {!editProfileUsername ? (
+                <p className="font-medium text-red-500">Username is required</p>
+              ) : (
+                <p className="font-medium">Username</p>
+              )}
               <p className="text-sm font-light text-socialTextSecondary">
-                {userNameInput.length}/{30}
+                {editProfileUsername.length}/{30}
               </p>
             </div>
             <input
               maxLength={30}
               placeholder="e.g: Justin Roiland"
-              value={userNameInput}
-              onChange={(e) => setUserNameInput(e.currentTarget.value)}
+              value={editProfileUsername}
+              onChange={(e) => setEditProfileUsername(e.currentTarget.value)}
               type="text"
               className="rounded-md border-[0.5px] border-socialTextSecondary px-3 py-3 focus:outline-none bg-socialPrimary"
             />
@@ -150,8 +207,19 @@ export default function EditProfilePage({
           </div>
         </div>
       </div>
-      <button className="grid py-2 m-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite">
-        Save
+      <button
+        disabled={editProfileStatus === "pending" || !editProfileUsername}
+        onClick={() => saveChanges(currentUser.handle)}
+        className="flex items-center justify-center gap-2 py-2 m-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl text-mainWhite"
+      >
+        {editProfileStatus === "pending" ? (
+          <>
+            <p className="font-medium text-md">Loading</p>
+            <LoaderCircle className="animate-spin size-5 stroke-mainWhite" />
+          </>
+        ) : (
+          <p className="font-medium text-md">Save</p>
+        )}
       </button>
     </>
   );

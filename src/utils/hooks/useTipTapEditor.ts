@@ -38,6 +38,9 @@ export function useTipTapEditor({
 
   const editor = useEditor({
     editorProps: { ...editorProps },
+    parseOptions: {
+      preserveWhitespace: "full"
+    },
     extensions: [
       StarterKit.configure({
         bold: false,
@@ -79,7 +82,9 @@ export function useTipTapEditor({
 
   function setEditorContent(text: string | null) {
     if (editor) {
-      editor.commands.setContent(text);
+      editor.commands.setContent(text, false, {
+        preserveWhitespace: "full"
+      });
       setInputText(text);
     }
   }

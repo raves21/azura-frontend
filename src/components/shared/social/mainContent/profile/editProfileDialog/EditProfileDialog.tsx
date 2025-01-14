@@ -4,9 +4,8 @@ import { ReactNode } from "@tanstack/react-router";
 import { ArrowLeft, X } from "lucide-react";
 import EditProfilePage from "./EditProfilePage";
 import ManageProfileBannerPage from "./ManageProfileBannerPage";
-import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
-import ManageProfileAvatar from "./ManageProfileAvatar";
+import ManageProfileAvatarPage from "./ManageProfileAvatarPage";
 
 type EditProfileDialogProps = {
   avatar: string | null;
@@ -25,22 +24,29 @@ export default function EditProfileDialog({
   const [
     editProfilePage,
     setEditProfilePage,
+    setEditProfileUsername,
+    setEditProfileBio,
     setEditProfileAvatar,
     setEditProfileBanner
   ] = useEditProfileStore(
     useShallow((state) => [
       state.editProfilePage,
       state.setEditProfilePage,
+      state.setEditProfileUsername,
+      state.setEditProfileBio,
       state.setEditProfileAvatar,
       state.setEditProfileBanner
     ])
   );
 
-  useEffect(() => {
+  function handleCloseDialog() {
+    setEditProfileUsername(userName);
+    setEditProfileBio(null);
     setEditProfileAvatar(null);
     setEditProfileBanner(null);
     setEditProfilePage("editProfilePage");
-  }, []);
+    toggleOpenDialog(null);
+  }
 
   let currentPage: ReactNode;
   let headerTitle: string;
@@ -59,7 +65,7 @@ export default function EditProfileDialog({
     currentPage = <ManageProfileBannerPage />;
   } else {
     headerTitle = "Manage Profile Avatar";
-    currentPage = <ManageProfileAvatar />;
+    currentPage = <ManageProfileAvatarPage />;
   }
 
   return (
@@ -76,7 +82,7 @@ export default function EditProfileDialog({
         <p className="text-lg font-semibold">{headerTitle}</p>
         {editProfilePage === "editProfilePage" && (
           <button
-            onClick={() => toggleOpenDialog(null)}
+            onClick={handleCloseDialog}
             className="group absolute top-1/2 -translate-y-1/2 right-4 rounded-full p-2 border-[0.5px] border-socialTextSecondary"
           >
             <X className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />

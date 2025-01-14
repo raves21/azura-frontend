@@ -4,7 +4,7 @@ import {
   Format,
   Genre,
   Season,
-  SortBy,
+  SortBy
 } from "@/utils/types/thirdParty/animeAnilist";
 import FilterPill from "@/components/shared/catalog/FilterPill";
 import { useCallback, useState } from "react";
@@ -13,17 +13,12 @@ import {
   formatLabels,
   seasonLabels,
   sortByLabels,
-  anilistAnimeStatusLabels,
+  anilistAnimeStatusLabels
 } from "@/utils/variables/anime";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { isEqual } from "radash";
 import { X } from "lucide-react";
 
-// const genres = Object.values(Genre);
-// const formats = Object.values(Format);
-// const seasons = Object.values(Season);
-// const sortBys = Object.values(SortBy);
-// const statuses = Object.values(AnilistAnimeStatus);
 const startYear = 1970;
 const endYear = new Date().getFullYear();
 const years = Array.from({ length: endYear - startYear + 1 }).map(
@@ -48,7 +43,7 @@ export default function FiltersDialog() {
     season: seasonSearch,
     sortBy: sortBySearch,
     year: yearSearch,
-    status: statusSearch,
+    status: statusSearch
   } = useSearch({ from: "/_protected/anime/catalog/" });
 
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>(
@@ -76,7 +71,7 @@ export default function FiltersDialog() {
     season: selectedSeason,
     sortBy: selectedSortBy,
     status: selectedStatus,
-    year: selectedYear,
+    year: selectedYear
   });
 
   const selectGenre = useCallback((genre: Genre) => {
@@ -105,7 +100,7 @@ export default function FiltersDialog() {
       status: selectedStatus ?? undefined,
       season: selectedSeason ?? undefined,
       year: selectedYear ?? undefined,
-      genres: selectedGenres ?? [],
+      genres: selectedGenres ?? []
     };
     if (!isEqual(initialFilters, appliedFilters)) {
       navigate({
@@ -120,8 +115,8 @@ export default function FiltersDialog() {
               ? selectedSortBy
               : undefined,
           status: selectedStatus,
-          year: selectedYear,
-        },
+          year: selectedYear
+        }
       });
     }
     toggleOpenDialog(null);

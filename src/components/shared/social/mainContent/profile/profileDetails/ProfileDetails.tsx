@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 import EditProfileDialog from "../editProfileDialog/EditProfileDialog";
+import UserBioRenderer from "./UserBioRenderer";
 
 type CurrentUserProps = {
   isCurrentUser: true;
@@ -92,8 +93,8 @@ export default function ProfileDetails({
           @{handle}
         </p>
       </div>
-      <p className="text-sm mobile-m:text-md sm:text-base">
-        {bio ?? <em>No bio</em>}
+      <p className="text-sm mobile-m:text-md sm:text-base line-clamp-5">
+        {bio ? <UserBioRenderer content={bio} /> : <em>No bio</em>}
       </p>
       <div className="flex gap-6 text-sm mobile-m:text-md sm:text-base">
         {totalFollowing !== 0 ? (

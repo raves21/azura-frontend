@@ -30,7 +30,8 @@ import {
   postInfoReactionCacheMutation,
   deletePostPostsCacheMutation,
   editPostPostsCacheMutation,
-  editPostPostInfoCacheMutation
+  editPostPostInfoCacheMutation,
+  editUserProfileCacheMutation
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -64,6 +65,42 @@ export function useUserProfile(
       return data.data as UserProfile;
     },
     enabled: !!userHandle || !!currentUserHandle
+  });
+}
+
+type UseEditUserProfileArgs = {
+  userHandle: string;
+  username: string;
+  bio: string | null;
+  banner: string | null;
+  avatar: string | null;
+};
+
+export function useEditUserProfile() {
+  return useMutation({
+    mutationFn: async ({
+      username,
+      bio,
+      banner,
+      avatar
+    }: UseEditUserProfileArgs) => {
+      await api.put("/profile/details", {
+        username,
+        bio,
+        banner,
+        avatar
+      });
+    },
+    onSuccess: (_, variables) => {
+      const { avatar, banner, bio, username, userHandle } = variables;
+      editUserProfileCacheMutation({
+        userHandle,
+        avatar,
+        banner,
+        username,
+        bio
+      });
+    }
   });
 }
 
