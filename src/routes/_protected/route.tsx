@@ -45,7 +45,7 @@ function Protected() {
           <div
             className={cn(
               "font-montserrat px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] mx-auto",
-              { "px-1": matchRoute({ to: "/social" }) }
+              { "px-1": matchRoute({ to: "/social", fuzzy: true }) }
             )}
           >
             <Outlet />
