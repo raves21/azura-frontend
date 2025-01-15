@@ -3,7 +3,7 @@ import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useShallow } from "zustand/react/shallow";
 import { LoaderCircle } from "lucide-react";
 
-export default function ManageProfileBannerPage() {
+export default function ManageBannerPage() {
   const [
     editProfileBanner,
     editProfileAvatar,

@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { queryClient } from "@/Providers";
+import { queryClient } from "@/utils/variables/queryClient";
 import {
   LoginResponse,
   RefreshResponse,
-  UserBasicInfo,
+  UserBasicInfo
 } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -15,12 +15,12 @@ export function useRefreshJWT() {
     queryKey: ["refreshJWT"],
     queryFn: async () => {
       const { data } = await axios.get(`${BASE_URL}/refresh`, {
-        withCredentials: true,
+        withCredentials: true
       });
       console.log("JWT REFRESHED", data);
       return data.data as RefreshResponse;
     },
-    retryOnMount: false,
+    retryOnMount: false
   });
 }
 
@@ -31,9 +31,9 @@ export function useOTC(email: string) {
       const response = await axios.post(`${BASE_URL}/otc/send`, { email });
       return {
         message: response.data.message,
-        statusCode: response.status,
+        statusCode: response.status
       };
-    },
+    }
   });
 }
 
@@ -43,19 +43,19 @@ export function useSendOTC() {
       const response = await axios.post(`${BASE_URL}/otc/send`, { email });
       return {
         message: response.data.message,
-        statusCode: response.status,
+        statusCode: response.status
       };
     },
     onSuccess: (result, email) => {
       queryClient.setQueryData(["otc", email], {
         message: result.message,
-        statusCode: result.statusCode,
+        statusCode: result.statusCode
       });
-    },
+    }
   });
 }
 
-type UseVerifyOTCArgs = { email: string; otc: string }
+type UseVerifyOTCArgs = { email: string; otc: string };
 
 export function useVerifyOTC() {
   return useMutation({
@@ -71,7 +71,7 @@ export function useCreateAccount() {
       username,
       email,
       password,
-      handle,
+      handle
     }: {
       username: string;
       email: string;
@@ -82,9 +82,9 @@ export function useCreateAccount() {
         username,
         email,
         password,
-        handle,
+        handle
       });
-    },
+    }
   });
 }
 
@@ -92,7 +92,7 @@ export function useLogin() {
   return useMutation({
     mutationFn: async ({
       email,
-      password,
+      password
     }: {
       email: string;
       password: string;
@@ -113,13 +113,13 @@ export function useLogin() {
       } else {
         const refreshJWTInitialData: RefreshResponse = {
           accessToken: result.data.accessToken,
-          currentUserBasicInfo: result.data.user,
+          currentUserBasicInfo: result.data.user
         };
         queryClient.setQueryData(["refreshJWT"], refreshJWTInitialData);
         useAuthStore.getState().setCurrentUser(result.data.user);
         history.replaceState(null, "", "/anime");
       }
-    },
+    }
   });
 }
 
@@ -130,12 +130,12 @@ export function useFindUserByEmail() {
         `${BASE_URL}/auth/forgot-password/find-user-by-email`,
         {
           params: {
-            email,
-          },
+            email
+          }
         }
       );
       return data.data as UserBasicInfo;
-    },
+    }
   });
 }
 
@@ -143,16 +143,16 @@ export function useChangePassword() {
   return useMutation({
     mutationFn: async ({
       newPassword,
-      userId,
+      userId
     }: {
       newPassword: string;
       userId: string;
     }) => {
       await axios.post(`${BASE_URL}/auth/forgot-password/change-password`, {
         userId,
-        newPassword,
+        newPassword
       });
-    },
+    }
   });
 }
 
@@ -160,12 +160,12 @@ export function useLogout() {
   return useMutation({
     mutationFn: async () => {
       await axios.post(`${BASE_URL}/auth/logout`, null, {
-        withCredentials: true,
+        withCredentials: true
       });
     },
     onSuccess: () => {
       queryClient.clear();
       history.replaceState(null, "", "/login");
-    },
+    }
   });
 }

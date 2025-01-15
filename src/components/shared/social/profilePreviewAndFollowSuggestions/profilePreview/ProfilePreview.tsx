@@ -1,4 +1,3 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import { useUserProfile } from "@/services/social/queries/socialQueries";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
@@ -6,7 +5,8 @@ import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../UserAvatar";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ViewProfileImageDialog from "../../ViewProfileImageDialog";
-import UserBioRenderer from "../../mainContent/profile/profileDetails/UserBioRenderer";
+import ProfileBioRenderer from "../../mainContent/profile/profileDetails/ProfileBioRenderer";
+import ProfilePreviewSkeleton from "@/components/shared/loadingSkeletons/social/ProfilePreviewSkeleton";
 
 export default function ProfilePreview() {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -15,23 +15,12 @@ export default function ProfilePreview() {
     data: currentUserProfile,
     isLoading: isCurrentUserProfileLoading,
     error: currentUserProfileError
-  } = useUserProfile(currentUser?.id, currentUser?.id);
+  } = useUserProfile(currentUser?.handle, currentUser?.handle);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
   if (isCurrentUserProfileLoading) {
-    return (
-      <Skeleton className="h-[376px] bg-socialPrimary flex flex-col w-full gap-8 overflow-hidden text-base rounded-lg">
-        <Skeleton className="relative top-0 w-full h-24 bg-gray-700">
-          <Skeleton className="absolute inset-0 object-cover bg-gray-600 size-full" />
-          <Skeleton className="absolute -translate-x-1/2 rounded-full bg-gray-600 -bottom-[30%] size-16 left-1/2" />
-        </Skeleton>
-        <div className="flex flex-col items-center gap-3 px-3 mt-4">
-          <Skeleton className="w-[50%] h-4 bg-gray-600" />
-          <Skeleton className="w-[40%] h-3 bg-gray-600" />
-        </div>
-      </Skeleton>
-    );
+    return <ProfilePreviewSkeleton />;
   }
 
   if (currentUserProfileError) {
@@ -102,7 +91,7 @@ export default function ProfilePreview() {
           </div>
           <p className="px-5 text-center text-gray-300 line-clamp-3">
             {currentUserProfile.bio ? (
-              <UserBioRenderer content={currentUserProfile.bio} />
+              <ProfileBioRenderer content={currentUserProfile.bio} />
             ) : (
               <em>No bio</em>
             )}

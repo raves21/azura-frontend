@@ -1,11 +1,13 @@
-import { queryClient } from "@/Providers";
+import { queryClient } from "@/utils/variables/queryClient";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
+  CommentsRequest,
   Media,
   PostsRequest,
   TCollection,
   TPost,
+  TPostComment,
   TPostInfo,
   UserProfile
 } from "@/utils/types/social/social";
@@ -16,6 +18,11 @@ const POSTS_QUERY_FILTER: QueryFilters = {
     return query.queryKey.includes("posts");
   }
 };
+
+const COMMENTS_QUERY_FILTER = (postId: string): QueryKey => [
+  "postComments",
+  postId
+];
 
 const POST_INFO_QUERY_KEY = (postId: string): QueryKey => ["postInfo", postId];
 
@@ -35,7 +42,7 @@ type CreatePostPostsCacheMutation = {
   result: { collection: TCollection | null; id: string };
 };
 
-export async function createPostPostsCacheMutation({
+export async function createPost_PostsCacheMutation({
   queryFilter,
   variables,
   result
@@ -128,7 +135,7 @@ type LikeUnlikePostCacheMutation = {
   type: "like" | "unlike";
 };
 
-export async function postReactionCacheMutation({
+export async function post_ReactionCacheMutation({
   postId,
   type
 }: LikeUnlikePostCacheMutation) {
@@ -166,7 +173,7 @@ type PostInfoPageLikeUnlikePostCacheMutationArgs = {
   type: "like" | "unlike";
 };
 
-export async function postInfoReactionCacheMutation({
+export function postInfo_ReactionCacheMutation({
   postId,
   type
 }: PostInfoPageLikeUnlikePostCacheMutationArgs) {
@@ -227,7 +234,7 @@ type PostInfoPageTotalCommentsCacheMutationArgs = {
   incrementTotalComments: boolean;
 };
 
-export async function postInfoTotalCommentsCacheMutation({
+export function postInfo_TotalCommentsCacheMutation({
   postId,
   incrementTotalComments
 }: PostInfoPageTotalCommentsCacheMutationArgs) {
@@ -246,12 +253,62 @@ export async function postInfoTotalCommentsCacheMutation({
   );
 }
 
+type CreateCommentCommentsCacheMutationArgs = {
+  postId: string;
+  newComment: TPostComment;
+};
+
+export async function createComment_CommentsCacheMutation({
+  postId,
+  newComment
+}: CreateCommentCommentsCacheMutationArgs) {
+  await queryClient.cancelQueries({ queryKey: COMMENTS_QUERY_FILTER(postId) });
+
+  queryClient.setQueriesData<InfiniteData<CommentsRequest, unknown>>(
+    { queryKey: COMMENTS_QUERY_FILTER(postId) },
+    (oldData) => {
+      const firstPage = oldData?.pages[0];
+      //if there are already existing comments
+      if (firstPage && firstPage.data.length > 0) {
+        return {
+          pageParams: oldData.pageParams,
+          pages: [
+            {
+              data: [newComment, ...firstPage.data],
+              totalPages: oldData.pages[0].totalPages,
+              message: "new post created in cache",
+              page: 1,
+              perPage: 5
+            },
+            ...oldData.pages.slice(1)
+          ]
+        };
+      }
+      //if there are no commnets yet
+      else {
+        return {
+          pageParams: [1],
+          pages: [
+            {
+              data: [newComment],
+              message: "created first comment in cache",
+              page: 1,
+              perPage: 5,
+              totalPages: 1
+            }
+          ]
+        };
+      }
+    }
+  );
+}
+
 type PostTotalCommentsCacheMutationArgs = {
   postId: string;
   incrementTotalComments: boolean;
 };
 
-export async function postTotalCommentsCacheMutation({
+export async function post_TotalCommentsCacheMutation({
   postId,
   incrementTotalComments
 }: PostTotalCommentsCacheMutationArgs) {
@@ -284,7 +341,7 @@ export async function postTotalCommentsCacheMutation({
   );
 }
 
-export async function deletePostPostsCacheMutation(postId: string) {
+export async function deletePost_PostsCacheMutation(postId: string) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
   queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
     POSTS_QUERY_FILTER,
@@ -304,7 +361,7 @@ export async function deletePostPostsCacheMutation(postId: string) {
   );
 }
 
-export async function editPostPostsCacheMutation(postToEdit: TPost) {
+export async function editPost_PostsCacheMutation(postToEdit: TPost) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
   queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
     POSTS_QUERY_FILTER,
@@ -335,7 +392,7 @@ export async function editPostPostsCacheMutation(postToEdit: TPost) {
   );
 }
 
-export async function editPostPostInfoCacheMutation(postToEdit: TPost) {
+export function editPost_PostInfoCacheMutation(postToEdit: TPost) {
   queryClient.setQueryData<TPostInfo>(
     POST_INFO_QUERY_KEY(postToEdit.id),
     (oldData) => {
@@ -360,15 +417,15 @@ type EditUserProfileCacheMutationArgs = {
   bio: string | null;
 };
 
-export async function editUserProfileCacheMutation({
+export function editUserProfile_ProfileCacheMutation({
   userHandle,
   username,
   avatar,
   bio,
   banner
 }: EditUserProfileCacheMutationArgs) {
-  queryClient.setQueryData<UserProfile>(
-    USER_PROFILE_QUERY_KEY(userHandle),
+  queryClient.setQueriesData<UserProfile>(
+    { queryKey: USER_PROFILE_QUERY_KEY(userHandle) },
     (oldData) => {
       if (!oldData) return undefined;
 
@@ -378,6 +435,42 @@ export async function editUserProfileCacheMutation({
         avatar,
         bio,
         banner
+      };
+    }
+  );
+}
+
+export async function editUserProfile_PostsCacheMutation({
+  userHandle,
+  username,
+  avatar
+}: EditUserProfileCacheMutationArgs) {
+  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
+  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+    POSTS_QUERY_FILTER,
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.map((post) => {
+          if (post.owner.handle === userHandle) {
+            return {
+              ...post,
+              owner: {
+                ...post.owner,
+                avatar,
+                username
+              }
+            };
+          }
+          return post;
+        })
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages
       };
     }
   );

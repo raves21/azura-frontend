@@ -1,5 +1,4 @@
 import {
-  InfiniteData,
   QueryFilters,
   useInfiniteQuery,
   useMutation,
@@ -14,24 +13,26 @@ import {
   TCollection,
   TPostInfo,
   CollectionsRequest,
-  TPost
+  TPost,
+  TPostComment
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
   EntityPrivacy,
   ResponseWithMessage
 } from "@/utils/types/social/shared";
-import { queryClient } from "@/Providers";
 import {
-  postReactionCacheMutation,
-  postInfoTotalCommentsCacheMutation,
-  postTotalCommentsCacheMutation,
-  createPostPostsCacheMutation,
-  postInfoReactionCacheMutation,
-  deletePostPostsCacheMutation,
-  editPostPostsCacheMutation,
-  editPostPostInfoCacheMutation,
-  editUserProfileCacheMutation
+  post_ReactionCacheMutation,
+  postInfo_TotalCommentsCacheMutation,
+  post_TotalCommentsCacheMutation,
+  createPost_PostsCacheMutation,
+  postInfo_ReactionCacheMutation,
+  deletePost_PostsCacheMutation,
+  editPost_PostsCacheMutation,
+  editPost_PostInfoCacheMutation,
+  editUserProfile_ProfileCacheMutation,
+  createComment_CommentsCacheMutation,
+  editUserProfile_PostsCacheMutation
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -93,12 +94,29 @@ export function useEditUserProfile() {
     },
     onSuccess: (_, variables) => {
       const { avatar, banner, bio, username, userHandle } = variables;
-      editUserProfileCacheMutation({
+      const currentUser = useAuthStore.getState().currentUser;
+      const setCurrentUser = useAuthStore.getState().setCurrentUser;
+
+      if (currentUser) {
+        setCurrentUser({
+          ...currentUser,
+          avatar,
+          username
+        });
+      }
+      editUserProfile_ProfileCacheMutation({
         userHandle,
         avatar,
         banner,
         username,
         bio
+      });
+      editUserProfile_PostsCacheMutation({
+        userHandle,
+        avatar,
+        banner,
+        bio,
+        username
       });
     }
   });
@@ -141,12 +159,12 @@ export function useCreatePost() {
         queryKey: ["posts", "userProfilePosts", variables.owner.handle],
         exact: true
       };
-      await createPostPostsCacheMutation({
+      await createPost_PostsCacheMutation({
         queryFilter: forYouFeedQueryFilter,
         result,
         variables
       });
-      await createPostPostsCacheMutation({
+      await createPost_PostsCacheMutation({
         queryFilter: currentUserProfilePostsQueryFilter,
         result,
         variables
@@ -159,14 +177,14 @@ export function useLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
       //mutate the cache
-      await postInfoReactionCacheMutation({ postId, type: "like" });
-      await postReactionCacheMutation({ postId, type: "like" });
+      await postInfo_ReactionCacheMutation({ postId, type: "like" });
+      await post_ReactionCacheMutation({ postId, type: "like" });
       //run the api call
       return await api.post(`posts/${postId}/likes`);
     },
     onError: async (_, postId) => {
       //revert post cache state back to unliked if it throws an error
-      await postReactionCacheMutation({ postId, type: "unlike" });
+      await post_ReactionCacheMutation({ postId, type: "unlike" });
     }
   });
 }
@@ -175,14 +193,14 @@ export function useUnLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
       //mutate the cache
-      await postInfoReactionCacheMutation({ postId, type: "unlike" });
-      await postReactionCacheMutation({ postId, type: "unlike" });
+      await postInfo_ReactionCacheMutation({ postId, type: "unlike" });
+      await post_ReactionCacheMutation({ postId, type: "unlike" });
       //run the api call
       return await api.delete(`posts/${postId}/likes`);
     },
     onError: async (_, postId) => {
       //revert post cache state back to liked if it throws an error
-      await postReactionCacheMutation({ postId, type: "like" });
+      await post_ReactionCacheMutation({ postId, type: "like" });
     }
   });
 }
@@ -227,59 +245,22 @@ export function useCreatePostComment() {
       const { id } = result;
       const { postId, content } = variables;
       const currentUser = useAuthStore.getState().currentUser!;
-      const newComment = {
+      const newComment: TPostComment = {
         author: currentUser,
         content,
         createdAt: new Date(),
         postId,
         id
       };
-      const queryFilter: QueryFilters = { queryKey: ["postComments", postId] };
-      await queryClient.cancelQueries(queryFilter);
-
-      queryClient.setQueriesData<InfiniteData<CommentsRequest, unknown>>(
-        queryFilter,
-        (oldData) => {
-          const firstPage = oldData?.pages[0];
-          //if there are already existing comments
-          if (firstPage && firstPage.data.length > 0) {
-            return {
-              pageParams: oldData.pageParams,
-              pages: [
-                {
-                  data: [newComment, ...firstPage.data],
-                  totalPages: oldData.pages[0].totalPages,
-                  message: "new post created in cache",
-                  page: 1,
-                  perPage: 5
-                },
-                ...oldData.pages.slice(1)
-              ]
-            };
-          }
-          //if there are no commnets yet
-          else {
-            return {
-              pageParams: [1],
-              pages: [
-                {
-                  data: [newComment],
-                  message: "created first comment in cache",
-                  page: 1,
-                  perPage: 5,
-                  totalPages: 1
-                }
-              ]
-            };
-          }
-        }
-      );
-
-      await postTotalCommentsCacheMutation({
+      await createComment_CommentsCacheMutation({
+        postId,
+        newComment
+      });
+      await post_TotalCommentsCacheMutation({
         postId,
         incrementTotalComments: true
       });
-      await postInfoTotalCommentsCacheMutation({
+      await postInfo_TotalCommentsCacheMutation({
         postId,
         incrementTotalComments: true
       });
@@ -294,7 +275,7 @@ export function useDeletePost(postId: string | null) {
       return await api.delete(`/posts/${postId}`);
     },
     onSuccess: async (_, postId) => {
-      await deletePostPostsCacheMutation(postId);
+      await deletePost_PostsCacheMutation(postId);
     }
   });
 }
@@ -357,8 +338,8 @@ export function useEditPost() {
       });
     },
     onSuccess: async (_, postToEdit) => {
-      await editPostPostsCacheMutation(postToEdit);
-      await editPostPostInfoCacheMutation(postToEdit);
+      await editPost_PostsCacheMutation(postToEdit);
+      await editPost_PostInfoCacheMutation(postToEdit);
     }
   });
 }

@@ -3,9 +3,9 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { ReactNode } from "@tanstack/react-router";
 import { ArrowLeft, X } from "lucide-react";
 import EditProfilePage from "./EditProfilePage";
-import ManageProfileBannerPage from "./ManageProfileBannerPage";
+import ManageBannerPage from "./ManageBannerPage";
 import { useShallow } from "zustand/react/shallow";
-import ManageProfileAvatarPage from "./ManageProfileAvatarPage";
+import ManageAvatarPage from "./ManageAvatarPage";
 
 type EditProfileDialogProps = {
   avatar: string | null;
@@ -62,10 +62,10 @@ export default function EditProfileDialog({
     );
   } else if (editProfilePage === "manageBannerPage") {
     headerTitle = "Manage Profile Banner";
-    currentPage = <ManageProfileBannerPage />;
+    currentPage = <ManageBannerPage />;
   } else {
     headerTitle = "Manage Profile Avatar";
-    currentPage = <ManageProfileAvatarPage />;
+    currentPage = <ManageAvatarPage />;
   }
 
   return (

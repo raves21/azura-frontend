@@ -5,20 +5,31 @@ import {
   createFileRoute,
   Navigate,
   Outlet,
-  useMatchRoute,
+  useMatchRoute
 } from "@tanstack/react-router";
 import HomeHeader from "../../components/shared/HomeHeader";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useShallow } from "zustand/react/shallow";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/_protected")({
-  component: () => <Protected />,
+  component: () => <Protected />
 });
 
 function Protected() {
   const { data, isLoading, error } = useRefreshJWT();
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const [currentUser, setCurrentUser] = useAuthStore(
+    useShallow((state) => [state.currentUser, state.setCurrentUser])
+  );
   const matchRoute = useMatchRoute();
+
+  useEffect(() => {
+    // only set the currentUser if does not have a value (and if there are no errors in refreshing JWT)
+    if (data && !currentUser) {
+      setCurrentUser(data.currentUserBasicInfo);
+    }
+  }, [data, currentUser]);
 
   if (isLoading) return <StaticLoadingPage />;
   if (error) {
@@ -27,7 +38,6 @@ function Protected() {
   }
 
   if (data) {
-    setCurrentUser(data.currentUserBasicInfo);
     return (
       <PulseCheckJWT>
         <div className="max-w-full w-dvw bg-darkBg text-mainWhite">

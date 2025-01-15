@@ -1,11 +1,11 @@
 import axios from "axios";
-import { queryClient } from "@/Providers";
+import { queryClient } from "@/utils/variables/queryClient";
 import { RefreshResponse } from "./types/auth/auth";
 import { useAuthStore } from "./stores/useAuthStore";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
-  withCredentials: true,
+  withCredentials: true
 });
 
 // Request interceptor to add Authorization header
@@ -59,7 +59,7 @@ api.interceptors.response.use(
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/refresh`,
         {
-          withCredentials: true,
+          withCredentials: true
         }
       );
       const data = response.data.data as RefreshResponse;

@@ -1,10 +1,10 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useShallow } from "zustand/react/shallow";
 import { cn } from "@/lib/utils";
 import { LoaderCircle } from "lucide-react";
 
-export default function ManageProfileAvatarPage() {
+export default function ManageAvatarPage() {
   const [
     editProfileBanner,
     editProfileAvatar,

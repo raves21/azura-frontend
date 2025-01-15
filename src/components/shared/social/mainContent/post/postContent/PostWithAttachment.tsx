@@ -6,7 +6,7 @@ import MediaAttachment from "./MediaAttachment";
 import CollectionAttachment from "./CollectionAttachment";
 import { cn } from "@/lib/utils";
 import { useMatchRoute } from "@tanstack/react-router";
-import UserBioRenderer from "../../profile/profileDetails/UserBioRenderer";
+import ProfileBioRenderer from "../../profile/profileDetails/ProfileBioRenderer";
 
 type PostWithAttachmentProps = {
   contentClassName?: string;
@@ -31,7 +31,7 @@ export default function PostWithAttachment({
             contentClassName
           )}
         >
-          <UserBioRenderer content={props.content} />
+          <ProfileBioRenderer content={props.content} />
         </p>
       )}
       {props.attachmentType === "media" ? (

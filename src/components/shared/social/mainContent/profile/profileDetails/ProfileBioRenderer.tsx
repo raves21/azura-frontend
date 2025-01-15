@@ -1,7 +1,7 @@
 import { ReactNode } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
-export default function UserBioRenderer({ content }: { content: string }) {
+export default function ProfileBioRenderer({ content }: { content: string }) {
   const tokens = content.split(/(\s+)/);
   const newlineRegex = /\n/g;
 

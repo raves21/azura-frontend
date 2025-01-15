@@ -22,9 +22,7 @@ export default function EditProfilePage({
   userName,
   bio
 }: EditProfilePageProps) {
-  const [currentUser, setCurrentUser] = useAuthStore(
-    useShallow((state) => [state.currentUser, state.setCurrentUser])
-  );
+  const currentUser = useAuthStore((state) => state.currentUser)
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
     editProfileUsername,
@@ -105,13 +103,6 @@ export default function EditProfilePage({
       bio: editProfileBio,
       username: editProfileUsername
     });
-    if (currentUser) {
-      setCurrentUser({
-        ...currentUser,
-        avatar: editProfileAvatar,
-        username: editProfileUsername
-      });
-    }
     toggleOpenDialog(null);
   }
 
