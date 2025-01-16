@@ -424,8 +424,8 @@ export function editUserProfile_ProfileCacheMutation({
   bio,
   banner
 }: EditUserProfileCacheMutationArgs) {
-  queryClient.setQueriesData<UserProfile>(
-    { queryKey: USER_PROFILE_QUERY_KEY(userHandle) },
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(userHandle),
     (oldData) => {
       if (!oldData) return undefined;
 
@@ -471,6 +471,44 @@ export async function editUserProfile_PostsCacheMutation({
       return {
         pageParams: oldData.pageParams,
         pages: newPages
+      };
+    }
+  );
+}
+
+type FollowUnfollowCacheMutationArgs = {
+  userHandle: string;
+};
+
+export function followUser_UserProfileCacheMutation({
+  userHandle
+}: FollowUnfollowCacheMutationArgs) {
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(userHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        followedByYou: true,
+        totalFollowers: oldData.totalFollowers + 1
+      };
+    }
+  );
+}
+
+export function unFollowUser_UserProfileCacheMutation({
+  userHandle
+}: FollowUnfollowCacheMutationArgs) {
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(userHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        followedByYou: false,
+        totalFollowers: oldData.totalFollowers - 1
       };
     }
   );

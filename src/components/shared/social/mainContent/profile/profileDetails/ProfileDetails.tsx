@@ -1,9 +1,8 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link } from "@tanstack/react-router";
-import { Check, X } from "lucide-react";
-import { useState } from "react";
-import EditProfileDialog from "../editProfileDialog/EditProfileDialog";
 import ProfileBioRenderer from "./ProfileBioRenderer";
+import EditProfileButton from "./EditProfileButton";
+import UnfollowButton from "./UnfollowButton";
+import FollowButton from "./FollowButton";
 
 type CurrentUserProps = {
   isCurrentUser: true;
@@ -16,6 +15,7 @@ type NotCurrentUserProps = {
 };
 
 type ProfileDetailsProps = {
+  id: string;
   userName: string;
   handle: string;
   bio: string | null;
@@ -26,6 +26,7 @@ type ProfileDetailsProps = {
 } & (CurrentUserProps | NotCurrentUserProps);
 
 export default function ProfileDetails({
+  id,
   userName,
   handle,
   bio,
@@ -39,51 +40,21 @@ export default function ProfileDetails({
     ? (props as NotCurrentUserProps)
     : undefined;
 
-  const [isHoveringFollowingButton, setIsHoveringFollowingButton] =
-    useState(false);
-
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-
   return (
     <div className="flex flex-col gap-4 px-3 sm:px-5">
-      {!notCurrentUserProps ? (
-        <button
-          onClick={() =>
-            toggleOpenDialog(
-              <EditProfileDialog
-                avatar={avatar}
-                banner={banner}
-                bio={bio}
-                userName={userName}
-              />
-            )
-          }
-          className="self-end px-4 py-2 font-semibold transition-colors border border-gray-600 rounded-full sm:px-5 lg:text-md lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs hover:border-mainAccent hover:text-mainAccent hover:bg-socialPrimaryHover"
-        >
-          Edit Profile
-        </button>
-      ) : notCurrentUserProps.isFollowedByCurrentUser ? (
-        <button className="self-end px-4 py-2 font-semibold transition-colors border rounded-full sm:px-5 lg:text-md lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs text-mainWhite hover:text-gray-300 bg-mainAccent hover:bg-fuchsia-700 border-mainAccent hover:border-mainAccent">
-          Follow
-        </button>
+      {notCurrentUserProps ? (
+        notCurrentUserProps.isFollowedByCurrentUser ? (
+          <UnfollowButton userId={id} userHandle={handle} />
+        ) : (
+          <FollowButton userId={id} userHandle={handle} />
+        )
       ) : (
-        <button
-          onMouseEnter={() => setIsHoveringFollowingButton(true)}
-          onMouseLeave={() => setIsHoveringFollowingButton(false)}
-          className="flex items-center self-end gap-2 px-4 py-2 font-semibold transition-colors border border-gray-600 rounded-full sm:px-5 lg:text-md hover:text-red-500 hover:border-red-500 lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs hover:bg-red-500/20"
-        >
-          {isHoveringFollowingButton ? (
-            <>
-              <X className="size-3 sm:size-5 stroke-red-500" />
-              <p>Unfollow</p>
-            </>
-          ) : (
-            <>
-              <Check className="size-3 sm:size-5 stroke-blue-500" />
-              <p>Following</p>
-            </>
-          )}
-        </button>
+        <EditProfileButton
+          avatar={avatar}
+          userName={userName}
+          bio={bio}
+          banner={banner}
+        />
       )}
       <div className="flex flex-col sm:mt-4">
         <p className="font-semibold text-md mobile-m:text-base sm:text-lg">

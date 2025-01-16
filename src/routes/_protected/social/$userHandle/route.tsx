@@ -45,6 +45,7 @@ function UserProfilePageLayout() {
           />
           {isCurrentUser ? (
             <ProfileDetails
+              id={userProfile.id}
               isCurrentUser
               avatar={userProfile.avatar}
               banner={userProfile.banner}
@@ -56,6 +57,7 @@ function UserProfilePageLayout() {
             />
           ) : (
             <ProfileDetails
+              id={userProfile.id}
               isCurrentUser={false}
               avatar={userProfile.avatar}
               banner={userProfile.banner}

@@ -32,7 +32,9 @@ import {
   editPost_PostInfoCacheMutation,
   editUserProfile_ProfileCacheMutation,
   createComment_CommentsCacheMutation,
-  editUserProfile_PostsCacheMutation
+  editUserProfile_PostsCacheMutation,
+  followUser_UserProfileCacheMutation,
+  unFollowUser_UserProfileCacheMutation
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -340,6 +342,43 @@ export function useEditPost() {
     onSuccess: async (_, postToEdit) => {
       await editPost_PostsCacheMutation(postToEdit);
       await editPost_PostInfoCacheMutation(postToEdit);
+    }
+  });
+}
+
+type FollowUnfollowArgs = {
+  userId: string;
+  userHandle: string;
+};
+
+export function useFollowUser() {
+  return useMutation({
+    mutationFn: async ({ userId, userHandle }: FollowUnfollowArgs) => {
+      //mutate the cache
+      followUser_UserProfileCacheMutation({ userHandle });
+      //run the api call
+      await api.post(`/users/${userId}/follow`);
+    },
+    onError: (_, variables) => {
+      const { userHandle } = variables;
+      //if error, set it cache data back to unfollowed
+      unFollowUser_UserProfileCacheMutation({ userHandle });
+    }
+  });
+}
+
+export function useUnfollowUser() {
+  return useMutation({
+    mutationFn: async ({ userId, userHandle }: FollowUnfollowArgs) => {
+      //mutate the cache
+      unFollowUser_UserProfileCacheMutation({ userHandle });
+      //run the api call
+      await api.post(`/users/${userId}/unfollow`);
+    },
+    onError: (_, variables) => {
+      const { userHandle } = variables;
+      //if error, set it cache data back to followed
+      followUser_UserProfileCacheMutation({ userHandle });
     }
   });
 }
