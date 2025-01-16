@@ -42,7 +42,7 @@ export default function HomeHeader() {
           className={cn(
             "p-[6px]",
             {
-              "text-mainWhite": matchRoute({ to: "/anime", fuzzy: true }),
+              "text-mainWhite": matchRoute({ to: "/anime", fuzzy: true })
             },
             { "text-gray-300": matchRoute({ to: "/anime/catalog" }) }
           )}
@@ -53,17 +53,35 @@ export default function HomeHeader() {
           to="/anime/catalog"
           className={cn("p-[6px]", {
             "text-mainWhite": matchRoute({
-              to: "/anime/catalog",
-            }),
+              to: "/anime/catalog"
+            })
           })}
         >
           Catalog
         </Link>
-        <img src="/azura-logo.svg" className="size-12" />
+        <button
+          onClick={() => {
+            toggleOpenDialog(
+              <div className="flex text-lg font-semibold aspect-video text-mainWhite w-[500px] bg-darkBg">
+                <button className="grid flex-1 bg-mainAccent place-items-center">
+                  Anime
+                </button>
+                <button className="grid flex-1 bg-cyan-600 place-items-center">
+                  Movie
+                </button>
+                <button className="grid flex-1 bg-lime-600 place-items-center">
+                  TV
+                </button>
+              </div>
+            );
+          }}
+        >
+          <img src="/azura-logo.svg" className="size-12" />
+        </button>
         <Link
           to="/social"
           className={cn("p-[6px]", {
-            "text-mainWhite": matchRoute({ to: "/social", fuzzy: true }),
+            "text-mainWhite": matchRoute({ to: "/social", fuzzy: true })
           })}
         >
           Social
