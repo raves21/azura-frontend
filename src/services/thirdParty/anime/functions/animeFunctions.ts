@@ -1,9 +1,9 @@
-import { Data } from "@/utils/types/thirdParty/animeAnify";
-import { Episode } from "@/utils/types/thirdParty/animeAnilist";
-import { AnimeInfoAnizip } from "@/utils/types/thirdParty/animeAnizip";
+import { Data } from "@/utils/types/thirdParty/anime/animeAnify";
+import { Episode } from "@/utils/types/thirdParty/anime/animeAnilist";
+import { AnimeInfoAnizip } from "@/utils/types/thirdParty/anime/animeAnizip";
 import {
   EpisodeToBeRendered,
-  EpisodeChunk,
+  EpisodeChunk
 } from "@/utils/types/thirdParty/shared";
 
 export function chunkEpisodes(
@@ -20,7 +20,7 @@ export function chunkEpisodes(
         label: `${start} - ${end}`,
         startEp: start,
         endEp: end,
-        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk),
+        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk)
       };
     }
   );
@@ -51,7 +51,7 @@ export function getEpisodesToBeRendered(
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
             ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
-            : `EP ${ep.number}`,
+            : `EP ${ep.number}`
       };
     });
     return a;
@@ -69,7 +69,7 @@ export function getEpisodesToBeRendered(
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
             ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
-            : `EP ${ep.number}`,
+            : `EP ${ep.number}`
       };
     });
   } else {

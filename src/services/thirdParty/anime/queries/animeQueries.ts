@@ -2,24 +2,27 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
   EpisodeToBeRendered,
-  EpisodeChunk,
+  EpisodeChunk
 } from "@/utils/types/thirdParty/shared";
-import { AnimeInfoAnify, Data } from "@/utils/types/thirdParty/animeAnify";
-import { AnimeInfoAnizip } from "@/utils/types/thirdParty/animeAnizip";
+import {
+  AnimeInfoAnify,
+  Data
+} from "@/utils/types/thirdParty/anime/animeAnify";
+import { AnimeInfoAnizip } from "@/utils/types/thirdParty/anime/animeAnizip";
 import {
   SortBy,
   AnilistAnimeStatus,
-  MultipleAnimeResponse,
+  PaginatedAnimeResponse,
   Season,
   Format,
   AnimeInfoAnilist,
   Episode,
   EpisodeStreamLinks,
-  AnimeEpisodesData,
-} from "@/utils/types/thirdParty/animeAnilist";
+  AnimeEpisodesData
+} from "@/utils/types/thirdParty/anime/animeAnilist";
 import {
   chunkEpisodes,
-  getEpisodesToBeRendered,
+  getEpisodesToBeRendered
 } from "../functions/animeFunctions";
 
 // const frequentlyChanging = {
@@ -43,8 +46,8 @@ export function useFetchAnimesByCategory(
       const { data: categoryAnime } = await axios.get(
         `${import.meta.env.VITE_N_ANILIST_URL}/advanced-search?sort=["${category}"]&perPage=${perPage}${status ? `&status=${status}` : ""}`
       );
-      return categoryAnime as MultipleAnimeResponse;
-    },
+      return categoryAnime as PaginatedAnimeResponse;
+    }
   });
 }
 
@@ -55,9 +58,9 @@ export function useSearchAnime(query: string, enabled: boolean) {
       const { data: searchResults } = await axios.get(
         `${import.meta.env.VITE_ANILIST_URL}/advanced-search?query=${query}&perPage=10`
       );
-      return searchResults as MultipleAnimeResponse;
+      return searchResults as PaginatedAnimeResponse;
     },
-    enabled: enabled,
+    enabled: enabled
   });
 }
 
@@ -81,7 +84,7 @@ export function useFilterAnime(
       sortBy ?? SortBy.TRENDING_DESC,
       format,
       page ?? 1,
-      status,
+      status
     ],
     queryFn: async () => {
       const _query = query ? `&query=${query}` : "";
@@ -103,8 +106,8 @@ export function useFilterAnime(
         `${import.meta.env.VITE_ANILIST_URL}/advanced-search?perPage=30${_query}${_season}${_genres}${_year}${_sortBy}${_format}${_page}${_status}`
       );
 
-      return filteredAnimes as MultipleAnimeResponse;
-    },
+      return filteredAnimes as PaginatedAnimeResponse;
+    }
   });
 }
 
@@ -120,7 +123,7 @@ export function useFetchAnimeInfo(animeId: string) {
           .get(
             `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[genres,bannerImage,coverImage,title,rating,trailer,description,id,totalEpisodes,year,status,format]`
           )
-          .catch(() => null),
+          .catch(() => null)
       ]);
 
       if (!anilistResponse && !anifyResponse) {
@@ -130,7 +133,7 @@ export function useFetchAnimeInfo(animeId: string) {
       const animeInfoAnilist = anilistResponse?.data as AnimeInfoAnilist;
       const animeInfoAnify = anifyResponse?.data as AnimeInfoAnify;
       return { animeInfoAnilist, animeInfoAnify };
-    },
+    }
   });
 }
 
@@ -152,7 +155,7 @@ export function useFetchAnimeEpisodes(animeId: string) {
             .get(
               `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
             )
-            .catch(() => null),
+            .catch(() => null)
         ]);
 
       if (!anifyEpsResponse && !anilistEpsResponse) {
@@ -163,7 +166,7 @@ export function useFetchAnimeEpisodes(animeId: string) {
       const anilistEps = anilistEpsResponse?.data as Episode[];
       const anizipEps = anizipResponse?.data as AnimeInfoAnizip;
       return { anifyEps, anilistEps, anizipEps };
-    },
+    }
   });
 }
 
@@ -175,7 +178,7 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
         `${import.meta.env.VITE_ANILIST_URL}/watch/${episodeId}`
       );
       return episodeStreamLinks as EpisodeStreamLinks;
-    },
+    }
   });
 }
 
@@ -196,7 +199,7 @@ export function useEpisodeInfo(
       }
       return foundEpisode as EpisodeToBeRendered;
     },
-    enabled: !!chunkedEpisodes,
+    enabled: !!chunkedEpisodes
   });
 }
 
@@ -214,6 +217,6 @@ export function useChunkAnimeEpisodes(
         30
       );
     },
-    enabled: !!animeEpisodes,
+    enabled: !!animeEpisodes
   });
 }

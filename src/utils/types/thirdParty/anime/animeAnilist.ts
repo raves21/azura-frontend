@@ -1,7 +1,7 @@
 import { AnimeInfoAnify, Data } from "./animeAnify";
 import { AnimeInfoAnizip } from "./animeAnizip";
 
-export type MultipleAnimeResponse = {
+export type PaginatedAnimeResponse = {
   currentPage: number;
   hasNextPage: boolean;
   totalPages: number;
@@ -50,7 +50,7 @@ export enum Season {
   WINTER = "WINTER",
   SPRING = "SPRING",
   SUMMER = "SUMMER",
-  FALL = "FALL",
+  FALL = "FALL"
 }
 
 export enum Genre {
@@ -70,7 +70,7 @@ export enum Genre {
   SliceOfLife = "Slice of Life",
   Sports = "Sports",
   Supernatural = "Supernatural",
-  Thriller = "Thriller",
+  Thriller = "Thriller"
 }
 
 export type Title = {
@@ -93,7 +93,7 @@ export enum ArtworkType {
   ClearLogo = "clear_logo",
   Icon = "icon",
   Poster = "poster",
-  TopBanner = "top_banner",
+  TopBanner = "top_banner"
 }
 
 export enum Language {
@@ -106,7 +106,7 @@ export enum Language {
   Korean = "Korean",
   Portuguese = "Portuguese",
   Spanish = "Spanish",
-  Thai = "Thai",
+  Thai = "Thai"
 }
 
 export type EndDateClass = {
@@ -148,7 +148,7 @@ export enum AnilistAnimeStatus {
   RELEASING = "RELEASING",
   FINISHED = "FINISHED",
   CANCELLED = "CANCELLED",
-  NOT_YET_RELEASED = "NOT_YET_RELEASED",
+  NOT_YET_RELEASED = "NOT_YET_RELEASED"
 }
 
 export enum SortBy {
@@ -158,7 +158,7 @@ export enum SortBy {
   SCORE_DESC = "SCORE_DESC",
   TITLE = "TITLE_ROMAJI",
   TITLE_DESC = "TITLE_ROMAJI_DESC",
-  START_DATE_DESC = "START_DATE_DESC",
+  START_DATE_DESC = "START_DATE_DESC"
 }
 
 export enum Format {
@@ -168,7 +168,7 @@ export enum Format {
   ONA = "ONA",
   MOVIE = "MOVIE",
   SPECIAL = "SPECIAL",
-  MUSIC = "MUSIC",
+  MUSIC = "MUSIC"
 }
 
 export enum Status {
@@ -180,7 +180,7 @@ export enum Status {
   NOT_YET_RELEASED = "NOT_YET_RELEASED",
   CANCELLED = "CANCELLED",
   HIATUS = "HIATUS",
-  Cancelled = "Cancelled",
+  Cancelled = "Cancelled"
 }
 
 export type AnimeInfo = {
