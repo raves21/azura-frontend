@@ -1,4 +1,4 @@
-import CodeVerificationForm from "@/components/shared/auth/CodeVerificationForm";
+import CodeVerificationForm from "@/components/core/auth/CodeVerificationForm";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
@@ -9,7 +9,7 @@ import { useShallow } from "zustand/react/shallow";
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/verify-email/"
 )({
-  component: () => <VerifyEmailPage />,
+  component: () => <VerifyEmailPage />
 });
 
 function VerifyEmailPage() {
@@ -18,7 +18,7 @@ function VerifyEmailPage() {
       useShallow((state) => [
         state.forgotPasswordStep,
         state.setForgotPasswordStep,
-        state.findAccountFoundUser,
+        state.findAccountFoundUser
       ])
     );
 
@@ -30,7 +30,7 @@ function VerifyEmailPage() {
       !findAccountFoundUser
     ) {
       router.navigate({
-        to: "/login",
+        to: "/login"
       });
     }
   }, []);
@@ -45,7 +45,7 @@ function VerifyEmailPage() {
       afterVerificationSuccessAction={() => {
         setForgotPasswordStep(ForgotPasswordStep.CHANGE_PASSWORD);
         router.navigate({
-          to: "/login/forgot-password/change-password",
+          to: "/login/forgot-password/change-password"
         });
       }}
     />

@@ -1,5 +1,5 @@
-import PulseCheckJWT from "@/components/shared/auth/PulseCheckJWT";
-import StaticLoadingPage from "@/components/shared/StaticLoadingPage";
+import PulseCheckJWT from "@/components/core/auth/PulseCheckJWT";
+import StaticLoadingPage from "@/components/core/StaticLoadingPage";
 import { useRefreshJWT } from "@/services/auth/authQueries";
 import {
   createFileRoute,
@@ -7,7 +7,7 @@ import {
   Outlet,
   useMatchRoute
 } from "@tanstack/react-router";
-import HomeHeader from "../../components/shared/HomeHeader";
+import HomeHeader from "../../components/core/HomeHeader";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 

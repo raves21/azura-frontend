@@ -5,12 +5,12 @@ import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
 import { useLogin } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/shared/ErrorDialog";
+import ErrorDialog from "@/components/core/ErrorDialog";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/change-password/"
 )({
-  component: () => <ChangePasswordPage />,
+  component: () => <ChangePasswordPage />
 });
 
 function ChangePasswordPage() {
@@ -22,7 +22,7 @@ function ChangePasswordPage() {
   useEffect(() => {
     if (forgotPasswordStep !== ForgotPasswordStep.CHANGE_PASSWORD) {
       navigate({
-        to: "/login",
+        to: "/login"
       });
     }
   }, []);
@@ -43,7 +43,7 @@ function ChangePasswordPage() {
             //todo: show dialog choice before logging in, if user wants to logout other sessions or not
             await login({
               email: findAccountFoundUser.email.trim(),
-              password: values.newPassword.trim(),
+              password: values.newPassword.trim()
             });
           } catch (error) {
             toggleOpenDialog(<ErrorDialog error={error} />);

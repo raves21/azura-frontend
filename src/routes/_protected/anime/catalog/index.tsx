@@ -2,17 +2,17 @@ import { useFilterAnime } from "@/services/thirdParty/anime/queries/animeQueries
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
-import CatalogMediaList from "@/components/shared/catalog/CatalogMediaList";
-import AppliedFilters from "./-AppliedFilters";
+import CatalogMediaList from "@/components/core/media/shared/catalog/CatalogMediaList";
+import AnimeAppliedFilters from "../../../../components/core/media/anime/AnimeAppliedFilters";
 import {
   AnilistAnimeStatus,
   Format,
   Season,
-  SortBy,
-} from "@/utils/types/thirdParty/animeAnilist";
+  SortBy
+} from "@/utils/types/thirdParty/anime/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import FiltersDialog from "./-FiltersDialog";
-import Pagination from "@/components/shared/Pagination";
+import AnimeFiltersDialog from "../../../../components/core/media/anime/AnimeFiltersDialog";
+import Pagination from "@/components/core/media/shared/catalog/Pagination";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
@@ -22,7 +22,7 @@ const filterPageSearchSchema = z.object({
   year: z.number().optional(),
   sortBy: z.nativeEnum(SortBy).optional(),
   format: z.nativeEnum(Format).optional(),
-  status: z.nativeEnum(AnilistAnimeStatus).optional(),
+  status: z.nativeEnum(AnilistAnimeStatus).optional()
 });
 
 type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>;
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_protected/anime/catalog/")({
     } else {
       return {};
     }
-  },
+  }
 });
 
 function CatalogPage() {
@@ -47,7 +47,7 @@ function CatalogPage() {
   const {
     data: filteredAnimes,
     isLoading: isFilteredAnimesLoading,
-    error: filteredAnimeError,
+    error: filteredAnimeError
   } = useFilterAnime(
     query?.trim(),
     season,
@@ -88,7 +88,7 @@ function CatalogPage() {
               Discover Animes
             </h1>
             <button
-              onClick={() => toggleOpenDialog(<FiltersDialog />)}
+              onClick={() => toggleOpenDialog(<AnimeFiltersDialog />)}
               className="flex items-center gap-2 px-3 py-2 border rounded-full mobile-l:gap-3 mobile-l:px-4 md:px-5 md:py-3 group border-mainAccent"
             >
               <p className="text-xs font-medium transition-colors mobile-l:text-sm md:text-base group-hover:text-mainAccent">
@@ -100,7 +100,7 @@ function CatalogPage() {
               />
             </button>
           </div>
-          <AppliedFilters />
+          <AnimeAppliedFilters />
         </header>
         {filteredAnimes.results.length !== 0 ? (
           <>
@@ -111,7 +111,7 @@ function CatalogPage() {
               currentPage={filteredAnimes.currentPage}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page: page }),
+                  search: (prev) => ({ ...prev, page: page })
                 });
               }}
             />

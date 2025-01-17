@@ -2,8 +2,8 @@ import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useUserCollections } from "@/services/social/queries/socialQueries";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
-import UserCollectionsSkeleton from "@/components/shared/loadingSkeletons/social/UserCollectionsSkeleton";
-import Collection from "@/components/shared/social/mainContent/collection/Collection";
+import UserCollectionsSkeleton from "@/components/core/loadingSkeletons/social/UserCollectionsSkeleton";
+import Collection from "@/components/core/social/mainContent/collection/Collection";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
 

@@ -1,10 +1,10 @@
-import Post from "@/components/shared/social/mainContent/post/Post";
+import Post from "@/components/core/social/mainContent/post/Post";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { tempPosts } from "@/utils/variables/temp";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/search/posts/")({
-  component: () => <PostsSearchResultsPage />,
+  component: () => <PostsSearchResultsPage />
 });
 
 function PostsSearchResultsPage() {

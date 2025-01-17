@@ -1,7 +1,7 @@
-import UserProfileSkeleton from "@/components/shared/loadingSkeletons/social/UserProfileSkeleton";
-import ProfileDetails from "@/components/shared/social/mainContent/profile/profileDetails/ProfileDetails";
-import ProfileImages from "@/components/shared/social/mainContent/profile/profileImages/ProfileImages";
-import ProfileTabs from "@/components/shared/social/mainContent/profile/profileTabs/ProfileTabs";
+import UserProfileSkeleton from "@/components/core/loadingSkeletons/social/UserProfileSkeleton";
+import ProfileDetails from "@/components/core/social/mainContent/profile/profileDetails/ProfileDetails";
+import ProfileImages from "@/components/core/social/mainContent/profile/profileImages/ProfileImages";
+import ProfileTabs from "@/components/core/social/mainContent/profile/profileTabs/ProfileTabs";
 import { useUserProfile } from "@/services/social/queries/socialQueries";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";

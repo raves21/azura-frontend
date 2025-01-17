@@ -1,15 +1,15 @@
-import StaticLoadingPage from "@/components/shared/StaticLoadingPage";
-import Waves from "@/components/shared/Waves";
+import StaticLoadingPage from "@/components/core/StaticLoadingPage";
+import Waves from "@/components/core/Waves";
 import { useRefreshJWT } from "@/services/auth/authQueries";
 import {
   createFileRoute,
   Link,
   Navigate,
-  Outlet,
+  Outlet
 } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
-  component: () => <AuthLayout />,
+  component: () => <AuthLayout />
 });
 
 function AuthLayout() {

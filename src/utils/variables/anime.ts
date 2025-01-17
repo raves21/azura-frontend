@@ -3,8 +3,8 @@ import {
   Season,
   SortBy,
   AnilistAnimeStatus,
-  Status,
-} from "../types/thirdParty/animeAnilist";
+  Status
+} from "../types/thirdParty/anime/animeAnilist";
 
 export const sortByLabels: Record<SortBy, string> = {
   [SortBy.TRENDING_DESC]: "Trending",
@@ -13,7 +13,7 @@ export const sortByLabels: Record<SortBy, string> = {
   [SortBy.SCORE_DESC]: "Avg Score",
   [SortBy.TITLE]: "Title (A-Z)",
   [SortBy.TITLE_DESC]: "Title (Z-A)",
-  [SortBy.START_DATE_DESC]: "Release Date",
+  [SortBy.START_DATE_DESC]: "Release Date"
 };
 
 export const formatLabels: Record<Format, string> = {
@@ -23,14 +23,14 @@ export const formatLabels: Record<Format, string> = {
   [Format.ONA]: "ONA",
   [Format.MOVIE]: "Movie",
   [Format.SPECIAL]: "Special",
-  [Format.MUSIC]: "Music",
+  [Format.MUSIC]: "Music"
 };
 
 export const anilistAnimeStatusLabels: Record<AnilistAnimeStatus, string> = {
   [AnilistAnimeStatus.RELEASING]: "Ongoing",
   [AnilistAnimeStatus.FINISHED]: "Completed",
   [AnilistAnimeStatus.NOT_YET_RELEASED]: "Upcoming",
-  [AnilistAnimeStatus.CANCELLED]: "Cancelled",
+  [AnilistAnimeStatus.CANCELLED]: "Cancelled"
 };
 
 export const statusLabels: Record<string, string> = {
@@ -41,20 +41,20 @@ export const statusLabels: Record<string, string> = {
   [Status.NotYetAired]: "Upcoming",
   [Status.NOT_YET_RELEASED]: "Upcoming",
   [Status.CANCELLED]: "Cancelled",
-  [Status.HIATUS]: "Hiatus",
+  [Status.HIATUS]: "Hiatus"
 };
 
 export const seasonLabels: Record<Season, string> = {
   [Season.WINTER]: "Winter",
   [Season.SPRING]: "Spring",
   [Season.SUMMER]: "Summer",
-  [Season.FALL]: "Fall",
+  [Season.FALL]: "Fall"
 };
 
 export const animeCancelledStatus = [Status.CANCELLED, Status.Cancelled];
 export const animeOngoingStatus = [Status.Ongoing, Status.RELEASING];
 export const animeUpcomingStatus = [
   Status.NOT_YET_RELEASED,
-  Status.NotYetAired,
+  Status.NotYetAired
 ];
 export const animeCompletedStatus = [Status.FINISHED, Status.Completed];

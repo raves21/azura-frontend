@@ -1,12 +1,12 @@
-import FloatingPagesBar from "@/components/shared/social/floatingPagesBar/FloatingPagesBar";
-import FloatingCreateCommentBar from "@/components/shared/social/mainContent/post/postInfo/postComments/FloatingCreateCommentBar";
-import FollowSuggestions from "@/components/shared/social/profilePreviewAndFollowSuggestions/followSuggestions/FollowSuggestions";
-import ProfilePreview from "@/components/shared/social/profilePreviewAndFollowSuggestions/profilePreview/ProfilePreview";
-import Trending from "@/components/shared/social/trending/Trending";
+import FloatingPagesBar from "@/components/core/social/floatingPagesBar/FloatingPagesBar";
+import FloatingCreateCommentBar from "@/components/core/social/mainContent/post/postInfo/postComments/FloatingCreateCommentBar";
+import FollowSuggestions from "@/components/core/social/profilePreviewAndFollowSuggestions/followSuggestions/FollowSuggestions";
+import ProfilePreview from "@/components/core/social/profilePreviewAndFollowSuggestions/profilePreview/ProfilePreview";
+import Trending from "@/components/core/social/trending/Trending";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social")({
-  component: () => <SocialPageLayout />,
+  component: () => <SocialPageLayout />
 });
 
 function SocialPageLayout() {

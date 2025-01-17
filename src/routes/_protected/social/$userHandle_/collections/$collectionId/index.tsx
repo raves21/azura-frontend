@@ -1,7 +1,7 @@
-import BackButton from "@/components/shared/BackButton";
-import CollectionActions from "@/components/shared/social/mainContent/collection/collectionInfoHeader/CollectionActions";
-import CollectionInfoHeader from "@/components/shared/social/mainContent/collection/collectionInfoHeader/CollectionInfoHeader";
-import CollectionItems from "@/components/shared/social/mainContent/collection/collectionItem/CollectionItems";
+import BackButton from "@/components/core/BackButton";
+import CollectionActions from "@/components/core/social/mainContent/collection/collectionInfoHeader/CollectionActions";
+import CollectionInfoHeader from "@/components/core/social/mainContent/collection/collectionInfoHeader/CollectionInfoHeader";
+import CollectionItems from "@/components/core/social/mainContent/collection/collectionItem/CollectionItems";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { tempCollectionItems, tempCollections } from "@/utils/variables/temp";
 import { createFileRoute } from "@tanstack/react-router";
@@ -9,7 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/$collectionId/"
 )({
-  component: () => <CollectionInfoPage />,
+  component: () => <CollectionInfoPage />
 });
 
 function CollectionInfoPage() {
@@ -20,8 +20,8 @@ function CollectionInfoPage() {
         linkProps={{
           to: "/social/$userHandle/collections",
           params: {
-            userHandle: "elonmusk",
-          },
+            userHandle: "elonmusk"
+          }
         }}
       />
       <CollectionInfoHeader collection={tempCollections[1]} />

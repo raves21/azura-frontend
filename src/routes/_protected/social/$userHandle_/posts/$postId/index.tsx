@@ -1,6 +1,6 @@
-import BackButton from "@/components/shared/BackButton";
-import PostComments from "@/components/shared/social/mainContent/post/postInfo/postComments/PostComments";
-import PostInfo from "@/components/shared/social/mainContent/post/postInfo/PostInfo";
+import BackButton from "@/components/core/BackButton";
+import PostComments from "@/components/core/social/mainContent/post/postInfo/postComments/PostComments";
+import PostInfo from "@/components/core/social/mainContent/post/postInfo/PostInfo";
 import {
   createFileRoute,
   LinkProps,
@@ -8,7 +8,7 @@ import {
   useRouterState
 } from "@tanstack/react-router";
 import { useEffect } from "react";
-import PostInfoSkeleton from "@/components/shared/loadingSkeletons/social/PostInfoSkeleton";
+import PostInfoSkeleton from "@/components/core/loadingSkeletons/social/PostInfoSkeleton";
 import { usePostInfo } from "@/services/social/queries/socialQueries";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
