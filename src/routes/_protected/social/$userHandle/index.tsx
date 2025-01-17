@@ -1,5 +1,5 @@
-import PostsSkeleton from "@/components/shared/loadingSkeletons/social/PostsSkeleton";
-import Post from "@/components/shared/social/mainContent/post/Post";
+import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
+import Post from "@/components/core/social/mainContent/post/Post";
 import { useUserProfilePosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";

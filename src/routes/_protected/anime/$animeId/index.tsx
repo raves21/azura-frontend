@@ -1,20 +1,20 @@
 import {
   useFetchAnimeEpisodes,
-  useFetchAnimeInfo,
+  useFetchAnimeInfo
 } from "@/services/thirdParty/anime/queries/animeQueries";
 import { createFileRoute } from "@tanstack/react-router";
-import AnimeInfoPageHero from "./-AnimeInfoPageHero";
-import AnimeEpisodes from "@/components/shared/anime/AnimeEpisodes";
+import AnimeInfoPageHero from "../../../../components/core/media/anime/AnimeInfoPageHero";
+import AnimeEpisodes from "@/components/core/media/anime/AnimeEpisodes";
 import { useEffect } from "react";
-import { Genre } from "@/utils/types/thirdParty/animeAnilist";
-import CategoryCarousel from "@/components/shared/CategoryCarousel";
-import CategoryCarouselItem from "@/components/shared/CategoryCarouselItem";
-import MediaCard from "@/components/shared/MediaCard";
+import { Genre } from "@/utils/types/thirdParty/anime/animeAnilist";
+import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
+import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
+import MediaCard from "@/components/core/media/shared/MediaCard";
 
 const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
 
 export const Route = createFileRoute("/_protected/anime/$animeId/")({
-  component: () => <AnimeInfoPage />,
+  component: () => <AnimeInfoPage />
 });
 
 function AnimeInfoPage() {
@@ -25,7 +25,7 @@ function AnimeInfoPage() {
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
-    error: animeInfoError,
+    error: animeInfoError
   } = useFetchAnimeInfo(animeId);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ function AnimeInfoPage() {
                       image={recommendation.image || recommendation.cover}
                       linkProps={{
                         to: "/anime/$animeId",
-                        params: { animeId: `${recommendation.id}` },
+                        params: { animeId: `${recommendation.id}` }
                       }}
                       subLabels={[recommendation.type, recommendation.status]}
                       title={

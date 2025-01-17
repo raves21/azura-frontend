@@ -1,8 +1,8 @@
-import FeedPostsSkeleton from "@/components/shared/loadingSkeletons/social/FeedPostsSkeleton";
-import PostsSkeleton from "@/components/shared/loadingSkeletons/social/PostsSkeleton";
-import ContentOptions from "@/components/shared/social/mainContent/contentOptions/ContentOptions";
-import CreatePost from "@/components/shared/social/mainContent/post/managePost/CreatePost";
-import Post from "@/components/shared/social/mainContent/post/Post";
+import FeedPostsSkeleton from "@/components/core/loadingSkeletons/social/FeedPostsSkeleton";
+import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
+import ContentOptions from "@/components/core/social/mainContent/contentOptions/ContentOptions";
+import CreatePost from "@/components/core/social/mainContent/post/managePost/CreatePost";
+import Post from "@/components/core/social/mainContent/post/Post";
 import { useForYouFeed } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
@@ -11,22 +11,22 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/")({
-  component: () => <SocialPage />,
+  component: () => <SocialPage />
 });
 
 const feedOptions: TContentOption[] = [
   {
     name: "For You",
     linkProps: {
-      to: "/social",
-    },
+      to: "/social"
+    }
   },
   {
     name: "Following",
     linkProps: {
-      to: "/social",
-    },
-  },
+      to: "/social"
+    }
+  }
 ];
 
 function SocialPage() {
@@ -37,7 +37,7 @@ function SocialPage() {
     isLoading: isForYouFeedLoading,
     error: forYouFeedError,
     isFetchingNextPage,
-    fetchNextPage,
+    fetchNextPage
   } = useForYouFeed();
 
   const ref = useFetchNextPageInView(fetchNextPage);

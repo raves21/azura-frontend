@@ -1,23 +1,24 @@
-import CategoryCarousel from "@/components/shared/CategoryCarousel";
-import CategoryCarouselItem from "@/components/shared/CategoryCarouselItem";
-import MediaCard from "@/components/shared/MediaCard";
+import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
+import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
+import MediaCard from "@/components/core/media/shared/MediaCard";
 import { useFetchAnimesByCategory } from "@/services/thirdParty/anime/queries/animeQueries";
 import {
   SortBy,
-  AnilistAnimeStatus,
-} from "@/utils/types/thirdParty/animeAnilist";
+  AnilistAnimeStatus
+} from "@/utils/types/thirdParty/anime/animeAnilist";
 import { createFileRoute } from "@tanstack/react-router";
-import TrendingAnimesHeroCarousel from "./-TrendingAnimesHeroCarousel";
+import TrendingHeroCarousel from "../../../components/core/media/shared/carousel/TrendingHeroCarousel";
+import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/TrendingHeroCarouselItem";
 
 export const Route = createFileRoute("/_protected/anime/")({
-  component: () => <AnimeHomePage />,
+  component: () => <AnimeHomePage />
 });
 
 function AnimeHomePage() {
   const {
     data: trendingAnimes,
     isLoading: isTrendingAnimesLoading,
-    error: trendingAnimesError,
+    error: trendingAnimesError
   } = useFetchAnimesByCategory(
     17,
     SortBy.TRENDING_DESC,
@@ -26,13 +27,13 @@ function AnimeHomePage() {
   const {
     data: popularAnimes,
     isLoading: isPopularAnimesLoading,
-    error: popularAnimesError,
+    error: popularAnimesError
   } = useFetchAnimesByCategory(12, SortBy.POPULARITY_DESC);
 
   const {
     data: topRatedAnimes,
     isLoading: isTopRatedAnimesLoading,
-    error: topRatedAnimesError,
+    error: topRatedAnimesError
   } = useFetchAnimesByCategory(12, SortBy.SCORE_DESC);
 
   if (
@@ -63,8 +64,24 @@ function AnimeHomePage() {
     <div className="flex flex-col items-center w-full">
       {trendingAnimes && (
         <div className="w-dvw max-w-[100dvw]">
-          <TrendingAnimesHeroCarousel
-            animeList={trendingAnimes.results.slice(0, 5)}
+          <TrendingHeroCarousel
+            carouselItems={trendingAnimes.results.slice(0, 5)}
+            renderCarouselItems={(anime, i) => (
+              <TrendingHeroCarouselItem
+                key={i}
+                backgroundImage={anime.cover}
+                posterImage={anime.image}
+                description={anime.description}
+                title={anime.title.english || anime.title.romaji}
+                trendingRank={i + 1}
+                toInfoPageLinkProps={{
+                  to: "/anime/$animeId",
+                  params: {
+                    animeId: anime.id
+                  }
+                }}
+              />
+            )}
           />
         </div>
       )}
@@ -74,8 +91,8 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: SortBy.TRENDING_DESC,
-              },
+                sortBy: SortBy.TRENDING_DESC
+              }
             }}
             carouselItems={trendingAnimes.results.slice(5)}
             renderCarouselItems={(trendingAnime, i) => {
@@ -85,12 +102,12 @@ function AnimeHomePage() {
                     image={trendingAnime.image || trendingAnime.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: trendingAnime.id },
+                      params: { animeId: trendingAnime.id }
                     }}
                     subLabels={[
                       trendingAnime.type,
                       trendingAnime.releaseDate?.toString(),
-                      trendingAnime.status,
+                      trendingAnime.status
                     ]}
                     title={
                       trendingAnime.title.english ||
@@ -109,8 +126,8 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: SortBy.SCORE_DESC,
-              },
+                sortBy: SortBy.SCORE_DESC
+              }
             }}
             carouselItems={topRatedAnimes.results}
             renderCarouselItems={(topRatedAnime, i) => {
@@ -120,12 +137,12 @@ function AnimeHomePage() {
                     image={topRatedAnime.image || topRatedAnime.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: topRatedAnime.id },
+                      params: { animeId: topRatedAnime.id }
                     }}
                     subLabels={[
                       topRatedAnime.type,
                       topRatedAnime.releaseDate?.toString(),
-                      topRatedAnime.status,
+                      topRatedAnime.status
                     ]}
                     title={
                       topRatedAnime.title.english ||
@@ -144,8 +161,8 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: SortBy.POPULARITY_DESC,
-              },
+                sortBy: SortBy.POPULARITY_DESC
+              }
             }}
             carouselItems={popularAnimes.results}
             renderCarouselItems={(popularAnime, i) => {
@@ -155,12 +172,12 @@ function AnimeHomePage() {
                     image={popularAnime.image || popularAnime.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: popularAnime.id },
+                      params: { animeId: popularAnime.id }
                     }}
                     subLabels={[
                       popularAnime.type,
                       popularAnime.releaseDate?.toString(),
-                      popularAnime.status,
+                      popularAnime.status
                     ]}
                     title={
                       popularAnime.title.english ||

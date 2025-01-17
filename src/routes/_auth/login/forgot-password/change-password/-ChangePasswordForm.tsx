@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
@@ -15,14 +15,14 @@ import { ChangePasswordFormData } from "@/utils/types/auth/forms";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useChangePassword } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/shared/ErrorDialog";
+import ErrorDialog from "@/components/core/ErrorDialog";
 
 type ChangePasswordFormProps = {
   afterChangePasswordSuccessAction: (values: ChangePasswordFormData) => void;
 };
 
 export default function ChangePasswordForm({
-  afterChangePasswordSuccessAction,
+  afterChangePasswordSuccessAction
 }: ChangePasswordFormProps) {
   const navigate = useNavigate();
   const { findAccountFoundUser } = useAuthStore();
@@ -34,8 +34,8 @@ export default function ChangePasswordForm({
     resolver: zodResolver(changePasswordFormSchema),
     defaultValues: {
       newPassword: "",
-      confirmNewPassword: "",
-    },
+      confirmNewPassword: ""
+    }
   });
 
   async function onSubmit(values: ChangePasswordFormData) {
@@ -43,7 +43,7 @@ export default function ChangePasswordForm({
       if (!findAccountFoundUser) throw new Error("User not found.");
       await changePassword({
         userId: findAccountFoundUser.id,
-        newPassword: values.newPassword.trim(),
+        newPassword: values.newPassword.trim()
       });
       afterChangePasswordSuccessAction(values);
     } catch (error) {

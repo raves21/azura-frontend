@@ -3,33 +3,33 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
-import AnimeEpisodes from "@/components/shared/anime/AnimeEpisodes";
+import AnimeEpisodes from "@/components/core/media/anime/AnimeEpisodes";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import { VideoPlayer } from "@/components/shared/VideoPlayer";
-import EpisodeAnimeInfo from "./-EpisodeAnimeInfo";
+import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
+import WatchPageAnimeInfo from "../../../../../components/core/media/anime/WatchPageAnimeInfo";
 import {
   useFetchEpisodeStreamLinks,
   useFetchAnimeEpisodes,
   useFetchAnimeInfo,
   useChunkAnimeEpisodes,
-  useEpisodeInfo,
+  useEpisodeInfo
 } from "@/services/thirdParty/anime/queries/animeQueries";
-import EpisodeTitleAndNumber from "@/components/shared/episode/EpisodeTitleAndNumber";
-import { Genre } from "@/utils/types/thirdParty/animeAnilist";
-import MediaCard from "@/components/shared/MediaCard";
-import CategoryCarousel from "@/components/shared/CategoryCarousel";
-import CategoryCarouselItem from "@/components/shared/CategoryCarouselItem";
+import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
+import { Genre } from "@/utils/types/thirdParty/anime/animeAnilist";
+import MediaCard from "@/components/core/media/shared/MediaCard";
+import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
+import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 
 const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
 
 const episodePageSearchParams = z.object({
-  id: z.coerce.string(),
+  id: z.coerce.string()
 });
 
 export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
   component: () => <WatchEpisodePage />,
-  validateSearch: (search) => episodePageSearchParams.parse(search),
+  validateSearch: (search) => episodePageSearchParams.parse(search)
 });
 
 function WatchEpisodePage() {
@@ -39,7 +39,7 @@ function WatchEpisodePage() {
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
     videoAndeEpisodeInfoContainerHeight,
-    setVideoAndEpisodeInfoContainerHeight,
+    setVideoAndEpisodeInfoContainerHeight
   ] = useState(0);
 
   const windowWidth = useWindowWidth();
@@ -54,7 +54,7 @@ function WatchEpisodePage() {
   const {
     data: episodeStreamLinks,
     isLoading: isEpisodeStreamLinksLoading,
-    error: episodeStreamLinksError,
+    error: episodeStreamLinksError
   } = useFetchEpisodeStreamLinks(id);
 
   const episodesQuery = useFetchAnimeEpisodes(animeId);
@@ -62,7 +62,7 @@ function WatchEpisodePage() {
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
-    error: animeInfoError,
+    error: animeInfoError
   } = useFetchAnimeInfo(animeId);
 
   const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
@@ -139,7 +139,7 @@ function WatchEpisodePage() {
             currentlyWatchingEpisodeNumber={episodeInfo.number}
           />
         </section>
-        <EpisodeAnimeInfo
+        <WatchPageAnimeInfo
           title={
             animeInfoAnilist?.title.english ||
             animeInfoAnilist?.title.romaji ||
@@ -181,7 +181,7 @@ function WatchEpisodePage() {
                     image={recommendation.image || recommendation.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: `${recommendation.id}` },
+                      params: { animeId: `${recommendation.id}` }
                     }}
                     subLabels={[recommendation.type, recommendation.status]}
                     title={
