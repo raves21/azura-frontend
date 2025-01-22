@@ -61,3 +61,27 @@ export function useMovieGenres() {
     }
   });
 }
+
+export function useMovieStreamLink(movieId: string, enabled: boolean) {
+  return useQuery({
+    queryKey: ["movieStream", movieId],
+    queryFn: async () => {
+      const headers = new Headers();
+      headers.append("x-api-key", import.meta.env.VITE_RABBIT_API_KEY);
+      const requestOptions: RequestInit = {
+        method: "GET",
+        headers,
+        redirect: "follow"
+      };
+      const streamLinkURL = await (
+        await fetch(
+          `${import.meta.env.VITE_RABBIT_URL}/${movieId}`,
+          requestOptions
+        )
+      ).text();
+
+      return streamLinkURL;
+    },
+    enabled: !!enabled
+  });
+}

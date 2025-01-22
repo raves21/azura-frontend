@@ -10,6 +10,7 @@ import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { TMDBGenre } from "@/utils/types/thirdParty/shared";
 import GenreListTMDB from "../shared/info/GenreListTMDB";
+import { useNavigate } from "@tanstack/react-router";
 
 type MovieInfoPageHeroProps = {
   image: string;
@@ -21,8 +22,8 @@ type MovieInfoPageHeroProps = {
   status: string;
   genres: TMDBGenre[];
   voteAverage: number | null;
-  //   movieId: string;
-  //   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
+  movieId: string;
+  movieStreamLink: string | undefined;
 };
 
 export default function MovieInfoPageHero({
@@ -34,13 +35,11 @@ export default function MovieInfoPageHero({
   status,
   runTime,
   genres,
-  voteAverage
-  //   movieId
-  //   episodesQuery
+  voteAverage,
+  movieId,
+  movieStreamLink
 }: MovieInfoPageHeroProps) {
-  //   const navigate = useNavigate();
-  //   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-  //     useChunkAnimeEpisodes(episodesQuery.data);
+  const navigate = useNavigate();
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -71,22 +70,14 @@ export default function MovieInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-            //   disabled={
-            //     episodesQuery.isLoading ||
-            //     episodesQuery.isError ||
-            //     isChunkEpisodesLoading ||
-            //     !chunkedEpisodes
-            //   }
-            //   onClick={() => {
-            //     chunkedEpisodes &&
-            //       navigate({
-            //         to: "/anime/$animeId/watch",
-            //         params: { animeId: animeId },
-            //         search: {
-            //           id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, "")
-            //         }
-            //       });
-            //   }}
+              disabled={!!movieStreamLink}
+              onClick={() => {
+                movieStreamLink &&
+                  navigate({
+                    to: "/movie/$movieId",
+                    params: { movieId }
+                  });
+              }}
             />
             <AddToListButton />
           </div>

@@ -5,11 +5,11 @@ import EpisodePlayIcon from "./EpisodePlayIcon";
 
 type EpisodeCardProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   image: string | null | undefined;
-  replace: boolean;
+  replace?: boolean;
   episodeImageFallback: string | undefined;
   className?: string;
   isCurrentlyWatched?: boolean;
-  linkProps: LinkProps;
+  linkProps?: LinkProps;
   episodeNumber: string;
   episodeTitle: string;
 };

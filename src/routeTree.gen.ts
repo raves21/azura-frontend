@@ -34,6 +34,7 @@ import { Route as ProtectedSocialSearchPostsIndexImport } from './routes/_protec
 import { Route as ProtectedSocialSearchPeopleIndexImport } from './routes/_protected/social/search/people/index'
 import { Route as ProtectedSocialUserHandlePostsIndexImport } from './routes/_protected/social/$userHandle_/posts/index'
 import { Route as ProtectedSocialUserHandleCollectionsIndexImport } from './routes/_protected/social/$userHandle/collections/index'
+import { Route as ProtectedMovieMovieIdWatchIndexImport } from './routes/_protected/movie/$movieId/watch/index'
 import { Route as ProtectedAnimeAnimeIdWatchIndexImport } from './routes/_protected/anime/$animeId/watch/index'
 import { Route as AuthLoginForgotPasswordVerifyEmailIndexImport } from './routes/_auth/login/forgot-password/verify-email/index'
 import { Route as AuthLoginForgotPasswordFindAccountIndexImport } from './routes/_auth/login/forgot-password/find-account/index'
@@ -175,6 +176,12 @@ const ProtectedSocialUserHandleCollectionsIndexRoute =
   ProtectedSocialUserHandleCollectionsIndexImport.update({
     path: '/collections/',
     getParentRoute: () => ProtectedSocialUserHandleRouteRoute,
+  } as any)
+
+const ProtectedMovieMovieIdWatchIndexRoute =
+  ProtectedMovieMovieIdWatchIndexImport.update({
+    path: '/movie/$movieId/watch/',
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedAnimeAnimeIdWatchIndexRoute =
@@ -378,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAnimeAnimeIdWatchIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/movie/$movieId/watch/': {
+      id: '/_protected/movie/$movieId/watch/'
+      path: '/movie/$movieId/watch'
+      fullPath: '/movie/$movieId/watch'
+      preLoaderRoute: typeof ProtectedMovieMovieIdWatchIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/social/$userHandle/collections/': {
       id: '/_protected/social/$userHandle/collections/'
       path: '/collections'
@@ -461,6 +475,7 @@ export const routeTree = rootRoute.addChildren({
     ProtectedAnimeCatalogIndexRoute,
     ProtectedMovieMovieIdIndexRoute,
     ProtectedAnimeAnimeIdWatchIndexRoute,
+    ProtectedMovieMovieIdWatchIndexRoute,
   }),
 })
 
@@ -502,7 +517,8 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/anime/$animeId/",
         "/_protected/anime/catalog/",
         "/_protected/movie/$movieId/",
-        "/_protected/anime/$animeId/watch/"
+        "/_protected/anime/$animeId/watch/",
+        "/_protected/movie/$movieId/watch/"
       ]
     },
     "/_protected/social": {
@@ -600,6 +616,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/anime/$animeId/watch/": {
       "filePath": "_protected/anime/$animeId/watch/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/movie/$movieId/watch/": {
+      "filePath": "_protected/movie/$movieId/watch/index.tsx",
       "parent": "/_protected"
     },
     "/_protected/social/$userHandle/collections/": {

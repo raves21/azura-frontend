@@ -1,10 +1,15 @@
 import MovieInfoPageHero from "@/components/core/media/movie/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
+import EpisodeCard from "@/components/core/media/shared/episode/EpisodeCard";
+import EpisodeListContainer from "@/components/core/media/shared/episode/EpisodeListContainer";
+import EpisodesContainer from "@/components/core/media/shared/episode/EpisodesContainer";
+import EpisodesHeader from "@/components/core/media/shared/episode/EpisodesHeader";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
-  useMovieRecommendations
+  useMovieRecommendations,
+  useMovieStreamLink
 } from "@/services/thirdParty/movie/movieQueries";
 import {
   getTMDBImageURL,
@@ -20,8 +25,6 @@ export const Route = createFileRoute("/_protected/movie/$movieId/")({
 function MovieInfoPage() {
   const { movieId } = Route.useParams();
 
-  // const episodesQuery = useFetchAnimeEpisodes(animeId);
-
   const {
     data: movieInfo,
     isLoading: isMovieInfoLoading,
@@ -34,11 +37,21 @@ function MovieInfoPage() {
     error: movieRecommendationsError
   } = useMovieRecommendations(movieId);
 
+  const {
+    data: movieStreamLink,
+    isLoading: isMovieStreamLinkLoading,
+    error: movieStreamLinkError
+  } = useMovieStreamLink(movieId, !!movieInfo);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (isMovieInfoLoading || isMovieRecommendationsLoading) {
+  if (
+    isMovieInfoLoading ||
+    isMovieRecommendationsLoading ||
+    isMovieStreamLinkLoading
+  ) {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
@@ -49,7 +62,7 @@ function MovieInfoPage() {
     );
   }
 
-  if (movieInfoError || movieRecommendationsError) {
+  if (movieInfoError || movieRecommendationsError || movieStreamLinkError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching the details for this anime.</p>
@@ -58,10 +71,12 @@ function MovieInfoPage() {
     );
   }
 
-  if (movieInfo && movieRecommendations) {
+  if (movieInfo && movieRecommendations && movieStreamLink) {
     return (
       <main className="w-full pb-32">
         <MovieInfoPageHero
+          movieId={movieId}
+          movieStreamLink={movieStreamLink}
           cover={getTMDBImageURL(movieInfo.backdrop_path)}
           description={movieInfo.overview}
           genres={movieInfo.genres}
@@ -72,19 +87,21 @@ function MovieInfoPage() {
           title={movieInfo.title}
           voteAverage={movieInfo.vote_average}
         />
-        {/* <AnimeEpisodes
-          variant="infoPage"
-          episodesQuery={episodesQuery}
-          animeId={animeId}
-          replace={false}
-          type={animeInfoAnilist?.type}
-          episodeImageFallback={
-            animeInfoAnilist?.cover ||
-            animeInfoAnify?.coverImage ||
-            animeInfoAnilist?.image ||
-            animeInfoAnify?.bannerImage
-          }
-        /> */}
+        <EpisodesContainer variant="infoPage">
+          <EpisodesHeader />
+          <EpisodeListContainer variant="infoPage">
+            <EpisodeCard
+              linkProps={{
+                to: "/movie/$movieId/watch"
+              }}
+              episodeNumber={`MOVIE`}
+              episodeTitle={"FULL"}
+              isCurrentlyWatched={false}
+              episodeImageFallback={"/no-image-2.jpg"}
+              image={getTMDBImageURL(movieInfo.poster_path)}
+            />
+          </EpisodeListContainer>
+        </EpisodesContainer>
         {movieRecommendations.results.length !== 0 && (
           <CategoryCarousel
             carouselItems={movieRecommendations.results}
