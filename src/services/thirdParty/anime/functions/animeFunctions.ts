@@ -78,8 +78,12 @@ export function getEpisodesToBeRendered(
   }
 }
 
-export function getRatingScore(rating: number) {
+export function getRatingScoreAnime(rating: number) {
   const decimal = (rating * 10).toString().split(".")[1];
   if (!decimal || decimal.length < 1) return (0.05 * (rating * 10)).toFixed(1);
   return (0.05 * (rating * 10)).toFixed(2);
+}
+
+export function getRatingScoreTMDB(rating: number) {
+  return rating.toFixed(1);
 }

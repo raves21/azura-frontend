@@ -2,7 +2,7 @@ import Description from "@/components/core/media/shared/info/Description";
 import Rating from "@/components/core/media/shared/info/Rating";
 import InfoSectionBackgroundImage from "@/components/core/media/shared/info/InfoSectionBackgroundImage";
 import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPoster";
-import GenreList from "@/components/core/media/shared/info/GenreList";
+import GenreListAnime from "@/components/core/media/shared/info/GenreListAnime";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { cn } from "@/lib/utils";
@@ -46,7 +46,7 @@ export default function WatchPageAnimeInfo({
         <section className="z-10 flex flex-col flex-1 gap-2 sm:gap-3">
           <Title title={title} variant="watchPage" />
           <div className="flex flex-col gap-2 mobile-m:gap-4">
-            <Rating variant="watchPage" rating={rating} />
+            <Rating mediaType="anime" variant="watchPage" rating={rating} />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
               <InfoItem label="Year:" info={year?.toString()} />
               <InfoItem
@@ -73,7 +73,7 @@ export default function WatchPageAnimeInfo({
               />
               <InfoItem label="Type:" info={type} />
             </div>
-            <GenreList
+            <GenreListAnime
               isMobile={false}
               genres={genres}
               gotoLink="/anime/catalog"
@@ -89,7 +89,7 @@ export default function WatchPageAnimeInfo({
         </section>
       </div>
       <div className="z-10 w-full space-y-4 lg:space-y-0">
-        <GenreList
+        <GenreListAnime
           isMobile
           genres={genres}
           gotoLink="/anime/catalog"

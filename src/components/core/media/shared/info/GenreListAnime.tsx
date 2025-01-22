@@ -18,7 +18,7 @@ type GenreListProps = {
   gotoLink: string;
 } & (InfoPageProps | WatchPageProps);
 
-export default function GenreList({
+export default function GenreListAnime({
   genres,
   gotoLink,
   ...props
@@ -38,7 +38,7 @@ export default function GenreList({
                 <Link
                   to={gotoLink}
                   search={{
-                    genres: `${genre}`,
+                    genres: `${genre}`
                   }}
                   key={i}
                   className="hover:text-mainAccent"
@@ -65,7 +65,7 @@ export default function GenreList({
             <Link
               to="/anime/catalog"
               search={{
-                genres: genre,
+                genres: genre
               }}
               key={genre}
               className="px-3 py-2 transition-colors border rounded-full border-mainAccent/75 hover:text-mainAccent/75"
