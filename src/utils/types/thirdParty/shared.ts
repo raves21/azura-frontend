@@ -62,3 +62,10 @@ export type URL = {
   link: string;
   type: string;
 };
+
+export enum TMDBSortBy {
+  POPULARITY_DESC = "popularity.desc",
+  REVENUE_DESC = "revenue.desc",
+  VOTE_AVERAGE = "vote.average",
+  
+}

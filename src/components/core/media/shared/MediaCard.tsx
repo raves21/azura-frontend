@@ -44,7 +44,7 @@ export default function MediaCard({
               subLabelsFiltered.length === 1 ||
               !subLabelsFiltered[i + 1]
             )
-              return <p key={subLabel}>{subLabel}</p>;
+              return <p className="line-clamp-1" key={subLabel}>{subLabel}</p>;
             return (
               <Fragment key={subLabel}>
                 <p>{subLabel}</p>

@@ -28,7 +28,7 @@ const filterPageSearchSchema = z.object({
 type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>;
 
 export const Route = createFileRoute("/_protected/anime/catalog/")({
-  component: () => <CatalogPage />,
+  component: () => <AnimeCatalogPage />,
   validateSearch: (search): FilterPageSearchParams => {
     const validationResult = filterPageSearchSchema.safeParse(search);
     if (validationResult.success) {
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/_protected/anime/catalog/")({
   }
 });
 
-function CatalogPage() {
+function AnimeCatalogPage() {
   const { format, genres, page, query, season, sortBy, year, status } =
     Route.useSearch();
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ function CatalogPage() {
     sortBy,
     format,
     page,
-    status
+    status,
   );
 
   if (isFilteredAnimesLoading) {

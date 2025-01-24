@@ -25,6 +25,7 @@ import { Route as ProtectedSocialSearchRouteImport } from './routes/_protected/s
 import { Route as ProtectedSocialUserHandleRouteImport } from './routes/_protected/social/$userHandle/route'
 import { Route as ProtectedSocialSearchIndexImport } from './routes/_protected/social/search/index'
 import { Route as ProtectedSocialUserHandleIndexImport } from './routes/_protected/social/$userHandle/index'
+import { Route as ProtectedMovieCatalogIndexImport } from './routes/_protected/movie/catalog/index'
 import { Route as ProtectedMovieMovieIdIndexImport } from './routes/_protected/movie/$movieId/index'
 import { Route as ProtectedAnimeCatalogIndexImport } from './routes/_protected/anime/catalog/index'
 import { Route as ProtectedAnimeAnimeIdIndexImport } from './routes/_protected/anime/$animeId/index'
@@ -119,6 +120,13 @@ const ProtectedSocialUserHandleIndexRoute =
     path: '/',
     getParentRoute: () => ProtectedSocialUserHandleRouteRoute,
   } as any)
+
+const ProtectedMovieCatalogIndexRoute = ProtectedMovieCatalogIndexImport.update(
+  {
+    path: '/movie/catalog/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any,
+)
 
 const ProtectedMovieMovieIdIndexRoute = ProtectedMovieMovieIdIndexImport.update(
   {
@@ -343,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedMovieMovieIdIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/movie/catalog/': {
+      id: '/_protected/movie/catalog/'
+      path: '/movie/catalog'
+      fullPath: '/movie/catalog'
+      preLoaderRoute: typeof ProtectedMovieCatalogIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/social/$userHandle/': {
       id: '/_protected/social/$userHandle/'
       path: '/'
@@ -474,6 +489,7 @@ export const routeTree = rootRoute.addChildren({
     ProtectedAnimeAnimeIdIndexRoute,
     ProtectedAnimeCatalogIndexRoute,
     ProtectedMovieMovieIdIndexRoute,
+    ProtectedMovieCatalogIndexRoute,
     ProtectedAnimeAnimeIdWatchIndexRoute,
     ProtectedMovieMovieIdWatchIndexRoute,
   }),
@@ -517,6 +533,7 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/anime/$animeId/",
         "/_protected/anime/catalog/",
         "/_protected/movie/$movieId/",
+        "/_protected/movie/catalog/",
         "/_protected/anime/$animeId/watch/",
         "/_protected/movie/$movieId/watch/"
       ]
@@ -592,6 +609,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/movie/$movieId/": {
       "filePath": "_protected/movie/$movieId/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/movie/catalog/": {
+      "filePath": "_protected/movie/catalog/index.tsx",
       "parent": "/_protected"
     },
     "/_protected/social/$userHandle/": {

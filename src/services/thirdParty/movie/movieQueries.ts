@@ -3,6 +3,7 @@ import {
   PaginatedMovieResponse
 } from "@/utils/types/thirdParty/movie/movieTmdb";
 import { MovieGenres } from "@/utils/types/thirdParty/movie/movieTmdb";
+import { TMDBSortBy } from "@/utils/types/thirdParty/shared";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -61,3 +62,27 @@ export function useMovieGenres() {
     }
   });
 }
+
+type UseDiscoverMoviesArgs = {
+  page: number;
+  sortBy: TMDBSortBy;
+  genres: number[];
+};
+
+export function useDiscoverMovies({
+  page,
+  sortBy,
+  genres
+}: UseDiscoverMoviesArgs) {
+  return useQuery({
+    queryKey: ["discoverMovies", page],
+    queryFn: async () => {
+      const { data: discoverMoviesList } = await axios.get(
+        `${TMDB_API_URL}/genre/movie/list?api_key=${TMDB_API_KEY}`
+      );
+      return discoverMoviesList as PaginatedMovieResponse;
+    }
+  });
+}
+
+export function useSearchMovies() {}

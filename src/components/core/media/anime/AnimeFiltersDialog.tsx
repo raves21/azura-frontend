@@ -7,7 +7,7 @@ import {
   SortBy
 } from "@/utils/types/thirdParty/anime/animeAnilist";
 import FilterPill from "@/components/core/media/shared/catalog/FilterPill";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import CustomDropdown from "@/components/core/CustomDropdown";
 import {
   formatLabels,
@@ -37,32 +37,27 @@ type Filters = {
 export default function AnimeFiltersDialog() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
-  const {
-    format: formatSearch,
-    genres: genresSearch,
-    season: seasonSearch,
-    sortBy: sortBySearch,
-    year: yearSearch,
-    status: statusSearch
-  } = useSearch({ from: "/_protected/anime/catalog/" });
+  const { format, genres, season, sortBy, year, status, query } = useSearch({
+    from: "/_protected/anime/catalog/"
+  });
 
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>(
-    genresSearch ? genresSearch.split(",").map((genre) => genre as Genre) : []
+    genres ? genres.split(",").map((genre) => genre as Genre) : []
   );
   const [selectedFormat, setSelectedFormat] = useState<Format | undefined>(
-    formatSearch ? formatSearch : undefined
+    format ? format : undefined
   );
   const [selectedSeason, setSelectedSeason] = useState<Season | undefined>(
-    seasonSearch ? seasonSearch : undefined
+    season ? season : undefined
   );
   const [selectedSortBy, setSelectedSortBy] = useState<SortBy>(
-    sortBySearch ? sortBySearch : SortBy.TRENDING_DESC
+    sortBy ? sortBy : SortBy.TRENDING_DESC
   );
   const [selectedStatus, setSelectedStatus] = useState<
     AnilistAnimeStatus | undefined
-  >(statusSearch ? statusSearch : undefined);
+  >(status ? status : undefined);
   const [selectedYear, setSelectedYear] = useState<number | undefined>(
-    yearSearch ? yearSearch : undefined
+    year ? year : undefined
   );
 
   const [initialFilters] = useState<Filters>({
@@ -74,26 +69,27 @@ export default function AnimeFiltersDialog() {
     year: selectedYear
   });
 
-  const selectGenre = useCallback((genre: Genre) => {
+  const selectGenre = (genre: Genre) => {
+    console.log("selected", genre);
     setSelectedGenres([...selectedGenres, genre]);
-  }, []);
+  };
 
-  const deselectGenre = useCallback((genre: Genre) => {
+  const deselectGenre = (genre: Genre) => {
     setSelectedGenres(
       selectedGenres.filter((selectedGenre) => selectedGenre !== genre)
     );
-  }, []);
+  };
 
-  const clearFilters = useCallback(() => {
+  const clearFilters = () => {
     setSelectedGenres([]);
     setSelectedFormat(undefined);
     setSelectedSeason(undefined);
     setSelectedSortBy(SortBy.TRENDING_DESC);
     setSelectedStatus(undefined);
     setSelectedYear(undefined);
-  }, []);
+  };
 
-  const applyFilters = useCallback(() => {
+  const applyFilters = () => {
     const appliedFilters: Filters = {
       sortBy: selectedSortBy ?? SortBy.TRENDING_DESC,
       format: selectedFormat ?? undefined,
@@ -115,12 +111,13 @@ export default function AnimeFiltersDialog() {
               ? selectedSortBy
               : undefined,
           status: selectedStatus,
-          year: selectedYear
+          year: selectedYear,
+          query
         }
       });
     }
     toggleOpenDialog(null);
-  }, []);
+  };
 
   return (
     <div className="max-w-full w-dvw bg-black/50">
@@ -137,7 +134,7 @@ export default function AnimeFiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Sort By:</p>
                 <CustomDropdown
-                  menuItems={Object.values(SortBy)}
+                  menuItems={Object.keys(sortByLabels) as SortBy[]}
                   onSelectItem={(sortBy) => setSelectedSortBy(sortBy)}
                   menuItemLabelNames={Object.values(sortByLabels)}
                   currentlySelected={selectedSortBy}
@@ -147,7 +144,7 @@ export default function AnimeFiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Type:</p>
                 <CustomDropdown
-                  menuItems={Object.values(Format)}
+                  menuItems={Object.keys(formatLabels) as Format[]}
                   onSelectItem={(format) => setSelectedFormat(format)}
                   menuItemLabelNames={Object.values(formatLabels)}
                   currentlySelected={selectedFormat}
@@ -157,7 +154,11 @@ export default function AnimeFiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Status:</p>
                 <CustomDropdown
-                  menuItems={Object.values(AnilistAnimeStatus)}
+                  menuItems={
+                    Object.keys(
+                      anilistAnimeStatusLabels
+                    ) as AnilistAnimeStatus[]
+                  }
                   onSelectItem={(status) => setSelectedStatus(status)}
                   menuItemLabelNames={Object.values(anilistAnimeStatusLabels)}
                   currentlySelected={selectedStatus}
@@ -167,7 +168,7 @@ export default function AnimeFiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Season:</p>
                 <CustomDropdown
-                  menuItems={Object.values(Season)}
+                  menuItems={Object.keys(seasonLabels) as Season[]}
                   onSelectItem={(season) => setSelectedSeason(season)}
                   menuItemLabelNames={Object.values(seasonLabels)}
                   currentlySelected={selectedSeason}
