@@ -1,5 +1,5 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { Link, useMatchRoute } from "@tanstack/react-router";
+import { Link, useMatchRoute, useNavigate } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import AnimeSearchDialog from "./media/anime/AnimeSearchDialog";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ export default function HomeHeader() {
   );
 
   const matchRoute = useMatchRoute();
+  const navigate = useNavigate();
 
   let searchDialog: ReactNode;
 
@@ -63,10 +64,26 @@ export default function HomeHeader() {
           onClick={() => {
             toggleOpenDialog(
               <div className="flex text-lg font-semibold aspect-video text-mainWhite w-[500px] bg-darkBg">
-                <button className="grid flex-1 bg-mainAccent place-items-center">
+                <button
+                  onClick={() => {
+                    navigate({
+                      to: "/anime"
+                    });
+                    toggleOpenDialog(null);
+                  }}
+                  className="grid flex-1 bg-mainAccent place-items-center"
+                >
                   Anime
                 </button>
-                <button className="grid flex-1 bg-cyan-600 place-items-center">
+                <button
+                  onClick={() => {
+                    navigate({
+                      to: "/movie"
+                    });
+                    toggleOpenDialog(null);
+                  }}
+                  className="grid flex-1 bg-cyan-600 place-items-center"
+                >
                   Movie
                 </button>
                 <button className="grid flex-1 bg-lime-600 place-items-center">

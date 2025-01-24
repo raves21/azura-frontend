@@ -9,7 +9,7 @@ import InfoSectionBackgroundImage from "@/components/core/media/shared/info/Info
 import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
 import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPoster";
-import GenreList from "@/components/core/media/shared/info/GenreList";
+import GenreListAnime from "@/components/core/media/shared/info/GenreListAnime";
 import PlayNowButton from "@/components/core/media/shared/info/PlayNowButton";
 import AddToListButton from "@/components/core/media/shared/info/AddToListButton";
 import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
@@ -63,7 +63,12 @@ export default function AnimeInfoPageHero({
         <InfoSectionPoster image={image} variant="infoPage" />
         <div className="relative flex flex-col items-center flex-1 gap-3 mt-3 lg:mt-0 lg:items-start">
           <Title title={title} variant="infoPage" />
-          <Rating variant="infoPage" rating={rating} isMobile={false} />
+          <Rating
+            mediaType="anime"
+            variant="infoPage"
+            rating={rating}
+            isMobile={false}
+          />
           <InfoDetails isMobile={false}>
             <div className="flex gap-10">
               <InfoItem label="Year:" info={year?.toString()} />
@@ -91,7 +96,7 @@ export default function AnimeInfoPageHero({
               />
               <InfoItem label="Type:" info={type} />
             </div>
-            <GenreList
+            <GenreListAnime
               variant="infoPage"
               genres={genres}
               gotoLink="/anime/catalog"
@@ -154,14 +159,19 @@ export default function AnimeInfoPageHero({
               />
               <InfoItem label="Type:" info={type} />
             </div>
-            <GenreList
+            <GenreListAnime
               variant="infoPage"
               genres={genres}
               gotoLink="/anime/catalog"
             />
             <div className="flex items-center gap-2">
               <p className="text-gray-400">Score:</p>
-              <Rating variant="infoPage" isMobile rating={rating} />
+              <Rating
+                mediaType="anime"
+                variant="infoPage"
+                isMobile
+                rating={rating}
+              />
             </div>
           </InfoDetails>
         </div>

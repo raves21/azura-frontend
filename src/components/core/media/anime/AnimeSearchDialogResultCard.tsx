@@ -1,4 +1,4 @@
-import { getRatingScore } from "@/services/thirdParty/anime/functions/animeFunctions";
+import { getRatingScoreAnime } from "@/services/thirdParty/anime/functions/animeFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Anime, Status } from "@/utils/types/thirdParty/anime/animeAnilist";
 import { statusLabels } from "@/utils/variables/anime";
@@ -64,7 +64,7 @@ export default function AnimeSearchDialogResultCard({
 
               <div className="flex items-center gap-1">
                 <Star className="size-4" />
-                <p>{getRatingScore(anime.rating * 0.1)}</p>
+                <p>{getRatingScoreAnime(anime.rating * 0.1)}</p>
               </div>
             </div>
           )}

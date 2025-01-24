@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 type InfoItemProps = {
   label: string;
-  info: string | undefined
+  info: string | undefined | null;
   className?: string;
   labelClassName?: string;
   infoClassName?: string;
@@ -13,7 +13,7 @@ export default function InfoItem({
   info,
   className,
   labelClassName,
-  infoClassName,
+  infoClassName
 }: InfoItemProps) {
   return (
     <div className={cn("flex items-center gap-2", className)}>

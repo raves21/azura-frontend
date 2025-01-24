@@ -118,7 +118,7 @@ function AnimeHomePage() {
                 </CategoryCarouselItem>
               );
             }}
-            categoryName="Trending Anime"
+            categoryName="Trending"
           />
         )}
         {topRatedAnimes && (
