@@ -1,16 +1,13 @@
+import MovieEpisode from "@/components/core/media/movie/MovieEpisode";
 import MovieInfoPageHero from "@/components/core/media/movie/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
-import EpisodeCard from "@/components/core/media/shared/episode/EpisodeCard";
-import EpisodeListContainer from "@/components/core/media/shared/episode/EpisodeListContainer";
-import EpisodesContainer from "@/components/core/media/shared/episode/EpisodesContainer";
-import EpisodesHeader from "@/components/core/media/shared/episode/EpisodesHeader";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
-  useMovieRecommendations,
-  useMovieStreamLink
+  useMovieRecommendations
 } from "@/services/thirdParty/movie/movieQueries";
+import { useMediaScraper } from "@/services/thirdParty/sharedFunctions";
 import {
   getTMDBImageURL,
   getTMDBReleaseYear
@@ -37,21 +34,16 @@ function MovieInfoPage() {
     error: movieRecommendationsError
   } = useMovieRecommendations(movieId);
 
-  const {
-    data: movieStreamLink,
-    isLoading: isMovieStreamLinkLoading,
-    error: movieStreamLinkError
-  } = useMovieStreamLink(movieId, !!movieInfo);
+  const mediaScraperQuery = useMediaScraper({
+    enabled: !!movieInfo,
+    mediaId: movieId
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (
-    isMovieInfoLoading ||
-    isMovieRecommendationsLoading ||
-    isMovieStreamLinkLoading
-  ) {
+  if (isMovieInfoLoading || isMovieRecommendationsLoading) {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
@@ -62,7 +54,7 @@ function MovieInfoPage() {
     );
   }
 
-  if (movieInfoError || movieRecommendationsError || movieStreamLinkError) {
+  if (movieInfoError || movieRecommendationsError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching the details for this anime.</p>
@@ -71,12 +63,12 @@ function MovieInfoPage() {
     );
   }
 
-  if (movieInfo && movieRecommendations && movieStreamLink) {
+  if (movieInfo && movieRecommendations) {
     return (
       <main className="w-full pb-32">
         <MovieInfoPageHero
           movieId={movieId}
-          movieStreamLink={movieStreamLink}
+          mediaScraperQuery={mediaScraperQuery}
           cover={getTMDBImageURL(movieInfo.backdrop_path)}
           description={movieInfo.overview}
           genres={movieInfo.genres}
@@ -87,21 +79,11 @@ function MovieInfoPage() {
           title={movieInfo.title}
           voteAverage={movieInfo.vote_average}
         />
-        <EpisodesContainer variant="infoPage">
-          <EpisodesHeader />
-          <EpisodeListContainer variant="infoPage">
-            <EpisodeCard
-              linkProps={{
-                to: "/movie/$movieId/watch"
-              }}
-              episodeNumber={`MOVIE`}
-              episodeTitle={"FULL"}
-              isCurrentlyWatched={false}
-              episodeImageFallback={"/no-image-2.jpg"}
-              image={getTMDBImageURL(movieInfo.poster_path)}
-            />
-          </EpisodeListContainer>
-        </EpisodesContainer>
+        <MovieEpisode
+          mediaScraperQuery={mediaScraperQuery}
+          moviePoster={getTMDBImageURL(movieInfo.poster_path)}
+          variant="infoPage"
+        />
         {movieRecommendations.results.length !== 0 && (
           <CategoryCarousel
             carouselItems={movieRecommendations.results}
@@ -111,7 +93,12 @@ function MovieInfoPage() {
                 <CategoryCarouselItem key={recommendation.id}>
                   <MediaCard
                     image={getTMDBImageURL(recommendation.poster_path)}
-                    linkProps={{}}
+                    linkProps={{
+                      to: "/movie/$movieId",
+                      params: {
+                        movieId: `${recommendation.id}`
+                      }
+                    }}
                     subLabels={[
                       getTMDBReleaseYear(recommendation.release_date)
                     ]}

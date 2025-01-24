@@ -108,6 +108,11 @@ function WatchEpisodePage() {
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
             <VideoPlayer
+              poster={
+                episodeInfo.image ||
+                animeInfoAnilist.cover ||
+                animeInfoAnify.bannerImage
+              }
               streamLink={
                 episodeStreamLinks.sources.find(
                   (source) => source.quality === "backup"

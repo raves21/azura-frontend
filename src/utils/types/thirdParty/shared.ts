@@ -37,3 +37,28 @@ export type TMDBGenre = {
   id: number;
   name: string;
 };
+
+export type RabbitScraperResponse = {
+  message?: string;
+  headers: Headers;
+  provider: string;
+  servers: string[];
+  url: URL[];
+  tracks: Subtitle[];
+  proxy: boolean;
+};
+
+export type Headers = {
+  Referer: string;
+};
+
+export type Subtitle = {
+  lang: string;
+  url: string;
+};
+
+export type URL = {
+  lang: string;
+  link: string;
+  type: string;
+};

@@ -8,9 +8,13 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { TMDBGenre } from "@/utils/types/thirdParty/shared";
+import {
+  RabbitScraperResponse,
+  TMDBGenre
+} from "@/utils/types/thirdParty/shared";
 import GenreListTMDB from "../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type MovieInfoPageHeroProps = {
   image: string;
@@ -23,7 +27,7 @@ type MovieInfoPageHeroProps = {
   genres: TMDBGenre[];
   voteAverage: number | null;
   movieId: string;
-  movieStreamLink: string | undefined;
+  mediaScraperQuery: UseQueryResult<RabbitScraperResponse, Error>;
 };
 
 export default function MovieInfoPageHero({
@@ -37,9 +41,12 @@ export default function MovieInfoPageHero({
   genres,
   voteAverage,
   movieId,
-  movieStreamLink
+  mediaScraperQuery
 }: MovieInfoPageHeroProps) {
   const navigate = useNavigate();
+
+  const { isLoading: isMediaScraperLoading, error: mediaScraperError } =
+    mediaScraperQuery;
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -70,13 +77,12 @@ export default function MovieInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              disabled={!!movieStreamLink}
+              disabled={isMediaScraperLoading || !!mediaScraperError}
               onClick={() => {
-                movieStreamLink &&
-                  navigate({
-                    to: "/movie/$movieId",
-                    params: { movieId }
-                  });
+                navigate({
+                  to: "/movie/$movieId/watch",
+                  params: { movieId }
+                });
               }}
             />
             <AddToListButton />

@@ -8,7 +8,6 @@ import {
   getTMDBImageURL,
   getTMDBReleaseYear
 } from "@/services/thirdParty/sharedFunctions";
-import { SortBy } from "@/utils/types/thirdParty/anime/animeAnilist";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/movie/")({
@@ -84,12 +83,12 @@ function MovieHomePage() {
       <div className="w-full pt-8 pb-24 space-y-10">
         {trendingMovies && (
           <CategoryCarousel
-            gotoLinkProps={{
-              to: "/anime/catalog",
-              search: {
-                sortBy: SortBy.TRENDING_DESC
-              }
-            }}
+            // gotoLinkProps={{
+            //   to: "/anime/catalog",
+            //   search: {
+            //     sortBy: SortBy.TRENDING_DESC
+            //   }
+            // }}
             carouselItems={trendingMovies.results.slice(5, 17)}
             renderCarouselItems={(movie, i) => {
               return (
@@ -111,12 +110,12 @@ function MovieHomePage() {
         )}
         {popularMovies && (
           <CategoryCarousel
-            gotoLinkProps={{
-              to: "/anime/catalog",
-              search: {
-                sortBy: SortBy.POPULARITY_DESC
-              }
-            }}
+            // gotoLinkProps={{
+            //   to: "/anime/catalog",
+            //   search: {
+            //     sortBy: SortBy.POPULARITY_DESC
+            //   }
+            // }}
             carouselItems={popularMovies.results.slice(0, 12)}
             renderCarouselItems={(movie, i) => {
               return (
@@ -138,12 +137,12 @@ function MovieHomePage() {
         )}
         {topRatedMovies && (
           <CategoryCarousel
-            gotoLinkProps={{
-              to: "/anime/catalog",
-              search: {
-                sortBy: SortBy.SCORE_DESC
-              }
-            }}
+            // gotoLinkProps={{
+            //   to: "/anime/catalog",
+            //   search: {
+            //     sortBy: SortBy.SCORE_DESC
+            //   }
+            // }}
             carouselItems={topRatedMovies.results.slice(0, 12)}
             renderCarouselItems={(movie, i) => {
               return (
