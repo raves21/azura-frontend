@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import {
   getRatingScoreAnime,
   getRatingScoreTMDB
-} from "@/services/thirdParty/anime/functions/animeFunctions";
+} from "@/services/media/anime/functions/animeFunctions";
 
 type InfoPageVariant = {
   variant: "infoPage";

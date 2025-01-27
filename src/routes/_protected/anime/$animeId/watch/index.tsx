@@ -14,14 +14,16 @@ import {
   useFetchAnimeInfo,
   useChunkAnimeEpisodes,
   useEpisodeInfo
-} from "@/services/thirdParty/anime/queries/animeQueries";
+} from "@/services/media/anime/queries/animeQueries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import { Genre } from "@/utils/types/thirdParty/anime/animeAnilist";
+import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 
-const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
+const anilistGenres = Object.values(AnimeGenre).map((genre) =>
+  genre.toString()
+);
 
 const episodePageSearchParams = z.object({
   id: z.coerce.string()
@@ -138,7 +140,6 @@ function WatchEpisodePage() {
               animeInfoAnify?.bannerImage
             }
             episodesQuery={episodesQuery}
-            animeId={animeId}
             replace
             type={animeInfoAnilist?.type || animeInfoAnify?.format}
             currentlyWatchingEpisodeNumber={episodeInfo.number}

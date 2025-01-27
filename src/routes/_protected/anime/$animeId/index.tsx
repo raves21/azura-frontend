@@ -1,17 +1,19 @@
 import {
   useFetchAnimeEpisodes,
   useFetchAnimeInfo
-} from "@/services/thirdParty/anime/queries/animeQueries";
+} from "@/services/media/anime/queries/animeQueries";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeInfoPageHero from "../../../../components/core/media/anime/AnimeInfoPageHero";
 import AnimeEpisodes from "@/components/core/media/anime/AnimeEpisodes";
 import { useEffect } from "react";
-import { Genre } from "@/utils/types/thirdParty/anime/animeAnilist";
+import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 
-const anilistGenres = Object.values(Genre).map((genre) => genre.toString());
+const anilistGenres = Object.values(AnimeGenre).map((genre) =>
+  genre.toString()
+);
 
 export const Route = createFileRoute("/_protected/anime/$animeId/")({
   component: () => <AnimeInfoPage />
@@ -92,7 +94,6 @@ function AnimeInfoPage() {
         <AnimeEpisodes
           variant="infoPage"
           episodesQuery={episodesQuery}
-          animeId={animeId}
           replace={false}
           type={animeInfoAnilist?.type}
           episodeImageFallback={

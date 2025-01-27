@@ -8,7 +8,7 @@ export default function EpisodesError({ isMovie }: EpisodesErrorProps) {
       <p className="text-lg font-semibold lg:text-xl text-mainWhite">
         Episodes
       </p>
-      <div className="self-center py-12 text-xl">
+      <div className="self-center py-12 text-xl text-center">
         {isMovie
           ? "There was an error fetching this movie, please try again later."
           : "There was an error fetching the episodes, please try again later."}

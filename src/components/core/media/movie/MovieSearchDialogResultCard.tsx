@@ -9,7 +9,7 @@ type AnimeSearchDialogResultCardProps = {
   anime: Anime;
 };
 
-export default function AnimeSearchDialogResultCard({
+export default function MovieSearchDialogResultCard({
   anime
 }: AnimeSearchDialogResultCardProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);

@@ -7,7 +7,7 @@ import {
   DefaultVideoLayout
 } from "@vidstack/react/player/layouts/default";
 import { cn } from "@/lib/utils";
-import { Subtitle } from "@/utils/types/thirdParty/shared";
+import { Subtitle } from "@/utils/types/media/shared";
 
 type VideoPlayerProps = HTMLAttributes<HTMLDivElement> & {
   streamLink: string | undefined | null;

@@ -1,5 +1,10 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { Link, useMatchRoute, useNavigate } from "@tanstack/react-router";
+import {
+  Link,
+  LinkProps,
+  useMatchRoute,
+  useNavigate
+} from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import AnimeSearchDialog from "./media/anime/AnimeSearchDialog";
 import { cn } from "@/lib/utils";
@@ -20,11 +25,32 @@ export default function HomeHeader() {
   const navigate = useNavigate();
 
   let searchDialog: ReactNode;
+  let mediaHomePageLabel: string;
+  let mediaHomeGotoLink: LinkProps;
+  let mediaCatalogGotoLink: LinkProps;
 
   if (matchRoute({ to: "/anime", fuzzy: true })) {
     searchDialog = <AnimeSearchDialog />;
   } else {
     searchDialog = <SocialSearchDialog />;
+  }
+
+  if (matchRoute({ to: "/anime", fuzzy: true })) {
+    mediaHomePageLabel = "Anime";
+    mediaHomeGotoLink = {
+      to: "/anime"
+    };
+    mediaCatalogGotoLink = {
+      to: "/anime/catalog"
+    };
+  } else {
+    mediaHomePageLabel = "Movie";
+    mediaHomeGotoLink = {
+      to: "/movie"
+    };
+    mediaCatalogGotoLink = {
+      to: "/movie/catalog"
+    };
   }
 
   const DesktopHeader = (
@@ -39,7 +65,7 @@ export default function HomeHeader() {
       </button>
       <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
         <Link
-          to="/anime"
+          {...mediaHomeGotoLink}
           className={cn(
             "p-[6px]",
             {
@@ -48,10 +74,10 @@ export default function HomeHeader() {
             { "text-gray-300": matchRoute({ to: "/anime/catalog" }) }
           )}
         >
-          Anime
+          {mediaHomePageLabel}
         </Link>
         <Link
-          to="/anime/catalog"
+          {...mediaCatalogGotoLink}
           className={cn("p-[6px]", {
             "text-mainWhite": matchRoute({
               to: "/anime/catalog"

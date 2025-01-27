@@ -1,6 +1,6 @@
 import { useDebounce } from "@/utils/hooks/useDebounce";
 import { useState } from "react";
-import AnimeSearchDialogResults from "./AnimeSearchDialogResults";
+import AnimeSearchDialogResults from "./MovieSearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
@@ -9,7 +9,7 @@ import SearchDialogForm from "@/components/core/media/shared/search/SearchDialog
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import { useSearchAnime } from "@/services/media/anime/queries/animeQueries";
 
-export default function AnimeSearchDialog() {
+export default function MovieSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce({ value: searchInput, delay: 400 });
   const navigate = useNavigate();

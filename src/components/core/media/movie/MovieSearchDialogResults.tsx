@@ -2,7 +2,7 @@ import { PaginatedAnimeResponse } from "@/utils/types/media/anime/animeAnilist";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import AnimeSearchDialogResultCard from "./AnimeSearchDialogResultCard";
+import MovieSearchDialogResultCard from "./MovieSearchDialogResultCard";
 
 type AnimeSearchDialogResultsProps = {
   query: string;
@@ -11,7 +11,7 @@ type AnimeSearchDialogResultsProps = {
   error: Error | null;
 };
 
-export default function AnimeSearchDialogResults({
+export default function MovieSearchDialogResults({
   searchResults,
   isLoading,
   error,
@@ -49,7 +49,7 @@ export default function AnimeSearchDialogResults({
       >
         <ul className="flex flex-col">
           {searchResults.results.map((anime) => (
-            <AnimeSearchDialogResultCard key={anime.id} anime={anime} />
+            <MovieSearchDialogResultCard key={anime.id} anime={anime} />
           ))}
         </ul>
         {searchResults.hasNextPage && (

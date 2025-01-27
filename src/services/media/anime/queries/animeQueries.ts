@@ -1,25 +1,19 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
+import { AnimeInfoAnify, Data } from "@/utils/types/media/anime/animeAnify";
+import { AnimeInfoAnizip } from "@/utils/types/media/anime/animeAnizip";
 import {
-  EpisodeToBeRendered,
-  EpisodeChunk
-} from "@/utils/types/thirdParty/shared";
-import {
-  AnimeInfoAnify,
-  Data
-} from "@/utils/types/thirdParty/anime/animeAnify";
-import { AnimeInfoAnizip } from "@/utils/types/thirdParty/anime/animeAnizip";
-import {
-  SortBy,
+  AnimeSortBy,
   AnilistAnimeStatus,
   PaginatedAnimeResponse,
-  Season,
-  Format,
+  AnimeSeason,
+  AnimeFormat,
   AnimeInfoAnilist,
   Episode,
   EpisodeStreamLinks,
   AnimeEpisodesData
-} from "@/utils/types/thirdParty/anime/animeAnilist";
+} from "@/utils/types/media/anime/animeAnilist";
 import {
   chunkEpisodes,
   getEpisodesToBeRendered
@@ -37,7 +31,7 @@ import {
 
 export function useFetchAnimesByCategory(
   perPage: number,
-  category: SortBy,
+  category: AnimeSortBy,
   status?: AnilistAnimeStatus
 ) {
   return useQuery({
@@ -66,11 +60,11 @@ export function useSearchAnime(query: string, enabled: boolean) {
 
 export function useFilterAnime(
   query?: string,
-  season?: Season,
+  season?: AnimeSeason,
   genres?: string,
   year?: number,
-  sortBy?: SortBy,
-  format?: Format,
+  sortBy?: AnimeSortBy,
+  format?: AnimeFormat,
   page?: number,
   status?: AnilistAnimeStatus
 ) {
@@ -81,7 +75,7 @@ export function useFilterAnime(
       season,
       genres,
       year,
-      sortBy ?? SortBy.TRENDING_DESC,
+      sortBy ?? AnimeSortBy.TRENDING_DESC,
       format,
       page ?? 1,
       status
@@ -97,7 +91,7 @@ export function useFilterAnime(
               .join(",")}]`
           : "";
       const _year = year ? `&year=${year}` : "";
-      const _sortBy = `&sort=["${sortBy ?? SortBy.TRENDING_DESC}"]`;
+      const _sortBy = `&sort=["${sortBy ?? AnimeSortBy.TRENDING_DESC}"]`;
       const _format = format ? `&format=${format}` : "";
       const _page = `&page=${page ?? 1}`;
       const _status = status ? `&status=${status}` : "";

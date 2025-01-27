@@ -1,11 +1,11 @@
 import { useSearch } from "@tanstack/react-router";
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
 import {
-  formatLabels,
-  seasonLabels,
-  sortByLabels,
-  anilistAnimeStatusLabels
-} from "@/utils/variables/anime";
+  animeFormatLabels,
+  animeSeasonLabels,
+  animeSortByLabels,
+  animeAnilistStatusLabels
+} from "@/utils/variables/media/anime";
 
 export default function AnimeAppliedFilters() {
   const { genres, query, format, season, sortBy, year, status } = useSearch({
@@ -48,7 +48,7 @@ export default function AnimeAppliedFilters() {
           </p>
           <AppliedFilterPill
             className="text-white bg-pink-600 rounded-full"
-            label={sortByLabels[sortBy]}
+            label={animeSortByLabels[sortBy]}
           />
         </div>
       )}
@@ -59,7 +59,7 @@ export default function AnimeAppliedFilters() {
           </p>
           <AppliedFilterPill
             className="text-white bg-orange-500 rounded-full"
-            label={formatLabels[format]}
+            label={animeFormatLabels[format]}
           />
         </div>
       )}
@@ -70,7 +70,7 @@ export default function AnimeAppliedFilters() {
           </p>
           <AppliedFilterPill
             className="text-white rounded-full bg-lime-600"
-            label={anilistAnimeStatusLabels[status]}
+            label={animeAnilistStatusLabels[status]}
           />
         </div>
       )}
@@ -92,7 +92,7 @@ export default function AnimeAppliedFilters() {
           </p>
           <AppliedFilterPill
             className="text-white bg-teal-500 rounded-full"
-            label={seasonLabels[season]}
+            label={animeSeasonLabels[season]}
           />
         </div>
       )}

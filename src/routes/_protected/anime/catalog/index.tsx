@@ -1,15 +1,15 @@
-import { useFilterAnime } from "@/services/thirdParty/anime/queries/animeQueries";
+import { useFilterAnime } from "@/services/media/anime/queries/animeQueries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
-import CatalogMediaList from "@/components/core/media/shared/catalog/CatalogMediaList";
+import CatalogAnimeList from "@/components/core/media/anime/CatalogAnimeList";
 import AnimeAppliedFilters from "../../../../components/core/media/anime/AnimeAppliedFilters";
 import {
   AnilistAnimeStatus,
-  Format,
-  Season,
-  SortBy
-} from "@/utils/types/thirdParty/anime/animeAnilist";
+  AnimeFormat,
+  AnimeSeason,
+  AnimeSortBy
+} from "@/utils/types/media/anime/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AnimeFiltersDialog from "../../../../components/core/media/anime/AnimeFiltersDialog";
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
@@ -17,11 +17,11 @@ import Pagination from "@/components/core/media/shared/catalog/Pagination";
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
   query: z.coerce.string().optional(),
-  season: z.nativeEnum(Season).optional(),
+  season: z.nativeEnum(AnimeSeason).optional(),
   genres: z.coerce.string().optional(),
   year: z.number().optional(),
-  sortBy: z.nativeEnum(SortBy).optional(),
-  format: z.nativeEnum(Format).optional(),
+  sortBy: z.nativeEnum(AnimeSortBy).optional(),
+  format: z.nativeEnum(AnimeFormat).optional(),
   status: z.nativeEnum(AnilistAnimeStatus).optional()
 });
 
@@ -56,7 +56,7 @@ function AnimeCatalogPage() {
     sortBy,
     format,
     page,
-    status,
+    status
   );
 
   if (isFilteredAnimesLoading) {
@@ -64,7 +64,7 @@ function AnimeCatalogPage() {
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
           Loading&nbsp;
-          <span className="font-semibold text-cyan-500">Filter Page</span>
+          <span className="font-semibold text-cyan-500">Catalog Page</span>
         </p>
       </div>
     );
@@ -104,7 +104,7 @@ function AnimeCatalogPage() {
         </header>
         {filteredAnimes.results.length !== 0 ? (
           <>
-            <CatalogMediaList type="anime" animeList={filteredAnimes.results} />
+            <CatalogAnimeList animeList={filteredAnimes.results} />
             <Pagination
               className="mt-10"
               totalPages={filteredAnimes.totalPages}

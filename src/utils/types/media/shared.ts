@@ -1,3 +1,5 @@
+import { MovieGenre } from "./movie/movieTmdb";
+
 export type EpisodeToBeRendered = {
   id: string;
   title: string;
@@ -34,7 +36,7 @@ export type PaginatedTMDBResponse = {
 };
 
 export type TMDBGenre = {
-  id: number;
+  id: MovieGenre;
   name: string;
 };
 
@@ -62,10 +64,3 @@ export type URL = {
   link: string;
   type: string;
 };
-
-export enum TMDBSortBy {
-  POPULARITY_DESC = "popularity.desc",
-  REVENUE_DESC = "revenue.desc",
-  VOTE_AVERAGE = "vote.average",
-  
-}

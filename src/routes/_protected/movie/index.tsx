@@ -3,11 +3,11 @@ import CategoryCarouselItem from "@/components/core/media/shared/carousel/Catego
 import TrendingHeroCarousel from "@/components/core/media/shared/carousel/TrendingHeroCarousel";
 import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/TrendingHeroCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
-import { useMoviesByCategory } from "@/services/thirdParty/movie/movieQueries";
+import { useMoviesByCategory } from "@/services/media/movie/movieQueries";
 import {
   getTMDBImageURL,
   getTMDBReleaseYear
-} from "@/services/thirdParty/sharedFunctions";
+} from "@/services/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/movie/")({

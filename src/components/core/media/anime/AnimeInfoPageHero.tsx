@@ -1,10 +1,10 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
   AnimeEpisodesData,
-  Status
-} from "@/utils/types/thirdParty/anime/animeAnilist";
+  AnimeStatus
+} from "@/utils/types/media/anime/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
-import { useChunkAnimeEpisodes } from "@/services/thirdParty/anime/queries/animeQueries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
 import InfoSectionBackgroundImage from "@/components/core/media/shared/info/InfoSectionBackgroundImage";
 import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
@@ -21,7 +21,7 @@ import {
   animeCancelledStatus,
   animeCompletedStatus,
   animeOngoingStatus
-} from "@/utils/variables/anime";
+} from "@/utils/variables/media/anime";
 
 type AnimeInfoPageHeroProps = {
   image: string | undefined;
@@ -83,13 +83,13 @@ export default function AnimeInfoPageHero({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     )
                   })
                 }
@@ -146,13 +146,13 @@ export default function AnimeInfoPageHero({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     )
                   })
                 }
