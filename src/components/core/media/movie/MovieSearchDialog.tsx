@@ -1,13 +1,13 @@
 import { useDebounce } from "@/utils/hooks/useDebounce";
 import { useState } from "react";
-import AnimeSearchDialogResults from "./MovieSearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import SearchDialogContainer from "@/components/core/media/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/core/media/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import { useSearchAnime } from "@/services/media/anime/queries/animeQueries";
+import MovieSearchDialogResults from "./MovieSearchDialogResults";
+import { useSearchMovie } from "@/services/media/movie/movieQueries";
 
 export default function MovieSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
@@ -16,16 +16,19 @@ export default function MovieSearchDialog() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { searchInputRef } = useFocusInput();
 
-  const {
-    data: searchResults,
-    isLoading: isSearchResultsLoading,
-    error: searchResultsError
-  } = useSearchAnime(debouncedSearch.trim(), debouncedSearch.trim().length > 0);
+  const movieSearchQuery = useSearchMovie(
+    debouncedSearch.trim(),
+    1,
+    debouncedSearch.trim().length > 0
+  );
+
+  const { isLoading: isSearchResultsLoading, error: searchResultsError } =
+    movieSearchQuery;
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
     navigate({
-      to: "/anime/catalog",
+      to: "/movie/catalog/search",
       search: { query: searchInput.trim() }
     });
   };
@@ -47,13 +50,11 @@ export default function MovieSearchDialog() {
                 debouncedSearch || isSearchResultsLoading || searchResultsError
             }
           )}
-          placeholder="Search anime..."
+          placeholder="Search movie..."
         />
-        <AnimeSearchDialogResults
+        <MovieSearchDialogResults
           query={debouncedSearch.trim()}
-          searchResults={searchResults}
-          isLoading={isSearchResultsLoading}
-          error={searchResultsError}
+          movieSearchQuery={movieSearchQuery}
         />
       </SearchDialogForm>
     </SearchDialogContainer>

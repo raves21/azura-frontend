@@ -16,11 +16,12 @@ export default function AnimeSearchDialog() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { searchInputRef } = useFocusInput();
 
-  const {
-    data: searchResults,
-    isLoading: isSearchResultsLoading,
-    error: searchResultsError
-  } = useSearchAnime(debouncedSearch.trim(), debouncedSearch.trim().length > 0);
+  const animeSearchQuery = useSearchAnime(
+    debouncedSearch.trim(),
+    debouncedSearch.trim().length > 0
+  );
+  const { isLoading: isAnimeSearchQueryLoading, error: animeSearchQueryError } =
+    animeSearchQuery;
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
@@ -44,16 +45,16 @@ export default function AnimeSearchDialog() {
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
               "rounded-b-none":
-                debouncedSearch || isSearchResultsLoading || searchResultsError
+                debouncedSearch ||
+                isAnimeSearchQueryLoading ||
+                animeSearchQueryError
             }
           )}
           placeholder="Search anime..."
         />
         <AnimeSearchDialogResults
           query={debouncedSearch.trim()}
-          searchResults={searchResults}
-          isLoading={isSearchResultsLoading}
-          error={searchResultsError}
+          animeSearchQuery={animeSearchQuery}
         />
       </SearchDialogForm>
     </SearchDialogContainer>

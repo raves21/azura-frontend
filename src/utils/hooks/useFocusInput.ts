@@ -15,6 +15,6 @@ export function useFocusInput(args?: UseFocusInputArgs) {
   }, [...deps]);
 
   return {
-    searchInputRef,
+    searchInputRef
   };
 }

@@ -1,20 +1,15 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import {
-  Link,
-  LinkProps,
-  useMatchRoute,
-  useNavigate
-} from "@tanstack/react-router";
-import { Menu, Search } from "lucide-react";
-import AnimeSearchDialog from "./media/anime/AnimeSearchDialog";
 import { cn } from "@/lib/utils";
-import { useShallow } from "zustand/react/shallow";
-import SideMenuSheet from "@/components/core/sideMenuSheet/SideMenuSheet";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
-import SocialSearchDialog from "./social/searchDialog/SocialSearchDialog";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useMatchRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Menu, Search } from "lucide-react";
+import { useShallow } from "zustand/react/shallow";
+import AnimeSearchDialog from "../../media/anime/AnimeSearchDialog";
+import SideMenuSheet from "../../sideMenuSheet/SideMenuSheet";
+import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
 
-export default function HomeHeader() {
+export default function AnimeTopNavBar() {
   const { isScrolledDown } = useScrolledState();
 
   const [toggleOpenDialog, toggleOpenSheet] = useGlobalStore(
@@ -24,33 +19,12 @@ export default function HomeHeader() {
   const matchRoute = useMatchRoute();
   const navigate = useNavigate();
 
-  let searchDialog: ReactNode;
-  let mediaHomePageLabel: string;
-  let mediaHomeGotoLink: LinkProps;
-  let mediaCatalogGotoLink: LinkProps;
+  let searchDialogComponent: ReactNode;
 
   if (matchRoute({ to: "/anime", fuzzy: true })) {
-    searchDialog = <AnimeSearchDialog />;
+    searchDialogComponent = <AnimeSearchDialog />;
   } else {
-    searchDialog = <SocialSearchDialog />;
-  }
-
-  if (matchRoute({ to: "/anime", fuzzy: true })) {
-    mediaHomePageLabel = "Anime";
-    mediaHomeGotoLink = {
-      to: "/anime"
-    };
-    mediaCatalogGotoLink = {
-      to: "/anime/catalog"
-    };
-  } else {
-    mediaHomePageLabel = "Movie";
-    mediaHomeGotoLink = {
-      to: "/movie"
-    };
-    mediaCatalogGotoLink = {
-      to: "/movie/catalog"
-    };
+    searchDialogComponent = <SocialSearchDialog />;
   }
 
   const DesktopHeader = (
@@ -65,7 +39,7 @@ export default function HomeHeader() {
       </button>
       <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
         <Link
-          {...mediaHomeGotoLink}
+          to="/anime"
           className={cn(
             "p-[6px]",
             {
@@ -74,10 +48,10 @@ export default function HomeHeader() {
             { "text-gray-300": matchRoute({ to: "/anime/catalog" }) }
           )}
         >
-          {mediaHomePageLabel}
+          Anime
         </Link>
         <Link
-          {...mediaCatalogGotoLink}
+          to="/anime/catalog"
           className={cn("p-[6px]", {
             "text-mainWhite": matchRoute({
               to: "/anime/catalog"
@@ -132,7 +106,7 @@ export default function HomeHeader() {
         <Link className="p-[6px]">Settings</Link>
       </div>
       <button
-        onClick={() => toggleOpenDialog(searchDialog)}
+        onClick={() => toggleOpenDialog(searchDialogComponent)}
         className="p-[6px]"
       >
         <Search />
@@ -153,7 +127,7 @@ export default function HomeHeader() {
       <div className="flex items-center gap-4">
         <button
           className="p-[6px]"
-          onClick={() => toggleOpenDialog(searchDialog)}
+          onClick={() => toggleOpenDialog(searchDialogComponent)}
         >
           <Search className="size-6" />
         </button>

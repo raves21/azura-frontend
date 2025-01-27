@@ -99,7 +99,6 @@ function WatchMoviePage() {
             />
           </div>
           <MovieEpisode
-            movieId={movieInfo.id}
             mediaScraperQuery={mediaScraperQuery}
             moviePoster={getTMDBImageURL(movieInfo.poster_path)}
             variant="watchPage"

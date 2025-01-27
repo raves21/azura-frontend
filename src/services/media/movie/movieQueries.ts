@@ -90,3 +90,18 @@ export function useDiscoverMovies({
     }
   });
 }
+
+export function useSearchMovie(query: string, page: number, enabled?: boolean) {
+  return useQuery({
+    queryKey: ["searchMovie", query, page],
+    queryFn: async () => {
+      const { data: searchMovieResults } = await tmdbApi.get("/search/movie", {
+        params: {
+          query
+        }
+      });
+      return searchMovieResults as PaginatedMovieResponse;
+    },
+    enabled: !!enabled
+  });
+}

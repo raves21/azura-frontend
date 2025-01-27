@@ -76,7 +76,7 @@ function MovieCatalogPage() {
         <header className="space-y-7 lg:space-y-8">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">
-              Discover Animes
+              Discover Movies
             </h1>
             <button
               onClick={() => toggleOpenDialog(<MovieFiltersDialog />)}
