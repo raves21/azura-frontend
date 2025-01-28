@@ -15,6 +15,7 @@ import { Route as ProtectedRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProtectedSocialRouteImport } from './routes/_protected/social/route'
+import { Route as ProtectedTvIndexImport } from './routes/_protected/tv/index'
 import { Route as ProtectedSocialIndexImport } from './routes/_protected/social/index'
 import { Route as ProtectedMovieIndexImport } from './routes/_protected/movie/index'
 import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/index'
@@ -63,6 +64,11 @@ const IndexRoute = IndexImport.update({
 
 const ProtectedSocialRouteRoute = ProtectedSocialRouteImport.update({
   path: '/social',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedTvIndexRoute = ProtectedTvIndexImport.update({
+  path: '/tv/',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -323,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialIndexImport
       parentRoute: typeof ProtectedSocialRouteImport
     }
+    '/_protected/tv/': {
+      id: '/_protected/tv/'
+      path: '/tv'
+      fullPath: '/tv'
+      preLoaderRoute: typeof ProtectedTvIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_auth/login/forgot-password/': {
       id: '/_auth/login/forgot-password/'
       path: '/login/forgot-password'
@@ -500,6 +513,7 @@ export const routeTree = rootRoute.addChildren({
     }),
     ProtectedAnimeIndexRoute,
     ProtectedMovieIndexRoute,
+    ProtectedTvIndexRoute,
     ProtectedAnimeAnimeIdIndexRoute,
     ProtectedAnimeCatalogIndexRoute,
     ProtectedMovieMovieIdIndexRoute,
@@ -545,6 +559,7 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/social",
         "/_protected/anime/",
         "/_protected/movie/",
+        "/_protected/tv/",
         "/_protected/anime/$animeId/",
         "/_protected/anime/catalog/",
         "/_protected/movie/$movieId/",
@@ -606,6 +621,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/": {
       "filePath": "_protected/social/index.tsx",
       "parent": "/_protected/social"
+    },
+    "/_protected/tv/": {
+      "filePath": "_protected/tv/index.tsx",
+      "parent": "/_protected"
     },
     "/_auth/login/forgot-password/": {
       "filePath": "_auth/login/forgot-password/index.tsx",
