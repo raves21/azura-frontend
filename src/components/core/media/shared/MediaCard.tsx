@@ -13,7 +13,7 @@ export default function MediaCard({
   linkProps,
   image,
   title,
-  subLabels,
+  subLabels
 }: MediaCard) {
   //filters out falsy elements in the array, and only includes the first two elements
   const subLabelsFiltered = subLabels.filter(Boolean).slice(0, 2);
@@ -27,6 +27,9 @@ export default function MediaCard({
             <img
               loading="lazy"
               src={image}
+              onError={(e) => {
+                e.currentTarget.src = "/no-image-2.jpg";
+              }}
               className="object-cover transition-all duration-300 size-full group-hover:scale-105"
               alt={title}
             />
@@ -44,7 +47,11 @@ export default function MediaCard({
               subLabelsFiltered.length === 1 ||
               !subLabelsFiltered[i + 1]
             )
-              return <p key={subLabel}>{subLabel}</p>;
+              return (
+                <p className="line-clamp-1" key={subLabel}>
+                  {subLabel}
+                </p>
+              );
             return (
               <Fragment key={subLabel}>
                 <p>{subLabel}</p>

@@ -1,9 +1,9 @@
 import {
   AnimeEpisodesData,
-  Format
-} from "@/utils/types/thirdParty/anime/animeAnilist";
+  AnimeFormat
+} from "@/utils/types/media/anime/animeAnilist";
 import EpisodeCard from "../shared/episode/EpisodeCard";
-import { useChunkAnimeEpisodes } from "@/services/thirdParty/anime/queries/animeQueries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
 import { UseQueryResult } from "@tanstack/react-query";
 import CustomDropdown from "../../CustomDropdown";
 import EpisodesLoading from "../shared/episode/EpisodesLoading";
@@ -13,10 +13,10 @@ import NoEpisodesAvailable from "../shared/episode/NoEpisodesAvailable";
 import EpisodesHeader from "../shared/episode/EpisodesHeader";
 import EpisodeListContainer from "../shared/episode/EpisodeListContainer";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
+import { useParams } from "@tanstack/react-router";
 
 type AnimeEpisodeProps = {
   variant: "infoPage" | "watchPage";
-  animeId: string | undefined;
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
@@ -26,7 +26,6 @@ type AnimeEpisodeProps = {
 };
 
 export default function AnimeEpisodes({
-  animeId,
   type,
   replace,
   variant,
@@ -35,6 +34,13 @@ export default function AnimeEpisodes({
   episodeListMaxHeight,
   currentlyWatchingEpisodeNumber
 }: AnimeEpisodeProps) {
+  const { animeId } = useParams({
+    from:
+      variant === "infoPage"
+        ? "/_protected/anime/$animeId/"
+        : "/_protected/anime/$animeId/watch/"
+  });
+
   const {
     data: episodes,
     isLoading: isEpisodesLoading,
@@ -89,19 +95,19 @@ export default function AnimeEpisodes({
                   linkProps={{
                     to: `/anime/$animeId/watch`,
                     params: {
-                      animeId: animeId
+                      animeId
                     },
                     search: {
                       id: episode.id.replace(/^\//, "")
                     }
                   }}
                   episodeNumber={
-                    type === Format.MOVIE
+                    type === AnimeFormat.MOVIE
                       ? "MOVIE"
                       : `Episode ${episode.number}`
                   }
                   episodeTitle={
-                    type !== Format.MOVIE &&
+                    type !== AnimeFormat.MOVIE &&
                     episode.title === `Episode ${episode.number}`
                       ? `EP ${episode.number}`
                       : episode.title
@@ -164,7 +170,7 @@ export default function AnimeEpisodes({
                       }
                     }}
                     episodeNumber={
-                      type === Format.MOVIE
+                      type === AnimeFormat.MOVIE
                         ? "MOVIE"
                         : `Episode ${episode.number}`
                     }

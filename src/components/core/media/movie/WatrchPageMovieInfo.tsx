@@ -4,7 +4,7 @@ import InfoSectionBackgroundImage from "@/components/core/media/shared/info/Info
 import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPoster";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { TMDBGenre } from "@/utils/types/thirdParty/shared";
+import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../shared/info/GenreListTMDB";
 
 type WatchPageMovieInfoProps = {

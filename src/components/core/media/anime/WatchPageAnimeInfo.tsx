@@ -6,12 +6,12 @@ import GenreListAnime from "@/components/core/media/shared/info/GenreListAnime";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { cn } from "@/lib/utils";
-import { Status } from "@/utils/types/thirdParty/anime/animeAnilist";
+import { AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
 import {
   animeCancelledStatus,
   animeCompletedStatus,
   animeOngoingStatus
-} from "@/utils/variables/anime";
+} from "@/utils/variables/media/anime";
 
 type WatchPageAnimeInfoProps = {
   cover: string | undefined;
@@ -60,13 +60,13 @@ export default function WatchPageAnimeInfo({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     )
                   })
                 }

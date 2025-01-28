@@ -1,12 +1,12 @@
-import { RabbitScraperResponse } from "@/utils/types/thirdParty/shared";
+import { RabbitScraperResponse } from "@/utils/types/media/shared";
 import { UseQueryResult } from "@tanstack/react-query";
 import EpisodesLoading from "../shared/episode/EpisodesLoading";
-import EpisodesError from "../shared/episode/EpisodesError";
 import EpisodeCard from "../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../shared/episode/EpisodesContainer";
 import EpisodesHeader from "../shared/episode/EpisodesHeader";
 import NoEpisodesAvailable from "../shared/episode/NoEpisodesAvailable";
+import { useParams } from "@tanstack/react-router";
 
 type MovieEpisodeProps = {
   variant: "infoPage" | "watchPage";
@@ -19,6 +19,12 @@ export default function MovieEpisode({
   variant,
   moviePoster
 }: MovieEpisodeProps) {
+  const { movieId } = useParams({
+    from:
+      variant === "infoPage"
+        ? "/_protected/movie/$movieId/"
+        : "/_protected/movie/$movieId/watch/"
+  });
   const {
     data: mediaScraperData,
     isLoading: isMediaScraperLoading,
@@ -30,7 +36,7 @@ export default function MovieEpisode({
   }
 
   if (mediaScraperError) {
-    return <EpisodesError isMovie />;
+    return <NoEpisodesAvailable isMovie={true} />;
   }
 
   if (mediaScraperData) {
@@ -40,6 +46,12 @@ export default function MovieEpisode({
           <EpisodesHeader />
           <EpisodeListContainer variant="infoPage">
             <EpisodeCard
+              linkProps={{
+                to: "/movie/$movieId/watch",
+                params: {
+                  movieId
+                }
+              }}
               episodeNumber={`MOVIE`}
               episodeTitle={"FULL"}
               episodeImageFallback={"/no-image-2.jpg"}

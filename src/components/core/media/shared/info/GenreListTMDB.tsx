@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { TMDBGenre } from "@/utils/types/thirdParty/shared";
+import { TMDBGenre } from "@/utils/types/media/shared";
 import { Link } from "@tanstack/react-router";
 
 type InfoPageProps = {

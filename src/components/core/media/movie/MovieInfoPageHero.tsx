@@ -8,10 +8,8 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import {
-  RabbitScraperResponse,
-  TMDBGenre
-} from "@/utils/types/thirdParty/shared";
+import { RabbitScraperResponse } from "@/utils/types/media/shared";
+import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { UseQueryResult } from "@tanstack/react-query";

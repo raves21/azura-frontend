@@ -1,10 +1,7 @@
-import { Data } from "@/utils/types/thirdParty/anime/animeAnify";
-import { Episode } from "@/utils/types/thirdParty/anime/animeAnilist";
-import { AnimeInfoAnizip } from "@/utils/types/thirdParty/anime/animeAnizip";
-import {
-  EpisodeToBeRendered,
-  EpisodeChunk
-} from "@/utils/types/thirdParty/shared";
+import { Data } from "@/utils/types/media/anime/animeAnify";
+import { Episode } from "@/utils/types/media/anime/animeAnilist";
+import { AnimeInfoAnizip } from "@/utils/types/media/anime/animeAnizip";
+import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
 
 export function chunkEpisodes(
   eps: EpisodeToBeRendered[] | null,

@@ -17,16 +17,16 @@ export type Anime = {
   imageHash: string;
   trailer: Trailer;
   description: string;
-  status: Status;
+  status: AnimeStatus;
   cover: string;
   coverHash: string;
   rating: number;
   releaseDate: number;
   color: string | null;
-  genres: Genre[];
+  genres: AnimeGenre[];
   totalEpisodes: number;
   duration: number;
-  type: Format;
+  type: AnimeFormat;
 };
 
 export type AnimeInfoAnilist = Anime & {
@@ -46,14 +46,14 @@ export type AnimeInfoAnilist = Anime & {
   episodes: Episode[];
 };
 
-export enum Season {
+export enum AnimeSeason {
   WINTER = "WINTER",
   SPRING = "SPRING",
   SUMMER = "SUMMER",
   FALL = "FALL"
 }
 
-export enum Genre {
+export enum AnimeGenre {
   Action = "Action",
   Adventure = "Adventure",
   Comedy = "Comedy",
@@ -134,14 +134,14 @@ export type Recommendation = {
   id: number;
   malId: number;
   title: Title;
-  status: Status;
+  status: AnimeStatus;
   episodes: number | null;
   image: string;
   imageHash: string;
   cover: string;
   coverHash: string;
   rating: number;
-  type: Format;
+  type: AnimeFormat;
 };
 
 export enum AnilistAnimeStatus {
@@ -151,7 +151,7 @@ export enum AnilistAnimeStatus {
   NOT_YET_RELEASED = "NOT_YET_RELEASED"
 }
 
-export enum SortBy {
+export enum AnimeSortBy {
   TRENDING_DESC = "TRENDING_DESC",
   POPULARITY_DESC = "POPULARITY_DESC",
   FAVOURITES_DESC = "FAVOURITES_DESC",
@@ -161,7 +161,7 @@ export enum SortBy {
   START_DATE_DESC = "START_DATE_DESC"
 }
 
-export enum Format {
+export enum AnimeFormat {
   TV = "TV",
   TV_SHORT = "TV_SHORT",
   OVA = "OVA",
@@ -171,7 +171,7 @@ export enum Format {
   MUSIC = "MUSIC"
 }
 
-export enum Status {
+export enum AnimeStatus {
   RELEASING = "RELEASING",
   Ongoing = "Ongoing",
   FINISHED = "FINISHED",
@@ -199,7 +199,7 @@ export type Relation = {
   relationType: string;
   malId: number;
   title: Title;
-  status: Status;
+  status: AnimeStatus;
   episodes: number | null;
   image: string;
   imageHash: string;

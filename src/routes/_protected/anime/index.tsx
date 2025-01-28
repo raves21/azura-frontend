@@ -1,11 +1,11 @@
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
-import { useFetchAnimesByCategory } from "@/services/thirdParty/anime/queries/animeQueries";
+import { useFetchAnimesByCategory } from "@/services/media/anime/queries/animeQueries";
 import {
-  SortBy,
+  AnimeSortBy,
   AnilistAnimeStatus
-} from "@/utils/types/thirdParty/anime/animeAnilist";
+} from "@/utils/types/media/anime/animeAnilist";
 import { createFileRoute } from "@tanstack/react-router";
 import TrendingHeroCarousel from "../../../components/core/media/shared/carousel/TrendingHeroCarousel";
 import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/TrendingHeroCarouselItem";
@@ -21,20 +21,20 @@ function AnimeHomePage() {
     error: trendingAnimesError
   } = useFetchAnimesByCategory(
     17,
-    SortBy.TRENDING_DESC,
+    AnimeSortBy.TRENDING_DESC,
     AnilistAnimeStatus.RELEASING
   );
   const {
     data: popularAnimes,
     isLoading: isPopularAnimesLoading,
     error: popularAnimesError
-  } = useFetchAnimesByCategory(12, SortBy.POPULARITY_DESC);
+  } = useFetchAnimesByCategory(12, AnimeSortBy.POPULARITY_DESC);
 
   const {
     data: topRatedAnimes,
     isLoading: isTopRatedAnimesLoading,
     error: topRatedAnimesError
-  } = useFetchAnimesByCategory(12, SortBy.SCORE_DESC);
+  } = useFetchAnimesByCategory(12, AnimeSortBy.SCORE_DESC);
 
   if (
     isTrendingAnimesLoading ||
@@ -91,7 +91,7 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: SortBy.TRENDING_DESC
+                sortBy: AnimeSortBy.TRENDING_DESC
               }
             }}
             carouselItems={trendingAnimes.results.slice(5)}
@@ -126,7 +126,7 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: SortBy.SCORE_DESC
+                sortBy: AnimeSortBy.SCORE_DESC
               }
             }}
             carouselItems={topRatedAnimes.results}
@@ -161,7 +161,7 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: SortBy.POPULARITY_DESC
+                sortBy: AnimeSortBy.POPULARITY_DESC
               }
             }}
             carouselItems={popularAnimes.results}

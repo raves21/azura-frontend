@@ -1,7 +1,7 @@
-import { getRatingScoreAnime } from "@/services/thirdParty/anime/functions/animeFunctions";
+import { getRatingScoreAnime } from "@/services/media/anime/functions/animeFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { Anime, Status } from "@/utils/types/thirdParty/anime/animeAnilist";
-import { statusLabels } from "@/utils/variables/anime";
+import { Anime, AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
+import { animeStatusLabels } from "@/utils/variables/media/anime";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 
@@ -33,9 +33,9 @@ export default function AnimeSearchDialogResultCard({
         <div className="w-full space-y-3 text-sm text-gray-400">
           <div className="flex items-center gap-[6px]">
             {![
-              Status.CANCELLED,
-              Status.NOT_YET_RELEASED,
-              Status.NotYetAired
+              AnimeStatus.CANCELLED,
+              AnimeStatus.NOT_YET_RELEASED,
+              AnimeStatus.NotYetAired
             ].includes(anime.status) && (
               <>
                 <p>
@@ -45,12 +45,12 @@ export default function AnimeSearchDialogResultCard({
                 <div className="bg-gray-400 rounded-full size-1" />
               </>
             )}
-            <p>{statusLabels[anime.status]}</p>
+            <p>{animeStatusLabels[anime.status]}</p>
           </div>
           {![
-            Status.CANCELLED,
-            Status.NOT_YET_RELEASED,
-            Status.NotYetAired
+            AnimeStatus.CANCELLED,
+            AnimeStatus.NOT_YET_RELEASED,
+            AnimeStatus.NotYetAired
           ].includes(anime.status) && (
             <div className="flex items-center gap-[6px]">
               {anime.releaseDate && (

@@ -3,17 +3,13 @@ import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { forwardRef, ButtonHTMLAttributes } from "react";
 
-type PaginationProps = {
-  totalPages: number;
-  currentPage: number;
-  handlePageChange: (e: React.ChangeEvent<unknown>, page: number) => void;
-  className?: string;
-};
+//PAGINATION BUTTON
 
 type PaginationButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isSelected: boolean;
 };
 
+//TODO: make this a Link instead of a button
 const PaginationButton = forwardRef<HTMLButtonElement, PaginationButtonProps>(
   ({ className, children, isSelected, ...props }, ref) => {
     return (
@@ -32,16 +28,25 @@ const PaginationButton = forwardRef<HTMLButtonElement, PaginationButtonProps>(
   }
 );
 
+//PAGINATION COMPONENT
+
+type PaginationProps = {
+  totalPages: number;
+  currentPage: number;
+  handlePageChange: (e: React.ChangeEvent<unknown>, page: number) => void;
+  className?: string;
+};
+
 export default function Pagination({
   totalPages,
   currentPage,
   handlePageChange,
-  className,
+  className
 }: PaginationProps) {
   const { items } = usePagination({
     onChange: handlePageChange,
     count: totalPages,
-    page: currentPage,
+    page: currentPage
   });
 
   return (

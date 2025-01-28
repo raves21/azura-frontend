@@ -1,4 +1,4 @@
-import { api } from "@/utils/axiosInstance";
+import { api } from "@/utils/variables/axiosInstances/authAxiosInstance";
 import { PropsWithChildren, useEffect } from "react";
 
 export default function PulseCheckJWT({ children }: PropsWithChildren) {

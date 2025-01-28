@@ -1,10 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
   AnimeEpisodesData,
-  Status
-} from "@/utils/types/thirdParty/anime/animeAnilist";
+  AnimeGenre,
+  AnimeStatus
+} from "@/utils/types/media/anime/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
-import { useChunkAnimeEpisodes } from "@/services/thirdParty/anime/queries/animeQueries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
 import InfoSectionBackgroundImage from "@/components/core/media/shared/info/InfoSectionBackgroundImage";
 import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
@@ -21,7 +22,7 @@ import {
   animeCancelledStatus,
   animeCompletedStatus,
   animeOngoingStatus
-} from "@/utils/variables/anime";
+} from "@/utils/variables/media/anime";
 
 type AnimeInfoPageHeroProps = {
   image: string | undefined;
@@ -32,7 +33,7 @@ type AnimeInfoPageHeroProps = {
   year: number | undefined;
   type: string | undefined;
   status: string | undefined;
-  genres: string[] | undefined;
+  genres: AnimeGenre[] | undefined;
   rating: number | null | undefined;
   animeId: string;
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
@@ -83,13 +84,13 @@ export default function AnimeInfoPageHero({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     )
                   })
                 }
@@ -99,7 +100,6 @@ export default function AnimeInfoPageHero({
             <GenreListAnime
               variant="infoPage"
               genres={genres}
-              gotoLink="/anime/catalog"
               className="w-full"
               genreListContainerClassName="max-w-[70%]"
             />
@@ -146,24 +146,20 @@ export default function AnimeInfoPageHero({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as Status
+                      status as AnimeStatus
                     )
                   })
                 }
               />
               <InfoItem label="Type:" info={type} />
             </div>
-            <GenreListAnime
-              variant="infoPage"
-              genres={genres}
-              gotoLink="/anime/catalog"
-            />
+            <GenreListAnime variant="infoPage" genres={genres} />
             <div className="flex items-center gap-2">
               <p className="text-gray-400">Score:</p>
               <Rating

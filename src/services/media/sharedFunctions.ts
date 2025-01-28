@@ -1,4 +1,4 @@
-import { RabbitScraperResponse } from "@/utils/types/thirdParty/shared";
+import { RabbitScraperResponse } from "@/utils/types/media/shared";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

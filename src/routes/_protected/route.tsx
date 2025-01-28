@@ -7,7 +7,8 @@ import {
   Outlet,
   useMatchRoute
 } from "@tanstack/react-router";
-import HomeHeader from "../../components/core/HomeHeader";
+import MovieTopNavBar from "@/components/core/navBar/movie/MovieTopNavBar";
+import AnimeTopNavBar from "@/components/core/navBar/anime/AnimeTopNavBar";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -20,6 +21,13 @@ function Protected() {
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
   const matchRoute = useMatchRoute();
 
+  let currentRoute: "movie" | "anime";
+  if (matchRoute({ to: "/anime", fuzzy: true })) {
+    currentRoute = "anime";
+  } else {
+    currentRoute = "movie";
+  }
+
   if (isLoading) return <StaticLoadingPage />;
   if (error) {
     setCurrentUser(null);
@@ -31,7 +39,7 @@ function Protected() {
     return (
       <PulseCheckJWT>
         <div className="max-w-full w-dvw bg-darkBg text-mainWhite">
-          <HomeHeader />
+          {currentRoute === "anime" ? <AnimeTopNavBar /> : <MovieTopNavBar />}
           <div
             className={cn(
               "font-montserrat px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] mx-auto",
