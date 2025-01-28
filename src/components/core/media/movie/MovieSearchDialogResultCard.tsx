@@ -29,6 +29,7 @@ export default function MovieSearchDialogResultCard({
         <img
           src={getTMDBImageURL(movie.poster_path)}
           alt={movie.title}
+          onError={(e) => e.currentTarget.src = "/no-image-2.jpg"}
           className="object-cover rounded-md size-full"
         />
       </div>

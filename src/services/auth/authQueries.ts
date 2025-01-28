@@ -17,7 +17,6 @@ export function useRefreshJWT() {
       const { data } = await axios.get(`${BASE_URL}/refresh`, {
         withCredentials: true
       });
-      console.log("JWT REFRESHED", data);
       return data.data as RefreshResponse;
     },
     retryOnMount: false

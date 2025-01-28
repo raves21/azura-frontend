@@ -42,7 +42,7 @@ export default function AnimeFiltersDialog() {
   });
 
   const [selectedGenres, setSelectedGenres] = useState<AnimeGenre[]>(
-    genres ? genres.split(",").map((genre) => genre as AnimeGenre) : []
+    genres || []
   );
   const [selectedFormat, setSelectedFormat] = useState<AnimeFormat | undefined>(
     format ? format : undefined
@@ -103,8 +103,7 @@ export default function AnimeFiltersDialog() {
         to: "/anime/catalog",
         search: {
           format: selectedFormat,
-          genres:
-            selectedGenres.length !== 0 ? selectedGenres.join(",") : undefined,
+          genres: selectedGenres.length !== 0 ? selectedGenres : undefined,
           season: selectedSeason,
           sortBy:
             selectedSortBy !== initialFilters.sortBy

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import { Link } from "@tanstack/react-router";
 
 type InfoPageProps = {
@@ -14,15 +15,10 @@ type WatchPageProps = {
 };
 
 type GenreListProps = {
-  genres: string[] | undefined;
-  gotoLink: string;
+  genres: AnimeGenre[] | undefined;
 } & (InfoPageProps | WatchPageProps);
 
-export default function GenreListAnime({
-  genres,
-  gotoLink,
-  ...props
-}: GenreListProps) {
+export default function GenreListAnime({ genres, ...props }: GenreListProps) {
   if (props.variant === "infoPage") {
     return (
       <div className={cn("flex gap-2", props.className)}>
@@ -36,9 +32,9 @@ export default function GenreListAnime({
           {genres
             ? genres.map((genre, i) => (
                 <Link
-                  to={gotoLink}
+                  to="/anime/catalog"
                   search={{
-                    genres: `${genre}`
+                    genres: [genre]
                   }}
                   key={i}
                   className="hover:text-mainAccent"
@@ -65,7 +61,7 @@ export default function GenreListAnime({
             <Link
               to="/anime/catalog"
               search={{
-                genres: genre
+                genres: [genre]
               }}
               key={genre}
               className="px-3 py-2 transition-colors border rounded-full border-mainAccent/75 hover:text-mainAccent/75"

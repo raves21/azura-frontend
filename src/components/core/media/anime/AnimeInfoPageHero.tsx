@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
   AnimeEpisodesData,
+  AnimeGenre,
   AnimeStatus
 } from "@/utils/types/media/anime/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -32,7 +33,7 @@ type AnimeInfoPageHeroProps = {
   year: number | undefined;
   type: string | undefined;
   status: string | undefined;
-  genres: string[] | undefined;
+  genres: AnimeGenre[] | undefined;
   rating: number | null | undefined;
   animeId: string;
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
@@ -99,7 +100,6 @@ export default function AnimeInfoPageHero({
             <GenreListAnime
               variant="infoPage"
               genres={genres}
-              gotoLink="/anime/catalog"
               className="w-full"
               genreListContainerClassName="max-w-[70%]"
             />
@@ -159,11 +159,7 @@ export default function AnimeInfoPageHero({
               />
               <InfoItem label="Type:" info={type} />
             </div>
-            <GenreListAnime
-              variant="infoPage"
-              genres={genres}
-              gotoLink="/anime/catalog"
-            />
+            <GenreListAnime variant="infoPage" genres={genres} />
             <div className="flex items-center gap-2">
               <p className="text-gray-400">Score:</p>
               <Rating

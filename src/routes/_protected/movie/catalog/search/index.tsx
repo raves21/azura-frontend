@@ -62,7 +62,7 @@ function MovieSearchPage() {
               currentPage={page || 1}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page: page })
+                  search: (prev) => ({ ...prev, page })
                 });
               }}
             />

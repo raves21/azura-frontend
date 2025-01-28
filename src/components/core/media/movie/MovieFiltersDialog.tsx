@@ -9,7 +9,7 @@ import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { movieSortByLabels } from "@/utils/variables/media/movie";
 import { useMovieGenres } from "@/services/media/movie/movieQueries";
 
-const startYear = 1950;
+const startYear = 1900;
 const endYear = new Date().getFullYear();
 const years = Array.from({ length: endYear - startYear + 1 }).map(
   (_, i) => endYear - i
@@ -28,7 +28,7 @@ export default function MovieFiltersDialog() {
     from: "/_protected/movie/catalog/"
   });
 
-  //already fetched in /movie/catalog->index.tsx
+  //already fetched in /movie/catalog->index.tsx so it wont need to load anymore
   const { data: movieGenres } = useMovieGenres();
 
   const [selectedGenres, setSelectedGenres] = useState<MovieGenre[]>(

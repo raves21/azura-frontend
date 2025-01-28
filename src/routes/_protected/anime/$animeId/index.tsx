@@ -73,11 +73,11 @@ function AnimeInfoPage() {
             animeInfoAnilist?.description || animeInfoAnify?.description
           }
           genres={
-            animeInfoAnilist?.genres || animeInfoAnify?.genres
-              ? animeInfoAnify?.genres.filter((genre) =>
-                  anilistGenres.includes(genre)
-                )
-              : undefined
+            animeInfoAnilist?.genres ||
+            animeInfoAnify?.genres?.filter((anifyGenre) =>
+              anilistGenres.includes(anifyGenre)
+            ) ||
+            undefined
           }
           status={animeInfoAnilist?.status || animeInfoAnify?.status}
           totalEpisodes={

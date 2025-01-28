@@ -12,7 +12,8 @@ import {
   AnimeInfoAnilist,
   Episode,
   EpisodeStreamLinks,
-  AnimeEpisodesData
+  AnimeEpisodesData,
+  AnimeGenre
 } from "@/utils/types/media/anime/animeAnilist";
 import {
   chunkEpisodes,
@@ -58,16 +59,27 @@ export function useSearchAnime(query: string, enabled: boolean) {
   });
 }
 
-export function useFilterAnime(
-  query?: string,
-  season?: AnimeSeason,
-  genres?: string,
-  year?: number,
-  sortBy?: AnimeSortBy,
-  format?: AnimeFormat,
-  page?: number,
-  status?: AnilistAnimeStatus
-) {
+type UseFilterAnimeArgs = {
+  query?: string;
+  season?: AnimeSeason;
+  genres?: AnimeGenre[];
+  year?: number;
+  sortBy?: AnimeSortBy;
+  format?: AnimeFormat;
+  page?: number;
+  status?: AnilistAnimeStatus;
+};
+
+export function useFilterAnime({
+  query,
+  season,
+  genres,
+  year,
+  sortBy,
+  format,
+  page,
+  status
+}: UseFilterAnimeArgs) {
   return useQuery({
     queryKey: [
       "filterAnime",
@@ -81,23 +93,23 @@ export function useFilterAnime(
       status
     ],
     queryFn: async () => {
-      const _query = query ? `&query=${query}` : "";
-      const _season = season ? `&season=${season}` : "";
-      const _genres =
-        genres && genres.length !== 0
-          ? `&genres=[${genres
-              .split(",")
-              .map((genre) => `"${genre}"`)
-              .join(",")}]`
-          : "";
-      const _year = year ? `&year=${year}` : "";
-      const _sortBy = `&sort=["${sortBy ?? AnimeSortBy.TRENDING_DESC}"]`;
-      const _format = format ? `&format=${format}` : "";
-      const _page = `&page=${page ?? 1}`;
-      const _status = status ? `&status=${status}` : "";
-
       const { data: filteredAnimes } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/advanced-search?perPage=30${_query}${_season}${_genres}${_year}${_sortBy}${_format}${_page}${_status}`
+        `${import.meta.env.VITE_ANILIST_URL}/advanced-search`,
+        {
+          params: {
+            perPage: 30,
+            query,
+            season,
+            genres: genres
+              ? `[${genres?.map((genre) => `"${genre}"`)}]`
+              : undefined,
+            year,
+            sort: [sortBy],
+            format,
+            page: page ?? 1,
+            status
+          }
+        }
       );
 
       return filteredAnimes as PaginatedAnimeResponse;
@@ -168,9 +180,11 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
   return useQuery({
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {
+      console.log("FETCHING STREAM URL");
       const { data: episodeStreamLinks } = await axios.get(
         `${import.meta.env.VITE_ANILIST_URL}/watch/${episodeId}`
       );
+      console.log(episodeStreamLinks);
       return episodeStreamLinks as EpisodeStreamLinks;
     }
   });

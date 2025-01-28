@@ -97,7 +97,8 @@ export function useSearchMovie(query: string, page: number, enabled?: boolean) {
     queryFn: async () => {
       const { data: searchMovieResults } = await tmdbApi.get("/search/movie", {
         params: {
-          query
+          query,
+          page
         }
       });
       return searchMovieResults as PaginatedMovieResponse;

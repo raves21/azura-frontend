@@ -7,6 +7,7 @@ import AnimeAppliedFilters from "../../../../components/core/media/anime/AnimeAp
 import {
   AnilistAnimeStatus,
   AnimeFormat,
+  AnimeGenre,
   AnimeSeason,
   AnimeSortBy
 } from "@/utils/types/media/anime/animeAnilist";
@@ -18,7 +19,7 @@ const filterPageSearchSchema = z.object({
   page: z.number().optional(),
   query: z.coerce.string().optional(),
   season: z.nativeEnum(AnimeSeason).optional(),
-  genres: z.coerce.string().optional(),
+  genres: z.nativeEnum(AnimeGenre).array().optional(),
   year: z.number().optional(),
   sortBy: z.nativeEnum(AnimeSortBy).optional(),
   format: z.nativeEnum(AnimeFormat).optional(),
@@ -48,16 +49,16 @@ function AnimeCatalogPage() {
     data: filteredAnimes,
     isLoading: isFilteredAnimesLoading,
     error: filteredAnimeError
-  } = useFilterAnime(
-    query?.trim(),
+  } = useFilterAnime({
+    query: query?.trim(),
     season,
-    genres?.trim(),
+    genres,
     year,
     sortBy,
     format,
-    page,
+    page: page ?? 1,
     status
-  );
+  });
 
   if (isFilteredAnimesLoading) {
     return (

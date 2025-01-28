@@ -34,7 +34,13 @@ export default function AnimeEpisodes({
   episodeListMaxHeight,
   currentlyWatchingEpisodeNumber
 }: AnimeEpisodeProps) {
-  const { animeId } = useParams({ from: "/_protected/anime/$animeId/" });
+  const { animeId } = useParams({
+    from:
+      variant === "infoPage"
+        ? "/_protected/anime/$animeId/"
+        : "/_protected/anime/$animeId/watch/"
+  });
+
   const {
     data: episodes,
     isLoading: isEpisodesLoading,

@@ -31,7 +31,7 @@ export default function AnimeAppliedFilters() {
             Genres
           </p>
           <div className="flex items-center gap-2 overflow-x-auto sm:flex-wrap">
-            {genres.split(",").map((genre) => (
+            {genres.map((genre) => (
               <AppliedFilterPill
                 key={genre}
                 className="text-white bg-blue-500 rounded-full"
