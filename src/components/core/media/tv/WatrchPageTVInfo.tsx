@@ -7,19 +7,19 @@ import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../shared/info/GenreListTMDB";
 
-type WatchPageMovieInfoProps = {
+type WatchPageTVInfoProps = {
   cover: string;
   image: string;
   title: string;
   description: string;
-  runTime: number;
+  runTime: number | null;
   year: string;
   status: string;
   genres: TMDBGenre[];
   voteAverage: number | null;
 };
 
-export default function WatchPageMovieInfo({
+export default function WatchPageTVInfo({
   cover,
   image,
   description,
@@ -29,7 +29,7 @@ export default function WatchPageMovieInfo({
   status,
   genres,
   voteAverage
-}: WatchPageMovieInfoProps) {
+}: WatchPageTVInfoProps) {
   return (
     <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justfy-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />
@@ -41,12 +41,13 @@ export default function WatchPageMovieInfo({
             <Rating mediaType="tmdb" variant="watchPage" rating={voteAverage} />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
               <InfoItem label="Year:" info={year?.toString()} />
-              <InfoItem label="Runtime:" info={`${runTime} min`} />
+              {runTime && <InfoItem label="Runtime:" info={`${runTime} min`} />}
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB
               isMobile={false}
               genres={genres}
+              //   gotoLink="/anime/catalog"
               variant="watchPage"
             />
           </div>
@@ -59,7 +60,12 @@ export default function WatchPageMovieInfo({
         </section>
       </div>
       <div className="z-10 w-full space-y-4 lg:space-y-0">
-        <GenreListTMDB isMobile genres={genres} variant="watchPage" />
+        <GenreListTMDB
+          isMobile
+          genres={genres}
+          //   gotoLink="/anime/catalog"
+          variant="watchPage"
+        />
         <Description
           adjustHeightBasedOnWidth
           showDescriptionLabel={false}

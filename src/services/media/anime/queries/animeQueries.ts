@@ -180,11 +180,9 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
   return useQuery({
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {
-      console.log("FETCHING STREAM URL");
       const { data: episodeStreamLinks } = await axios.get(
         `${import.meta.env.VITE_ANILIST_URL}/watch/${episodeId}`
       );
-      console.log(episodeStreamLinks);
       return episodeStreamLinks as EpisodeStreamLinks;
     }
   });

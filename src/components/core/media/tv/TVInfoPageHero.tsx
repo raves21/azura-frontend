@@ -13,8 +13,10 @@ import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { UseQueryResult } from "@tanstack/react-query";
+import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
+import { useEffect, useState } from "react";
 
-type MovieInfoPageHeroProps = {
+type TVInfoPageHeroProps = {
   image: string;
   cover: string;
   title: string;
@@ -24,11 +26,12 @@ type MovieInfoPageHeroProps = {
   status: string;
   genres: TMDBGenre[];
   voteAverage: number | null;
-  movieId: string;
+  tvId: string;
   mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
+  tvSeasonEpisodesQuery: UseQueryResult<TMDBTVEpisode[], Error>;
 };
 
-export default function MovieInfoPageHero({
+export default function TVInfoPageHero({
   image,
   cover,
   title,
@@ -38,13 +41,23 @@ export default function MovieInfoPageHero({
   runTime,
   genres,
   voteAverage,
-  movieId,
-  mediaScraperQuery
-}: MovieInfoPageHeroProps) {
+  tvId,
+  mediaScraperQuery,
+  tvSeasonEpisodesQuery
+}: TVInfoPageHeroProps) {
   const navigate = useNavigate();
 
-  const { isLoading: isMediaScraperLoading, error: mediaScraperError } =
-    mediaScraperQuery;
+  const [isFirstEpisodeAvailable, setIsFirstEpisodeAvailable] = useState(false);
+
+  const { data: tvSeasonEpisodes } = tvSeasonEpisodesQuery;
+
+  const { data: mediaScraperData } = mediaScraperQuery;
+
+  useEffect(() => {
+    if (tvSeasonEpisodes && mediaScraperData) {
+      setIsFirstEpisodeAvailable(true);
+    }
+  }, [tvSeasonEpisodes, mediaScraperData]);
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -62,7 +75,12 @@ export default function MovieInfoPageHero({
           <InfoDetails isMobile={false}>
             <div className="flex gap-10">
               <InfoItem label="Year:" info={year} />
-              <InfoItem label="Runtime:" info={`${runTime} min`} />
+              {runTime && (
+                <InfoItem
+                  label="Average episode runtime:"
+                  info={`${runTime} min`}
+                />
+              )}
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB
@@ -75,11 +93,17 @@ export default function MovieInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              disabled={isMediaScraperLoading || !!mediaScraperError}
+              disabled={!isFirstEpisodeAvailable}
               onClick={() => {
                 navigate({
-                  to: "/movie/$movieId/watch",
-                  params: { movieId }
+                  to: "/tv/$tvId/watch",
+                  params: {
+                    tvId
+                  },
+                  search: {
+                    epNum: 1,
+                    seasonNum: 1
+                  }
                 });
               }}
             />
@@ -94,7 +118,7 @@ export default function MovieInfoPageHero({
           <InfoDetails className="mt-14" isMobile>
             <div className="flex flex-col gap-3">
               <InfoItem label="Year:" info={year} />
-              <InfoItem label="Runtime:" info={`${runTime} min`} />
+              {runTime && <InfoItem label="Runtime:" info={`${runTime} min`} />}
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB variant="infoPage" genres={genres} />

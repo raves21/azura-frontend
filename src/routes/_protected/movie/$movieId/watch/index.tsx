@@ -38,6 +38,7 @@ function WatchMoviePage() {
   } = useMovieRecommendations(movieId);
 
   const mediaScraperQuery = useMediaScraper({
+    type: "MOVIE",
     enabled: !!movieInfo,
     mediaId: movieId
   });

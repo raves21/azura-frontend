@@ -35,6 +35,7 @@ function MovieInfoPage() {
   } = useMovieRecommendations(movieId);
 
   const mediaScraperQuery = useMediaScraper({
+    type: "MOVIE",
     enabled: !!movieInfo,
     mediaId: movieId
   });
@@ -57,7 +58,7 @@ function MovieInfoPage() {
   if (movieInfoError || movieRecommendationsError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
-        <p>Oops! There was an error fetching the details for this anime.</p>
+        <p>Oops! There was an error fetching the details for this movie.</p>
         <p>Please try again later.</p>
       </div>
     );
@@ -80,7 +81,6 @@ function MovieInfoPage() {
           voteAverage={movieInfo.vote_average}
         />
         <MovieEpisode
-          
           mediaScraperQuery={mediaScraperQuery}
           moviePoster={getTMDBImageURL(movieInfo.poster_path)}
           variant="infoPage"

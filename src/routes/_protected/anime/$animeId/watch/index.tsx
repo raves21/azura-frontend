@@ -3,7 +3,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
-import AnimeEpisodes from "@/components/core/media/anime/AnimeEpisodes";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
@@ -20,6 +19,7 @@ import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
+import WatchPageAnimeEpisodes from "@/components/core/media/anime/episodesList/WatchPageAnimeEpisodes";
 
 const anilistGenres = Object.values(AnimeGenre).map((genre) =>
   genre.toString()
@@ -130,8 +130,7 @@ function WatchEpisodePage() {
               episodeTitle={episodeInfo.title}
             />
           </div>
-          <AnimeEpisodes
-            variant="watchPage"
+          <WatchPageAnimeEpisodes
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
               animeInfoAnilist?.cover ||

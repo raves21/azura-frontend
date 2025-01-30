@@ -24,7 +24,6 @@ export type TMDBResource = {
   original_language: string;
   genre_ids: number[];
   popularity: number;
-  video: boolean;
   vote_average: number;
   vote_count: number;
 };
@@ -40,7 +39,7 @@ export type TMDBGenre = {
   name: string;
 };
 
-export type RabbitScraperResponse = {
+export type MediaScraperResponse = {
   message?: string;
   headers: Headers;
   provider: string;

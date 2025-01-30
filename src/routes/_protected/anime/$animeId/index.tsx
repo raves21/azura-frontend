@@ -4,12 +4,12 @@ import {
 } from "@/services/media/anime/queries/animeQueries";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeInfoPageHero from "../../../../components/core/media/anime/AnimeInfoPageHero";
-import AnimeEpisodes from "@/components/core/media/anime/AnimeEpisodes";
 import { useEffect } from "react";
 import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
+import InfoPageAnimeEpisodes from "@/components/core/media/anime/episodesList/InfoPageAnimeEpisodes";
 
 const anilistGenres = Object.values(AnimeGenre).map((genre) =>
   genre.toString()
@@ -91,8 +91,7 @@ function AnimeInfoPage() {
             null
           }
         />
-        <AnimeEpisodes
-          variant="infoPage"
+        <InfoPageAnimeEpisodes
           episodesQuery={episodesQuery}
           replace={false}
           type={animeInfoAnilist?.type}

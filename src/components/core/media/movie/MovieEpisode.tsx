@@ -1,6 +1,6 @@
-import { RabbitScraperResponse } from "@/utils/types/media/shared";
+import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { UseQueryResult } from "@tanstack/react-query";
-import EpisodesLoading from "../shared/episode/EpisodesLoading";
+import AllEpisodesLoading from "../shared/episode/skeleton/AllEpisodesLoading";
 import EpisodeCard from "../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../shared/episode/EpisodesContainer";
@@ -10,7 +10,7 @@ import { useParams } from "@tanstack/react-router";
 
 type MovieEpisodeProps = {
   variant: "infoPage" | "watchPage";
-  mediaScraperQuery: UseQueryResult<RabbitScraperResponse, Error>;
+  mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
   moviePoster: string | null;
 };
 
@@ -32,7 +32,7 @@ export default function MovieEpisode({
   } = mediaScraperQuery;
 
   if (isMediaScraperLoading) {
-    return <EpisodesLoading />;
+    return <AllEpisodesLoading />;
   }
 
   if (mediaScraperError) {
@@ -66,6 +66,12 @@ export default function MovieEpisode({
         <EpisodesHeader />
         <EpisodeListContainer variant="watchPage">
           <EpisodeCard
+            linkProps={{
+              to: "/movie/$movieId/watch",
+              params: {
+                movieId
+              }
+            }}
             episodeNumber={`MOVIE`}
             episodeTitle={"FULL"}
             isCurrentlyWatched={true}
