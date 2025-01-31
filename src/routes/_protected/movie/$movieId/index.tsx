@@ -1,5 +1,5 @@
 import MovieEpisode from "@/components/core/media/movie/MovieEpisode";
-import MovieInfoPageHero from "@/components/core/media/movie/MovieInfoPageHero";
+import MovieInfoPageHero from "@/components/core/media/movie/infoSection/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";

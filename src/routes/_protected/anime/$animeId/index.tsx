@@ -3,7 +3,7 @@ import {
   useFetchAnimeInfo
 } from "@/services/media/anime/queries/animeQueries";
 import { createFileRoute } from "@tanstack/react-router";
-import AnimeInfoPageHero from "../../../../components/core/media/anime/AnimeInfoPageHero";
+import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
 import { useEffect } from "react";
 import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";

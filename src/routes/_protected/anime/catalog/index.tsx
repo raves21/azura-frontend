@@ -1,5 +1,5 @@
 import { useFilterAnime } from "@/services/media/anime/queries/animeQueries";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 import CatalogAnimeList from "@/components/core/media/anime/CatalogAnimeList";
@@ -26,16 +26,13 @@ const filterPageSearchSchema = z.object({
   status: z.nativeEnum(AnilistAnimeStatus).optional()
 });
 
-type FilterPageSearchParams = z.infer<typeof filterPageSearchSchema>;
-
 export const Route = createFileRoute("/_protected/anime/catalog/")({
   component: () => <AnimeCatalogPage />,
-  validateSearch: (search): FilterPageSearchParams => {
-    const validationResult = filterPageSearchSchema.safeParse(search);
-    if (validationResult.success) {
-      return validationResult.data;
-    } else {
-      return {};
+  validateSearch: (search) => filterPageSearchSchema.parse(search),
+  beforeLoad: ({ search }) => {
+    const validated = filterPageSearchSchema.safeParse(search);
+    if (validated.error) {
+      redirect({ to: "/anime/catalog" });
     }
   }
 });

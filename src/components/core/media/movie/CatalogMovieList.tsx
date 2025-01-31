@@ -4,11 +4,11 @@ import {
 } from "@/services/media/sharedFunctions";
 import MediaCard from "../shared/MediaCard";
 import { MovieTMDB } from "@/utils/types/media/movie/movieTmdb";
-type CatalogMediaListProps = { movieList: MovieTMDB[] };
+type CatalogMovieListProps = { movieList: MovieTMDB[] };
 
 export default function CatalogMovieList({
   movieList: movieList
-}: CatalogMediaListProps) {
+}: CatalogMovieListProps) {
   return (
     <div className="grid w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-x-3 gap-y-4 xl:grid-cols-6 lg:gap-x-5 lg:gap-y-6">
       {movieList.map((movie) => (

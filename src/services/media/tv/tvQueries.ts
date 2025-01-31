@@ -33,7 +33,8 @@ export function useTVInfo(tvShowId: string) {
     queryFn: async () => {
       const { data: tvShowInfo } = await tmdbApi.get(`/tv/${tvShowId}`);
       return tvShowInfo as TVShowInfo;
-    }
+    },
+    retryOnMount: false
   });
 }
 

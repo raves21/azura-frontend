@@ -2,29 +2,38 @@ import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCa
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import InfoPageTVEpisodes from "@/components/core/media/tv/episodeList/InfoPageTVEpisodes";
-import TVInfoPageHero from "@/components/core/media/tv/TVInfoPageHero";
+import TVInfoPageHero from "@/components/core/media/tv/infoSection/TVInfoPageHero";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear,
-  useMediaScraper
+  getTMDBReleaseYear
 } from "@/services/media/sharedFunctions";
 import {
   useTVInfo,
   useTVRecommendations,
   useTVSeasonEpisodes
 } from "@/services/media/tv/tvQueries";
-import { useTVSeasonSelectionStore } from "@/utils/stores/useTVSeasonSelectionStore";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { z } from "zod";
+
+const tvInfoPageSchema = z.object({
+  s: z.number().optional()
+});
 
 export const Route = createFileRoute("/_protected/tv/$tvId/")({
-  component: () => <TVInfoPage />
+  component: () => <TVInfoPage />,
+  validateSearch: (search) => tvInfoPageSchema.parse(search),
+  beforeLoad: ({ search, params }) => {
+    const { tvId } = params;
+    const validated = tvInfoPageSchema.safeParse(search);
+    if (validated.error) {
+      throw redirect({ to: "/tv/$tvId", params: { tvId } });
+    }
+  }
 });
 
 function TVInfoPage() {
-  const selectedSeason = useTVSeasonSelectionStore(
-    (state) => state.selectedSeason
-  );
+  const { s } = Route.useSearch();
   const { tvId } = Route.useParams();
   const [hasMainSeasons, setHasMainSeasons] = useState(false);
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);
@@ -57,16 +66,8 @@ function TVInfoPage() {
   //only fetch the info of the first season if the TV show has main seasons and has info details
   const tvSeasonEpisodesQuery = useTVSeasonEpisodes({
     tvId,
-    seasonNum: selectedSeason || 1,
+    seasonNum: s || 1,
     enabled: !!tvInfo && hasMainSeasons
-  });
-  //only scrape the episode if the TV show has main seasons and has info details
-  const mediaScraperQuery = useMediaScraper({
-    type: "TV",
-    enabled: !!tvInfo && hasMainSeasons,
-    mediaId: tvId,
-    seasonNum: selectedSeason || 1,
-    epNum: 1
   });
 
   useEffect(() => {
@@ -98,8 +99,7 @@ function TVInfoPage() {
       <main className="w-full pb-32">
         <TVInfoPageHero
           tvId={tvId}
-          mediaScraperQuery={mediaScraperQuery}
-          tvSeasonEpisodesQuery={tvSeasonEpisodesQuery}
+          tvSeasonEpisodes={tvSeasonEpisodesQuery.data}
           cover={getTMDBImageURL(tvInfo.backdrop_path)}
           description={tvInfo.overview}
           genres={tvInfo.genres}
@@ -114,7 +114,6 @@ function TVInfoPage() {
           coverImage={getTMDBImageURL(tvInfo.backdrop_path)}
           totalSeasons={totalSeasons}
           tvSeasonEpisodesQuery={tvSeasonEpisodesQuery}
-          mediaScraperQuery={mediaScraperQuery}
         />
         {tvRecommendations.results.length !== 0 && (
           <CategoryCarousel
@@ -126,9 +125,9 @@ function TVInfoPage() {
                   <MediaCard
                     image={getTMDBImageURL(recommendation.poster_path)}
                     linkProps={{
-                      to: "/movie/$movieId",
+                      to: "/tv/$tvId",
                       params: {
-                        movieId: `${recommendation.id}`
+                        tvId: recommendation.id.toString()
                       }
                     }}
                     subLabels={[

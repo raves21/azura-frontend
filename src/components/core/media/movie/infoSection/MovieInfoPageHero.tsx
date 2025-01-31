@@ -10,13 +10,11 @@ import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { TMDBGenre } from "@/utils/types/media/shared";
-import GenreListTMDB from "../shared/info/GenreListTMDB";
+import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { UseQueryResult } from "@tanstack/react-query";
-import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
-import { useEffect, useState } from "react";
 
-type TVInfoPageHeroProps = {
+type MovieInfoPageHeroProps = {
   image: string;
   cover: string;
   title: string;
@@ -26,12 +24,11 @@ type TVInfoPageHeroProps = {
   status: string;
   genres: TMDBGenre[];
   voteAverage: number | null;
-  tvId: string;
+  movieId: string;
   mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
-  tvSeasonEpisodesQuery: UseQueryResult<TMDBTVEpisode[], Error>;
 };
 
-export default function TVInfoPageHero({
+export default function MovieInfoPageHero({
   image,
   cover,
   title,
@@ -41,23 +38,13 @@ export default function TVInfoPageHero({
   runTime,
   genres,
   voteAverage,
-  tvId,
-  mediaScraperQuery,
-  tvSeasonEpisodesQuery
-}: TVInfoPageHeroProps) {
+  movieId,
+  mediaScraperQuery
+}: MovieInfoPageHeroProps) {
   const navigate = useNavigate();
 
-  const [isFirstEpisodeAvailable, setIsFirstEpisodeAvailable] = useState(false);
-
-  const { data: tvSeasonEpisodes } = tvSeasonEpisodesQuery;
-
-  const { data: mediaScraperData } = mediaScraperQuery;
-
-  useEffect(() => {
-    if (tvSeasonEpisodes && mediaScraperData) {
-      setIsFirstEpisodeAvailable(true);
-    }
-  }, [tvSeasonEpisodes, mediaScraperData]);
+  const { isLoading: isMediaScraperLoading, error: mediaScraperError } =
+    mediaScraperQuery;
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -75,12 +62,7 @@ export default function TVInfoPageHero({
           <InfoDetails isMobile={false}>
             <div className="flex gap-10">
               <InfoItem label="Year:" info={year} />
-              {runTime && (
-                <InfoItem
-                  label="Average episode runtime:"
-                  info={`${runTime} min`}
-                />
-              )}
+              <InfoItem label="Runtime:" info={`${runTime} min`} />
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB
@@ -93,17 +75,11 @@ export default function TVInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              disabled={!isFirstEpisodeAvailable}
+              disabled={isMediaScraperLoading || !!mediaScraperError}
               onClick={() => {
                 navigate({
-                  to: "/tv/$tvId/watch",
-                  params: {
-                    tvId
-                  },
-                  search: {
-                    epNum: 1,
-                    seasonNum: 1
-                  }
+                  to: "/movie/$movieId/watch",
+                  params: { movieId }
                 });
               }}
             />
@@ -118,7 +94,7 @@ export default function TVInfoPageHero({
           <InfoDetails className="mt-14" isMobile>
             <div className="flex flex-col gap-3">
               <InfoItem label="Year:" info={year} />
-              {runTime && <InfoItem label="Runtime:" info={`${runTime} min`} />}
+              <InfoItem label="Runtime:" info={`${runTime} min`} />
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB variant="infoPage" genres={genres} />

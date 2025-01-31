@@ -4,7 +4,6 @@ import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/Episod
 import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPageTVEpisodes";
-import WatchPageTVInfo from "@/components/core/media/tv/WatrchPageTVInfo";
 import {
   getTMDBImageURL,
   getTMDBReleaseYear,
@@ -16,23 +15,33 @@ import {
   useTVSeasonEpisodes
 } from "@/services/media/tv/tvQueries";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
+import WatchPageTVInfo from "@/components/core/media/tv/infoSection/WatchPageTVInfo";
 
 const watchTVEpisodePageSchema = z.object({
-  epNum: z.coerce.number(),
-  seasonNum: z.coerce.number()
+  tvEp: z.number(),
+  tvSeason: z.number()
 });
+
+type s = z.infer<typeof watchTVEpisodePageSchema>;
 
 export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
   component: () => <WatchTVEpisodePage />,
-  validateSearch: (search) => watchTVEpisodePageSchema.parse(search)
+  validateSearch: (search): s => {
+    const v = watchTVEpisodePageSchema.safeParse(search);
+    if (v.success) {
+      return v.data;
+    } else {
+      //if validation fails, provide defaults (season 1, episode 1).
+      return { tvEp: 1, tvSeason: 1 };
+    }
+  }
 });
 
 function WatchTVEpisodePage() {
-  const navigate = useNavigate();
-  const { epNum, seasonNum } = Route.useSearch();
+  const { tvEp, tvSeason } = Route.useSearch();
   const { tvId } = Route.useParams();
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
@@ -41,15 +50,7 @@ function WatchTVEpisodePage() {
   ] = useState(0);
   const [hasMainSeasons, setHasMainSeasons] = useState(false);
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);
-
   const windowWidth = useWindowWidth();
-
-  //navigates back to info page if required search params are not given
-  useEffect(() => {
-    if (!epNum || !seasonNum) {
-      navigate({ to: "/tv/$tvId", params: { tvId } });
-    }
-  }, []);
 
   const {
     data: tvInfo,
@@ -72,7 +73,7 @@ function WatchTVEpisodePage() {
 
   const tvSeasonEpisodesQuery = useTVSeasonEpisodes({
     tvId,
-    seasonNum,
+    seasonNum: tvSeason,
     enabled: !!tvInfo && hasMainSeasons
   });
 
@@ -92,8 +93,8 @@ function WatchTVEpisodePage() {
     type: "TV",
     enabled: !!tvInfo && hasMainSeasons,
     mediaId: tvId,
-    epNum,
-    seasonNum
+    epNum: tvEp,
+    seasonNum: tvSeason
   });
 
   const {
@@ -147,11 +148,10 @@ function WatchTVEpisodePage() {
     tvRecommendations &&
     mediaScraperData &&
     tvSeasonEpisodes &&
-    seasonNum &&
-    epNum &&
     totalSeasons
   ) {
-    const currentEpisode = tvSeasonEpisodes[epNum - 1];
+    console.log(tvSeasonEpisodes);
+    const currentEpisode = tvSeasonEpisodes[tvEp - 1];
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -165,7 +165,7 @@ function WatchTVEpisodePage() {
               title={currentEpisode.name}
             />
             <EpisodeTitleAndNumber
-              episodeNumber={`Episode ${epNum}`}
+              episodeNumber={`Episode ${tvEp}`}
               episodeTitle={currentEpisode.name}
             />
           </div>

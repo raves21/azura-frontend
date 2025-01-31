@@ -5,7 +5,7 @@ import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPo
 import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { TMDBGenre } from "@/utils/types/media/shared";
-import GenreListTMDB from "../shared/info/GenreListTMDB";
+import GenreListTMDB from "../../shared/info/GenreListTMDB";
 
 type WatchPageTVInfoProps = {
   cover: string;

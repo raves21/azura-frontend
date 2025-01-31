@@ -1,41 +1,33 @@
-import { MediaScraperResponse } from "@/utils/types/media/shared";
-import { QueryKey, UseQueryResult } from "@tanstack/react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import AllEpisodesLoading from "../../shared/episode/skeleton/AllEpisodesLoading";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
-import { useParams } from "@tanstack/react-router";
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../CustomDropdown";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
 import EpisodeListContainerSkeleton from "../../shared/episode/skeleton/EpisodeListContainerSkeleton";
-import { queryClient } from "@/utils/variables/queryClient";
-import { useTVSeasonSelectionStore } from "@/utils/stores/useTVSeasonSelectionStore";
-import { useShallow } from "zustand/react/shallow";
 
 type InfoPageTVEpisodesProps = {
   totalSeasons: number | null;
   tvSeasonEpisodesQuery: UseQueryResult<TMDBTVEpisode[], Error>;
-  mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
   coverImage: string | null;
 };
 
 export default function InfoPageTVEpisodes({
   totalSeasons,
   tvSeasonEpisodesQuery,
-  mediaScraperQuery,
   coverImage
 }: InfoPageTVEpisodesProps) {
   const { tvId } = useParams({
     from: "/_protected/tv/$tvId/"
   });
-
-  const [selectedSeason, setSelectedSeason] = useTVSeasonSelectionStore(
-    useShallow((state) => [state.selectedSeason, state.setSelectedSeason])
-  );
+  const { s } = useSearch({ from: "/_protected/tv/$tvId/" });
+  const navigate = useNavigate();
 
   const {
     data: tvSeasonEpisodes,
@@ -43,35 +35,26 @@ export default function InfoPageTVEpisodes({
     error: tvSeasonEpisodesError
   } = tvSeasonEpisodesQuery;
 
-  const {
-    data: mediaScraperData,
-    isLoading: isMediaScraperLoading,
-    error: mediaScraperError
-  } = mediaScraperQuery;
-
-  //this returns an array of queryKeys that matches the provided queryKey below
-  const initialEpisodeQueryKeys = queryClient.getQueriesData<
-    QueryKey | undefined
-  >({ queryKey: ["mediaScraper", "TV", tvId] });
-
-  //this takes the first queryKey in initialEpisodeQueryKeys (an array) and gets that queryKey's cached data
-  const initialEpisode = queryClient.getQueryData<MediaScraperResponse>(
-    initialEpisodeQueryKeys[0][0]
-  );
-
-  if (isTvSeasonEpisodesLoading || isMediaScraperLoading) {
-    //oshow the season dropdown selection while loading ONLY if initialEpisode was already fetched, has data, and has been cached
-    if (initialEpisode && totalSeasons) {
+  if (isTvSeasonEpisodesLoading) {
+    //show the season dropdown selection while loading ONLY if initialEpisode was already fetched, has data, and has been cached
+    if (totalSeasons) {
       const seasons = Array.from({ length: totalSeasons }).map((_, i) => i + 1);
       return (
         <EpisodesContainer variant="infoPage">
           <EpisodesHeader>
             <CustomDropdown
-              currentlySelected={selectedSeason || 1}
+              currentlySelected={s || 1}
               menuItems={seasons}
               menuContentMaxHeight={350}
               menuItemLabelNames={seasons.map((season) => `Season ${season}`)}
-              onSelectItem={(season) => setSelectedSeason(season)}
+              onSelectItem={(season) =>
+                navigate({
+                  to: "/tv/$tvId",
+                  params: { tvId },
+                  search: { s: season },
+                  replace: true
+                })
+              }
               showMenuContentBorder
               menuContentClassName="bg-darkBg"
               dropdownTriggerClassName="text-gray-400"
@@ -87,21 +70,28 @@ export default function InfoPageTVEpisodes({
     }
   }
 
-  if (tvSeasonEpisodesError || !totalSeasons || mediaScraperError) {
+  if (tvSeasonEpisodesError || !totalSeasons) {
     return <EpisodesError />;
   }
 
-  if (tvSeasonEpisodes && mediaScraperData && totalSeasons) {
+  if (tvSeasonEpisodes && totalSeasons) {
     const seasons = Array.from({ length: totalSeasons }).map((_, i) => i + 1);
     return (
       <EpisodesContainer variant="infoPage">
         <EpisodesHeader>
           <CustomDropdown
-            currentlySelected={selectedSeason || 1}
+            currentlySelected={s || 1}
             menuItems={seasons}
             menuContentMaxHeight={350}
             menuItemLabelNames={seasons.map((season) => `Season ${season}`)}
-            onSelectItem={(season) => setSelectedSeason(season)}
+            onSelectItem={(season) =>
+              navigate({
+                to: "/tv/$tvId",
+                params: { tvId },
+                search: { s: season },
+                replace: true
+              })
+            }
             showMenuContentBorder
             menuContentClassName="bg-darkBg"
             dropdownTriggerClassName="text-gray-400"
@@ -118,8 +108,8 @@ export default function InfoPageTVEpisodes({
                     tvId
                   },
                   search: {
-                    seasonNum: episode.season_number,
-                    epNum: episode.episode_number
+                    tvSeason: episode.season_number,
+                    tvEp: episode.episode_number
                   }
                 }}
                 episodeNumber={`Episode ${episode.episode_number}`}

@@ -6,7 +6,7 @@ import "@vidstack/react/player/styles/default/layouts/video.css";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
-import WatchPageAnimeInfo from "../../../../../components/core/media/anime/WatchPageAnimeInfo";
+import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
   useFetchEpisodeStreamLinks,
   useFetchAnimeEpisodes,

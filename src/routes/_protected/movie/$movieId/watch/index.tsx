@@ -1,5 +1,5 @@
 import MovieEpisode from "@/components/core/media/movie/MovieEpisode";
-import WatchPageMovieInfo from "@/components/core/media/movie/WatrchPageMovieInfo";
+import WatchPageMovieInfo from "@/components/core/media/movie/infoSection/WatrchPageMovieInfo";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
