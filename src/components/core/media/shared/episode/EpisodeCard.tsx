@@ -55,7 +55,11 @@ const EpisodeCard = forwardRef<HTMLAnchorElement, EpisodeCardProps>(
           </div>
           <div className="bg-gray-700 rounded-lg size-full">
             <img
-              src={image || episodeImageFallback || "/no-image.png"}
+              src={image || episodeImageFallback || "/no-image-2.jpg"}
+              onError={(e) =>
+                (e.currentTarget.src =
+                  episodeImageFallback || "/no-image-2.jpg")
+              }
               className="absolute inset-0 object-cover rounded-lg size-full"
             />
           </div>

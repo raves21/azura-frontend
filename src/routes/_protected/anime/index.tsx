@@ -45,7 +45,7 @@ function AnimeHomePage() {
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
           Loading&nbsp;
-          <span className="font-semibold text-mainAccent">AzuraWatch</span>
+          <span className="font-semibold text-mainAccent">Azura Anime</span>
         </p>
       </div>
     );

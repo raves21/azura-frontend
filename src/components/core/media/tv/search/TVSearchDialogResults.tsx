@@ -1,32 +1,29 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import MovieSearchDialogResultCard from "./MovieSearchDialogResultCard";
-import { PaginatedMovieResponse } from "@/utils/types/media/movie/movieTmdb";
+import TVSearchDialogResultCard from "./TVSearchDialogResultCard";
 import { UseQueryResult } from "@tanstack/react-query";
+import { PaginatedTVShowResponse } from "@/utils/types/media/TV/tvShowTmdb";
+import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
-type MovieSearchDialogResultsProps = {
+type TVSearchDialogResultsProps = {
   query: string;
-  movieSearchQuery: UseQueryResult<PaginatedMovieResponse, Error>;
+  tvSearchQuery: UseQueryResult<PaginatedTVShowResponse, Error>;
 };
 
-export default function MovieSearchDialogResults({
-  movieSearchQuery,
+export default function TVSearchDialogResults({
+  tvSearchQuery,
   query
-}: MovieSearchDialogResultsProps) {
+}: TVSearchDialogResultsProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
     error: searchResultsError
-  } = movieSearchQuery;
+  } = tvSearchQuery;
 
   if (isSearchResultsLoading) {
-    return (
-      <div className="grid w-full py-4 bg-gray-800 rounded-b-lg place-items-center text-mainWhite">
-        Loading...
-      </div>
-    );
+    return <SearchDialogResultsLoading />;
   }
 
   if (searchResultsError) {
@@ -50,8 +47,8 @@ export default function MovieSearchDialogResults({
         className={`w-full text-mainWhite rounded-b-lg bg-gray-800 ${searchResults.results.length <= 2 ? "h-auto" : "h-[300px]"} overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {searchResults.results.map((movie) => (
-            <MovieSearchDialogResultCard key={movie.id} movie={movie} />
+          {searchResults.results.map((tv) => (
+            <TVSearchDialogResultCard key={tv.id} tv={tv} />
           ))}
         </ul>
         {searchResults.page < searchResults.total_pages && (

@@ -1,6 +1,6 @@
 import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
-import MovieAppliedFilters from "@/components/core/media/movie/MovieAppliedFilters";
-import MovieFiltersDialog from "@/components/core/media/movie/MovieFiltersDialog";
+import MovieAppliedFilters from "@/components/core/media/movie/filter/MovieAppliedFilters";
+import MovieFiltersDialog from "@/components/core/media/movie/filter/MovieFiltersDialog";
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import {
   useDiscoverMovies,
@@ -8,7 +8,7 @@ import {
 } from "@/services/media/movie/movieQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 
@@ -19,17 +19,15 @@ const movieCatalogPageSchema = z.object({
   year: z.coerce.number().optional()
 });
 
-type MovieCatalogPageSchema = z.infer<typeof movieCatalogPageSchema>;
-
 export const Route = createFileRoute("/_protected/movie/catalog/")({
   component: () => <MovieCatalogPage />,
-  validateSearch: (search): MovieCatalogPageSchema => {
+  validateSearch: (search) => movieCatalogPageSchema.parse(search),
+  beforeLoad: ({ search }) => {
     const validatedSearch = movieCatalogPageSchema.safeParse(search);
     if (validatedSearch.success) {
       return validatedSearch.data;
-    } else {
-      return {};
     }
+    redirect({ to: "/movie" });
   }
 });
 
@@ -109,7 +107,7 @@ function MovieCatalogPage() {
           </>
         ) : (
           <div className="grid flex-grow text-base text-center md:text-lg place-items-center">
-            Sorry, we could not find the Anime you were looking for.
+            Sorry, we could not find the Movie you were looking for.
           </div>
         )}
       </main>

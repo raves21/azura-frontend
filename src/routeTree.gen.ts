@@ -15,6 +15,7 @@ import { Route as ProtectedRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProtectedSocialRouteImport } from './routes/_protected/social/route'
+import { Route as ProtectedTvIndexImport } from './routes/_protected/tv/index'
 import { Route as ProtectedSocialIndexImport } from './routes/_protected/social/index'
 import { Route as ProtectedMovieIndexImport } from './routes/_protected/movie/index'
 import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/index'
@@ -23,6 +24,8 @@ import { Route as AuthLoginIndexImport } from './routes/_auth/login/index'
 import { Route as AuthDetachedModeIndexImport } from './routes/_auth/detached-mode/index'
 import { Route as ProtectedSocialSearchRouteImport } from './routes/_protected/social/search/route'
 import { Route as ProtectedSocialUserHandleRouteImport } from './routes/_protected/social/$userHandle/route'
+import { Route as ProtectedTvCatalogIndexImport } from './routes/_protected/tv/catalog/index'
+import { Route as ProtectedTvTvIdIndexImport } from './routes/_protected/tv/$tvId/index'
 import { Route as ProtectedSocialSearchIndexImport } from './routes/_protected/social/search/index'
 import { Route as ProtectedSocialUserHandleIndexImport } from './routes/_protected/social/$userHandle/index'
 import { Route as ProtectedMovieCatalogIndexImport } from './routes/_protected/movie/catalog/index'
@@ -31,6 +34,8 @@ import { Route as ProtectedAnimeCatalogIndexImport } from './routes/_protected/a
 import { Route as ProtectedAnimeAnimeIdIndexImport } from './routes/_protected/anime/$animeId/index'
 import { Route as AuthSignupVerifyEmailIndexImport } from './routes/_auth/signup/verify-email/index'
 import { Route as AuthLoginForgotPasswordIndexImport } from './routes/_auth/login/forgot-password/index'
+import { Route as ProtectedTvCatalogSearchIndexImport } from './routes/_protected/tv/catalog/search/index'
+import { Route as ProtectedTvTvIdWatchIndexImport } from './routes/_protected/tv/$tvId/watch/index'
 import { Route as ProtectedSocialSearchPostsIndexImport } from './routes/_protected/social/search/posts/index'
 import { Route as ProtectedSocialSearchPeopleIndexImport } from './routes/_protected/social/search/people/index'
 import { Route as ProtectedSocialUserHandlePostsIndexImport } from './routes/_protected/social/$userHandle_/posts/index'
@@ -63,6 +68,11 @@ const IndexRoute = IndexImport.update({
 
 const ProtectedSocialRouteRoute = ProtectedSocialRouteImport.update({
   path: '/social',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedTvIndexRoute = ProtectedTvIndexImport.update({
+  path: '/tv/',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -108,6 +118,16 @@ const ProtectedSocialUserHandleRouteRoute =
     path: '/$userHandle',
     getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
+
+const ProtectedTvCatalogIndexRoute = ProtectedTvCatalogIndexImport.update({
+  path: '/tv/catalog/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedTvTvIdIndexRoute = ProtectedTvTvIdIndexImport.update({
+  path: '/tv/$tvId/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
 
 const ProtectedSocialSearchIndexRoute = ProtectedSocialSearchIndexImport.update(
   {
@@ -162,6 +182,17 @@ const AuthLoginForgotPasswordIndexRoute =
     path: '/login/forgot-password/',
     getParentRoute: () => AuthRouteRoute,
   } as any)
+
+const ProtectedTvCatalogSearchIndexRoute =
+  ProtectedTvCatalogSearchIndexImport.update({
+    path: '/tv/catalog/search/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedTvTvIdWatchIndexRoute = ProtectedTvTvIdWatchIndexImport.update({
+  path: '/tv/$tvId/watch/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
 
 const ProtectedSocialSearchPostsIndexRoute =
   ProtectedSocialSearchPostsIndexImport.update({
@@ -323,6 +354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialIndexImport
       parentRoute: typeof ProtectedSocialRouteImport
     }
+    '/_protected/tv/': {
+      id: '/_protected/tv/'
+      path: '/tv'
+      fullPath: '/tv'
+      preLoaderRoute: typeof ProtectedTvIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_auth/login/forgot-password/': {
       id: '/_auth/login/forgot-password/'
       path: '/login/forgot-password'
@@ -378,6 +416,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/social/search/'
       preLoaderRoute: typeof ProtectedSocialSearchIndexImport
       parentRoute: typeof ProtectedSocialSearchRouteImport
+    }
+    '/_protected/tv/$tvId/': {
+      id: '/_protected/tv/$tvId/'
+      path: '/tv/$tvId'
+      fullPath: '/tv/$tvId'
+      preLoaderRoute: typeof ProtectedTvTvIdIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/tv/catalog/': {
+      id: '/_protected/tv/catalog/'
+      path: '/tv/catalog'
+      fullPath: '/tv/catalog'
+      preLoaderRoute: typeof ProtectedTvCatalogIndexImport
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_auth/login/forgot-password/change-password/': {
       id: '/_auth/login/forgot-password/change-password/'
@@ -449,6 +501,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialSearchPostsIndexImport
       parentRoute: typeof ProtectedSocialSearchRouteImport
     }
+    '/_protected/tv/$tvId/watch/': {
+      id: '/_protected/tv/$tvId/watch/'
+      path: '/tv/$tvId/watch'
+      fullPath: '/tv/$tvId/watch'
+      preLoaderRoute: typeof ProtectedTvTvIdWatchIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/tv/catalog/search/': {
+      id: '/_protected/tv/catalog/search/'
+      path: '/tv/catalog/search'
+      fullPath: '/tv/catalog/search'
+      preLoaderRoute: typeof ProtectedTvCatalogSearchIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/social/$userHandle/collections/$collectionId/': {
       id: '/_protected/social/$userHandle/collections/$collectionId/'
       path: '/$userHandle/collections/$collectionId'
@@ -500,13 +566,18 @@ export const routeTree = rootRoute.addChildren({
     }),
     ProtectedAnimeIndexRoute,
     ProtectedMovieIndexRoute,
+    ProtectedTvIndexRoute,
     ProtectedAnimeAnimeIdIndexRoute,
     ProtectedAnimeCatalogIndexRoute,
     ProtectedMovieMovieIdIndexRoute,
     ProtectedMovieCatalogIndexRoute,
+    ProtectedTvTvIdIndexRoute,
+    ProtectedTvCatalogIndexRoute,
     ProtectedAnimeAnimeIdWatchIndexRoute,
     ProtectedMovieMovieIdWatchIndexRoute,
     ProtectedMovieCatalogSearchIndexRoute,
+    ProtectedTvTvIdWatchIndexRoute,
+    ProtectedTvCatalogSearchIndexRoute,
   }),
 })
 
@@ -545,13 +616,18 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/social",
         "/_protected/anime/",
         "/_protected/movie/",
+        "/_protected/tv/",
         "/_protected/anime/$animeId/",
         "/_protected/anime/catalog/",
         "/_protected/movie/$movieId/",
         "/_protected/movie/catalog/",
+        "/_protected/tv/$tvId/",
+        "/_protected/tv/catalog/",
         "/_protected/anime/$animeId/watch/",
         "/_protected/movie/$movieId/watch/",
-        "/_protected/movie/catalog/search/"
+        "/_protected/movie/catalog/search/",
+        "/_protected/tv/$tvId/watch/",
+        "/_protected/tv/catalog/search/"
       ]
     },
     "/_protected/social": {
@@ -607,6 +683,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/social/index.tsx",
       "parent": "/_protected/social"
     },
+    "/_protected/tv/": {
+      "filePath": "_protected/tv/index.tsx",
+      "parent": "/_protected"
+    },
     "/_auth/login/forgot-password/": {
       "filePath": "_auth/login/forgot-password/index.tsx",
       "parent": "/_auth"
@@ -638,6 +718,14 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/search/": {
       "filePath": "_protected/social/search/index.tsx",
       "parent": "/_protected/social/search"
+    },
+    "/_protected/tv/$tvId/": {
+      "filePath": "_protected/tv/$tvId/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/tv/catalog/": {
+      "filePath": "_protected/tv/catalog/index.tsx",
+      "parent": "/_protected"
     },
     "/_auth/login/forgot-password/change-password/": {
       "filePath": "_auth/login/forgot-password/change-password/index.tsx",
@@ -678,6 +766,14 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/search/posts/": {
       "filePath": "_protected/social/search/posts/index.tsx",
       "parent": "/_protected/social/search"
+    },
+    "/_protected/tv/$tvId/watch/": {
+      "filePath": "_protected/tv/$tvId/watch/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/tv/catalog/search/": {
+      "filePath": "_protected/tv/catalog/search/index.tsx",
+      "parent": "/_protected"
     },
     "/_protected/social/$userHandle/collections/$collectionId/": {
       "filePath": "_protected/social/$userHandle_/collections/$collectionId/index.tsx",

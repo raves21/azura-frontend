@@ -1,5 +1,3 @@
-import { MovieGenre } from "./movie/movieTmdb";
-
 export type EpisodeToBeRendered = {
   id: string;
   title: string;
@@ -24,7 +22,6 @@ export type TMDBResource = {
   original_language: string;
   genre_ids: number[];
   popularity: number;
-  video: boolean;
   vote_average: number;
   vote_count: number;
 };
@@ -36,11 +33,11 @@ export type PaginatedTMDBResponse = {
 };
 
 export type TMDBGenre = {
-  id: MovieGenre;
+  id: number;
   name: string;
 };
 
-export type RabbitScraperResponse = {
+export type MediaScraperResponse = {
   message?: string;
   headers: Headers;
   provider: string;

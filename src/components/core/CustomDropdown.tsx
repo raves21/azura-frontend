@@ -80,7 +80,7 @@ export default function CustomDropdown<T>({
           }
         }}
         className={cn(
-          "absolute w-fit z-40 overflow-x-hidden top-[50px] right-0 rounded-lg bg-black overflow-y-auto",
+          "absolute w-full z-40 overflow-x-hidden top-[50px] right-0 rounded-lg bg-black overflow-y-auto",
           { "hide-scrollbar": dropdownMenuListHeight! < menuContentMaxHeight },
           { "border border-gray-400": isOpen && showMenuContentBorder },
           menuContentClassName

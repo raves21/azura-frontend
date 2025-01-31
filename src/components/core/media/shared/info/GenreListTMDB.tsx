@@ -16,7 +16,6 @@ type WatchPageProps = {
 
 type GenreListTMDBProps = {
   genres: TMDBGenre[];
-  //   gotoLink: string;
 } & (InfoPageProps | WatchPageProps);
 
 export default function GenreListTMDB({
@@ -36,7 +35,10 @@ export default function GenreListTMDB({
           {genres.length !== 0
             ? genres.map((genre, i) => (
                 <Link
-                  //   to={gotoLink}
+                  to="/movie/catalog"
+                  search={{
+                    genres: [genre.id]
+                  }}
                   key={i}
                   className="hover:text-mainAccent"
                 >
@@ -60,6 +62,10 @@ export default function GenreListTMDB({
         {genres.length !== 0 &&
           genres.map((genre) => (
             <Link
+              to="/movie/catalog"
+              search={{
+                genres: [genre.id]
+              }}
               key={genre.id}
               className="px-3 py-2 transition-colors border rounded-full border-mainAccent/75 hover:text-mainAccent/75"
             >

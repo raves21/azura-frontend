@@ -1,32 +1,33 @@
 import { useDebounce } from "@/utils/hooks/useDebounce";
 import { useState } from "react";
-import AnimeSearchDialogResults from "./AnimeSearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import SearchDialogContainer from "@/components/core/media/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/core/media/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import { useSearchAnime } from "@/services/media/anime/queries/animeQueries";
+import MovieSearchDialogResults from "./MovieSearchDialogResults";
+import { useSearchMovie } from "@/services/media/movie/movieQueries";
 
-export default function AnimeSearchDialog() {
+export default function MovieSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { searchInputRef } = useFocusInput();
 
-  const animeSearchQuery = useSearchAnime(
+  const movieSearchQuery = useSearchMovie(
     debouncedSearch.trim(),
+    1,
     debouncedSearch.trim().length > 0
   );
-  const { isLoading: isAnimeSearchQueryLoading, error: animeSearchQueryError } =
-    animeSearchQuery;
+
+  const { error: searchResultsError } = movieSearchQuery;
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
     navigate({
-      to: "/anime/catalog",
+      to: "/movie/catalog/search",
       search: { query: searchInput.trim() }
     });
   };
@@ -44,17 +45,14 @@ export default function AnimeSearchDialog() {
           className={cn(
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
-              "rounded-b-none":
-                debouncedSearch ||
-                isAnimeSearchQueryLoading ||
-                animeSearchQueryError
+              "rounded-b-none": debouncedSearch || searchResultsError
             }
           )}
-          placeholder="Search anime..."
+          placeholder="Search Movies..."
         />
-        <AnimeSearchDialogResults
+        <MovieSearchDialogResults
           query={debouncedSearch.trim()}
-          animeSearchQuery={animeSearchQuery}
+          movieSearchQuery={movieSearchQuery}
         />
       </SearchDialogForm>
     </SearchDialogContainer>

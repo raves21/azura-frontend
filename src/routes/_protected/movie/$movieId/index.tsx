@@ -1,5 +1,7 @@
-import MovieEpisode from "@/components/core/media/movie/MovieEpisode";
-import MovieInfoPageHero from "@/components/core/media/movie/MovieInfoPageHero";
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
+import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
+import MovieEpisode from "@/components/core/media/movie/episodeList/MovieEpisode";
+import MovieInfoPageHero from "@/components/core/media/movie/infoSection/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
@@ -35,6 +37,7 @@ function MovieInfoPage() {
   } = useMovieRecommendations(movieId);
 
   const mediaScraperQuery = useMediaScraper({
+    type: "MOVIE",
     enabled: !!movieInfo,
     mediaId: movieId
   });
@@ -45,19 +48,17 @@ function MovieInfoPage() {
 
   if (isMovieInfoLoading || isMovieRecommendationsLoading) {
     return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-green-500">MOVIE INFO</span>
-        </p>
-      </div>
+      <main className="w-full pb-32">
+        <InfoPageHeroSkeleton />
+        <AllEpisodesLoading variant="infoPage" isMovie />
+      </main>
     );
   }
 
   if (movieInfoError || movieRecommendationsError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
-        <p>Oops! There was an error fetching the details for this anime.</p>
+        <p>Oops! There was an error fetching the details for this movie.</p>
         <p>Please try again later.</p>
       </div>
     );
@@ -80,7 +81,6 @@ function MovieInfoPage() {
           voteAverage={movieInfo.vote_average}
         />
         <MovieEpisode
-          
           mediaScraperQuery={mediaScraperQuery}
           moviePoster={getTMDBImageURL(movieInfo.poster_path)}
           variant="infoPage"

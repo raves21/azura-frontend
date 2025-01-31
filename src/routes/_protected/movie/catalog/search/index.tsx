@@ -1,4 +1,5 @@
 import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
+import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import { useSearchMovie } from "@/services/media/movie/movieQueries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -51,6 +52,15 @@ function MovieSearchPage() {
             <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">
               Search Movies
             </h1>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-gray-400 lg:text-base sm:text-sm">
+              Query
+            </p>
+            <AppliedFilterPill
+              className="text-white rounded-full bg-emerald-500 w-min"
+              label={`"${query}"`}
+            />
           </div>
         </header>
         {movieSearchResults.results.length !== 0 ? (

@@ -1,9 +1,9 @@
-import MovieEpisode from "@/components/core/media/movie/MovieEpisode";
-import WatchPageMovieInfo from "@/components/core/media/movie/WatrchPageMovieInfo";
+import MovieEpisode from "@/components/core/media/movie/episodeList/MovieEpisode";
+import WatchPageMovieInfo from "@/components/core/media/movie/infoSection/WatchPageMovieInfo";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
+import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
@@ -16,6 +16,10 @@ import {
 } from "@/services/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef } from "react";
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
+import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
+import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
+import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 
 export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
   component: () => <WatchMoviePage />
@@ -38,6 +42,7 @@ function WatchMoviePage() {
   } = useMovieRecommendations(movieId);
 
   const mediaScraperQuery = useMediaScraper({
+    type: "MOVIE",
     enabled: !!movieInfo,
     mediaId: movieId
   });
@@ -54,12 +59,16 @@ function WatchMoviePage() {
     isMovieRecommendationsLoading
   ) {
     return (
-      <div className="grid text-2xl text-white h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-red-500">MOVIE</span>
-        </p>
-      </div>
+      <main className="flex flex-col pb-32">
+        <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
+          <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
+            <VideoPlayerSkeleton />
+            <EpisodeTitleAndNumberSkeleton />
+          </div>
+          <AllEpisodesLoading variant="watchPage" isMovie />
+        </section>
+        <WatchInfoPageSkeleton />
+      </main>
     );
   }
   if (

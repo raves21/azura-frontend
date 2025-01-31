@@ -70,7 +70,6 @@ export default function AnimeFiltersDialog() {
   });
 
   const selectGenre = (genre: AnimeGenre) => {
-    console.log("selected", genre);
     setSelectedGenres([...selectedGenres, genre]);
   };
 

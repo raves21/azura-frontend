@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AnimeSearchDialogResultCard from "./AnimeSearchDialogResultCard";
 import { UseQueryResult } from "@tanstack/react-query";
+import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
 type AnimeSearchDialogResultsProps = {
   query: string;
@@ -22,11 +23,7 @@ export default function AnimeSearchDialogResults({
   } = animeSearchQuery;
 
   if (isSearchResultsLoading) {
-    return (
-      <div className="grid w-full py-4 bg-gray-800 rounded-b-lg place-items-center text-mainWhite">
-        Loading...
-      </div>
-    );
+    return <SearchDialogResultsLoading />;
   }
 
   if (searchResultsError) {

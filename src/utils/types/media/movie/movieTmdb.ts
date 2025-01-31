@@ -8,6 +8,7 @@ export type MovieTMDB = TMDBResource & {
   title: string;
   original_title: string;
   release_date: string;
+  video: boolean;
 };
 
 export type MovieInfo = {

@@ -88,7 +88,15 @@ export default function AnimeTopNavBarDesktop({
                   >
                     Movie
                   </button>
-                  <button className="grid flex-1 bg-lime-600 place-items-center">
+                  <button
+                    onClick={() => {
+                      navigate({
+                        to: "/tv"
+                      });
+                      toggleOpenDialog(null);
+                    }}
+                    className="grid flex-1 bg-lime-600 place-items-center"
+                  >
                     TV
                   </button>
                 </div>

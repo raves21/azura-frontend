@@ -5,21 +5,21 @@ import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPo
 import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { TMDBGenre } from "@/utils/types/media/shared";
-import GenreListTMDB from "../shared/info/GenreListTMDB";
+import GenreListTMDB from "../../shared/info/GenreListTMDB";
 
-type WatchPageMovieInfoProps = {
+type WatchPageTVInfoProps = {
   cover: string;
   image: string;
   title: string;
   description: string;
-  runTime: number;
+  runTime: number | null;
   year: string;
   status: string;
   genres: TMDBGenre[];
   voteAverage: number | null;
 };
 
-export default function WatchPageMovieInfo({
+export default function WatchPageTVInfo({
   cover,
   image,
   description,
@@ -29,9 +29,9 @@ export default function WatchPageMovieInfo({
   status,
   genres,
   voteAverage
-}: WatchPageMovieInfoProps) {
+}: WatchPageTVInfoProps) {
   return (
-    <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justfy-center">
+    <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />
       <div className="z-10 flex gap-3 sm:gap-5 md:gap-8 lg:gap-12 size-full">
         <InfoSectionPoster image={image} variant="watchPage" />
@@ -41,7 +41,7 @@ export default function WatchPageMovieInfo({
             <Rating mediaType="tmdb" variant="watchPage" rating={voteAverage} />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
               <InfoItem label="Year:" info={year?.toString()} />
-              <InfoItem label="Runtime:" info={`${runTime} min`} />
+              {runTime && <InfoItem label="Runtime:" info={`${runTime} min`} />}
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB

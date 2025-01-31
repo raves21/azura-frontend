@@ -18,7 +18,7 @@ const AddToListButton = forwardRef<HTMLButtonElement, AddToListButtonProps>(
         )}
       >
         <Bookmark size={20} />
-        <p className="hidden font-medium mobile-m:block">Add to List</p>
+        <p className="hidden font-medium mobile-m:block">Collections</p>
       </button>
     );
   }

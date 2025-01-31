@@ -8,9 +8,9 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { RabbitScraperResponse } from "@/utils/types/media/shared";
+import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { TMDBGenre } from "@/utils/types/media/shared";
-import GenreListTMDB from "../shared/info/GenreListTMDB";
+import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { UseQueryResult } from "@tanstack/react-query";
 
@@ -25,7 +25,7 @@ type MovieInfoPageHeroProps = {
   genres: TMDBGenre[];
   voteAverage: number | null;
   movieId: string;
-  mediaScraperQuery: UseQueryResult<RabbitScraperResponse, Error>;
+  mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
 };
 
 export default function MovieInfoPageHero({

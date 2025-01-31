@@ -1,4 +1,4 @@
-import { RabbitScraperResponse } from "@/utils/types/media/shared";
+import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -11,6 +11,7 @@ export function getTMDBReleaseYear(releaseDate: string) {
 }
 
 type UseMediaScraperArgs = {
+  type: "TV" | "MOVIE";
   mediaId: string;
   epNum?: number;
   seasonNum?: number;
@@ -18,26 +19,27 @@ type UseMediaScraperArgs = {
 };
 
 export function useMediaScraper({
+  type,
   mediaId,
   epNum,
   seasonNum,
   enabled
 }: UseMediaScraperArgs) {
   return useQuery({
-    queryKey: ["mediaScraper", mediaId, epNum, seasonNum],
+    queryKey: ["mediaScraper", type, mediaId, epNum, seasonNum],
     queryFn: async () => {
-      const rabbitApiBaseURL = "http://127.0.0.1:8787/api/rabbit/fetch";
+      const mediaScraperApiBaseURL = "http://127.0.0.1:8787/api/rabbit/fetch";
       let url: string;
 
-      if (epNum && seasonNum) {
-        url = `${rabbitApiBaseURL}?mediaId=${mediaId}?ss=${seasonNum}&ep=${epNum}`;
+      if (type === "TV") {
+        url = `${mediaScraperApiBaseURL}?mediaId=${mediaId}&seasonNum=${seasonNum}&epNum=${epNum}`;
       } else {
-        url = `${rabbitApiBaseURL}?mediaId=${mediaId}`;
+        url = `${mediaScraperApiBaseURL}?mediaId=${mediaId}`;
       }
 
-      const { data: rabbitResponse } = await axios.get(url);
+      const { data: mediaScraperResponse } = await axios.get(url);
 
-      return rabbitResponse as RabbitScraperResponse;
+      return mediaScraperResponse as MediaScraperResponse;
     },
     enabled: !!enabled
   });
