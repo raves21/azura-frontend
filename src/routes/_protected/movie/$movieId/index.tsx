@@ -1,3 +1,5 @@
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
+import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
 import MovieEpisode from "@/components/core/media/movie/episodeList/MovieEpisode";
 import MovieInfoPageHero from "@/components/core/media/movie/infoSection/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
@@ -46,12 +48,10 @@ function MovieInfoPage() {
 
   if (isMovieInfoLoading || isMovieRecommendationsLoading) {
     return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-green-500">MOVIE INFO</span>
-        </p>
-      </div>
+      <main className="w-full pb-32">
+        <InfoPageHeroSkeleton />
+        <AllEpisodesLoading variant="infoPage" isMovie />
+      </main>
     );
   }
 
