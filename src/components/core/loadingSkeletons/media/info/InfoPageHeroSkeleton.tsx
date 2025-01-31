@@ -40,7 +40,7 @@ export default function InfoPageHeroSkeleton() {
             </div>
             <GenreListSkeleton variant="infoPage" />
             <div className="flex items-center gap-2">
-              <Skeleton className="text-transparent bg-gray-800">Score:</Skeleton>
+              <Skeleton className="  bg-gray-800">Score:</Skeleton>
               <RatingSkeleton variant="infoPage" isMobile />
             </div>
           </InfoDetailsSkeleton>

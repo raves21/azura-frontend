@@ -1,4 +1,4 @@
-import MovieEpisode from "@/components/core/media/movie/MovieEpisode";
+import MovieEpisode from "@/components/core/media/movie/episodeList/MovieEpisode";
 import WatchPageMovieInfo from "@/components/core/media/movie/infoSection/WatchPageMovieInfo";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";

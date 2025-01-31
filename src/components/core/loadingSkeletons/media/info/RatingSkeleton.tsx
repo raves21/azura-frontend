@@ -44,7 +44,7 @@ export default function RatingSkeleton({
         })}
       ></Skeleton>
       <Skeleton
-        className={cn("font-semibold lg:text-lg text-transparent bg-gray-800", {
+        className={cn("font-semibold lg:text-lg   bg-gray-800", {
           "text-xs mobile-l:text-sm sm:text-base md:text-lg":
             variant === "watchPage"
         })}

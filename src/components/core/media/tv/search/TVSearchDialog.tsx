@@ -6,29 +6,28 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import SearchDialogContainer from "@/components/core/media/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/core/media/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import MovieSearchDialogResults from "./MovieSearchDialogResults";
-import { useSearchMovie } from "@/services/media/movie/movieQueries";
+import TVSearchDialogResults from "./TVSearchDialogResults";
+import { useSearchTV } from "@/services/media/tv/tvQueries";
 
-export default function MovieSearchDialog() {
+export default function TVSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { searchInputRef } = useFocusInput();
 
-  const movieSearchQuery = useSearchMovie(
+  const tvSearchQuery = useSearchTV(
     debouncedSearch.trim(),
     1,
     debouncedSearch.trim().length > 0
   );
 
-  const { isLoading: isSearchResultsLoading, error: searchResultsError } =
-    movieSearchQuery;
+  const { error: searchResultsError } = tvSearchQuery;
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
     navigate({
-      to: "/movie/catalog/search",
+      to: "/tv/catalog/search",
       search: { query: searchInput.trim() }
     });
   };
@@ -46,15 +45,14 @@ export default function MovieSearchDialog() {
           className={cn(
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
-              "rounded-b-none":
-                debouncedSearch || isSearchResultsLoading || searchResultsError
+              "rounded-b-none": debouncedSearch || searchResultsError
             }
           )}
-          placeholder="Search movie..."
+          placeholder="Search TV Show..."
         />
-        <MovieSearchDialogResults
+        <TVSearchDialogResults
           query={debouncedSearch.trim()}
-          movieSearchQuery={movieSearchQuery}
+          tvSearchQuery={tvSearchQuery}
         />
       </SearchDialogForm>
     </SearchDialogContainer>

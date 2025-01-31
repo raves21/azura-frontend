@@ -1,22 +1,22 @@
-import { useMatchRoute } from "@tanstack/react-router";
-import AnimeSearchDialog from "../../media/anime/search/AnimeSearchDialog";
 import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
-import AnimeTopNavBarDesktop from "./AnimeTopNavBarDesktop";
-import AnimeTopNavBarMobile from "./AnimeTopNavBarMobile";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
+import TVTopNavBarDesktop from "./TVTopNavBarDesktop";
+import TVTopNavBarMobile from "./TVTopNavBarMobile";
+import { useMatchRoute } from "@tanstack/react-router";
+import TVSearchDialog from "../../media/tv/search/TVSearchDialog";
 
-export default function AnimeTopNavBar() {
+export default function TVTopNavBar() {
   const { isDesktopSmall } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
-  const isAnimeRoute = matchRoute({ to: "/anime", fuzzy: true });
-  const isAnimeCatalogRoute = matchRoute({ to: "/anime/catalog", fuzzy: true });
+  const isTVRoute = matchRoute({ to: "/tv", fuzzy: true });
+  const isTVCatalogRoute = matchRoute({ to: "/tv/catalog", fuzzy: true });
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
 
   let searchDialogComponent: ReactNode;
 
-  if (isAnimeRoute) {
-    searchDialogComponent = <AnimeSearchDialog />;
+  if (isTVRoute) {
+    searchDialogComponent = <TVSearchDialog />;
   } else {
     searchDialogComponent = <SocialSearchDialog />;
   }
@@ -24,16 +24,16 @@ export default function AnimeTopNavBar() {
   return (
     <header className="font-montserrat">
       {isDesktopSmall ? (
-        <AnimeTopNavBarDesktop
-          isAnimeCatalogRoute={!!isAnimeCatalogRoute}
-          isAnimeRoute={!!isAnimeRoute}
+        <TVTopNavBarDesktop
+          isTVCatalogRoute={!!isTVCatalogRoute}
+          isTVRoute={!!isTVRoute}
           isSocialRoute={!!isSocialRoute}
           searchDialogComponent={searchDialogComponent}
         />
       ) : (
-        <AnimeTopNavBarMobile
-          isAnimeCatalogRoute={!!isAnimeCatalogRoute}
-          isAnimeRoute={!!isAnimeRoute}
+        <TVTopNavBarMobile
+          isMovieCatalogRoute={!!isTVCatalogRoute}
+          isMovieRoute={!!isTVRoute}
           isSocialRoute={!!isSocialRoute}
           searchDialogComponent={searchDialogComponent}
         />

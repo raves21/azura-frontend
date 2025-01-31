@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UserProfileSkeleton() {
   return (
-    <main className="flex flex-col w-full gap-3 pb-10 text-transparent no-select">
+    <main className="flex flex-col w-full gap-3 pb-10   no-select">
       <div className="flex flex-col w-full gap-2 overflow-hidden rounded-lg mobile-m:gap-3 bg-socialPrimary">
         <Skeleton className="relative w-full bg-gray-700 h-28 md:h-48 sm:h-44">
           <Skeleton className="absolute z-10 bg-gray-700 sm:size-24 rounded-full size-20 lg:size-28 border-4 border-socialPrimary -bottom-[40%] md:-bottom-[35%] left-3" />

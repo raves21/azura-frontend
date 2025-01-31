@@ -6,10 +6,10 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import SearchDialogContainer from "@/components/core/media/shared/search/SearchDialogContainer";
 import SearchDialogForm from "@/components/core/media/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import MovieSearchDialogResults from "./TVSearchDialogResults";
+import MovieSearchDialogResults from "./MovieSearchDialogResults";
 import { useSearchMovie } from "@/services/media/movie/movieQueries";
 
-export default function TVSearchDialog() {
+export default function MovieSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
@@ -22,8 +22,7 @@ export default function TVSearchDialog() {
     debouncedSearch.trim().length > 0
   );
 
-  const { isLoading: isSearchResultsLoading, error: searchResultsError } =
-    movieSearchQuery;
+  const { error: searchResultsError } = movieSearchQuery;
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
@@ -46,11 +45,10 @@ export default function TVSearchDialog() {
           className={cn(
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
-              "rounded-b-none":
-                debouncedSearch || isSearchResultsLoading || searchResultsError
+              "rounded-b-none": debouncedSearch || searchResultsError
             }
           )}
-          placeholder="Search movie..."
+          placeholder="Search Movies..."
         />
         <MovieSearchDialogResults
           query={debouncedSearch.trim()}

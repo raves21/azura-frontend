@@ -10,7 +10,6 @@ import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../CustomDropdown";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
-import EpisodeListContainerSkeleton from "../../../loadingSkeletons/media/episode/EpisodeListContainerSkeleton";
 
 type InfoPageTVEpisodesProps = {
   totalSeasons: number | null;
@@ -35,42 +34,11 @@ export default function InfoPageTVEpisodes({
     error: tvSeasonEpisodesError
   } = tvSeasonEpisodesQuery;
 
-  if (isTvSeasonEpisodesLoading) {
-    //show the season dropdown selection while loading ONLY if initialEpisode was already fetched, has data, and has been cached
-    if (totalSeasons) {
-      const seasons = Array.from({ length: totalSeasons }).map((_, i) => i + 1);
-      return (
-        <EpisodesContainer variant="infoPage">
-          <EpisodesHeader>
-            <CustomDropdown
-              currentlySelected={s || 1}
-              menuItems={seasons}
-              menuContentMaxHeight={350}
-              menuItemLabelNames={seasons.map((season) => `Season ${season}`)}
-              onSelectItem={(season) =>
-                navigate({
-                  to: "/tv/$tvId",
-                  params: { tvId },
-                  search: { s: season },
-                  replace: true
-                })
-              }
-              showMenuContentBorder
-              menuContentClassName="bg-darkBg"
-              dropdownTriggerClassName="text-gray-400"
-            />
-          </EpisodesHeader>
-          <EpisodeListContainerSkeleton variant="infoPage" />
-        </EpisodesContainer>
-      );
-    } else {
-      //if no initialEpisode was fetched (this means this is the first time the TV Show is fetched), then show
-      //loading page with no season dropdown selection
-      return <AllEpisodesLoading variant="infoPage" />;
-    }
+  if (isTvSeasonEpisodesLoading || !totalSeasons) {
+    return <AllEpisodesLoading variant="infoPage" />;
   }
 
-  if (tvSeasonEpisodesError || !totalSeasons) {
+  if (tvSeasonEpisodesError) {
     return <EpisodesError />;
   }
 

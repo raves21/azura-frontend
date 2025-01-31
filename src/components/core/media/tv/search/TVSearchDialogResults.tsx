@@ -1,32 +1,29 @@
-import { PaginatedAnimeResponse } from "@/utils/types/media/anime/animeAnilist";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import AnimeSearchDialogResultCard from "./AnimeSearchDialogResultCard";
+import TVSearchDialogResultCard from "./TVSearchDialogResultCard";
 import { UseQueryResult } from "@tanstack/react-query";
+import { PaginatedTVShowResponse } from "@/utils/types/media/TV/tvShowTmdb";
+import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
-type AnimeSearchDialogResultsProps = {
+type TVSearchDialogResultsProps = {
   query: string;
-  animeSearchQuery: UseQueryResult<PaginatedAnimeResponse, Error>;
+  tvSearchQuery: UseQueryResult<PaginatedTVShowResponse, Error>;
 };
 
-export default function AnimeSearchDialogResults({
-  animeSearchQuery,
+export default function TVSearchDialogResults({
+  tvSearchQuery,
   query
-}: AnimeSearchDialogResultsProps) {
+}: TVSearchDialogResultsProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
     error: searchResultsError
-  } = animeSearchQuery;
+  } = tvSearchQuery;
 
   if (isSearchResultsLoading) {
-    return (
-      <div className="grid w-full py-4 bg-gray-800 rounded-b-lg place-items-center text-mainWhite">
-        Loading...
-      </div>
-    );
+    return <SearchDialogResultsLoading />;
   }
 
   if (searchResultsError) {
@@ -50,16 +47,16 @@ export default function AnimeSearchDialogResults({
         className={`w-full text-mainWhite rounded-b-lg bg-gray-800 ${searchResults.results.length <= 2 ? "h-auto" : "h-[300px]"} overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {searchResults.results.map((anime) => (
-            <AnimeSearchDialogResultCard key={anime.id} anime={anime} />
+          {searchResults.results.map((tv) => (
+            <TVSearchDialogResultCard key={tv.id} tv={tv} />
           ))}
         </ul>
-        {searchResults.hasNextPage && (
+        {searchResults.page < searchResults.total_pages && (
           <Link
-            to="/anime/catalog"
+            to="/movie/catalog/search"
             search={{
               page: 1,
-              query: query
+              query
             }}
             onClick={() => toggleOpenDialog(null)}
             className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent"

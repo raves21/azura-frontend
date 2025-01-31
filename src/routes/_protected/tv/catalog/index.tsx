@@ -1,54 +1,51 @@
-import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
-import MovieAppliedFilters from "@/components/core/media/movie/filter/MovieAppliedFilters";
-import MovieFiltersDialog from "@/components/core/media/movie/filter/MovieFiltersDialog";
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
-import {
-  useDiscoverMovies,
-  useMovieGenres
-} from "@/services/media/movie/movieQueries";
+import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
+import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters";
+import TVFiltersDialog from "@/components/core/media/tv/filter/TVFiltersDialog";
+import { useDiscoverTV, useTVGenres } from "@/services/media/tv/tvQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
+import { TVGenre, TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 
-const movieCatalogPageSchema = z.object({
+const tvCatalogPageSchema = z.object({
   page: z.coerce.number().optional(),
-  sortBy: z.nativeEnum(MovieSortBy).optional(),
-  genres: z.nativeEnum(MovieGenre).array().optional(),
+  sortBy: z.nativeEnum(TVSortBy).optional(),
+  genres: z.nativeEnum(TVGenre).array().optional(),
   year: z.coerce.number().optional()
 });
 
-export const Route = createFileRoute("/_protected/movie/catalog/")({
-  component: () => <MovieCatalogPage />,
-  validateSearch: (search) => movieCatalogPageSchema.parse(search),
+export const Route = createFileRoute("/_protected/tv/catalog/")({
+  component: () => <TVCatalogPage />,
+  validateSearch: (search) => tvCatalogPageSchema.parse(search),
   beforeLoad: ({ search }) => {
-    const validatedSearch = movieCatalogPageSchema.safeParse(search);
+    const validatedSearch = tvCatalogPageSchema.safeParse(search);
     if (validatedSearch.success) {
       return validatedSearch.data;
     }
-    redirect({ to: "/movie" });
+    redirect({ to: "/tv" });
   }
 });
 
-function MovieCatalogPage() {
+function TVCatalogPage() {
   const { page, sortBy, genres, year } = Route.useSearch();
   const {
-    data: catalogMovieList,
-    isLoading: isCatalogMovieListLoading,
-    error: catalogMovieListError
-  } = useDiscoverMovies({ page, sortBy, genres, year });
+    data: catalogTVList,
+    isLoading: isCatalogTVListLoading,
+    error: catalogTVListError
+  } = useDiscoverTV({ page, sortBy, genres, year });
 
   const {
-    data: movieGenres,
-    isLoading: isMovieGenresLoading,
-    error: movieGenresError
-  } = useMovieGenres();
+    data: tvGenres,
+    isLoading: isTVGenresLoading,
+    error: tvGenresError
+  } = useTVGenres();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
 
-  if (isCatalogMovieListLoading || isMovieGenresLoading) {
+  if (isCatalogTVListLoading || isTVGenresLoading) {
     return (
       <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
         <p>
@@ -59,7 +56,7 @@ function MovieCatalogPage() {
     );
   }
 
-  if (catalogMovieListError || movieGenresError) {
+  if (catalogTVListError || tvGenresError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this page.</p>
@@ -68,16 +65,16 @@ function MovieCatalogPage() {
     );
   }
 
-  if (catalogMovieList && movieGenres) {
+  if (catalogTVList && tvGenres) {
     return (
       <main className="flex flex-col w-full min-h-screen gap-6 pt-32 text-mainWhite pb-28">
         <header className="space-y-7 lg:space-y-8">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold sm:text-xl md:text-2xl">
-              Discover Movies
+              Discover TV Shows
             </h1>
             <button
-              onClick={() => toggleOpenDialog(<MovieFiltersDialog />)}
+              onClick={() => toggleOpenDialog(<TVFiltersDialog />)}
               className="flex items-center gap-2 px-3 py-2 border rounded-full mobile-l:gap-3 mobile-l:px-4 md:px-5 md:py-3 group border-mainAccent"
             >
               <p className="text-xs font-medium transition-colors mobile-l:text-sm md:text-base group-hover:text-mainAccent">
@@ -89,15 +86,15 @@ function MovieCatalogPage() {
               />
             </button>
           </div>
-          <MovieAppliedFilters />
+          <TVAppliedFilters />
         </header>
-        {catalogMovieList.results.length !== 0 ? (
+        {catalogTVList.results.length !== 0 ? (
           <>
-            <CatalogMovieList movieList={catalogMovieList.results} />
+            <CatalogTVList tvShowList={catalogTVList.results} />
             <Pagination
               className="mt-10"
-              totalPages={catalogMovieList.total_pages}
-              currentPage={catalogMovieList.page}
+              totalPages={catalogTVList.total_pages}
+              currentPage={catalogTVList.page}
               handlePageChange={(_, page) => {
                 navigate({
                   search: (prev) => ({ ...prev, page: page })

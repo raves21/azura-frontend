@@ -1,5 +1,3 @@
-import { MovieGenre } from "./movie/movieTmdb";
-
 export type EpisodeToBeRendered = {
   id: string;
   title: string;
@@ -35,7 +33,7 @@ export type PaginatedTMDBResponse = {
 };
 
 export type TMDBGenre = {
-  id: MovieGenre;
+  id: number;
   name: string;
 };
 

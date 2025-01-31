@@ -4,14 +4,12 @@ import {
 } from "@/services/media/sharedFunctions";
 import MediaCard from "../shared/MediaCard";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
-type CatalogTVListProps = { movieList: TVShowTMDB[] };
+type CatalogTVListProps = { tvShowList: TVShowTMDB[] };
 
-export default function CatalogTVList({
-  movieList: movieList
-}: CatalogTVListProps) {
+export default function CatalogTVList({ tvShowList }: CatalogTVListProps) {
   return (
     <div className="grid w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-x-3 gap-y-4 xl:grid-cols-6 lg:gap-x-5 lg:gap-y-6">
-      {movieList.map((tv) => (
+      {tvShowList.map((tv) => (
         <MediaCard
           key={tv.id}
           image={getTMDBImageURL(tv.poster_path)}

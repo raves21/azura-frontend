@@ -20,9 +20,9 @@ export default function GenreListSkeleton({
   if (props.variant === "infoPage") {
     return (
       <div className={cn("flex gap-2 items-center", props.className)}>
-        <Skeleton className="text-transparent bg-gray-800">Genres:</Skeleton>
+        <Skeleton className="  bg-gray-800">Genres:</Skeleton>
         <ul className={cn("flex flex-wrap gap-1")}>
-          <Skeleton className="px-3 py-2 h-[20px] w-[120px] text-transparent transition-colors bg-gray-800" />
+          <Skeleton className="px-3 py-2 h-[20px] w-[120px]   transition-colors bg-gray-800" />
         </ul>
       </div>
     );
@@ -36,7 +36,7 @@ export default function GenreListSkeleton({
           props.className
         )}
       >
-        <Skeleton className="px-3 py-2 h-[20px] w-[120px] text-transparent transition-colors bg-gray-800" />
+        <Skeleton className="px-3 py-2 h-[20px] w-[120px]   transition-colors bg-gray-800" />
       </ul>
     );
   }

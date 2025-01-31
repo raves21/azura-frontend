@@ -163,6 +163,7 @@ function WatchTVEpisodePage() {
                 streamLink={
                   mediaScraperData.url ? mediaScraperData.url[0].link : null
                 }
+                subtitleTracks={mediaScraperData.tracks}
                 headers={mediaScraperData.headers}
                 title={currentEpisode?.name || undefined}
               />

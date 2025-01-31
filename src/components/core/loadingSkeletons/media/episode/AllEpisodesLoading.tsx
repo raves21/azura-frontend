@@ -30,7 +30,7 @@ export default function AllEpisodesLoading({
         variant="watchPage"
         episodeListMaxHeight={watchPageProps?.episodeListMaxHeight}
       >
-        <Skeleton className="self-start p-2 text-lg font-semibold text-transparent bg-gray-800 lg:text-xl">
+        <Skeleton className="self-start p-2 text-lg font-semibold   bg-gray-800 lg:text-xl">
           Episodes
         </Skeleton>
         <EpisodeListContainerSkeleton variant="watchPage" isMovie={!!isMovie} />
@@ -39,10 +39,10 @@ export default function AllEpisodesLoading({
   } else {
     return (
       <EpisodesContainer variant="infoPage">
-        <Skeleton className="self-start p-2 text-lg font-semibold text-transparent bg-gray-800 lg:text-xl">
+        <Skeleton className="self-start p-2 text-lg font-semibold   bg-gray-800 lg:text-xl">
           Episodes
         </Skeleton>
-        <EpisodeListContainerSkeleton variant="watchPage" isMovie={!!isMovie} />
+        <EpisodeListContainerSkeleton variant="infoPage" isMovie={!!isMovie} />
       </EpisodesContainer>
     );
   }

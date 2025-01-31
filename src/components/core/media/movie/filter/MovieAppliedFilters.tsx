@@ -6,7 +6,7 @@ import {
 } from "@/utils/variables/media/movie";
 
 export default function MovieAppliedFilters() {
-  const { genres, sortBy } = useSearch({
+  const { genres, sortBy, year } = useSearch({
     from: "/_protected/movie/catalog/"
   });
 
@@ -36,6 +36,17 @@ export default function MovieAppliedFilters() {
           <AppliedFilterPill
             className="text-white bg-pink-600 rounded-full"
             label={movieSortByLabels[sortBy]}
+          />
+        </div>
+      )}
+      {year && (
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-gray-400 lg:text-base sm:text-sm">
+            Year
+          </p>
+          <AppliedFilterPill
+            className="text-white rounded-full bg-sky-500"
+            label={year.toString()}
           />
         </div>
       )}

@@ -4,6 +4,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import MovieSearchDialogResultCard from "./MovieSearchDialogResultCard";
 import { PaginatedMovieResponse } from "@/utils/types/media/movie/movieTmdb";
 import { UseQueryResult } from "@tanstack/react-query";
+import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
 type MovieSearchDialogResultsProps = {
   query: string;
@@ -22,11 +23,7 @@ export default function MovieSearchDialogResults({
   } = movieSearchQuery;
 
   if (isSearchResultsLoading) {
-    return (
-      <div className="grid w-full py-4 bg-gray-800 rounded-b-lg place-items-center text-mainWhite">
-        Loading...
-      </div>
-    );
+    return <SearchDialogResultsLoading />;
   }
 
   if (searchResultsError) {

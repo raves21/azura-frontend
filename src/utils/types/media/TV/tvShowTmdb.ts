@@ -144,7 +144,7 @@ export enum Department {
 
 export enum TVSortBy {
   POPULARITY_DESC = "popularity.desc",
-  VOTE_AVERAGE = "vote_average.desc"
+  VOTE_AVERAGE_DESC = "vote_average.desc"
 }
 
 export enum TVGenre {

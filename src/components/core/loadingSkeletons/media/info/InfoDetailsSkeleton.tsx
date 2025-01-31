@@ -21,7 +21,7 @@ export default function InfoDetailsSkeleton({
       )}
     >
       {isMobile && (
-        <Skeleton className="mb-1 text-lg font-semibold text-transparent bg-gray-800 w-min lg:hidden">
+        <Skeleton className="mb-1 text-lg font-semibold   bg-gray-800 w-min lg:hidden">
           Details
         </Skeleton>
       )}

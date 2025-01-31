@@ -1,13 +1,10 @@
 import { useSearch } from "@tanstack/react-router";
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
-import {
-  movieGenreLabels,
-  movieSortByLabels
-} from "@/utils/variables/media/movie";
+import { tvGenreLabels, tvSortByLabels } from "@/utils/variables/media/tv";
 
 export default function TVAppliedFilters() {
-  const { genres, sortBy } = useSearch({
-    from: "/_protected/movie/catalog/"
+  const { genres, sortBy, year } = useSearch({
+    from: "/_protected/tv/catalog/"
   });
 
   return (
@@ -22,7 +19,7 @@ export default function TVAppliedFilters() {
               <AppliedFilterPill
                 key={genre}
                 className="text-white bg-blue-500 rounded-full"
-                label={movieGenreLabels[genre]}
+                label={tvGenreLabels[genre]}
               />
             ))}
           </div>
@@ -35,7 +32,18 @@ export default function TVAppliedFilters() {
           </p>
           <AppliedFilterPill
             className="text-white bg-pink-600 rounded-full"
-            label={movieSortByLabels[sortBy]}
+            label={tvSortByLabels[sortBy]}
+          />
+        </div>
+      )}
+      {year && (
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-gray-400 lg:text-base sm:text-sm">
+            Year
+          </p>
+          <AppliedFilterPill
+            className="text-white rounded-full bg-sky-500"
+            label={year.toString()}
           />
         </div>
       )}

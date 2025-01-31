@@ -20,8 +20,7 @@ export default function AnimeSearchDialog() {
     debouncedSearch.trim(),
     debouncedSearch.trim().length > 0
   );
-  const { isLoading: isAnimeSearchQueryLoading, error: animeSearchQueryError } =
-    animeSearchQuery;
+  const { error: animeSearchQueryError } = animeSearchQuery;
 
   const handleEnterPress: React.FormEventHandler = () => {
     toggleOpenDialog(null);
@@ -44,13 +43,10 @@ export default function AnimeSearchDialog() {
           className={cn(
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
-              "rounded-b-none":
-                debouncedSearch ||
-                isAnimeSearchQueryLoading ||
-                animeSearchQueryError
+              "rounded-b-none": debouncedSearch || animeSearchQueryError
             }
           )}
-          placeholder="Search anime..."
+          placeholder="Search Animes..."
         />
         <AnimeSearchDialogResults
           query={debouncedSearch.trim()}

@@ -1,11 +1,11 @@
 import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { UseQueryResult } from "@tanstack/react-query";
-import AllEpisodesLoading from "../../loadingSkeletons/media/episode/AllEpisodesLoading";
-import EpisodeCard from "../shared/episode/EpisodeCard";
-import EpisodeListContainer from "../shared/episode/EpisodeListContainer";
-import EpisodesContainer from "../shared/episode/EpisodesContainer";
-import EpisodesHeader from "../shared/episode/EpisodesHeader";
-import NoEpisodesAvailable from "../shared/episode/NoEpisodesAvailable";
+import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
+import EpisodeCard from "../../shared/episode/EpisodeCard";
+import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
+import EpisodesContainer from "../../shared/episode/EpisodesContainer";
+import EpisodesHeader from "../../shared/episode/EpisodesHeader";
+import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import { useParams } from "@tanstack/react-router";
 
 type MovieEpisodeProps = {

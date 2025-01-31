@@ -80,7 +80,7 @@ function TVInfoPage() {
       <main className="w-full pb-32">
         <InfoPageHeroSkeleton />
         <InfoPageTVEpisodes
-          totalSeasons={totalSeasons}
+          totalSeasons={null}
           tvSeasonEpisodesQuery={tvSeasonEpisodesQuery}
         />
       </main>
@@ -96,7 +96,7 @@ function TVInfoPage() {
     );
   }
 
-  if (tvInfo && tvRecommendations) {
+  if (tvInfo && tvRecommendations && totalSeasons) {
     return (
       <main className="w-full pb-32">
         <TVInfoPageHero

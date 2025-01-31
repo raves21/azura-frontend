@@ -5,9 +5,9 @@ import CustomDropdown from "@/components/core/CustomDropdown";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { isEqual } from "radash";
 import { X } from "lucide-react";
-import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
-import { movieSortByLabels } from "@/utils/variables/media/movie";
-import { useMovieGenres } from "@/services/media/movie/movieQueries";
+import { TVGenre, TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
+import { tvSortByLabels } from "@/utils/variables/media/tv";
+import { useTVGenres } from "@/services/media/tv/tvQueries";
 
 const startYear = 1900;
 const endYear = new Date().getFullYear();
@@ -16,8 +16,8 @@ const years = Array.from({ length: endYear - startYear + 1 }).map(
 );
 
 type Filters = {
-  sortBy: MovieSortBy | undefined;
-  genres: MovieGenre[] | [];
+  sortBy: TVSortBy | undefined;
+  genres: TVGenre[] | [];
   year: number | undefined;
 };
 
@@ -25,16 +25,14 @@ export default function TVFiltersDialog() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
   const { sortBy, genres, year } = useSearch({
-    from: "/_protected/movie/catalog/"
+    from: "/_protected/tv/catalog/"
   });
 
-  //already fetched in /movie/catalog->index.tsx so it wont need to load anymore
-  const { data: movieGenres } = useMovieGenres();
+  //already fetched in /tv/catalog->index.tsx so it wont need to load anymore
+  const { data: tvGenres } = useTVGenres();
 
-  const [selectedGenres, setSelectedGenres] = useState<MovieGenre[]>(
-    genres || []
-  );
-  const [selectedSortBy, setSelectedSortBy] = useState<MovieSortBy | undefined>(
+  const [selectedGenres, setSelectedGenres] = useState<TVGenre[]>(genres || []);
+  const [selectedSortBy, setSelectedSortBy] = useState<TVSortBy | undefined>(
     sortBy || undefined
   );
   const [selectedYear, setSelectedYear] = useState<number | undefined>(
@@ -47,11 +45,11 @@ export default function TVFiltersDialog() {
     year: selectedYear
   });
 
-  const selectGenre = (genre: MovieGenre) => {
+  const selectGenre = (genre: TVGenre) => {
     setSelectedGenres([...selectedGenres, genre]);
   };
 
-  const deselectGenre = (genre: MovieGenre) => {
+  const deselectGenre = (genre: TVGenre) => {
     setSelectedGenres(
       selectedGenres.filter((selectedGenre) => selectedGenre !== genre)
     );
@@ -71,7 +69,7 @@ export default function TVFiltersDialog() {
     };
     if (!isEqual(initialFilters, appliedFilters)) {
       navigate({
-        to: "/movie/catalog",
+        to: "/tv/catalog",
         search: {
           genres: selectedGenres.length !== 0 ? selectedGenres : undefined,
           sortBy:
@@ -100,9 +98,9 @@ export default function TVFiltersDialog() {
               <div className="relative flex flex-col items-center gap-4">
                 <p className="text-gray-400">Sort By:</p>
                 <CustomDropdown
-                  menuItems={Object.keys(movieSortByLabels) as MovieSortBy[]}
+                  menuItems={Object.keys(tvSortByLabels) as TVSortBy[]}
                   onSelectItem={(sortBy) => setSelectedSortBy(sortBy)}
-                  menuItemLabelNames={Object.values(movieSortByLabels)}
+                  menuItemLabelNames={Object.values(tvSortByLabels)}
                   currentlySelected={selectedSortBy}
                   menuContentMaxHeight={300}
                 />
@@ -124,8 +122,8 @@ export default function TVFiltersDialog() {
                 Genres
               </p>
               <div className="flex flex-wrap justify-center gap-x-2 max-w-[1100px] px-4 gap-y-3 md:gap-x-3 md:gap-y-4">
-                {movieGenres &&
-                  movieGenres.map((genre) => (
+                {tvGenres &&
+                  tvGenres.map((genre) => (
                     <FilterPill
                       className="px-3 py-2 text-xs md:text-sm mobile-m:px-4 mobile-m:py-3 md:px-5 md:py-3 xl:text-base"
                       key={genre.id}
