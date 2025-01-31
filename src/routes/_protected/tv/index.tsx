@@ -8,6 +8,7 @@ import {
   getTMDBReleaseYear
 } from "@/services/media/sharedFunctions";
 import { useTVByCategory } from "@/services/media/tv/tvQueries";
+import { TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/tv/")({
@@ -79,12 +80,6 @@ function TVHomePage() {
       <div className="w-full pt-8 pb-24 space-y-10">
         {trendingTV && (
           <CategoryCarousel
-            // gotoLinkProps={{
-            //   to: "/anime/catalog",
-            //   search: {
-            //     sortBy: SortBy.TRENDING_DESC
-            //   }
-            // }}
             carouselItems={trendingTV.results.slice(5, 17)}
             renderCarouselItems={(tv, i) => {
               return (
@@ -106,12 +101,12 @@ function TVHomePage() {
         )}
         {popularTV && (
           <CategoryCarousel
-            // gotoLinkProps={{
-            //   to: "/anime/catalog",
-            //   search: {
-            //     sortBy: SortBy.POPULARITY_DESC
-            //   }
-            // }}
+            gotoLinkProps={{
+              to: "/tv/catalog",
+              search: {
+                sortBy: TVSortBy.POPULARITY_DESC
+              }
+            }}
             carouselItems={popularTV.results.slice(0, 12)}
             renderCarouselItems={(tv, i) => {
               return (
@@ -133,12 +128,12 @@ function TVHomePage() {
         )}
         {topRatedTV && (
           <CategoryCarousel
-            // gotoLinkProps={{
-            //   to: "/anime/catalog",
-            //   search: {
-            //     sortBy: SortBy.SCORE_DESC
-            //   }
-            // }}
+            gotoLinkProps={{
+              to: "/tv/catalog",
+              search: {
+                sortBy: TVSortBy.VOTE_AVERAGE_DESC
+              }
+            }}
             carouselItems={topRatedTV.results.slice(0, 12)}
             renderCarouselItems={(tv, i) => {
               return (
