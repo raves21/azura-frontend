@@ -13,8 +13,7 @@ import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import EpisodesError from "../../shared/episode/EpisodesError";
-import { Skeleton } from "@/components/ui/skeleton";
-import EpisodeListContainerSkeleton from "../../shared/episode/skeleton/EpisodeListContainerSkeleton";
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 
 type InfoPageAnimeEpisodesProps = {
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
@@ -51,16 +50,7 @@ export default function InfoPageAnimeEpisodes({
   });
 
   if (isEpisodesLoading || isChunkEpisodesLoading) {
-    return (
-      <EpisodesContainer variant="infoPage">
-        <EpisodesHeader>
-          <Skeleton className="px-3 py-2 text-transparent bg-gray-800 rounded-full">
-            30 - 60
-          </Skeleton>
-        </EpisodesHeader>
-        <EpisodeListContainerSkeleton variant="infoPage" />
-      </EpisodesContainer>
-    );
+    return <AllEpisodesLoading variant="infoPage" />;
   }
 
   if (episodesError) {

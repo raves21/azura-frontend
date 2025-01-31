@@ -12,7 +12,7 @@ import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
-import AllEpisodesLoading from "../../shared/episode/skeleton/AllEpisodesLoading";
+import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 
 type WatchPageAnimeEpisodesProps = {

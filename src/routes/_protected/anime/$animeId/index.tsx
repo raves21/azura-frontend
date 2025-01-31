@@ -10,6 +10,7 @@ import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCa
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import InfoPageAnimeEpisodes from "@/components/core/media/anime/episodesList/InfoPageAnimeEpisodes";
+import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
 
 const anilistGenres = Object.values(AnimeGenre).map((genre) =>
   genre.toString()
@@ -36,12 +37,15 @@ function AnimeInfoPage() {
 
   if (isAnimeInfoLoading) {
     return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-green-500">ANIME INFO</span>
-        </p>
-      </div>
+      <main className="w-full pb-32">
+        <InfoPageHeroSkeleton />
+        <InfoPageAnimeEpisodes
+          episodeImageFallback={undefined}
+          episodesQuery={episodesQuery}
+          replace={false}
+          type="TV"
+        />
+      </main>
     );
   }
 

@@ -1,5 +1,5 @@
 import { UseQueryResult } from "@tanstack/react-query";
-import AllEpisodesLoading from "../../shared/episode/skeleton/AllEpisodesLoading";
+import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";
@@ -10,12 +10,12 @@ import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../CustomDropdown";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
-import EpisodeListContainerSkeleton from "../../shared/episode/skeleton/EpisodeListContainerSkeleton";
+import EpisodeListContainerSkeleton from "../../../loadingSkeletons/media/episode/EpisodeListContainerSkeleton";
 
 type InfoPageTVEpisodesProps = {
   totalSeasons: number | null;
   tvSeasonEpisodesQuery: UseQueryResult<TMDBTVEpisode[], Error>;
-  coverImage: string | null;
+  coverImage?: string | null;
 };
 
 export default function InfoPageTVEpisodes({

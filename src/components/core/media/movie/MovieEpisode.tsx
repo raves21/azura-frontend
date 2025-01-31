@@ -1,6 +1,6 @@
 import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { UseQueryResult } from "@tanstack/react-query";
-import AllEpisodesLoading from "../shared/episode/skeleton/AllEpisodesLoading";
+import AllEpisodesLoading from "../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import EpisodeCard from "../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../shared/episode/EpisodesContainer";
@@ -32,7 +32,7 @@ export default function MovieEpisode({
   } = mediaScraperQuery;
 
   if (isMediaScraperLoading) {
-    return <AllEpisodesLoading />;
+    return <AllEpisodesLoading variant={variant} isMovie />;
   }
 
   if (mediaScraperError) {

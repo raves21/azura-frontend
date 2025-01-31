@@ -31,7 +31,7 @@ export default function WatchPageTVInfo({
   voteAverage
 }: WatchPageTVInfoProps) {
   return (
-    <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justfy-center">
+    <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />
       <div className="z-10 flex gap-3 sm:gap-5 md:gap-8 lg:gap-12 size-full">
         <InfoSectionPoster image={image} variant="watchPage" />

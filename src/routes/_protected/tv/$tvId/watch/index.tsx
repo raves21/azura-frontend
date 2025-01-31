@@ -1,7 +1,7 @@
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
+import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPageTVEpisodes";
 import {
@@ -19,22 +19,27 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import WatchPageTVInfo from "@/components/core/media/tv/infoSection/WatchPageTVInfo";
+import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
+import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
+import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
+import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
   tvSeason: z.number()
 });
 
-type s = z.infer<typeof watchTVEpisodePageSchema>;
+type WatchTVEpisodePageSchema = z.infer<typeof watchTVEpisodePageSchema>;
 
 export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
   component: () => <WatchTVEpisodePage />,
-  validateSearch: (search): s => {
+  validateSearch: (search): WatchTVEpisodePageSchema => {
     const v = watchTVEpisodePageSchema.safeParse(search);
     if (v.success) {
       return v.data;
     } else {
-      //if validation fails, provide defaults (season 1, episode 1).
+      //if search params validation fails, provide defaults (season 1, episode 1).
       return { tvEp: 1, tvSeason: 1 };
     }
   }
@@ -113,27 +118,30 @@ function WatchTVEpisodePage() {
   }, [mediaScraperData, tvInfo, windowWidth]);
 
   if (
-    isTVInfoLoading ||
-    isTVRecommendationsLoading ||
-    isTVSeasonEpisodesLoading ||
-    isMediaScraperLoading
+    isMediaScraperLoading &&
+    (isTVInfoLoading || isTVRecommendationsLoading || isTVSeasonEpisodesLoading)
   ) {
     return (
-      <div className="grid text-2xl text-white h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-red-500">TV EPISODE</span>
-        </p>
-      </div>
+      <main className="flex flex-col pb-32">
+        <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
+          <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
+            <VideoPlayerSkeleton />
+            <EpisodeTitleAndNumberSkeleton />
+          </div>
+          <AllEpisodesLoading variant="watchPage" />
+        </section>
+        <WatchInfoPageSkeleton />
+      </main>
     );
   }
+
   if (
-    tvInfoError ||
-    !hasMainSeasons ||
-    tvSeasonEpisodesError ||
-    tvRecommendationsError ||
-    mediaScraperError ||
-    !totalSeasons
+    mediaScraperError &&
+    (tvInfoError ||
+      !hasMainSeasons ||
+      tvSeasonEpisodesError ||
+      tvRecommendationsError ||
+      !totalSeasons)
   ) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
@@ -143,30 +151,29 @@ function WatchTVEpisodePage() {
     );
   }
 
-  if (
-    tvInfo &&
-    tvRecommendations &&
-    mediaScraperData &&
-    tvSeasonEpisodes &&
-    totalSeasons
-  ) {
-    console.log(tvSeasonEpisodes);
+  if (tvInfo && tvRecommendations && tvSeasonEpisodes && totalSeasons) {
     const currentEpisode = tvSeasonEpisodes[tvEp - 1];
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            <VideoPlayer
-              poster={getTMDBImageURL(currentEpisode.still_path)}
-              streamLink={
-                mediaScraperData.url ? mediaScraperData.url[0].link : null
-              }
-              headers={mediaScraperData.headers}
-              title={currentEpisode.name}
-            />
+            {mediaScraperData ? (
+              <VideoPlayer
+                poster={getTMDBImageURL(currentEpisode.still_path)}
+                streamLink={
+                  mediaScraperData.url ? mediaScraperData.url[0].link : null
+                }
+                headers={mediaScraperData.headers}
+                title={currentEpisode?.name || undefined}
+              />
+            ) : isMediaScraperLoading ? (
+              <VideoPlayerSkeleton />
+            ) : (
+              <VideoPlayerError />
+            )}
             <EpisodeTitleAndNumber
               episodeNumber={`Episode ${tvEp}`}
-              episodeTitle={currentEpisode.name}
+              episodeTitle={currentEpisode?.name || undefined}
             />
           </div>
           <WatchPageTVEpisodes
@@ -180,7 +187,7 @@ function WatchTVEpisodePage() {
           title={tvInfo.name}
           cover={getTMDBImageURL(tvInfo.backdrop_path)}
           image={getTMDBImageURL(tvInfo.poster_path)}
-          description={getTMDBImageURL(tvInfo.overview)}
+          description={tvInfo.overview}
           genres={tvInfo.genres}
           status={tvInfo.status}
           runTime={tvInfo.last_episode_to_air?.runtime || null}

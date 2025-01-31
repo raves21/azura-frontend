@@ -5,7 +5,7 @@ import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import { VideoPlayer } from "@/components/core/media/shared/episode/VideoPlayer";
+import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
 import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
   useFetchEpisodeStreamLinks,
@@ -20,6 +20,11 @@ import MediaCard from "@/components/core/media/shared/MediaCard";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import WatchPageAnimeEpisodes from "@/components/core/media/anime/episodesList/WatchPageAnimeEpisodes";
+import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
+import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
+import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
+import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
 
 const anilistGenres = Object.values(AnimeGenre).map((genre) =>
   genre.toString()
@@ -81,20 +86,24 @@ function WatchEpisodePage() {
   }, [episodeStreamLinks, episodeInfo, windowWidth]);
 
   if (
-    isEpisodeStreamLinksLoading ||
-    isAnimeInfoLoading ||
-    episodesQuery.isLoading
+    isEpisodeStreamLinksLoading &&
+    (isAnimeInfoLoading || episodesQuery.isLoading)
   ) {
     return (
-      <div className="grid text-2xl text-white h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-red-500">EPISODE</span>
-        </p>
-      </div>
+      <main className="flex flex-col pb-32">
+        <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
+          <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
+            <VideoPlayerSkeleton />
+            <EpisodeTitleAndNumberSkeleton />
+          </div>
+          <AllEpisodesLoading variant="watchPage" />
+        </section>
+        <WatchInfoPageSkeleton />
+      </main>
     );
   }
-  if (episodeStreamLinksError || episodesQuery.error || animeInfoError) {
+
+  if (episodeStreamLinksError && (episodesQuery.error || animeInfoError)) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -103,28 +112,34 @@ function WatchEpisodePage() {
     );
   }
 
-  if (episodeStreamLinks && animeInfo && episodesQuery.data && episodeInfo) {
+  if (animeInfo && episodesQuery.data && episodeInfo) {
     const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            <VideoPlayer
-              poster={
-                episodeInfo.image ||
-                animeInfoAnilist.cover ||
-                animeInfoAnify.bannerImage
-              }
-              streamLink={
-                episodeStreamLinks.sources.find(
-                  (source) => source.quality === "backup"
-                )?.url ??
-                episodeStreamLinks.sources.find(
-                  (source) => source.quality === "default"
-                )?.url
-              }
-              title={episodeInfo.title}
-            />
+            {episodeStreamLinks ? (
+              <VideoPlayer
+                poster={
+                  episodeInfo.image ||
+                  animeInfoAnilist.cover ||
+                  animeInfoAnify.bannerImage
+                }
+                streamLink={
+                  episodeStreamLinks.sources.find(
+                    (source) => source.quality === "backup"
+                  )?.url ??
+                  episodeStreamLinks.sources.find(
+                    (source) => source.quality === "default"
+                  )?.url
+                }
+                title={episodeInfo.title}
+              />
+            ) : isEpisodeStreamLinksLoading ? (
+              <VideoPlayerSkeleton />
+            ) : (
+              <VideoPlayerError />
+            )}
             <EpisodeTitleAndNumber
               episodeNumber={`Episode ${episodeInfo.number}`}
               episodeTitle={episodeInfo.title}

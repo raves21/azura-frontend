@@ -6,7 +6,10 @@ import GenreListAnime from "@/components/core/media/shared/info/GenreListAnime";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { cn } from "@/lib/utils";
-import { AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
+import {
+  AnimeGenre,
+  AnimeStatus
+} from "@/utils/types/media/anime/animeAnilist";
 import {
   animeCancelledStatus,
   animeCompletedStatus,
@@ -39,7 +42,7 @@ export default function WatchPageAnimeInfo({
   rating
 }: WatchPageAnimeInfoProps) {
   return (
-    <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justfy-center">
+    <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />
       <div className="z-10 flex gap-3 sm:gap-5 md:gap-8 lg:gap-12 size-full">
         <InfoSectionPoster image={image} variant="watchPage" />
@@ -75,8 +78,7 @@ export default function WatchPageAnimeInfo({
             </div>
             <GenreListAnime
               isMobile={false}
-              genres={genres}
-              gotoLink="/anime/catalog"
+              genres={genres ? genres.map((genre) => genre as AnimeGenre) : []}
               variant="watchPage"
             />
           </div>
@@ -91,8 +93,7 @@ export default function WatchPageAnimeInfo({
       <div className="z-10 w-full space-y-4 lg:space-y-0">
         <GenreListAnime
           isMobile
-          genres={genres}
-          gotoLink="/anime/catalog"
+          genres={genres ? genres.map((genre) => genre as AnimeGenre) : []}
           variant="watchPage"
         />
         <Description

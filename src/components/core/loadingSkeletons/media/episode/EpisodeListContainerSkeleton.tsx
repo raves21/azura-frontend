@@ -5,10 +5,12 @@ import EpisodeCardSkeleton from "./EpisodeCardSkeleton";
 type EpisodeListContainerSkeletonProps = PropsWithChildren &
   HTMLAttributes<HTMLDivElement> & {
     variant: "infoPage" | "watchPage";
+    isMovie?: boolean;
   };
 
 export default function EpisodeListContainerSkeleton({
-  variant
+  variant,
+  isMovie
 }: EpisodeListContainerSkeletonProps) {
   return (
     <div
@@ -21,9 +23,11 @@ export default function EpisodeListContainerSkeleton({
         { "lg:grid-cols-2": variant === "watchPage" }
       )}
     >
-      {Array.from({ length: 6 }).map((_, i) => (
-        <EpisodeCardSkeleton key={i} />
-      ))}
+      {isMovie ? (
+        <EpisodeCardSkeleton />
+      ) : (
+        Array.from({ length: 6 }).map((_, i) => <EpisodeCardSkeleton key={i} />)
+      )}
     </div>
   );
 }

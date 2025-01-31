@@ -1,3 +1,4 @@
+import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
@@ -76,12 +77,13 @@ function TVInfoPage() {
 
   if (isTvInfoLoading || isTVRecommendationsLoading) {
     return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          LOADING&nbsp;
-          <span className="font-semibold text-green-500">TV INFO</span>
-        </p>
-      </div>
+      <main className="w-full pb-32">
+        <InfoPageHeroSkeleton />
+        <InfoPageTVEpisodes
+          totalSeasons={totalSeasons}
+          tvSeasonEpisodesQuery={tvSeasonEpisodesQuery}
+        />
+      </main>
     );
   }
 
