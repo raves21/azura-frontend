@@ -6,6 +6,7 @@ import {
   useDiscoverMovies,
   useMovieGenres
 } from "@/services/media/movie/movieQueries";
+import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/_protected/movie/catalog/")({
 });
 
 function MovieCatalogPage() {
+  useCustomScrollRestoration();
   const { page, sortBy, genres, year } = Route.useSearch();
   const {
     data: catalogMovieList,
