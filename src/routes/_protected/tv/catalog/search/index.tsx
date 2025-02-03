@@ -2,6 +2,7 @@ import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFil
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import { useSearchTV } from "@/services/media/tv/tvQueries";
+import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/_protected/tv/catalog/search/")({
 });
 
 function TVSearchPage() {
+  useCustomScrollRestoration();
   const { query, page } = Route.useSearch();
   const {
     data: tvSearchResults,

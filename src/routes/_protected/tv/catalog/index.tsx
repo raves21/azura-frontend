@@ -3,6 +3,7 @@ import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters";
 import TVFiltersDialog from "@/components/core/media/tv/filter/TVFiltersDialog";
 import { useDiscoverTV, useTVGenres } from "@/services/media/tv/tvQueries";
+import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TVGenre, TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/_protected/tv/catalog/")({
 });
 
 function TVCatalogPage() {
+  useCustomScrollRestoration();
   const { page, sortBy, genres, year } = Route.useSearch();
   const {
     data: catalogTVList,
