@@ -4,6 +4,7 @@ import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
   CommentsRequest,
   Media,
+  PeoplePreviewResponse,
   PostsRequest,
   TCollection,
   TPost,
@@ -30,6 +31,12 @@ const USER_PROFILE_QUERY_KEY = (userHandle: string): QueryKey => [
   "userProfile",
   userHandle
 ];
+
+const USER_PREVIEW_LIST_QUERY_KEY: QueryFilters = {
+  predicate(query) {
+    return query.queryKey.includes("userPreviewList");
+  }
+};
 
 type CreatePostPostsCacheMutation = {
   queryFilter: QueryFilters;
@@ -509,6 +516,66 @@ export function unFollowUser_UserProfileCacheMutation({
         ...oldData,
         followedByYou: false,
         totalFollowers: oldData.totalFollowers - 1
+      };
+    }
+  );
+}
+
+export async function followUser_UserPreviewListCacheMutation({
+  userHandle
+}: FollowUnfollowCacheMutationArgs) {
+  await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
+  queryClient.setQueriesData<InfiniteData<PeoplePreviewResponse, unknown>>(
+    USER_PREVIEW_LIST_QUERY_KEY,
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.map((userPreview) => {
+          if (userPreview.handle === userHandle) {
+            return {
+              ...userPreview,
+              isFollowedByCurrentUser: true
+            };
+          }
+          return userPreview;
+        })
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages
+      };
+    }
+  );
+}
+
+export async function unfollowUser_UserPreviewListCacheMutation({
+  userHandle
+}: FollowUnfollowCacheMutationArgs) {
+  await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
+  queryClient.setQueriesData<InfiniteData<PeoplePreviewResponse, unknown>>(
+    USER_PREVIEW_LIST_QUERY_KEY,
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.map((userPreview) => {
+          if (userPreview.handle === userHandle) {
+            return {
+              ...userPreview,
+              isFollowedByCurrentUser: false
+            };
+          }
+          return userPreview;
+        })
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages
       };
     }
   );

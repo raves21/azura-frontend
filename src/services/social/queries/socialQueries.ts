@@ -14,7 +14,9 @@ import {
   TPostInfo,
   CollectionsRequest,
   TPost,
-  TPostComment
+  TPostComment,
+  Trend,
+  PeoplePreviewResponse
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -34,7 +36,9 @@ import {
   createComment_CommentsCacheMutation,
   editUserProfile_PostsCacheMutation,
   followUser_UserProfileCacheMutation,
-  unFollowUser_UserProfileCacheMutation
+  unFollowUser_UserProfileCacheMutation,
+  followUser_UserPreviewListCacheMutation,
+  unfollowUser_UserPreviewListCacheMutation
 } from "../functions/socialFunctions";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
@@ -356,13 +360,15 @@ export function useFollowUser() {
     mutationFn: async ({ userId, userHandle }: FollowUnfollowArgs) => {
       //mutate the cache
       followUser_UserProfileCacheMutation({ userHandle });
+      await followUser_UserPreviewListCacheMutation({ userHandle });
       //run the api call
       await api.post(`/users/${userId}/follow`);
     },
-    onError: (_, variables) => {
+    onError: async (_, variables) => {
       const { userHandle } = variables;
       //if error, set it cache data back to unfollowed
       unFollowUser_UserProfileCacheMutation({ userHandle });
+      await unfollowUser_UserPreviewListCacheMutation({ userHandle });
     }
   });
 }
@@ -372,13 +378,87 @@ export function useUnfollowUser() {
     mutationFn: async ({ userId, userHandle }: FollowUnfollowArgs) => {
       //mutate the cache
       unFollowUser_UserProfileCacheMutation({ userHandle });
+      await unfollowUser_UserPreviewListCacheMutation({ userHandle });
       //run the api call
       await api.post(`/users/${userId}/unfollow`);
     },
-    onError: (_, variables) => {
+    onError: async (_, variables) => {
       const { userHandle } = variables;
       //if error, set it cache data back to followed
       followUser_UserProfileCacheMutation({ userHandle });
+      await followUser_UserPreviewListCacheMutation({ userHandle });
     }
+  });
+}
+
+export function useFollowingFeed() {
+  return useQuery({
+    queryKey: ["posts", "followingFeed"],
+    queryFn: async () => {
+      const { data: followingFeed } = await api.get("/feed/following");
+      return followingFeed as PostsRequest;
+    }
+  });
+}
+
+export function useTrends() {
+  return useQuery({
+    queryKey: ["trends"],
+    queryFn: async () => {
+      const { data: trends } = await api.get("/trending");
+      return trends.data as Trend[];
+    }
+  });
+}
+
+export function useDiscoverPeople() {
+  return useInfiniteQuery({
+    queryKey: ["discoverPeople", "userPreviewList"],
+    queryFn: async () => {
+      const { data: discoverPeopleResponse } =
+        await api.get("/discover-people");
+      return discoverPeopleResponse as PeoplePreviewResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1
+  });
+}
+
+export function useUserFollowingList(userId: string, currentUserId: string) {
+  return useInfiniteQuery({
+    queryKey: ["userFollowingList", "userPreviewList", userId],
+    queryFn: async () => {
+      let url: string;
+      if (userId === currentUserId) {
+        url = "/users/me/following";
+      } else {
+        url = `users/${userId}/following`;
+      }
+      const { data: discoverPeopleResponse } = await api.get(url);
+      return discoverPeopleResponse as PeoplePreviewResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1
+  });
+}
+
+export function useUserFollowerList(userId: string, currentUserId: string) {
+  return useInfiniteQuery({
+    queryKey: ["currentUserFollowerList", "userPreviewList", userId],
+    queryFn: async () => {
+      let url: string;
+      if (userId === currentUserId) {
+        url = "/users/me/followers";
+      } else {
+        url = `users/${userId}/followers`;
+      }
+      const { data: discoverPeopleResponse } = await api.get(url);
+      return discoverPeopleResponse as PeoplePreviewResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1
   });
 }

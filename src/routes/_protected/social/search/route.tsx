@@ -1,7 +1,8 @@
 import BackButton from "@/components/core/BackButton";
 import ContentOptions from "@/components/core/social/mainContent/contentOptions/ContentOptions";
 import { TContentOption } from "@/utils/types/social/shared";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_protected/social/search")({
   component: () => <SearchPageLayout />
@@ -11,24 +12,33 @@ const searchPageOptions: TContentOption[] = [
   {
     name: "Posts",
     linkProps: {
-      to: "/social/search/posts"
+      to: "/social/search/posts",
+      replace: true
     }
   },
   {
     name: "People",
     linkProps: {
-      to: "/social/search/people"
-    }
-  },
-  {
-    name: "Collections",
-    linkProps: {
-      to: "/social/search/posts"
+      to: "/social/search/people",
+      replace: true
     }
   }
 ];
 
 function SearchPageLayout() {
+  const [selectedSocialSearchOption, setSelectedSocialSearchOption] =
+    useState<TContentOption | null>(null);
+
+  const matchRoute = useMatchRoute();
+
+  useEffect(() => {
+    if (matchRoute({ to: "/social/search/posts" })) {
+      setSelectedSocialSearchOption(searchPageOptions[0]);
+    } else {
+      setSelectedSocialSearchOption(searchPageOptions[1]);
+    }
+  }, []);
+
   return (
     <section className="flex flex-col w-full gap-3">
       <div className="flex items-center gap-6 p-3 text-base font-semibold rounded-lg mobile-l:text-lg sm:p-5 sm:text-xl bg-socialPrimary">
@@ -42,7 +52,8 @@ function SearchPageLayout() {
       </div>
       <ContentOptions
         contentOptions={searchPageOptions}
-        defaultOption={searchPageOptions[0]}
+        selectedOption={selectedSocialSearchOption || searchPageOptions[0]}
+        setSelectedOption={setSelectedSocialSearchOption}
       />
       <Outlet />
     </section>

@@ -8,6 +8,7 @@ import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestora
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { TContentOption } from "@/utils/types/social/shared";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/")({
@@ -18,19 +19,23 @@ const feedOptions: TContentOption[] = [
   {
     name: "For You",
     linkProps: {
-      to: "/social"
+      to: "/social",
+      replace: true
     }
   },
   {
     name: "Following",
     linkProps: {
-      to: "/social"
+      to: "/social",
+      replace: true
     }
   }
 ];
 
 function SocialPage() {
   useCustomScrollRestoration();
+
+  const [selectedFeedOption, setSelectedFeedOption] = useState(feedOptions[0]);
 
   const {
     data: forYouFeed,
@@ -60,7 +65,8 @@ function SocialPage() {
         <CreatePost />
         <ContentOptions
           contentOptions={feedOptions}
-          defaultOption={feedOptions[0]}
+          selectedOption={selectedFeedOption}
+          setSelectedOption={setSelectedFeedOption}
         />
         {forYouFeed.pages[0].data.length === 0 ? (
           <p className="w-full mt-16 text-lg font-medium text-center">

@@ -54,8 +54,9 @@ function TVInfoPage() {
   useEffect(() => {
     if (tvInfo) {
       //only include main seasons, dont include special seasons (season 0)
+      //only include released seasons, seasons with a null air_date isnt released.
       const mainTVSeasons = tvInfo.seasons.filter(
-        (season) => season.season_number > 0
+        (season) => season.season_number > 0 && season.air_date !== null
       );
       if (mainTVSeasons.length !== 0) {
         setTotalSeasons(mainTVSeasons.length);

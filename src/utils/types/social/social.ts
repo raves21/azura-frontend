@@ -4,7 +4,7 @@ import {
   EntityPrivacy,
   MediaType,
   PaginatedResponse,
-  ResponseWithMessage,
+  ResponseWithMessage
 } from "./shared";
 
 export type PostsRequest = ResponseWithMessage &
@@ -102,4 +102,19 @@ export type UserProfile = UserBasicInfo & {
   followsYou: boolean;
   followedByYou: boolean;
   sessionId: string;
+};
+
+export type Trend = {
+  type: string;
+  content: string;
+  count: number;
+};
+
+export type UserPreview = Omit<UserBasicInfo, "email"> & {
+  bio: string;
+  isFollowedByCurrentUser: boolean;
+};
+
+export type PeoplePreviewResponse = PaginatedResponse & {
+  data: UserPreview[];
 };

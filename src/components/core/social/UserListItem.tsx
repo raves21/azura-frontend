@@ -1,19 +1,44 @@
-export default function UserListItem() {
+import UnfollowButton from "./mainContent/profile/profileDetails/UnfollowButton";
+import FollowButton from "./mainContent/profile/profileDetails/FollowButton";
+import { UserPreview } from "@/utils/types/social/social";
+import { useNavigate } from "@tanstack/react-router";
+
+export default function UserListItem({
+  avatar,
+  handle,
+  isFollowedByCurrentUser,
+  bio,
+  id,
+  username
+}: UserPreview) {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex w-full py-3">
-      <div className="flex items-center gap-3">
+    <button
+      onClick={() =>
+        navigate({ to: "/social/$userHandle", params: { userHandle: handle } })
+      }
+      className="flex flex-col w-full gap-[10px] py-3 hover:bg-socialPrimaryHover px-5"
+    >
+      <div className="flex w-full">
         <img
-          src="/sample-user-pfp.png"
-          className="object-cover rounded-full size-11"
+          src={avatar || "/no-image-2.jpg"}
+          className="object-cover rounded-full size-10"
         />
-        <div className="space-y-1 text-sm max-w-28">
-          <p className="font-semibold line-clamp-1">Sample User</p>
-          <p className="text-socialTextSecondary line-clamp-1">@sampleuser</p>
+        <div className="flex-grow pl-2 space-y-1 text-sm text-start">
+          <p className="font-semibold line-clamp-1">{username}</p>
+          <p className="text-socialTextSecondary line-clamp-1">
+            <span>@</span>
+            {handle}
+          </p>
         </div>
+        {isFollowedByCurrentUser ? (
+          <UnfollowButton type="userPreview" userHandle={handle} userId={id} />
+        ) : (
+          <FollowButton type="userPreview" userHandle={handle} userId={id} />
+        )}
       </div>
-      <button className="ml-auto h-[40px] text-xs font-semibold bg-gray-300 rounded-full px-6 text-darkBg hover:bg-gray-400">
-        Follow
-      </button>
-    </div>
+      {bio && <p className="pl-[52px] line-clamp-2">{bio}</p>}
+    </button>
   );
 }

@@ -1,7 +1,7 @@
 import FloatingPagesBar from "@/components/core/social/floatingPagesBar/FloatingPagesBar";
 import FloatingCreateCommentBar from "@/components/core/social/mainContent/post/postInfo/postComments/FloatingCreateCommentBar";
-import FollowSuggestions from "@/components/core/social/profilePreviewAndFollowSuggestions/followSuggestions/FollowSuggestions";
-import ProfilePreview from "@/components/core/social/profilePreviewAndFollowSuggestions/profilePreview/ProfilePreview";
+import FollowSuggestions from "@/components/core/social/profilePreviewAndDiscoverPeople/discoverPeople/DiscoverPeople";
+import ProfilePreview from "@/components/core/social/profilePreviewAndDiscoverPeople/profilePreview/ProfilePreview";
 import Trending from "@/components/core/social/trending/Trending";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 

@@ -7,19 +7,19 @@ type ContentOptionProps = {
   option: TContentOption;
   selectedOption: TContentOption;
   linkProps: LinkProps;
-  onSelectOption: () => void;
+  onSelectOption: (option: TContentOption) => void;
 };
 
 export default function ContentOption({
   option,
   selectedOption,
   linkProps,
-  onSelectOption,
+  onSelectOption
 }: ContentOptionProps) {
   return (
     <Link
       {...linkProps}
-      onClick={onSelectOption}
+      onClick={() => onSelectOption(option)}
       className={cn(
         "grid flex-1 py-3 place-items-center",
         isEqual(option, selectedOption)

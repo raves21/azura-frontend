@@ -65,7 +65,7 @@ export type LastEpisodeToAir = {
   overview: string;
   vote_average: number;
   vote_count: number;
-  air_date: Date;
+  air_date: string;
   episode_number: number;
   episode_type: string;
   production_code: string;
@@ -88,7 +88,7 @@ export type ProductionCountry = {
 };
 
 export type Season = {
-  air_date: Date | null;
+  air_date: string | null;
   episode_count: number;
   id: number;
   name: string;
@@ -106,7 +106,7 @@ export type SpokenLanguage = {
 
 export type SeasonInfo = {
   _id: string;
-  air_date: Date;
+  air_date: string;
   episodes: TMDBTVEpisode[];
   name: string;
   overview: string;
@@ -117,7 +117,7 @@ export type SeasonInfo = {
 };
 
 export type TMDBTVEpisode = {
-  air_date: Date;
+  air_date: string;
   episode_number: number;
   episode_type: string;
   id: number;
