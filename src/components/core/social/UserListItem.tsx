@@ -1,7 +1,14 @@
 import UnfollowButton from "./mainContent/profile/profileDetails/UnfollowButton";
 import FollowButton from "./mainContent/profile/profileDetails/FollowButton";
 import { UserPreview } from "@/utils/types/social/social";
-import { useNavigate } from "@tanstack/react-router";
+import { Navigate, useNavigate } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+
+type UserListItemProps = UserPreview & {
+  className?: string;
+  type: "discoverPeople" | "searchPeople";
+};
 
 export default function UserListItem({
   avatar,
@@ -9,36 +16,68 @@ export default function UserListItem({
   isFollowedByCurrentUser,
   bio,
   id,
-  username
-}: UserPreview) {
+  username,
+  className,
+  type
+}: UserListItemProps) {
   const navigate = useNavigate();
 
+  const currentUser = useAuthStore((state) => state.currentUser);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
+
   return (
-    <button
+    <div
       onClick={() =>
         navigate({ to: "/social/$userHandle", params: { userHandle: handle } })
       }
-      className="flex flex-col w-full gap-[10px] py-3 hover:bg-socialPrimaryHover px-5"
+      className={cn(
+        "hover:cursor-pointer flex flex-col w-full py-3 hover:bg-socialPrimaryHover gap-[10px]",
+        type === "searchPeople" ? "px-2" : "px-5",
+        className
+      )}
     >
       <div className="flex w-full">
         <img
           src={avatar || "/no-image-2.jpg"}
-          className="object-cover rounded-full size-10"
+          className={cn(
+            "object-cover rounded-full",
+            type === "searchPeople" ? "size-12" : "size-10"
+          )}
         />
-        <div className="flex-grow pl-2 space-y-1 text-sm text-start">
+        <div
+          className={cn(
+            "flex-grow space-y-1 text-start",
+            type === "searchPeople" ? "text-md pl-3" : "text-sm pl-2"
+          )}
+        >
           <p className="font-semibold line-clamp-1">{username}</p>
           <p className="text-socialTextSecondary line-clamp-1">
             <span>@</span>
             {handle}
           </p>
         </div>
-        {isFollowedByCurrentUser ? (
-          <UnfollowButton type="userPreview" userHandle={handle} userId={id} />
-        ) : (
-          <FollowButton type="userPreview" userHandle={handle} userId={id} />
-        )}
+        {currentUser.id !== id &&
+          (isFollowedByCurrentUser ? (
+            <UnfollowButton
+              type="userPreview"
+              userHandle={handle}
+              userId={id}
+            />
+          ) : (
+            <FollowButton type="userPreview" userHandle={handle} userId={id} />
+          ))}
       </div>
-      {bio && <p className="pl-[52px] line-clamp-2">{bio}</p>}
-    </button>
+      {bio && (
+        <p
+          className={cn(
+            "line-clamp-2",
+            type === "searchPeople" ? "text-md pl-[61px]" : "text-sm pl-[48px]"
+          )}
+        >
+          {bio}
+        </p>
+      )}
+    </div>
   );
 }

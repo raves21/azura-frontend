@@ -4,9 +4,11 @@ import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters
 import TVFiltersDialog from "@/components/core/media/tv/filter/TVFiltersDialog";
 import { useDiscoverTV, useTVGenres } from "@/services/media/tv/tvQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TVGenre, TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 
@@ -17,21 +19,30 @@ const tvCatalogPageSchema = z.object({
   year: z.coerce.number().optional()
 });
 
+type TVCatalogPageSchema = z.infer<typeof tvCatalogPageSchema> &
+  SearchSchemaValidationStatus;
+
 export const Route = createFileRoute("/_protected/tv/catalog/")({
   component: () => <TVCatalogPage />,
-  validateSearch: (search) => tvCatalogPageSchema.parse(search),
-  beforeLoad: ({ search }) => {
-    const validatedSearch = tvCatalogPageSchema.safeParse(search);
-    if (validatedSearch.success) {
-      return validatedSearch.data;
+  validateSearch: (search): TVCatalogPageSchema => {
+    const validated = tvCatalogPageSchema.safeParse(search);
+    if (validated.success) {
+      return { ...validated.data, success: true };
     }
-    redirect({ to: "/tv" });
+    return { success: false };
   }
 });
 
 function TVCatalogPage() {
   useCustomScrollRestoration();
-  const { page, sortBy, genres, year } = Route.useSearch();
+  const { page, sortBy, genres, year, success } = Route.useSearch();
+  const navigate = useNavigate();
+
+  useHandleSearchValidationFailure({
+    isValidationFail: !success,
+    onValidationError: () => navigate({ to: "/tv" })
+  });
+
   const {
     data: catalogTVList,
     isLoading: isCatalogTVListLoading,
@@ -45,7 +56,6 @@ function TVCatalogPage() {
   } = useTVGenres();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const navigate = useNavigate();
 
   if (isCatalogTVListLoading || isTVGenresLoading) {
     return (

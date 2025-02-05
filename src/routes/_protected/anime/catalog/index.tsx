@@ -1,5 +1,5 @@
 import { useFilterAnime } from "@/services/media/anime/queries/animeQueries";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 import CatalogAnimeList from "@/components/core/media/anime/CatalogAnimeList";
@@ -14,6 +14,8 @@ import {
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AnimeFiltersDialog from "../../../../components/core/media/anime/filter/AnimeFiltersDialog";
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
+import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
@@ -26,21 +28,34 @@ const filterPageSearchSchema = z.object({
   status: z.nativeEnum(AnilistAnimeStatus).optional()
 });
 
+type FilterPageSearchSchema = z.infer<typeof filterPageSearchSchema> &
+  SearchSchemaValidationStatus;
+
 export const Route = createFileRoute("/_protected/anime/catalog/")({
   component: () => <AnimeCatalogPage />,
-  validateSearch: (search) => filterPageSearchSchema.parse(search),
-  beforeLoad: ({ search }) => {
+  validateSearch: (search): FilterPageSearchSchema => {
     const validated = filterPageSearchSchema.safeParse(search);
-    if (validated.error) {
-      redirect({ to: "/anime/catalog" });
+    if (validated.success) {
+      return {
+        ...validated.data,
+        success: true
+      };
     }
+    return {
+      success: false
+    };
   }
 });
 
 function AnimeCatalogPage() {
-  const { format, genres, page, query, season, sortBy, year, status } =
+  const { format, genres, page, query, season, sortBy, year, status, success } =
     Route.useSearch();
   const navigate = useNavigate();
+
+  useHandleSearchValidationFailure({
+    isValidationFail: !success,
+    onValidationError: () => navigate({ to: "/anime" })
+  });
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: filteredAnimes,

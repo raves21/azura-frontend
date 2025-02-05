@@ -6,17 +6,17 @@ import {
 } from "@tanstack/react-query";
 import { api } from "@/utils/variables/axiosInstances/authAxiosInstance";
 import {
-  CommentsRequest,
+  PaginatedCommentsResponse,
   UserProfile,
   Media,
-  PostsRequest,
+  PaginatedPostsResponse,
   TCollection,
   TPostInfo,
-  CollectionsRequest,
+  PaginatedCollectionsResponse,
   TPost,
   TPostComment,
   Trend,
-  PeoplePreviewResponse
+  PaginatedUserPreviewsResponse
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -47,7 +47,7 @@ export function useForYouFeed() {
     queryKey: ["posts", "forYouFeed"],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
       const { data } = await api.get(`/feed/for-you?page=${pageParam}`);
-      return data as PostsRequest;
+      return data as PaginatedPostsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
@@ -228,7 +228,7 @@ export function usePostComments(postId: string) {
       const { data } = await api.get(
         `/posts/${postId}/comments?page=${pageParam}&perPage=5`
       );
-      return data as CommentsRequest;
+      return data as PaginatedCommentsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
@@ -300,7 +300,7 @@ export function useUserProfilePosts(
         url = `/posts/user/${userHandle}`;
       }
       const { data } = await api.get(url);
-      return data as PostsRequest;
+      return data as PaginatedPostsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
@@ -323,7 +323,7 @@ export function useUserCollections(
         url = `/collections/user/${userHandle}`;
       }
       const { data } = await api.get(url);
-      return data as CollectionsRequest;
+      return data as PaginatedCollectionsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
@@ -396,7 +396,7 @@ export function useFollowingFeed() {
     queryKey: ["posts", "followingFeed"],
     queryFn: async () => {
       const { data: followingFeed } = await api.get("/feed/following");
-      return followingFeed as PostsRequest;
+      return followingFeed as PaginatedPostsResponse;
     }
   });
 }
@@ -407,7 +407,9 @@ export function useTrends() {
     queryFn: async () => {
       const { data: trends } = await api.get("/trending");
       return trends.data as Trend[];
-    }
+    },
+    refetchInterval: 300000,
+    refetchIntervalInBackground: true
   });
 }
 
@@ -417,7 +419,7 @@ export function useDiscoverPeople() {
     queryFn: async () => {
       const { data: discoverPeopleResponse } =
         await api.get("/discover-people");
-      return discoverPeopleResponse as PeoplePreviewResponse;
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
@@ -436,7 +438,7 @@ export function useUserFollowingList(userId: string, currentUserId: string) {
         url = `users/${userId}/following`;
       }
       const { data: discoverPeopleResponse } = await api.get(url);
-      return discoverPeopleResponse as PeoplePreviewResponse;
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
@@ -455,10 +457,47 @@ export function useUserFollowerList(userId: string, currentUserId: string) {
         url = `users/${userId}/followers`;
       }
       const { data: discoverPeopleResponse } = await api.get(url);
-      return discoverPeopleResponse as PeoplePreviewResponse;
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1
+  });
+}
+
+export function useSearchPeople(query: string, enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: ["searchPeople", query],
+    queryFn: async () => {
+      const { data: searchPeopleResults } = await api.get("/search/users", {
+        params: {
+          query
+        }
+      });
+      return searchPeopleResults as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!enabled
+  });
+}
+
+export function useSearchPosts(query: string, enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: ["searchPosts", query],
+    queryFn: async () => {
+      console.log("SEARCHPOSTSQUERYfn");
+      const { data: searchPostsResults } = await api.get("/search/posts", {
+        params: {
+          query
+        }
+      });
+      return searchPostsResults as PaginatedPostsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!enabled
   });
 }

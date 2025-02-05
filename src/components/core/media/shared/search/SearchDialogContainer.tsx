@@ -9,7 +9,7 @@ export default function SearchDialogContainer({ children }: PropsWithChildren) {
     useGlobalStore(
       useShallow((state) => [
         state.selectedSocialSearchOption,
-        state.setSelectedSocialSearchOption,
+        state.setSelectedSocialSearchOption
       ])
     );
 
@@ -20,31 +20,22 @@ export default function SearchDialogContainer({ children }: PropsWithChildren) {
       <div className="w-dvw sm:px-8 md:max-w-[800px] px-2 flex flex-col">
         <div className="flex w-full overflow-hidden font-medium text-gray-300 bg-gray-800 rounded-t-lg">
           <button
-            onClick={() => setSelectedSocialSearchOption("posts")}
-            className={cn("grid flex-grow py-4 place-items-center", {
-              "bg-mainAccent text-mainWhite font-semibold":
-                selectedSocialSearchOption === "posts",
-            })}
-          >
-            Posts
-          </button>
-          <button
             onClick={() => setSelectedSocialSearchOption("people")}
             className={cn("grid flex-grow py-4 place-items-center", {
-              "bg-mainAccent text-mainWhite font-semibold":
-                selectedSocialSearchOption === "people",
+              "bg-mainAccent text-mainWhite font-semibold transition-colors duration-300":
+                selectedSocialSearchOption === "people"
             })}
           >
             People
           </button>
           <button
-            onClick={() => setSelectedSocialSearchOption("collections")}
+            onClick={() => setSelectedSocialSearchOption("posts")}
             className={cn("grid flex-grow py-4 place-items-center", {
-              "bg-mainAccent text-mainWhite font-semibold":
-                selectedSocialSearchOption === "collections",
+              "bg-mainAccent text-mainWhite font-semibold transition-colors duration-300":
+                selectedSocialSearchOption === "posts"
             })}
           >
-            Collections
+            Posts
           </button>
         </div>
         <div className="w-full">{children}</div>

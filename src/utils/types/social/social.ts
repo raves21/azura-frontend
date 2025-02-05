@@ -3,24 +3,20 @@ import {
   EntityOwner,
   EntityPrivacy,
   MediaType,
-  PaginatedResponse,
-  ResponseWithMessage
+  PaginatedResponse
 } from "./shared";
 
-export type PostsRequest = ResponseWithMessage &
-  PaginatedResponse & {
-    data: TPost[];
-  };
+export type PaginatedPostsResponse = PaginatedResponse & {
+  data: TPost[];
+};
 
-export type CommentsRequest = ResponseWithMessage &
-  PaginatedResponse & {
-    data: TPostComment[];
-  };
+export type PaginatedCommentsResponse = PaginatedResponse & {
+  data: TPostComment[];
+};
 
-export type CollectionsRequest = ResponseWithMessage &
-  PaginatedResponse & {
-    data: CollectionListItem[];
-  };
+export type PaginatedCollectionsResponse = PaginatedResponse & {
+  data: CollectionListItem[];
+};
 
 export type CollectionListItem = Omit<TCollection, "privacy" | "description">;
 
@@ -115,6 +111,6 @@ export type UserPreview = Omit<UserBasicInfo, "email"> & {
   isFollowedByCurrentUser: boolean;
 };
 
-export type PeoplePreviewResponse = PaginatedResponse & {
+export type PaginatedUserPreviewsResponse = PaginatedResponse & {
   data: UserPreview[];
 };

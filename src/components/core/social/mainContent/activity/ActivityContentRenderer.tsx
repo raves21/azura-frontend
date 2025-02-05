@@ -1,12 +1,16 @@
-import { ReactNode, useNavigate } from "@tanstack/react-router";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { Link, ReactNode, useNavigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
 export default function ActivityContentRenderer({
-  content,
+  content
 }: {
   content: string;
 }) {
   const navigate = useNavigate();
+  const setSocialSearchKeyword = useGlobalStore(
+    (state) => state.setSocialSearchKeyword
+  );
   const tokens = content.split(/(\s+)/);
   const hashtagRegex = /#\w+/g;
   const mentionRegex = /mention/g;
@@ -17,12 +21,17 @@ export default function ActivityContentRenderer({
       {tokens.map((token, index) => {
         if (hashtagRegex.test(token)) {
           return (
-            <button
+            <Link
+              to="/social/search/posts"
+              search={{
+                query: token
+              }}
+              onClick={() => setSocialSearchKeyword(token)}
               key={`hashtag-${index}`}
               className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"
             >
               {token}
-            </button>
+            </Link>
           );
         }
         if (mentionRegex.test(token)) {
@@ -34,8 +43,8 @@ export default function ActivityContentRenderer({
                 navigate({
                   to: "/social/$userHandle",
                   params: {
-                    userHandle: "geromepenalosa",
-                  },
+                    userHandle: "geromepenalosa"
+                  }
                 });
               }}
               className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"

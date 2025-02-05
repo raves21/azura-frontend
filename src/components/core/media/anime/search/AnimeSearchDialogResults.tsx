@@ -28,7 +28,7 @@ export default function AnimeSearchDialogResults({
 
   if (searchResultsError) {
     return (
-      <div className="grid w-full py-4 text-center bg-gray-800 rounded-b-lg place-items-center text-mainWhite text-balance">
+      <div className="grid w-full py-4 text-lg text-center text-gray-400 bg-gray-800 rounded-b-lg place-items-center text-balance">
         There seems to be problems with search. Please try again later.
       </div>
     );
@@ -37,8 +37,8 @@ export default function AnimeSearchDialogResults({
   if (searchResults) {
     if (searchResults.results.length === 0) {
       return (
-        <div className="flex flex-col w-full bg-gray-800 rounded-b-lg text-mainWhite">
-          <p>No results found for {query}</p>
+        <div className="grid w-full py-4 text-gray-400 bg-gray-800 rounded-b-lg place-items-center">
+          <p>No results found for "{query}"</p>
         </div>
       );
     }

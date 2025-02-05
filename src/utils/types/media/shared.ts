@@ -61,3 +61,7 @@ export type URL = {
   link: string;
   type: string;
 };
+
+export type SearchSchemaValidationStatus = {
+  success?: boolean;
+};

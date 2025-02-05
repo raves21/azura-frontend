@@ -21,7 +21,7 @@ export default function ContentOption({
       {...linkProps}
       onClick={() => onSelectOption(option)}
       className={cn(
-        "grid flex-1 py-3 place-items-center",
+        "grid flex-1 py-3 place-items-center transition-colors",
         isEqual(option, selectedOption)
           ? "decoration-mainAccent underline underline-offset-4"
           : "hover:bg-socialPrimaryHover"

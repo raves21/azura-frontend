@@ -13,7 +13,7 @@ import {
   useTVRecommendations,
   useTVSeasonEpisodes
 } from "@/services/media/tv/tvQueries";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
@@ -23,18 +23,18 @@ const tvInfoPageSchema = z.object({
 
 export const Route = createFileRoute("/_protected/tv/$tvId/")({
   component: () => <TVInfoPage />,
-  validateSearch: (search) => tvInfoPageSchema.parse(search),
-  beforeLoad: ({ search, params }) => {
-    const { tvId } = params;
+  validateSearch: (search) => {
     const validated = tvInfoPageSchema.safeParse(search);
-    if (validated.error) {
-      throw redirect({ to: "/tv/$tvId", params: { tvId } });
+    if (validated.success) {
+      return validated.data;
     }
+    return { s: 1 };
   }
 });
 
 function TVInfoPage() {
   const { s } = Route.useSearch();
+
   const { tvId } = Route.useParams();
   const [hasMainSeasons, setHasMainSeasons] = useState(false);
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);

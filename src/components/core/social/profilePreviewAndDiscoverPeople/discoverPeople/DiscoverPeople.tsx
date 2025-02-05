@@ -11,38 +11,42 @@ export default function DiscoverPeople() {
   } = useDiscoverPeople();
 
   if (isDiscoverPeopleLoading) {
-    <div className="flex flex-col w-full gap-3 rounded-lg bg-socialPrimary">
-      <Skeleton className="px-5 pt-5 pb-3 text-lg font-semibold bg-gray-800">
-        Follow suggestions
-      </Skeleton>
-      <div className="px-5 space-y-2">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="flex w-full py-3">
-            <div className="flex items-center gap-3">
-              <Skeleton className="object-cover bg-gray-800 rounded-full size-11" />
-              <div className="space-y-1 text-sm max-w-28">
-                <Skeleton className="font-semibold bg-gray-800 line-clamp-1">
-                  Sample User
-                </Skeleton>
-                <Skeleton className="bg-gray-800 line-clamp-1">
-                  @sampleuser
-                </Skeleton>
+    return (
+      <div className="flex flex-col w-full gap-3 overflow-hidden rounded-lg bg-socialPrimary">
+        <div className="px-5 pt-5 pb-3 text-lg font-semibold text-transparent">
+          &nbsp;
+        </div>
+        <div className="px-5 space-y-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="flex w-full py-3">
+              <div className="flex items-center gap-3">
+                <Skeleton className="object-cover bg-gray-800 rounded-full size-11" />
+                <div className="space-y-1 text-sm max-w-28">
+                  <Skeleton className="font-semibold bg-gray-800 line-clamp-1">
+                    Sample User
+                  </Skeleton>
+                  <Skeleton className="bg-gray-800 line-clamp-1">
+                    @sampleuser
+                  </Skeleton>
+                </div>
               </div>
+              <Skeleton className="ml-auto h-[40px] text-xs font-semibold bg-gray-800 rounded-full px-6">
+                Follow
+              </Skeleton>
             </div>
-            <Skeleton className="ml-auto h-[40px] text-xs font-semibold bg-gray-800 rounded-full px-6">
-              Follow
-            </Skeleton>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="w-full py-4 text-transparent" />
       </div>
-      <div className="w-full py-4 text-transparent" />
-    </div>;
+    );
   }
 
   if (discoverPeopleError) {
-    <div className="w-full gap-3 rounded-lg bg-socialPrimary font-medium text-md h-[300px] grid place-items-center">
-      Error!
-    </div>;
+    return (
+      <div className="w-full gap-3 rounded-lg bg-socialPrimary font-medium text-md h-[300px] grid place-items-center">
+        Error!
+      </div>
+    );
   }
 
   if (discoverPeople) {
@@ -60,6 +64,7 @@ export default function DiscoverPeople() {
                 <Fragment key={page.page}>
                   {page.data.map((userPreview) => (
                     <UserListItem
+                      type="discoverPeople"
                       key={userPreview.id}
                       avatar={userPreview.avatar}
                       bio={userPreview.bio}

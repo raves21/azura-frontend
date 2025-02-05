@@ -3,6 +3,8 @@ import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import { useSearchTV } from "@/services/media/tv/tvQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
+import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 
@@ -11,21 +13,41 @@ const tvSearchResultsPageSchema = z.object({
   page: z.coerce.number().optional()
 });
 
+type TVSearchResultsPageSchema = z.infer<typeof tvSearchResultsPageSchema> &
+  SearchSchemaValidationStatus;
+
 export const Route = createFileRoute("/_protected/tv/catalog/search/")({
   component: () => <TVSearchPage />,
-  validateSearch: (search) => tvSearchResultsPageSchema.parse(search)
+  validateSearch: (search): TVSearchResultsPageSchema => {
+    const validated = tvSearchResultsPageSchema.safeParse(search);
+    if (validated.success) {
+      return {
+        ...validated.data,
+        success: true
+      };
+    }
+    return {
+      query: "",
+      success: false
+    };
+  }
 });
 
 function TVSearchPage() {
   useCustomScrollRestoration();
-  const { query, page } = Route.useSearch();
+  const { query, page, success } = Route.useSearch();
+  const navigate = useNavigate();
+
+  useHandleSearchValidationFailure({
+    isValidationFail: !success || !query,
+    onValidationError: () => navigate({ to: "/tv" })
+  });
+
   const {
     data: tvSearchResults,
     isLoading: tvSearchResultsLoading,
     error: tvSearchResultsError
   } = useSearchTV(query, page || 1, true);
-
-  const navigate = useNavigate();
 
   if (tvSearchResultsLoading) {
     return (

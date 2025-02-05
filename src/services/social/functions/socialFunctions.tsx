@@ -2,10 +2,10 @@ import { queryClient } from "@/utils/variables/queryClient";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
-  CommentsRequest,
+  PaginatedCommentsResponse,
   Media,
-  PeoplePreviewResponse,
-  PostsRequest,
+  PaginatedUserPreviewsResponse,
+  PaginatedPostsResponse,
   TCollection,
   TPost,
   TPostComment,
@@ -98,7 +98,7 @@ export async function createPost_PostsCacheMutation({
       privacy
     };
   }
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     queryFilter,
     (oldData) => {
       const firstPage = oldData?.pages[0];
@@ -147,7 +147,7 @@ export async function post_ReactionCacheMutation({
   type
 }: LikeUnlikePostCacheMutation) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -271,7 +271,7 @@ export async function createComment_CommentsCacheMutation({
 }: CreateCommentCommentsCacheMutationArgs) {
   await queryClient.cancelQueries({ queryKey: COMMENTS_QUERY_FILTER(postId) });
 
-  queryClient.setQueriesData<InfiniteData<CommentsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, unknown>>(
     { queryKey: COMMENTS_QUERY_FILTER(postId) },
     (oldData) => {
       const firstPage = oldData?.pages[0];
@@ -320,7 +320,7 @@ export async function post_TotalCommentsCacheMutation({
   incrementTotalComments
 }: PostTotalCommentsCacheMutationArgs) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -350,7 +350,7 @@ export async function post_TotalCommentsCacheMutation({
 
 export async function deletePost_PostsCacheMutation(postId: string) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -370,7 +370,7 @@ export async function deletePost_PostsCacheMutation(postId: string) {
 
 export async function editPost_PostsCacheMutation(postToEdit: TPost) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -453,7 +453,7 @@ export async function editUserProfile_PostsCacheMutation({
   avatar
 }: EditUserProfileCacheMutationArgs) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -525,58 +525,56 @@ export async function followUser_UserPreviewListCacheMutation({
   userHandle
 }: FollowUnfollowCacheMutationArgs) {
   await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
-  queryClient.setQueriesData<InfiniteData<PeoplePreviewResponse, unknown>>(
-    USER_PREVIEW_LIST_QUERY_KEY,
-    (oldData) => {
-      if (!oldData) return undefined;
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedUserPreviewsResponse, unknown>
+  >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
+    if (!oldData) return undefined;
 
-      const newPages = oldData.pages.map((page) => ({
-        ...page,
-        data: page.data.map((userPreview) => {
-          if (userPreview.handle === userHandle) {
-            return {
-              ...userPreview,
-              isFollowedByCurrentUser: true
-            };
-          }
-          return userPreview;
-        })
-      }));
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.map((userPreview) => {
+        if (userPreview.handle === userHandle) {
+          return {
+            ...userPreview,
+            isFollowedByCurrentUser: true
+          };
+        }
+        return userPreview;
+      })
+    }));
 
-      return {
-        pageParams: oldData.pageParams,
-        pages: newPages
-      };
-    }
-  );
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages
+    };
+  });
 }
 
 export async function unfollowUser_UserPreviewListCacheMutation({
   userHandle
 }: FollowUnfollowCacheMutationArgs) {
   await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
-  queryClient.setQueriesData<InfiniteData<PeoplePreviewResponse, unknown>>(
-    USER_PREVIEW_LIST_QUERY_KEY,
-    (oldData) => {
-      if (!oldData) return undefined;
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedUserPreviewsResponse, unknown>
+  >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
+    if (!oldData) return undefined;
 
-      const newPages = oldData.pages.map((page) => ({
-        ...page,
-        data: page.data.map((userPreview) => {
-          if (userPreview.handle === userHandle) {
-            return {
-              ...userPreview,
-              isFollowedByCurrentUser: false
-            };
-          }
-          return userPreview;
-        })
-      }));
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.map((userPreview) => {
+        if (userPreview.handle === userHandle) {
+          return {
+            ...userPreview,
+            isFollowedByCurrentUser: false
+          };
+        }
+        return userPreview;
+      })
+    }));
 
-      return {
-        pageParams: oldData.pageParams,
-        pages: newPages
-      };
-    }
-  );
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages
+    };
+  });
 }

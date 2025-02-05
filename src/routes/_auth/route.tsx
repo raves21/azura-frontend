@@ -1,9 +1,11 @@
 import StaticLoadingPage from "@/components/core/StaticLoadingPage";
 import Waves from "@/components/core/Waves";
 import { useRefreshJWT } from "@/services/auth/authQueries";
+import { LastMediaRouteVisited } from "@/utils/types/shared";
 import {
   createFileRoute,
   Link,
+  LinkProps,
   Navigate,
   Outlet
 } from "@tanstack/react-router";
@@ -21,7 +23,28 @@ function AuthLayout() {
   }
 
   if (accessToken) {
-    return <Navigate to="/anime" />;
+    //get the value of the last media route visited from localStorage (either anime/tv/movie)
+    const lastMediaRouteVisited = localStorage.getItem(
+      "lastMediaRouteVisited"
+    ) as LastMediaRouteVisited | null;
+    let authenticatedGotoLink: LinkProps;
+    if (lastMediaRouteVisited) {
+      switch (lastMediaRouteVisited) {
+        case "anime":
+          authenticatedGotoLink = { to: "/anime" };
+          break;
+        case "movie":
+          authenticatedGotoLink = { to: "/movie" };
+          break;
+        case "tv":
+          authenticatedGotoLink = { to: "/tv" };
+          break;
+      }
+      //if no lastMediaRouteVisited in localStorage, default to /movie
+    } else {
+      authenticatedGotoLink = { to: "/movie" };
+    }
+    return <Navigate {...authenticatedGotoLink} />;
   }
 
   return (
