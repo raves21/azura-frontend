@@ -82,7 +82,7 @@ export default function SocialSearchDialog() {
             ref={searchInputRef}
             type="text"
             className={cn(
-              "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-b-lg size-full",
+              "focus:outline-none p-5 text-sm mobile-m:text-md sm:text-base md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-b-lg size-full",
               {
                 "rounded-b-none": debouncedSearch || searchPeopleError
               }
@@ -108,7 +108,7 @@ export default function SocialSearchDialog() {
           ref={searchInputRef}
           type="text"
           className={cn(
-            "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-b-lg size-full",
+            "focus:outline-none p-5 text-sm mobile-m:text-md sm:text-base md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-b-lg size-full",
             {
               "rounded-b-none": debouncedSearch || searchPostsError
             }

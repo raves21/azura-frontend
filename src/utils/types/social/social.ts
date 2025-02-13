@@ -30,7 +30,7 @@ export type TPost = {
   owner: EntityOwner;
   media: Media | null;
   collection: TCollection | null;
-  createdAt: Date;
+  createdAt: string;
 };
 
 export type TPostInfo = TPost & {
@@ -87,7 +87,7 @@ export type TPostComment = {
   postId: string;
   content: string;
   author: EntityOwner;
-  createdAt: Date;
+  createdAt: string;
 };
 export type UserProfile = UserBasicInfo & {
   banner: string | null;

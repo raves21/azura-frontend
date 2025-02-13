@@ -1,16 +1,17 @@
 import { cn } from "@/lib/utils";
 import { Circle, Users, Globe, Lock } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserAvatar from "../../UserAvatar";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import {
   LinkProps,
   Navigate,
   useMatchRoute,
-  Link,
+  Link
 } from "@tanstack/react-router";
 import { TPost, TPostComment } from "@/utils/types/social/social";
 import PostOptionsDropdown from "./PostOptionsDropdown";
+import { formatToRelativeTime } from "@/services/social/functions/socialFunctions";
 
 type PostProps = {
   type: "post";
@@ -44,11 +45,25 @@ export default function ActivityHeader({
     props.type === "post"
       ? props.post.owner.handle
       : props.comment.author.handle;
+  const createdAt =
+    props.type === "post" ? props.post.createdAt : props.comment.createdAt;
 
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({
-    to: "/social/$userHandle/posts/$postId",
+    to: "/social/$userHandle/posts/$postId"
   });
+  const [relativeTimeCreated, setRelativeTimeCreated] = useState<string>(
+    formatToRelativeTime(createdAt)
+  );
+
+  //for changing the formatted relative time of the post's/comment's createdAt for every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRelativeTimeCreated(formatToRelativeTime(createdAt));
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
@@ -73,7 +88,7 @@ export default function ActivityHeader({
             onClick={(e) => e.stopPropagation()}
             to="/social/$userHandle"
             params={{
-              userHandle: handle,
+              userHandle: handle
             }}
             className="font-semibold hover:underline hover:decoration-[0.5px] hover:underline-offset-4 hover:decoration-mainWhite text-ellipsis whitespace-nowrap overflow-hidden max-w-[130px] mobile-m:max-w-[150px] mobile-l:max-w-[200px] sm:max-w-[380px] md:max-w-[250px] lg:max-w-[380px]"
           >
@@ -96,7 +111,7 @@ export default function ActivityHeader({
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
                         {
-                          "opacity-90": isPrivacyHovered,
+                          "opacity-90": isPrivacyHovered
                         }
                       )}
                     >
@@ -111,7 +126,7 @@ export default function ActivityHeader({
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
                         {
-                          "opacity-90": isPrivacyHovered,
+                          "opacity-90": isPrivacyHovered
                         }
                       )}
                     >
@@ -126,7 +141,7 @@ export default function ActivityHeader({
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
                         {
-                          "opacity-90": isPrivacyHovered,
+                          "opacity-90": isPrivacyHovered
                         }
                       )}
                     >
@@ -138,7 +153,7 @@ export default function ActivityHeader({
               <Circle className="stroke-none fill-socialTextSecondary size-1" />
             </>
           )}
-          <p className="text-gray-500">2 hours ago</p>
+          <p className="text-gray-500">{relativeTimeCreated}</p>
         </div>
       </div>
       {props.type === "post" && props.post.owner.id === currentUser.id && (

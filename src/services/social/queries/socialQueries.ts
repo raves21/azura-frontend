@@ -39,7 +39,7 @@ import {
   unFollowUser_UserProfileCacheMutation,
   followUser_UserPreviewListCacheMutation,
   unfollowUser_UserPreviewListCacheMutation
-} from "../functions/socialFunctions";
+} from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export function useForYouFeed() {
@@ -254,7 +254,7 @@ export function useCreatePostComment() {
       const newComment: TPostComment = {
         author: currentUser,
         content,
-        createdAt: new Date(),
+        createdAt: new Date().toString(),
         postId,
         id
       };
@@ -467,7 +467,7 @@ export function useUserFollowerList(userId: string, currentUserId: string) {
 
 export function useSearchPeople(query: string, enabled: boolean) {
   return useInfiniteQuery({
-    queryKey: ["searchPeople", query],
+    queryKey: ["searchPeople", "userPreviewList", query],
     queryFn: async () => {
       const { data: searchPeopleResults } = await api.get("/search/users", {
         params: {
@@ -487,7 +487,6 @@ export function useSearchPosts(query: string, enabled: boolean) {
   return useInfiniteQuery({
     queryKey: ["searchPosts", query],
     queryFn: async () => {
-      console.log("SEARCHPOSTSQUERYfn");
       const { data: searchPostsResults } = await api.get("/search/posts", {
         params: {
           query

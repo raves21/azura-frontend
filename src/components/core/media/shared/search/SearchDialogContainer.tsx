@@ -14,11 +14,12 @@ export default function SearchDialogContainer({ children }: PropsWithChildren) {
     );
 
   const matchRoute = useMatchRoute();
+  const isSocialRoute = matchRoute({ to: "/social", fuzzy: true })
 
-  if (matchRoute({ to: "/social", fuzzy: true })) {
+  if (isSocialRoute) {
     return (
       <div className="w-dvw sm:px-8 md:max-w-[800px] px-2 flex flex-col">
-        <div className="flex w-full overflow-hidden font-medium text-gray-300 bg-gray-800 rounded-t-lg">
+        <div className="flex w-full overflow-hidden text-sm font-medium text-gray-300 bg-gray-800 rounded-t-lg mobile-m:text-md md:text-base">
           <button
             onClick={() => setSelectedSocialSearchOption("people")}
             className={cn("grid flex-grow py-4 place-items-center", {
