@@ -28,6 +28,7 @@ export default function VideoPlayer({
   subtitleTracks,
   ...props
 }: VideoPlayerProps) {
+
   return (
     <div
       {...props}
@@ -39,7 +40,7 @@ export default function VideoPlayer({
       {streamLink ? (
         <MediaPlayer
           crossOrigin
-          playsInline
+          playsInline={false}
           className="rounded-none size-full"
           title={title}
           src={`${import.meta.env.VITE_ANIME_PROXY_URL}/proxy?url=${encodeURIComponent(btoa(streamLink))}&headers=${btoa(JSON.stringify(headers))}`}
@@ -50,12 +51,13 @@ export default function VideoPlayer({
             <Poster className="vds-poster" />
             {subtitleTracks?.map((sub) => (
               <Track
-                default
+                default={sub.lang.startsWith("English")}
                 id={sub.url}
                 kind="subtitles"
                 src={sub.url}
                 label={sub.lang}
                 key={sub.url}
+                
               />
             ))}
           </MediaProvider>

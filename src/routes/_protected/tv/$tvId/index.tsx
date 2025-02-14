@@ -74,7 +74,7 @@ function TVInfoPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [tvId]);
 
   if (isTvInfoLoading || isTVRecommendationsLoading) {
     return (

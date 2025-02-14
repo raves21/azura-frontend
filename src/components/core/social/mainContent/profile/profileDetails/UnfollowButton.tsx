@@ -1,6 +1,8 @@
 import { useUnfollowUser } from "@/services/social/queries/socialQueries";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { X, Check } from "lucide-react";
 import { useState } from "react";
+import { Navigate } from "@tanstack/react-router";
 
 type UnfollowButtonProps = {
   type: "profilePage" | "userPreview";
@@ -17,10 +19,13 @@ export default function UnfollowButton({
   const [isHoveringFollowingButton, setIsHoveringFollowingButton] =
     useState(false);
 
+  const currentUser = useAuthStore((state) => state.currentUser)
+    if(!currentUser) return <Navigate to="/login" replace/>
+
   if (type === "profilePage") {
     return (
       <button
-        onClick={async () => await unfollowUser({ userId, userHandle })}
+        onClick={async () => await unfollowUser({ userId, userHandle, currentUserHandle: currentUser.handle })}
         onMouseEnter={() => setIsHoveringFollowingButton(true)}
         onMouseLeave={() => setIsHoveringFollowingButton(false)}
         className="flex items-center self-end gap-2 px-4 py-2 font-semibold transition-colors border border-gray-600 rounded-full sm:px-5 lg:text-md hover:text-red-500 hover:border-red-500 lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs hover:bg-red-500/20"
@@ -43,7 +48,7 @@ export default function UnfollowButton({
     <button
       onClick={async (e) => {
         e.stopPropagation();
-        await unfollowUser({ userId, userHandle });
+        await unfollowUser({ userId, userHandle, currentUserHandle: currentUser.handle });
       }}
       onMouseEnter={() => setIsHoveringFollowingButton(true)}
       onMouseLeave={() => setIsHoveringFollowingButton(false)}

@@ -53,10 +53,10 @@ export default function DiscoverPeople() {
     return (
       <div className="flex flex-col w-full gap-3 rounded-lg justfiy-center bg-socialPrimary">
         <p className="px-5 pt-5 pb-3 text-lg font-semibold">
-          Follow suggestions
+          Discover People
         </p>
         {discoverPeople.pages[0].data.length === 0 ? (
-          <p className="self-center">No users yet.</p>
+          <p className="self-center my-6 text-base font-md text-socialTextSecondary">No users yet.</p>
         ) : (
           <>
             <div className="space-y-2">

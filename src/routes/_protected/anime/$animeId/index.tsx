@@ -33,7 +33,7 @@ function AnimeInfoPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [animeId]);
 
   if (isAnimeInfoLoading) {
     return (

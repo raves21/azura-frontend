@@ -1,15 +1,9 @@
-import FeedPostsSkeleton from "@/components/core/loadingSkeletons/social/FeedPostsSkeleton";
-import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
-import ContentOptions from "@/components/core/social/mainContent/contentOptions/ContentOptions";
-import CreatePost from "@/components/core/social/mainContent/post/managePost/CreatePost";
-import Post from "@/components/core/social/mainContent/post/Post";
-import { useForYouFeed } from "@/services/social/queries/socialQueries";
+import FollowingFeed from "@/components/core/social/mainContent/feed/FollowingFeed";
+import ForYouFeed from "@/components/core/social/mainContent/feed/ForYouFeed";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { TContentOption } from "@/utils/types/social/shared";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/")({
   component: () => <SocialPage />
@@ -37,62 +31,9 @@ function SocialPage() {
 
   const [selectedFeedOption, setSelectedFeedOption] = useState(feedOptions[0]);
 
-  const {
-    data: forYouFeed,
-    isLoading: isForYouFeedLoading,
-    error: forYouFeedError,
-    isFetchingNextPage,
-    fetchNextPage
-  } = useForYouFeed();
-
-  const ref = useFetchNextPageInView(fetchNextPage);
-
-  if (isForYouFeedLoading) {
-    return <FeedPostsSkeleton />;
+  if(selectedFeedOption === feedOptions[0]){
+    return <ForYouFeed feedOptions={feedOptions} selectedFeedOption={selectedFeedOption} setSelectedFeedOption={setSelectedFeedOption}/>
   }
+  return <FollowingFeed feedOptions={feedOptions} selectedFeedOption={selectedFeedOption} setSelectedFeedOption={setSelectedFeedOption}/>
 
-  if (forYouFeedError) {
-    return (
-      <div className="w-full pb-24 text-lg font-medium text-center pt-28">
-        There was an error fetching the feed.
-      </div>
-    );
-  }
-
-  if (forYouFeed) {
-    return (
-      <div className="flex flex-col w-full gap-3 pb-24">
-        <CreatePost />
-        <ContentOptions
-          contentOptions={feedOptions}
-          selectedOption={selectedFeedOption}
-          setSelectedOption={setSelectedFeedOption}
-        />
-        {forYouFeed.pages[0].data.length === 0 ? (
-          <p className="w-full mt-16 text-lg font-medium text-center">
-            No posts yet.
-          </p>
-        ) : (
-          <div className="flex flex-col w-full gap-3">
-            {forYouFeed.pages.map((page) => (
-              <Fragment key={page.page}>
-                {page.data.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </Fragment>
-            ))}
-            <div ref={ref} key={"bottom of page"}>
-              {isFetchingNextPage ? (
-                <PostsSkeleton loadingType="fetchingNextPage" />
-              ) : (
-                <p className="w-full mt-8 text-lg font-medium text-center">
-                  You're all caught up!
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
 }

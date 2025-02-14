@@ -485,11 +485,14 @@ export async function editUserProfile_PostsCacheMutation({
 
 type FollowUnfollowCacheMutationArgs = {
   userHandle: string;
+  currentUserHandle: string
 };
 
 export function followUser_UserProfileCacheMutation({
-  userHandle
+  userHandle,
+  currentUserHandle
 }: FollowUnfollowCacheMutationArgs) {
+  //mutate the other user's totalFollowers
   queryClient.setQueryData<UserProfile>(
     USER_PROFILE_QUERY_KEY(userHandle),
     (oldData) => {
@@ -502,11 +505,27 @@ export function followUser_UserProfileCacheMutation({
       };
     }
   );
+  //mutate the current user's totalFollowing
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing + 1
+      };
+    }
+  );
+  
 }
 
 export function unFollowUser_UserProfileCacheMutation({
-  userHandle
+  userHandle,
+  currentUserHandle
 }: FollowUnfollowCacheMutationArgs) {
+
+  //mutate the other user's totalFollowers
   queryClient.setQueryData<UserProfile>(
     USER_PROFILE_QUERY_KEY(userHandle),
     (oldData) => {
@@ -519,11 +538,52 @@ export function unFollowUser_UserProfileCacheMutation({
       };
     }
   );
+
+  //mutate the current user's totalFollowing
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing - 1
+      };
+    }
+  );
+}
+
+export function followUser_CurrentUserProfilePreviewCacheMutation({currentUserHandle} : Pick<FollowUnfollowCacheMutationArgs, "currentUserHandle">){
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing + 1
+      };
+    }
+  )
+}
+
+export function unfollowUser_CurrentUserProfilePreviewCacheMutation({currentUserHandle} : Pick<FollowUnfollowCacheMutationArgs, "currentUserHandle">){
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing - 1
+      };
+    }
+  )
 }
 
 export async function followUser_UserPreviewListCacheMutation({
   userHandle
-}: FollowUnfollowCacheMutationArgs) {
+}: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
   await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
   queryClient.setQueriesData<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>
@@ -552,7 +612,7 @@ export async function followUser_UserPreviewListCacheMutation({
 
 export async function unfollowUser_UserPreviewListCacheMutation({
   userHandle
-}: FollowUnfollowCacheMutationArgs) {
+}: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
   await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
   queryClient.setQueriesData<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>
