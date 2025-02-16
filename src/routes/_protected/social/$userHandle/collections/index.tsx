@@ -10,7 +10,7 @@ import { Fragment } from "react/jsx-runtime";
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/"
 )({
-  component: () => <CollectionsPage />
+  component: () => <CollectionsPage />,
 });
 
 function CollectionsPage() {
@@ -23,10 +23,10 @@ function CollectionsPage() {
     isLoading: isUserCollectionsLoading,
     error: userCollectionsError,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = useUserCollections(userHandle, currentUser?.handle);
 
-  const ref = useFetchNextPageInView(fetchNextPage);
+  const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -63,8 +63,8 @@ function CollectionsPage() {
                   to: "/social/$userHandle/collections/$collectionId",
                   params: {
                     userHandle: userHandle,
-                    collectionId: collection.id
-                  }
+                    collectionId: collection.id,
+                  },
                 }}
                 key={collection.id}
                 name={collection.name}
@@ -77,7 +77,7 @@ function CollectionsPage() {
               />
             ))}
             {isFetchingNextPage && (
-              <div ref={ref} key={"bottom of page"}>
+              <div ref={bottomPageRef} key={"bottom of page"}>
                 <UserCollectionsSkeleton />
               </div>
             )}

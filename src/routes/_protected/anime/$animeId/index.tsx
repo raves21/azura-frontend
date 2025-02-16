@@ -1,23 +1,23 @@
 import {
   useFetchAnimeEpisodes,
-  useFetchAnimeInfo
+  useFetchAnimeInfo,
 } from "@/services/media/anime/queries/animeQueries";
 import { createFileRoute } from "@tanstack/react-router";
 import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
 import { useEffect } from "react";
-import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
+// import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import InfoPageAnimeEpisodes from "@/components/core/media/anime/episodesList/InfoPageAnimeEpisodes";
 import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
 
-const anilistGenres = Object.values(AnimeGenre).map((genre) =>
-  genre.toString()
-);
-
+// const anilistGenres = Object.values(AnimeGenre).map((genre) =>
+//   genre.toString()
+// );
+//
 export const Route = createFileRoute("/_protected/anime/$animeId/")({
-  component: () => <AnimeInfoPage />
+  component: () => <AnimeInfoPage />,
 });
 
 function AnimeInfoPage() {
@@ -25,10 +25,16 @@ function AnimeInfoPage() {
 
   const episodesQuery = useFetchAnimeEpisodes(animeId);
 
+  // const {
+  //   data: animeInfo,
+  //   isLoading: isAnimeInfoLoading,
+  //   error: animeInfoError,
+  // } = useFetchAnimeInfo(animeId);
+
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
-    error: animeInfoError
+    error: animeInfoError,
   } = useFetchAnimeInfo(animeId);
 
   useEffect(() => {
@@ -59,57 +65,69 @@ function AnimeInfoPage() {
   }
 
   if (animeInfo) {
-    const { animeInfoAnilist, animeInfoAnify } = animeInfo;
+    // const {animeInfoAnilist, animeInfoAnify} = animeInfo
     return (
       <main className="w-full pb-32">
         <AnimeInfoPageHero
           episodesQuery={episodesQuery}
           animeId={animeId}
-          title={
-            animeInfoAnilist?.title.english ||
-            animeInfoAnilist?.title.romaji ||
-            animeInfoAnify?.title.english ||
-            animeInfoAnify?.title.romaji
+          title={animeInfo?.title.english || animeInfo?.title.romaji || "N/A"}
+          cover={
+            // animeInfoAnify?.bannerImage ||
+            animeInfo?.cover
           }
-          cover={animeInfoAnify?.bannerImage || animeInfoAnilist?.cover}
-          image={animeInfoAnilist?.image || animeInfoAnify?.coverImage}
+          image={
+            animeInfo?.image
+            // || animeInfoAnify?.coverImage
+          }
           description={
-            animeInfoAnilist?.description || animeInfoAnify?.description
+            animeInfo?.description
+            // || animeInfoAnify?.description
           }
           genres={
-            animeInfoAnilist?.genres ||
-            animeInfoAnify?.genres?.filter((anifyGenre) =>
-              anilistGenres.includes(anifyGenre)
-            ) ||
+            animeInfo?.genres ||
+            // animeInfoAnify?.genres?.filter((anifyGenre) =>
+            //   anilistGenres.includes(anifyGenre)
+            // ) ||
             undefined
           }
-          status={animeInfoAnilist?.status || animeInfoAnify?.status}
-          totalEpisodes={
-            animeInfoAnilist?.totalEpisodes || animeInfoAnify?.totalEpisodes
+          status={
+            animeInfo?.status
+            // || animeInfoAnify?.status
           }
-          type={animeInfoAnilist?.type || animeInfoAnify?.format}
-          year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
+          totalEpisodes={
+            animeInfo?.totalEpisodes
+            //  || animeInfoAnify?.totalEpisodes
+          }
+          type={
+            animeInfo?.type
+            // || animeInfoAnify?.format
+          }
+          year={
+            animeInfo?.releaseDate
+            // || animeInfoAnify?.year
+          }
           rating={
-            animeInfoAnilist?.rating * 0.1 ||
-            animeInfoAnify?.rating?.anilist ||
+            animeInfo?.rating * 0.1 ||
+            // animeInfoAnify?.rating?.anilist ||
             null
           }
         />
         <InfoPageAnimeEpisodes
           episodesQuery={episodesQuery}
           replace={false}
-          type={animeInfoAnilist?.type}
+          type={animeInfo?.type}
           episodeImageFallback={
-            animeInfoAnilist?.cover ||
-            animeInfoAnify?.coverImage ||
-            animeInfoAnilist?.image ||
-            animeInfoAnify?.bannerImage
+            animeInfo?.cover ||
+            // animeInfoAnify?.coverImage ||
+            animeInfo?.image
+            // || animeInfoAnify?.bannerImage
           }
         />
-        {animeInfoAnilist?.recommendations &&
-          animeInfoAnilist?.recommendations.length !== 0 && (
+        {animeInfo?.recommendations &&
+          animeInfo?.recommendations.length !== 0 && (
             <CategoryCarousel
-              carouselItems={animeInfoAnilist.recommendations}
+              carouselItems={animeInfo.recommendations}
               categoryName="Recommendations:"
               renderCarouselItems={(recommendation, i) => {
                 return (
@@ -118,7 +136,7 @@ function AnimeInfoPage() {
                       image={recommendation.image || recommendation.cover}
                       linkProps={{
                         to: "/anime/$animeId",
-                        params: { animeId: `${recommendation.id}` }
+                        params: { animeId: `${recommendation.id}` },
                       }}
                       subLabels={[recommendation.type, recommendation.status]}
                       title={

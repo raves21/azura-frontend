@@ -3,7 +3,7 @@ import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
 import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPoster";
 import PlayNowButton from "@/components/core/media/shared/info/PlayNowButton";
-import AddToListButton from "@/components/core/media/shared/info/AddToListButton";
+import ToggleMediaToCollectionButton from "@/components/core/media/shared/toggleMediaToCollection/ToggleMediaToCollectionButton";
 import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
@@ -39,7 +39,7 @@ export default function MovieInfoPageHero({
   genres,
   voteAverage,
   movieId,
-  mediaScraperQuery
+  mediaScraperQuery,
 }: MovieInfoPageHeroProps) {
   const navigate = useNavigate();
 
@@ -79,11 +79,21 @@ export default function MovieInfoPageHero({
               onClick={() => {
                 navigate({
                   to: "/movie/$movieId/watch",
-                  params: { movieId }
+                  params: { movieId },
                 });
               }}
             />
-            <AddToListButton />
+            <ToggleMediaToCollectionButton
+              mediaId={movieId}
+              mediaType="MOVIE"
+              coverImage={cover}
+              description={description}
+              posterImage={image}
+              rating={voteAverage?.toString() ?? null}
+              status={status}
+              title={title}
+              year={year}
+            />
           </div>
 
           <Description

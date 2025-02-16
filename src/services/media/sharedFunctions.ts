@@ -2,8 +2,8 @@ import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function getTMDBImageURL(backdropPath: string) {
-  return `https://image.tmdb.org/t/p/original${backdropPath}`;
+export function getTMDBImageURL(imagePath: string) {
+  return `https://image.tmdb.org/t/p/original${imagePath}`;
 }
 
 export function getTMDBReleaseYear(releaseDate: string) {
@@ -40,9 +40,7 @@ export function useMediaScraper({
 
       const { data: mediaScraperResponse } = await axios.get(url);
 
-      if (
-        mediaScraperResponse.message === "Sorry, the media isn't available ATM"
-      ) {
+      if (mediaScraperResponse.message) {
         throw new Error("Media unavailable.");
       }
 

@@ -49,6 +49,7 @@ export default function CollectionPhoto({
     <div
       className={cn(
         "grid shrink-0 aspect-[1/1] gap-[0.5px] size-52 rounded-md overflow-hidden grid-cols-2",
+        { "grid-cols-1": props.previewPosters.length === 1 },
         className
       )}
     >

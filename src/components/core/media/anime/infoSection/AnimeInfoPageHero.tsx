@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   AnimeEpisodesData,
   AnimeGenre,
-  AnimeStatus
+  AnimeStatus,
 } from "@/utils/types/media/anime/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
@@ -12,7 +12,7 @@ import Description from "@/components/core/media/shared/info/Description";
 import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPoster";
 import GenreListAnime from "@/components/core/media/shared/info/GenreListAnime";
 import PlayNowButton from "@/components/core/media/shared/info/PlayNowButton";
-import AddToListButton from "@/components/core/media/shared/info/AddToListButton";
+import ToggleMediaToCollectionButton from "@/components/core/media/shared/toggleMediaToCollection/ToggleMediaToCollectionButton";
 import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
@@ -21,13 +21,13 @@ import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import {
   animeCancelledStatus,
   animeCompletedStatus,
-  animeOngoingStatus
+  animeOngoingStatus,
 } from "@/utils/variables/media/anime";
 
 type AnimeInfoPageHeroProps = {
   image: string | undefined;
   cover: string | undefined;
-  title: string | undefined;
+  title: string;
   description: string | undefined;
   totalEpisodes: number | undefined;
   year: number | undefined;
@@ -51,7 +51,7 @@ export default function AnimeInfoPageHero({
   genres,
   rating,
   animeId,
-  episodesQuery
+  episodesQuery,
 }: AnimeInfoPageHeroProps) {
   const navigate = useNavigate();
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
@@ -91,7 +91,7 @@ export default function AnimeInfoPageHero({
                     ),
                     "text-red-500": animeCancelledStatus.includes(
                       status as AnimeStatus
-                    )
+                    ),
                   })
                 }
               />
@@ -119,12 +119,22 @@ export default function AnimeInfoPageHero({
                     to: "/anime/$animeId/watch",
                     params: { animeId: animeId },
                     search: {
-                      id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, "")
-                    }
+                      id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
+                    },
                   });
               }}
             />
-            <AddToListButton />
+            <ToggleMediaToCollectionButton
+              mediaId={animeId}
+              mediaType="ANIME"
+              coverImage={cover ?? null}
+              description={description ?? null}
+              posterImage={image ?? null}
+              rating={rating?.toString() ?? null}
+              status={status ?? null}
+              title={title}
+              year={year?.toString() ?? null}
+            />
           </div>
 
           <Description
@@ -153,7 +163,7 @@ export default function AnimeInfoPageHero({
                     ),
                     "text-red-500": animeCancelledStatus.includes(
                       status as AnimeStatus
-                    )
+                    ),
                   })
                 }
               />

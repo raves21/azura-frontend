@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
-type UseDebounceArgs = {
+type UseDebounceInputArgs = {
   value: string;
   delay: number;
 };
 
-export function useDebounce({ value, delay }: UseDebounceArgs) {
+export function useDebounceInput({ value, delay }: UseDebounceInputArgs) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {

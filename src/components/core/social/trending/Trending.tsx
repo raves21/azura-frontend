@@ -1,15 +1,26 @@
 import { useTrends } from "@/services/social/queries/socialQueries";
 import TrendingListItem from "./TrendingListItem";
+import TrendingListItemSkeleton from "../../loadingSkeletons/social/TrendingListItemSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Trending() {
   const {
     data: trends,
     isLoading: isTrendsLoading,
-    error: trendsError
+    error: trendsError,
   } = useTrends();
 
   if (isTrendsLoading) {
-    return <div>trends loading</div>;
+    return (
+      <div className="flex flex-col w-full gap-4 overflow-hidden rounded-lg bg-socialPrimary">
+        <Skeleton className="px-5 pt-5 w-[50%] h-[33px] mt-5 ml-5 text-lg font-semibold bg-gray-700" />
+        <div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <TrendingListItemSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (trendsError) {

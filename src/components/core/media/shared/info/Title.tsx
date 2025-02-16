@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 type TitleProps = {
-  title: string | undefined;
+  title: string;
   variant: "infoPage" | "watchPage";
 };
 

@@ -1,4 +1,4 @@
-import { useDebounce } from "@/utils/hooks/useDebounce";
+import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useState } from "react";
 import AnimeSearchDialogResults from "./AnimeSearchDialogResults";
 import { cn } from "@/lib/utils";
@@ -11,10 +11,10 @@ import { useSearchAnime } from "@/services/media/anime/queries/animeQueries";
 
 export default function AnimeSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
-  const debouncedSearch = useDebounce({ value: searchInput, delay: 400 });
+  const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const { searchInputRef } = useFocusInput();
+  const { searchInputRef } = useFocusInput({});
 
   const animeSearchQuery = useSearchAnime(
     debouncedSearch.trim(),
@@ -26,7 +26,7 @@ export default function AnimeSearchDialog() {
     toggleOpenDialog(null);
     navigate({
       to: "/anime/catalog",
-      search: { query: searchInput.trim() }
+      search: { query: searchInput.trim() },
     });
   };
 
@@ -43,7 +43,7 @@ export default function AnimeSearchDialog() {
           className={cn(
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
-              "rounded-b-none": debouncedSearch || animeSearchQueryError
+              "rounded-b-none": debouncedSearch || animeSearchQueryError,
             }
           )}
           placeholder="Search Animes..."
