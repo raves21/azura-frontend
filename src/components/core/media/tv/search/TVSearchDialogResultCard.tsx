@@ -37,9 +37,6 @@ export default function TVSearchDialogResultCard({
         <p className="text-lg font-semibold line-clamp-1">{tv.name}</p>
         <div className="w-full space-y-3 text-sm text-gray-400">
           <div className="flex items-center gap-[6px]">
-            <div className="bg-gray-400 rounded-full size-1" />
-          </div>
-          <div className="flex items-center gap-[6px]">
             <p>{getTMDBReleaseYear(tv.first_air_date)}</p>
             <div className="bg-gray-400 rounded-full size-1" />
             <p>TV</p>
