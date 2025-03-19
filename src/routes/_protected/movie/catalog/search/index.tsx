@@ -3,7 +3,7 @@ import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFil
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import { useSearchMovie } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";

@@ -7,7 +7,7 @@ export function getTMDBImageURL(imagePath: string) {
 }
 
 export function getTMDBReleaseYear(releaseDate: string) {
-  return releaseDate.split("-")[0];
+  return releaseDate ? releaseDate.split("-")[0] : "";
 }
 
 type UseMediaScraperArgs = {
@@ -40,7 +40,7 @@ export function useMediaScraper({
 
       const { data: mediaScraperResponse } = await axios.get(url);
 
-      if (mediaScraperResponse.message) {
+      if (mediaScraperResponse.message || mediaScraperResponse.error) {
         throw new Error("Media unavailable.");
       }
 

@@ -15,7 +15,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AnimeFiltersDialog from "../../../../components/core/media/anime/filter/AnimeFiltersDialog";
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),

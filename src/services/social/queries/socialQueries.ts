@@ -4,7 +4,7 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-import { api } from "@/utils/variables/axiosInstances/authAxiosInstance";
+import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import {
   PaginatedCommentsResponse,
   UserProfile,

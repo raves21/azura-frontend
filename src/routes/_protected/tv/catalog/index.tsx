@@ -4,7 +4,7 @@ import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters
 import TVFiltersDialog from "@/components/core/media/tv/filter/TVFiltersDialog";
 import { useDiscoverTV, useTVGenres } from "@/services/media/tv/tvQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TVGenre, TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";

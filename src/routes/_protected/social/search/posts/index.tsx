@@ -2,7 +2,7 @@ import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkelet
 import Post from "@/components/core/social/mainContent/post/Post";
 import { useSearchPosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Fragment } from "react";

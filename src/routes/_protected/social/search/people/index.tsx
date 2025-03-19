@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchPeople } from "@/services/social/queries/socialQueries";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidation";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
