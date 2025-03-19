@@ -9,6 +9,8 @@ import { useDebounceToggleCollectionItem } from "@/utils/hooks/useDebounceToggle
 import { toggleCollectionItem_MediaExistenceInCollectionsCacheMutation } from "@/services/social/functions/cacheMutations";
 import { useCallback } from "react";
 import { ToggleCollectionItemProperties } from "@/utils/types/media/shared";
+import ManageCollectionDialog from "@/components/core/social/mainContent/collection/manageCollectionDialog/ManageCollectionDialog";
+import { useShallow } from "zustand/react/shallow";
 
 type ToggleMediaToCollectionDialogProps = Omit<
   ToggleCollectionItemProperties,
@@ -103,7 +105,12 @@ export default function ToggleMediaToCollectionDialog({
     []
   );
 
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+  const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
+    useShallow((state) => [
+      state.toggleOpenDialog,
+      state.toggleOpenDialogSecondary,
+    ])
+  );
 
   if (isMediaExistenceInCollectionsLoading) {
     return (
@@ -200,7 +207,14 @@ export default function ToggleMediaToCollectionDialog({
           )}
         </div>
         <div className="w-full p-4">
-          <button className="flex items-center justify-center w-full gap-4 py-3 border rounded-full border-socialTextSecondary hover:border-mainAccent group">
+          <button
+            onClick={() =>
+              toggleOpenDialogSecondary(
+                <ManageCollectionDialog type="create" />
+              )
+            }
+            className="flex items-center justify-center w-full gap-4 py-3 border rounded-full border-socialTextSecondary hover:border-mainAccent group"
+          >
             <Plus className="stroke-mainWhite size-5 group-hover:stroke-mainAccent" />
             <p className="font-semibold text-mainWhite group-hover:text-mainAccent">
               New collection

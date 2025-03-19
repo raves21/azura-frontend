@@ -3,7 +3,7 @@ import {
   EntityOwner,
   EntityPrivacy,
   MediaType,
-  PaginatedResponse
+  PaginatedResponse,
 } from "./shared";
 
 export type PaginatedPostsResponse = PaginatedResponse & {
@@ -59,7 +59,7 @@ export type TCollection = {
   id: string;
   name: string;
   photo: string | null;
-  description: string;
+  description: string | null;
   privacy: EntityPrivacy;
   previewMedias: PreviewMedia[];
   owner: EntityOwner;

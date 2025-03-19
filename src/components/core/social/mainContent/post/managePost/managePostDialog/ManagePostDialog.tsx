@@ -12,12 +12,12 @@ import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
 
 type EditPostProps = {
-  type: "editPost";
+  type: "edit";
   postToEdit: TPost;
 };
 
 type CreatePostProps = {
-  type: "createPost";
+  type: "create";
 };
 
 type ManagePostDialogProps = EditPostProps | CreatePostProps;
@@ -30,7 +30,7 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
       useShallow((state) => [
         state.managePostPage,
         state.setManagePostPage,
-        state.setSelectedPrivacy
+        state.setSelectedPrivacy,
       ])
     );
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -41,9 +41,9 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
     placeholder: `What's the vibe today, ${currentUser?.username.split(" ").slice(0, 2).join(" ")}?`,
     editorProps: {
       attributes: {
-        class: "flex-grow h-full"
-      }
-    }
+        class: "flex-grow h-full",
+      },
+    },
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
     );
 
     //initialize default values
-    if (props.type === "createPost") {
+    if (props.type === "create") {
       if (defaultCreatePostPrivacyPreference) {
         setSelectedPrivacy(defaultCreatePostPrivacyPreference as EntityPrivacy);
       } else {
@@ -65,7 +65,7 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
     } else {
       const { content, privacy } = props.postToEdit;
       if (tipTapEditor && tipTapEditor.editor) {
-        tipTapEditor.setEditorContent(content)
+        tipTapEditor.setEditorContent(content);
       }
       setSelectedPrivacy(privacy);
     }
@@ -75,7 +75,7 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
 
   let currentPage: ReactNode;
   if (managePostPage === "managePost") {
-    if (props.type === "editPost") {
+    if (props.type === "edit") {
       currentPage = (
         <ManagePostPage
           tipTapEditor={tipTapEditor}
@@ -104,7 +104,7 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
           </button>
         )}
         <p className="text-lg font-semibold">
-          {props.type === "editPost" ? "Edit post" : "New post"}
+          {props.type === "edit" ? "Edit post" : "New post"}
         </p>
         {managePostPage === "managePost" && (
           <button

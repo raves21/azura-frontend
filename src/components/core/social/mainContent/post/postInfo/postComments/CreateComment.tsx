@@ -16,7 +16,7 @@ type CreateCommentProps = {
 
 export default function CreateComment({
   author,
-  isFloatingCommentBar
+  isFloatingCommentBar,
 }: CreateCommentProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
 
@@ -26,15 +26,15 @@ export default function CreateComment({
     editorContentInitialHeight,
     editorContentRef,
     inputText,
-    clearEditorContent
+    clearEditorContent,
   } = useTipTapEditor({
     focusOnMount: false,
     placeholder: "Write a comment...",
-    maxLength: 200
+    maxLength: 200,
   });
 
   const { postId } = useParams({
-    from: "/_protected/social/$userHandle/posts/$postId/"
+    from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   const { isMobileMedium } = useWindowBreakpoints();
@@ -54,18 +54,18 @@ export default function CreateComment({
   return (
     <div
       style={{
-        minHeight: editorContentInitialHeight || "auto"
+        minHeight: editorContentInitialHeight || "auto",
       }}
       className={cn("relative flex items-start gap-2 px-3 mobile-m:px-5", {
-        "px-1 mobile-m:px-2": isFloatingCommentBar
+        "px-1 mobile-m:px-2": isFloatingCommentBar,
       })}
     >
       <UserAvatar
         linkProps={{
           to: "/social/$userHandle",
           params: {
-            userHandle: currentUser.handle
-          }
+            userHandle: currentUser.handle,
+          },
         }}
         src={author.avatar ?? "/no-image-2.jpg"}
         className="hidden sm:block"
@@ -75,7 +75,7 @@ export default function CreateComment({
           <EditorContent
             style={{
               maxWidth: editorContentInitialWidth || "auto",
-              width: isSendingComment ? editorContentInitialWidth - 40 : "auto"
+              width: isSendingComment ? editorContentInitialWidth - 40 : "auto",
             }}
             ref={editorContentRef}
             editor={editor}

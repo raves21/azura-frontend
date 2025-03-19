@@ -15,14 +15,14 @@ export default function CreatePost() {
         linkProps={{
           to: "/social/$userHandle",
           params: {
-            userHandle: currentUser.handle
-          }
+            userHandle: currentUser.handle,
+          },
         }}
         src={currentUser.avatar}
         imageClassName="md:size-11"
       />
       <button
-        onClick={() => toggleOpenDialog(<ManagePostDialog type="createPost" />)}
+        onClick={() => toggleOpenDialog(<ManagePostDialog type="create" />)}
         className="flex-grow py-2 mobile-m:text-base px-3 md:p-3 rounded-lg bg-gray-800 hover:bg-[#323b4a] text-start"
       >
         <p>

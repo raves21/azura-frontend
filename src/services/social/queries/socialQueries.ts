@@ -44,6 +44,7 @@ import {
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
+import { queryClient } from "@/utils/variables/queryClient";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -656,6 +657,51 @@ export function useDeleteCollectionItem() {
         mediaType,
         type: "add",
       });
+    },
+  });
+}
+
+type UseCreateCollectionArgs = {
+  name: string;
+  privacy: EntityPrivacy;
+  description: string | null;
+};
+
+export function useCreateCollection() {
+  return useMutation({
+    mutationFn: async ({
+      name,
+      privacy,
+      description,
+    }: UseCreateCollectionArgs) => {
+      await api.post("/collections", { name, privacy, description });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collections"] });
+    },
+  });
+}
+
+type UseEditCollectionArgs = UseCreateCollectionArgs & {
+  collectionId: string;
+};
+
+export function useEditCollection() {
+  return useMutation({
+    mutationFn: async ({
+      collectionId,
+      description,
+      name,
+      privacy,
+    }: UseEditCollectionArgs) => {
+      await api.put(`/collections/${collectionId}`, {
+        description,
+        name,
+        privacy,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collections"] });
     },
   });
 }

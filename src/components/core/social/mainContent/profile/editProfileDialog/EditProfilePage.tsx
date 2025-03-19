@@ -20,9 +20,9 @@ export default function EditProfilePage({
   avatar,
   banner,
   userName,
-  bio
+  bio,
 }: EditProfilePageProps) {
-  const currentUser = useAuthStore((state) => state.currentUser)
+  const currentUser = useAuthStore((state) => state.currentUser);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
     editProfileUsername,
@@ -33,7 +33,7 @@ export default function EditProfilePage({
     setEditProfileBio,
     setEditProfileAvatar,
     setEditProfileBanner,
-    setEditProfilePage
+    setEditProfilePage,
   ] = useEditProfileStore(
     useShallow((state) => [
       state.editProfileUsername,
@@ -44,7 +44,7 @@ export default function EditProfilePage({
       state.setEditProfileBio,
       state.setEditProfileAvatar,
       state.setEditProfileBanner,
-      state.setEditProfilePage
+      state.setEditProfilePage,
     ])
   );
 
@@ -54,16 +54,16 @@ export default function EditProfilePage({
     inputLength: bioInputLength,
     inputText: bioInput,
     setEditorContent: setBioInput,
-    editorContentInitialHeight: bioEditorInitialHeight
+    editorContentInitialHeight: bioEditorInitialHeight,
   } = useTipTapEditor({
     focusOnMount: false,
     placeholder: "eg. Artist, dog-lover, Azura #1 fan",
     maxLength: 150,
     editorProps: {
       attributes: {
-        class: "h-32"
-      }
-    }
+        class: "h-32",
+      },
+    },
   });
 
   const { mutateAsync: editProfile, status: editProfileStatus } =
@@ -101,7 +101,7 @@ export default function EditProfilePage({
       avatar: editProfileAvatar,
       banner: editProfileBanner,
       bio: editProfileBio,
-      username: editProfileUsername
+      username: editProfileUsername,
     });
     toggleOpenDialog(null);
   }
@@ -191,7 +191,7 @@ export default function EditProfilePage({
               editor={bioEditor}
               ref={bioEditorRef}
               style={{
-                maxHeight: bioEditorInitialHeight || "auto"
+                maxHeight: bioEditorInitialHeight || "auto",
               }}
               className="rounded-md border-[0.5px] border-socialTextSecondary box-content px-3 overflow-y-auto py-3"
             />
