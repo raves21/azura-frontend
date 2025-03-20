@@ -8,6 +8,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import CollectionPreview from "../../previewPopup/CollectionPreview";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
+import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 type CollectionAttachmentProps = {
   collection: TCollection;
@@ -19,9 +20,6 @@ export default function CollectionAttachment({
   owner,
 }: CollectionAttachmentProps) {
   let attachmentBg: string | null | undefined;
-  const attachmentPreviewPosters = collection.previewMedias
-    .map((poster) => poster.posterImage)
-    .filter(Boolean) as string[];
 
   if (collection.previewMedias.length !== 0) {
     const previewCoverImage = collection.previewMedias
@@ -73,10 +71,10 @@ export default function CollectionAttachment({
             photo={collection.photo}
             className="h-[60%] mobile-m:h-[65%] w-auto rounded-lg"
           />
-        ) : (
+      ) : (
           <CollectionPhoto
             type="previewPosters"
-            previewPosters={attachmentPreviewPosters}
+            previewPosters={getPreviewPosters(collection.previewMedias)}
             className="h-[60%] mobile-m:h-[65%] w-auto rounded-lg"
           />
         )}

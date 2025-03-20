@@ -15,6 +15,7 @@ import CollectionPhoto from "../CollectionPhoto";
 import { UseTipTapEditorReturnType } from "@/utils/hooks/useTipTapEditor";
 import { EditorContent } from "@tiptap/react";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";
+import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 type EditPostProps = {
   type: "edit";
@@ -76,21 +77,31 @@ export default function ManageCollectionDetailsPage({
 
   useEffect(() => {
     if (createCollectionError) {
-      toggleOpenDialogSecondary(
-        <ErrorDialog
-          error={new Error("An error occured while creating this collection.")}
-          okButtonAction={() => toggleOpenDialogSecondary(null)}
-        />
-      );
+      toggleOpenDialogSecondary(null);
+      setTimeout(() => {
+        toggleOpenDialogSecondary(
+          <ErrorDialog
+            error={
+              new Error("An error occured while creating this collection.")
+            }
+            okButtonAction={() => toggleOpenDialogSecondary(null)}
+          />
+        );
+      }, 180);
     }
 
     if (editCollectionError) {
-      toggleOpenDialogSecondary(
-        <ErrorDialog
-          error={new Error("An error occured while updating this collection.")}
-          okButtonAction={() => toggleOpenDialogSecondary(null)}
-        />
-      );
+      toggleOpenDialogSecondary(null);
+      setTimeout(() => {
+        toggleOpenDialogSecondary(
+          <ErrorDialog
+            error={
+              new Error("An error occured while updating this collection.")
+            }
+            okButtonAction={() => toggleOpenDialogSecondary(null)}
+          />
+        );
+      }, 180);
     }
   }, [createCollectionError, editCollectionError]);
 
@@ -104,9 +115,9 @@ export default function ManageCollectionDetailsPage({
     editedCollection = {
       ...props.collectionToEdit,
       privacy: selectedPrivacy,
-      name: collectionName,
-      description: collectionDescription,
-      photo: collectionPhoto,
+      name: collectionName?.trim() ?? "",
+      description: collectionDescription?.trim() ?? null,
+      photo: collectionPhoto?.trim() ?? null,
     };
     originalCollection = props.collectionToEdit;
     editCollectionNoChanges = isEqual(editedCollection, originalCollection);
@@ -127,11 +138,9 @@ export default function ManageCollectionDetailsPage({
               <CollectionPhoto
                 className="absolute size-full"
                 type="previewPosters"
-                previewPosters={
+                previewPosters={getPreviewPosters(
                   props.collectionToEdit.previewMedias
-                    .map((media) => media.posterImage)
-                    .filter(Boolean) as string[]
-                }
+                )}
               />
             )
           ) : (
@@ -151,7 +160,7 @@ export default function ManageCollectionDetailsPage({
             {collectionPhoto && (
               <button
                 onClick={() => setCollectionPhoto(null)}
-                className="transition-colors rounded-full hover:bg-gray-700/80 size-9 bg-socialPrimary/60 place-items-center"
+                className="transition-colors rounded-full hover:bg-gray-700/80 size-16 bg-socialPrimary/60 place-items-center"
               >
                 <X className="size-[55%] stroke-[1.5px]" />
               </button>
@@ -162,7 +171,7 @@ export default function ManageCollectionDetailsPage({
           <input
             maxLength={30}
             placeholder="Add a name"
-            value={collectionName}
+            value={collectionName ?? ""}
             onChange={(e) => setCollectionName(e.currentTarget.value)}
             type="text"
             className="rounded-md border-[0.5px] text-md w-full border-socialTextSecondary px-3 py-3 focus:outline-none bg-socialPrimary"
@@ -204,6 +213,15 @@ export default function ManageCollectionDetailsPage({
       </div>
       {props.type === "create" ? (
         <button
+          onClick={() => {
+            createCollection({
+              description: collectionDescription,
+              name: collectionName || "",
+              privacy: selectedPrivacy,
+              photo: collectionPhoto,
+            });
+            toggleOpenDialogSecondary(null);
+          }}
           disabled={!collectionName || createCollectionStatus === "pending"}
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
@@ -211,6 +229,18 @@ export default function ManageCollectionDetailsPage({
         </button>
       ) : (
         <button
+          onClick={() => {
+            if (!editCollectionNoChanges) {
+              editCollection({
+                collectionId: props.collectionToEdit.id,
+                description: collectionDescription,
+                name: collectionName || "",
+                photo: collectionPhoto,
+                privacy: selectedPrivacy,
+              });
+            }
+            toggleOpenDialogSecondary(null);
+          }}
           disabled={!collectionName || editCollectionStatus === "pending"}
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >

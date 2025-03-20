@@ -10,6 +10,7 @@ import SelectPrivacyPage from "./SelectPrivacyPage";
 import { ArrowLeft, X } from "lucide-react";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import ManageCollectionPhotoPage from "./ManageCollectionPhotoPage";
+import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 type EditCollectionProps = {
   type: "edit";
@@ -31,6 +32,8 @@ export default function ManageCollectionDialog(
     setSelectedPrivacy,
     setCollectionName,
     setCollectionPhoto,
+    setCollectionPreviewPosters,
+    resetManageCollectionStoreState,
   ] = useManageCollectionStore(
     useShallow((state) => [
       state.manageCollectionPage,
@@ -38,6 +41,8 @@ export default function ManageCollectionDialog(
       state.setSelectedPrivacy,
       state.setCollectionName,
       state.setCollectionPhoto,
+      state.setCollectionPreviewPosters,
+      state.resetState,
     ])
   );
 
@@ -58,11 +63,10 @@ export default function ManageCollectionDialog(
 
   //initialize default values
   useEffect(() => {
-    setManageCollectionPage("manageCollectionDetails");
+    resetManageCollectionStoreState();
     const defaultCreateCollectionPrivacyPreference = localStorage.getItem(
       "defaultCreateCollectionPrivacyPreference"
     );
-
     if (props.type === "create") {
       if (defaultCreateCollectionPrivacyPreference) {
         setSelectedPrivacy(
@@ -77,12 +81,17 @@ export default function ManageCollectionDialog(
       }
     } else {
       //if edit, initialize initial values
-      const { description, name, photo, privacy } = props.collectionToEdit;
+      const { description, name, photo, privacy, previewMedias } =
+        props.collectionToEdit;
       if (description) {
         tipTapEditor.setEditorContent(description);
       }
+      if (photo) {
+        setCollectionPhoto(photo);
+      } else {
+        setCollectionPreviewPosters(getPreviewPosters(previewMedias));
+      }
       setCollectionName(name);
-      setCollectionPhoto(photo);
       setSelectedPrivacy(privacy);
     }
   }, []);
@@ -108,8 +117,7 @@ export default function ManageCollectionDialog(
   } else if (manageCollectionPage === "selectPrivacy") {
     currentPage = <SelectPrivacyPage />;
   } else {
-    const previewPosters: string[] = [];
-    currentPage = <ManageCollectionPhotoPage previewPosters={previewPosters} />;
+    currentPage = <ManageCollectionPhotoPage />;
   }
 
   return (

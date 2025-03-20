@@ -142,7 +142,7 @@ export default function SelectPrivacyPage() {
         }}
         className="grid py-2 font-semibold transition-colors bg-mainAccent rounded-xl place-items-center text-mainWhite"
       >
-        Done
+        Select
       </button>
     </div>
   );

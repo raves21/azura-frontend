@@ -665,6 +665,7 @@ type UseCreateCollectionArgs = {
   name: string;
   privacy: EntityPrivacy;
   description: string | null;
+  photo: string | null
 };
 
 export function useCreateCollection() {
@@ -673,8 +674,9 @@ export function useCreateCollection() {
       name,
       privacy,
       description,
+      photo
     }: UseCreateCollectionArgs) => {
-      await api.post("/collections", { name, privacy, description });
+      await api.post("/collections", { name, privacy, description, photo });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });

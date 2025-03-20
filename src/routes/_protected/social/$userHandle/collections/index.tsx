@@ -6,6 +6,7 @@ import UserCollectionsSkeleton from "@/components/core/loadingSkeletons/social/U
 import Collection from "@/components/core/social/mainContent/collection/Collection";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
+import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/"
@@ -68,11 +69,7 @@ function CollectionsPage() {
                 }}
                 key={collection.id}
                 name={collection.name}
-                previewPosters={
-                  collection.previewMedias
-                    .map((previewMedia) => previewMedia.posterImage)
-                    .filter(Boolean) as string[]
-                }
+                previewPosters={getPreviewPosters(collection.previewMedias)}
                 photo={collection.photo}
               />
             ))}

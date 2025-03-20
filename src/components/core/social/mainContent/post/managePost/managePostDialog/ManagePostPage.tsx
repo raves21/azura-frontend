@@ -50,6 +50,7 @@ export default function ManagePostPage({
   } = tipTapEditor;
   const currentUser = useAuthStore((state) => state.currentUser);
 
+  //todo
   const tempMediaAttachment = tempCollectionItems[1].media;
   const [setManagePostPage, selectedPrivacy] = useManagePostStore(
     useShallow((state) => [state.setManagePostPage, state.selectedPrivacy])
@@ -102,7 +103,7 @@ export default function ManagePostPage({
   if (props.type === "edit") {
     editedPost = {
       ...props.postToEdit,
-      content: inputText,
+      content: inputText?.trim() ?? null,
       collection: null, //todo: should be selectedCollection
       media: null, //todo: should be selectedMedia
       privacy: selectedPrivacy,
@@ -213,9 +214,7 @@ export default function ManagePostPage({
             toggleOpenDialog(null);
           }}
           //todo: disabled should have (!selectedCollection && !selectedMedia && !inputText)
-          disabled={
-            !inputText || editPostStatus === "pending" || editPostNoChanges
-          }
+          disabled={!inputText || editPostStatus === "pending"}
           className="grid py-2 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
           {editPostStatus === "pending" ? "Saving..." : "Save"}
