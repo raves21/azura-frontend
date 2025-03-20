@@ -3,7 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
 import { useDeletePost } from "@/services/social/queries/socialQueries";
@@ -16,7 +16,7 @@ type PostOptionsDropdownProps = {
 };
 
 export default function PostOptionsDropdown({
-  post
+  post,
 }: PostOptionsDropdownProps) {
   const { mutateAsync: deletePost } = useDeletePost(post.id);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -40,7 +40,7 @@ export default function PostOptionsDropdown({
           onClick={(e) => {
             e.stopPropagation();
             toggleOpenDialog(
-              <ManagePostDialog type="editPost" postToEdit={post} />
+              <ManagePostDialog type="edit" postToEdit={post} />
             );
           }}
           className="flex items-center w-full gap-3 py-2 font-medium hover:cursor-pointer group hover:bg-gray-700"

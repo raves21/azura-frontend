@@ -2,24 +2,26 @@ import {
   QueryFilters,
   useInfiniteQuery,
   useMutation,
-  useQuery
+  useQuery,
 } from "@tanstack/react-query";
-import { api } from "@/utils/variables/axiosInstances/authAxiosInstance";
+import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import {
-  CommentsRequest,
+  PaginatedCommentsResponse,
   UserProfile,
   Media,
-  PostsRequest,
+  PaginatedPostsResponse,
   TCollection,
   TPostInfo,
-  CollectionsRequest,
+  PaginatedCollectionsResponse,
   TPost,
-  TPostComment
+  TPostComment,
+  Trend,
+  PaginatedUserPreviewsResponse,
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
   EntityPrivacy,
-  ResponseWithMessage
+  ResponseWithMessage,
 } from "@/utils/types/social/shared";
 import {
   post_ReactionCacheMutation,
@@ -34,20 +36,28 @@ import {
   createComment_CommentsCacheMutation,
   editUserProfile_PostsCacheMutation,
   followUser_UserProfileCacheMutation,
-  unFollowUser_UserProfileCacheMutation
-} from "../functions/socialFunctions";
+  unFollowUser_UserProfileCacheMutation,
+  followUser_UserPreviewListCacheMutation,
+  unfollowUser_UserPreviewListCacheMutation,
+  toggleCollectionItem_MediaExistenceInCollectionsCacheMutation,
+} from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { MediaType } from "@/utils/types/shared";
+import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
+import { queryClient } from "@/utils/variables/queryClient";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
     queryKey: ["posts", "forYouFeed"],
-    queryFn: async ({ pageParam }: { pageParam: number }) => {
-      const { data } = await api.get(`/feed/for-you?page=${pageParam}`);
-      return data as PostsRequest;
+    queryFn: async ({ pageParam }) => {
+      const { data } = await api.get(`/feed/for-you`, {
+        params: { page: pageParam },
+      });
+      return data as PaginatedPostsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
-      result.page === result.totalPages ? undefined : result.page + 1
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
 
@@ -67,7 +77,7 @@ export function useUserProfile(
       const { data } = await api.get(url);
       return data.data as UserProfile;
     },
-    enabled: !!userHandle || !!currentUserHandle
+    enabled: !!userHandle || !!currentUserHandle,
   });
 }
 
@@ -85,13 +95,13 @@ export function useEditUserProfile() {
       username,
       bio,
       banner,
-      avatar
+      avatar,
     }: UseEditUserProfileArgs) => {
       await api.put("/profile/details", {
         username,
         bio,
         banner,
-        avatar
+        avatar,
       });
     },
     onSuccess: (_, variables) => {
@@ -103,7 +113,7 @@ export function useEditUserProfile() {
         setCurrentUser({
           ...currentUser,
           avatar,
-          username
+          username,
         });
       }
       editUserProfile_ProfileCacheMutation({
@@ -111,16 +121,16 @@ export function useEditUserProfile() {
         avatar,
         banner,
         username,
-        bio
+        bio,
       });
       editUserProfile_PostsCacheMutation({
         userHandle,
         avatar,
         banner,
         bio,
-        username
+        username,
       });
-    }
+    },
   });
 }
 
@@ -138,13 +148,13 @@ export function useCreatePost() {
       content,
       media,
       collectionId,
-      privacy
+      privacy,
     }: CreatePostArgs) => {
       const { data } = await api.post("/posts", {
         content,
         media,
         collectionId,
-        privacy
+        privacy,
       });
       return data.data as ResponseWithMessage & {
         collection: TCollection | null;
@@ -155,23 +165,23 @@ export function useCreatePost() {
       const forYouFeedQueryFilter: QueryFilters = {
         predicate(query) {
           return query.queryKey.includes("forYouFeed");
-        }
+        },
       };
       const currentUserProfilePostsQueryFilter: QueryFilters = {
         queryKey: ["posts", "userProfilePosts", variables.owner.handle],
-        exact: true
+        exact: true,
       };
       await createPost_PostsCacheMutation({
         queryFilter: forYouFeedQueryFilter,
         result,
-        variables
+        variables,
       });
       await createPost_PostsCacheMutation({
         queryFilter: currentUserProfilePostsQueryFilter,
         result,
-        variables
+        variables,
       });
-    }
+    },
   });
 }
 
@@ -187,7 +197,7 @@ export function useLikePost() {
     onError: async (_, postId) => {
       //revert post cache state back to unliked if it throws an error
       await post_ReactionCacheMutation({ postId, type: "unlike" });
-    }
+    },
   });
 }
 
@@ -203,7 +213,7 @@ export function useUnLikePost() {
     onError: async (_, postId) => {
       //revert post cache state back to liked if it throws an error
       await post_ReactionCacheMutation({ postId, type: "like" });
-    }
+    },
   });
 }
 
@@ -213,22 +223,22 @@ export function usePostInfo(postId: string) {
     queryFn: async () => {
       const { data } = await api.get(`/posts/${postId}`);
       return data.data as TPostInfo;
-    }
+    },
   });
 }
 
 export function usePostComments(postId: string) {
   return useInfiniteQuery({
     queryKey: ["postComments", postId],
-    queryFn: async ({ pageParam }: { pageParam: number }) => {
-      const { data } = await api.get(
-        `/posts/${postId}/comments?page=${pageParam}&perPage=5`
-      );
-      return data as CommentsRequest;
+    queryFn: async ({ pageParam }) => {
+      const { data } = await api.get(`/posts/${postId}/comments`, {
+        params: { page: pageParam, perPage: 5 },
+      });
+      return data as PaginatedCommentsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
-      result.page === result.totalPages ? undefined : result.page + 1
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
 
@@ -250,23 +260,23 @@ export function useCreatePostComment() {
       const newComment: TPostComment = {
         author: currentUser,
         content,
-        createdAt: new Date(),
+        createdAt: new Date().toString(),
         postId,
-        id
+        id,
       };
       await createComment_CommentsCacheMutation({
         postId,
-        newComment
+        newComment,
       });
       await post_TotalCommentsCacheMutation({
         postId,
-        incrementTotalComments: true
+        incrementTotalComments: true,
       });
       await postInfo_TotalCommentsCacheMutation({
         postId,
-        incrementTotalComments: true
+        incrementTotalComments: true,
       });
-    }
+    },
   });
 }
 
@@ -278,7 +288,7 @@ export function useDeletePost(postId: string | null) {
     },
     onSuccess: async (_, postId) => {
       await deletePost_PostsCacheMutation(postId);
-    }
+    },
   });
 }
 
@@ -288,20 +298,20 @@ export function useUserProfilePosts(
 ) {
   return useInfiniteQuery({
     queryKey: ["posts", "userProfilePosts", userHandle],
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = "/posts/user/me";
+        url = `/posts/user/me`;
       } else {
         url = `/posts/user/${userHandle}`;
       }
-      const { data } = await api.get(url);
-      return data as PostsRequest;
+      const { data } = await api.get(url, { params: { page: pageParam } });
+      return data as PaginatedPostsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
-    enabled: !!currentUserHandle
+    enabled: !!currentUserHandle,
   });
 }
 
@@ -311,20 +321,20 @@ export function useUserCollections(
 ) {
   return useInfiniteQuery({
     queryKey: ["collections", "userCollections", userHandle],
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = "/collections/user/me";
+        url = `/collections/user/me`;
       } else {
         url = `/collections/user/${userHandle}`;
       }
-      const { data } = await api.get(url);
-      return data as CollectionsRequest;
+      const { data } = await api.get(url, { params: { page: pageParam } });
+      return data as PaginatedCollectionsResponse;
     },
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
-    enabled: !!currentUserHandle
+    enabled: !!currentUserHandle,
   });
 }
 
@@ -336,49 +346,364 @@ export function useEditPost() {
         content,
         privacy,
         media,
-        collectionId: collection?.id ?? null
+        collectionId: collection?.id ?? null,
       });
     },
     onSuccess: async (_, postToEdit) => {
       await editPost_PostsCacheMutation(postToEdit);
       await editPost_PostInfoCacheMutation(postToEdit);
-    }
+    },
   });
 }
 
 type FollowUnfollowArgs = {
   userId: string;
   userHandle: string;
+  currentUserHandle: string;
 };
 
 export function useFollowUser() {
   return useMutation({
-    mutationFn: async ({ userId, userHandle }: FollowUnfollowArgs) => {
+    mutationFn: async ({
+      userId,
+      userHandle,
+      currentUserHandle,
+    }: FollowUnfollowArgs) => {
       //mutate the cache
-      followUser_UserProfileCacheMutation({ userHandle });
+      followUser_UserProfileCacheMutation({ userHandle, currentUserHandle });
+      await followUser_UserPreviewListCacheMutation({ userHandle });
       //run the api call
       await api.post(`/users/${userId}/follow`);
     },
-    onError: (_, variables) => {
-      const { userHandle } = variables;
-      //if error, set it cache data back to unfollowed
-      unFollowUser_UserProfileCacheMutation({ userHandle });
-    }
+    onError: async (_, variables) => {
+      const { userHandle, currentUserHandle } = variables;
+      //if error, set it data back to unfollowed
+      unFollowUser_UserProfileCacheMutation({ userHandle, currentUserHandle });
+      await unfollowUser_UserPreviewListCacheMutation({ userHandle });
+    },
   });
 }
 
 export function useUnfollowUser() {
   return useMutation({
-    mutationFn: async ({ userId, userHandle }: FollowUnfollowArgs) => {
+    mutationFn: async ({
+      userId,
+      userHandle,
+      currentUserHandle,
+    }: FollowUnfollowArgs) => {
       //mutate the cache
-      unFollowUser_UserProfileCacheMutation({ userHandle });
+      unFollowUser_UserProfileCacheMutation({ userHandle, currentUserHandle });
+      await unfollowUser_UserPreviewListCacheMutation({ userHandle });
       //run the api call
       await api.post(`/users/${userId}/unfollow`);
     },
-    onError: (_, variables) => {
-      const { userHandle } = variables;
-      //if error, set it cache data back to followed
-      followUser_UserProfileCacheMutation({ userHandle });
-    }
+    onError: async (_, variables) => {
+      const { userHandle, currentUserHandle } = variables;
+      //if error, set it data back to followed
+      await followUser_UserProfileCacheMutation({
+        userHandle,
+        currentUserHandle,
+      });
+      await followUser_UserPreviewListCacheMutation({ userHandle });
+    },
+  });
+}
+
+type UseFollowingFeedArgs = {
+  enabled: boolean;
+};
+
+export function useFollowingFeed({ enabled }: UseFollowingFeedArgs) {
+  return useInfiniteQuery({
+    queryKey: ["posts", "followingFeed"],
+    queryFn: async ({ pageParam }) => {
+      const { data: followingFeed } = await api.get("/feed/following", {
+        params: { page: pageParam },
+      });
+      return followingFeed as PaginatedPostsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!enabled,
+  });
+}
+
+export function useTrends() {
+  return useQuery({
+    queryKey: ["trends"],
+    queryFn: async () => {
+      const { data: trends } = await api.get("/trending");
+      return trends.data as Trend[];
+    },
+    refetchInterval: 300000,
+    refetchIntervalInBackground: true,
+  });
+}
+
+export function useDiscoverPeople() {
+  return useInfiniteQuery({
+    queryKey: ["discoverPeople", "userPreviewList"],
+    queryFn: async ({ pageParam }) => {
+      const { data: discoverPeopleResponse } = await api.get(
+        "/discover-people",
+        { params: { page: pageParam } }
+      );
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useUserFollowingList(userId: string, currentUserId: string) {
+  return useInfiniteQuery({
+    queryKey: ["userFollowingList", "userPreviewList", userId],
+    queryFn: async ({ pageParam }) => {
+      let url: string;
+      if (userId === currentUserId) {
+        url = "/users/me/following";
+      } else {
+        url = `users/${userId}/following`;
+      }
+      const { data: discoverPeopleResponse } = await api.get(url, {
+        params: { page: pageParam },
+      });
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useUserFollowerList(userId: string, currentUserId: string) {
+  return useInfiniteQuery({
+    queryKey: ["currentUserFollowerList", "userPreviewList", userId],
+    queryFn: async ({ pageParam }) => {
+      let url: string;
+      if (userId === currentUserId) {
+        url = "/users/me/followers";
+      } else {
+        url = `users/${userId}/followers`;
+      }
+      const { data: discoverPeopleResponse } = await api.get(url, {
+        params: { page: pageParam },
+      });
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useSearchPeople(query: string, enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: ["searchPeople", "userPreviewList", query],
+    queryFn: async ({ pageParam }) => {
+      const { data: searchPeopleResults } = await api.get("/search/users", {
+        params: {
+          query,
+          page: pageParam,
+        },
+      });
+      return searchPeopleResults as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!enabled,
+  });
+}
+
+export function useSearchPosts(query: string, enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: ["searchPosts", query],
+    queryFn: async ({ pageParam }) => {
+      const { data: searchPostsResults } = await api.get("/search/posts", {
+        params: {
+          query,
+          page: pageParam,
+        },
+      });
+      return searchPostsResults as PaginatedPostsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+    enabled: !!enabled,
+  });
+}
+
+export function useMediaExistenceInCollections(
+  mediaId: string,
+  mediaType: MediaType
+) {
+  return useInfiniteQuery({
+    queryKey: [
+      "collections",
+      "mediaExistenceInCollections",
+      mediaId,
+      mediaType,
+    ],
+    queryFn: async ({ pageParam }) => {
+      const { data: mediaExistenceInCollections } = await api.get(
+        `/collections/check-media-existence/${mediaId}`,
+        { params: { type: mediaType, page: pageParam } }
+      );
+      return mediaExistenceInCollections as PaginatedMediaExistenceInCollectionsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+type UseAddCollectionItemArgs = {
+  collectionId: string;
+  mediaId: string;
+  mediaType: MediaType;
+  title: string;
+  year: string | null;
+  description: string | null;
+  coverImage: string | null;
+  posterImage: string | null;
+  rating: string | null;
+  status: string | null;
+};
+
+export function useAddCollectionItem() {
+  return useMutation({
+    mutationFn: async ({
+      collectionId,
+      mediaId,
+      mediaType,
+      title,
+      year,
+      description,
+      coverImage,
+      posterImage,
+      rating,
+      status,
+    }: UseAddCollectionItemArgs) => {
+      //mutate the cache (doesGivenMediaExist set to true)
+      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+        collectionId,
+        mediaId,
+        mediaType,
+        type: "add",
+      });
+
+      //run the api call
+      await api.post(`/collections/${collectionId}/collection-items`, {
+        mediaId,
+        type: mediaType,
+        title,
+        year,
+        description,
+        coverImage,
+        posterImage,
+        rating,
+        status,
+      });
+    },
+    onError: async (_, variables) => {
+      const { collectionId, mediaId, mediaType } = variables;
+      //if error, set it back to doesGivenMediaExist: false
+      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+        collectionId,
+        mediaId,
+        mediaType,
+        type: "remove",
+      });
+    },
+  });
+}
+
+type UseDeleteCollectionItemArgs = {
+  //ids of collection items to delete
+  mediaId: string;
+  collectionId: string;
+  mediaType: MediaType;
+};
+
+export function useDeleteCollectionItem() {
+  return useMutation({
+    mutationFn: async ({
+      mediaId,
+      collectionId,
+      mediaType,
+    }: UseDeleteCollectionItemArgs) => {
+      //mutate the cache (doesGivenMediaExist set to false)
+      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+        collectionId,
+        mediaId,
+        mediaType,
+        type: "remove",
+      });
+      //run the api call
+      await api.delete(`/collections/${collectionId}/collection-items`, {
+        params: { mediaId, mediaType },
+      });
+    },
+    onError: async (_, variables) => {
+      const { collectionId, mediaId, mediaType } = variables;
+      //if error, set it back to doesGivenMediaExist: true
+      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+        collectionId,
+        mediaId,
+        mediaType,
+        type: "add",
+      });
+    },
+  });
+}
+
+type UseCreateCollectionArgs = {
+  name: string;
+  privacy: EntityPrivacy;
+  description: string | null;
+  photo: string | null
+};
+
+export function useCreateCollection() {
+  return useMutation({
+    mutationFn: async ({
+      name,
+      privacy,
+      description,
+      photo
+    }: UseCreateCollectionArgs) => {
+      await api.post("/collections", { name, privacy, description, photo });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collections"] });
+    },
+  });
+}
+
+type UseEditCollectionArgs = UseCreateCollectionArgs & {
+  collectionId: string;
+};
+
+export function useEditCollection() {
+  return useMutation({
+    mutationFn: async ({
+      collectionId,
+      description,
+      name,
+      privacy,
+    }: UseEditCollectionArgs) => {
+      await api.put(`/collections/${collectionId}`, {
+        description,
+        name,
+        privacy,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collections"] });
+    },
   });
 }

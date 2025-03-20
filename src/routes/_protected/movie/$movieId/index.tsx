@@ -44,7 +44,7 @@ function MovieInfoPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [movieId]);
 
   if (isMovieInfoLoading || isMovieRecommendationsLoading) {
     return (

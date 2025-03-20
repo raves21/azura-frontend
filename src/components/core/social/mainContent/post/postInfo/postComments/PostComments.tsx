@@ -13,7 +13,7 @@ export default function PostComments() {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const { postId } = useParams({
-    from: "/_protected/social/$userHandle/posts/$postId/"
+    from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   const {
@@ -21,12 +21,12 @@ export default function PostComments() {
     isLoading: isCommentsLoading,
     error: commentsError,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = usePostComments(postId);
 
   const { isDesktopSmall } = useWindowBreakpoints();
 
-  const ref = useFetchNextPageInView(fetchNextPage);
+  const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -73,7 +73,7 @@ export default function PostComments() {
             )}
             {comments.pages.length !== 0 &&
               comments.pages[0].data.length !== 0 && (
-                <div ref={ref} className="w-full">
+                <div ref={bottomPageRef} className="w-full">
                   {isFetchingNextPage && <PostCommentsSkeleton />}
                 </div>
               )}

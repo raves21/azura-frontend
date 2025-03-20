@@ -47,23 +47,26 @@ export default function InfoPageTVEpisodes({
     return (
       <EpisodesContainer variant="infoPage">
         <EpisodesHeader>
-          <CustomDropdown
-            currentlySelected={s || 1}
-            menuItems={seasons}
-            menuContentMaxHeight={350}
-            menuItemLabelNames={seasons.map((season) => `Season ${season}`)}
-            onSelectItem={(season) =>
-              navigate({
-                to: "/tv/$tvId",
-                params: { tvId },
-                search: { s: season },
-                replace: true
-              })
-            }
-            showMenuContentBorder
-            menuContentClassName="bg-darkBg"
-            dropdownTriggerClassName="text-gray-400"
-          />
+          {totalSeasons > 1 && (
+            //only show season selection dropdown if there are more than 1 season
+            <CustomDropdown
+              currentlySelected={s || 1}
+              menuItems={seasons}
+              menuContentMaxHeight={350}
+              menuItemLabelNames={seasons.map((season) => `Season ${season}`)}
+              onSelectItem={(season) =>
+                navigate({
+                  to: "/tv/$tvId",
+                  params: { tvId },
+                  search: { s: season },
+                  replace: true
+                })
+              }
+              showMenuContentBorder
+              menuContentClassName="bg-darkBg"
+              dropdownTriggerClassName="text-gray-400"
+            />
+          )}
         </EpisodesHeader>
         <EpisodeListContainer variant="infoPage">
           {tvSeasonEpisodes.map((episode) => {

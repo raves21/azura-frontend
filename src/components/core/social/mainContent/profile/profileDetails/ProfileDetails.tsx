@@ -44,9 +44,9 @@ export default function ProfileDetails({
     <div className="flex flex-col gap-4 px-3 sm:px-5">
       {notCurrentUserProps ? (
         notCurrentUserProps.isFollowedByCurrentUser ? (
-          <UnfollowButton userId={id} userHandle={handle} />
+          <UnfollowButton type="profilePage" userId={id} userHandle={handle} />
         ) : (
-          <FollowButton userId={id} userHandle={handle} />
+          <FollowButton type="profilePage" userId={id} userHandle={handle} />
         )
       ) : (
         <EditProfileButton

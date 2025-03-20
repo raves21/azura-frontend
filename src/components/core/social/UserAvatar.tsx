@@ -14,7 +14,7 @@ export default function UserAvatar({
   onClick,
   className,
   imageClassName,
-  src,
+  src
 }: UserAvatarProps) {
   return (
     <Link
@@ -31,6 +31,7 @@ export default function UserAvatar({
           "block size-[38px] object-cover rounded-full",
           imageClassName
         )}
+        onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
       />
     </Link>
   );

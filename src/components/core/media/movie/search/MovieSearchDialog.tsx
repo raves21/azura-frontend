@@ -1,4 +1,4 @@
-import { useDebounce } from "@/utils/hooks/useDebounce";
+import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
@@ -11,10 +11,10 @@ import { useSearchMovie } from "@/services/media/movie/movieQueries";
 
 export default function MovieSearchDialog() {
   const [searchInput, setSearchInput] = useState("");
-  const debouncedSearch = useDebounce({ value: searchInput, delay: 400 });
+  const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const { searchInputRef } = useFocusInput();
+  const { searchInputRef } = useFocusInput({});
 
   const movieSearchQuery = useSearchMovie(
     debouncedSearch.trim(),
@@ -28,7 +28,7 @@ export default function MovieSearchDialog() {
     toggleOpenDialog(null);
     navigate({
       to: "/movie/catalog/search",
-      search: { query: searchInput.trim() }
+      search: { query: searchInput.trim() },
     });
   };
 
@@ -45,7 +45,7 @@ export default function MovieSearchDialog() {
           className={cn(
             "focus:outline-none p-5 md:text-lg placeholder-gray-400 font-medium text-mainWhite bg-gray-800 rounded-lg size-full",
             {
-              "rounded-b-none": debouncedSearch || searchResultsError
+              "rounded-b-none": debouncedSearch || searchResultsError,
             }
           )}
           placeholder="Search Movies..."

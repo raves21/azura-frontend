@@ -4,23 +4,19 @@ import {
   EntityPrivacy,
   MediaType,
   PaginatedResponse,
-  ResponseWithMessage,
 } from "./shared";
 
-export type PostsRequest = ResponseWithMessage &
-  PaginatedResponse & {
-    data: TPost[];
-  };
+export type PaginatedPostsResponse = PaginatedResponse & {
+  data: TPost[];
+};
 
-export type CommentsRequest = ResponseWithMessage &
-  PaginatedResponse & {
-    data: TPostComment[];
-  };
+export type PaginatedCommentsResponse = PaginatedResponse & {
+  data: TPostComment[];
+};
 
-export type CollectionsRequest = ResponseWithMessage &
-  PaginatedResponse & {
-    data: CollectionListItem[];
-  };
+export type PaginatedCollectionsResponse = PaginatedResponse & {
+  data: CollectionListItem[];
+};
 
 export type CollectionListItem = Omit<TCollection, "privacy" | "description">;
 
@@ -34,7 +30,7 @@ export type TPost = {
   owner: EntityOwner;
   media: Media | null;
   collection: TCollection | null;
-  createdAt: Date;
+  createdAt: string;
 };
 
 export type TPostInfo = TPost & {
@@ -63,7 +59,7 @@ export type TCollection = {
   id: string;
   name: string;
   photo: string | null;
-  description: string;
+  description: string | null;
   privacy: EntityPrivacy;
   previewMedias: PreviewMedia[];
   owner: EntityOwner;
@@ -91,7 +87,7 @@ export type TPostComment = {
   postId: string;
   content: string;
   author: EntityOwner;
-  createdAt: Date;
+  createdAt: string;
 };
 export type UserProfile = UserBasicInfo & {
   banner: string | null;
@@ -102,4 +98,19 @@ export type UserProfile = UserBasicInfo & {
   followsYou: boolean;
   followedByYou: boolean;
   sessionId: string;
+};
+
+export type Trend = {
+  type: string;
+  content: string;
+  count: number;
+};
+
+export type UserPreview = Omit<UserBasicInfo, "email"> & {
+  bio: string;
+  isFollowedByCurrentUser: boolean;
+};
+
+export type PaginatedUserPreviewsResponse = PaginatedResponse & {
+  data: UserPreview[];
 };

@@ -24,11 +24,11 @@ export default function CollectionPhoto({
     return (
       <div
         className={cn(
-          "aspect-[1/1] size-52 shrink-0 rounded-md overflow-hidden",
+          "aspect-square size-52 shrink-0 rounded-md overflow-hidden",
           className
         )}
       >
-        <img src="/no-image.png" className="object-cover size-full" />
+        <img src="/no-image-2.jpg" className="object-cover size-full" />
       </div>
     );
   }
@@ -37,18 +37,23 @@ export default function CollectionPhoto({
     return (
       <div
         className={cn(
-          "aspect-[1/1] size-52 shrink-0 rounded-md overflow-hidden",
+          "aspect-square size-52 shrink-0 rounded-md overflow-hidden",
           className
         )}
       >
-        <img src={props.photo} className="object-cover size-full" />
+        <img
+          src={props.photo}
+          onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
+          className="object-cover size-full"
+        />
       </div>
     );
   }
   return (
     <div
       className={cn(
-        "grid shrink-0 aspect-[1/1] gap-[0.5px] size-52 rounded-md overflow-hidden grid-cols-2",
+        "grid shrink-0 aspect-square gap-[0.5px] size-52 rounded-md overflow-hidden grid-cols-2",
+        { "grid-cols-1": props.previewPosters.length === 1 },
         className
       )}
     >

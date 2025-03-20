@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
-import { AnimeInfoAnify, Data } from "@/utils/types/media/anime/animeAnify";
+import { Data } from "@/utils/types/media/anime/animeAnify";
 import { AnimeInfoAnizip } from "@/utils/types/media/anime/animeAnizip";
 import {
   AnimeSortBy,
@@ -13,11 +13,11 @@ import {
   Episode,
   EpisodeStreamLinks,
   AnimeEpisodesData,
-  AnimeGenre
+  AnimeGenre,
 } from "@/utils/types/media/anime/animeAnilist";
 import {
   chunkEpisodes,
-  getEpisodesToBeRendered
+  getEpisodesToBeRendered,
 } from "../functions/animeFunctions";
 
 // const frequentlyChanging = {
@@ -42,7 +42,7 @@ export function useFetchAnimesByCategory(
         `${import.meta.env.VITE_N_ANILIST_URL}/advanced-search?sort=["${category}"]&perPage=${perPage}${status ? `&status=${status}` : ""}`
       );
       return categoryAnime as PaginatedAnimeResponse;
-    }
+    },
   });
 }
 
@@ -55,7 +55,7 @@ export function useSearchAnime(query: string, enabled: boolean) {
       );
       return searchResults as PaginatedAnimeResponse;
     },
-    enabled: enabled
+    enabled: enabled,
   });
 }
 
@@ -78,7 +78,7 @@ export function useFilterAnime({
   sortBy,
   format,
   page,
-  status
+  status,
 }: UseFilterAnimeArgs) {
   return useQuery({
     queryKey: [
@@ -90,7 +90,7 @@ export function useFilterAnime({
       sortBy ?? AnimeSortBy.TRENDING_DESC,
       format,
       page ?? 1,
-      status
+      status,
     ],
     queryFn: async () => {
       const { data: filteredAnimes } = await axios.get(
@@ -107,13 +107,13 @@ export function useFilterAnime({
             sort: [sortBy],
             format,
             page: page ?? 1,
-            status
-          }
+            status,
+          },
         }
       );
 
       return filteredAnimes as PaginatedAnimeResponse;
-    }
+    },
   });
 }
 
@@ -121,25 +121,30 @@ export function useFetchAnimeInfo(animeId: string) {
   return useQuery({
     queryKey: ["animeInfo", animeId],
     queryFn: async () => {
-      const [anilistResponse, anifyResponse] = await axios.all([
-        axios
-          .get(`${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`)
-          .catch(() => null),
-        axios
-          .get(
-            `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[genres,bannerImage,coverImage,title,rating,trailer,description,id,totalEpisodes,year,status,format]`
-          )
-          .catch(() => null)
-      ]);
+      // const [anilistResponse, anifyResponse] = await axios.all([
+      //   axios
+      //     .get(`${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`)
+      //     .catch(() => null),
+      //   axios
+      //     .get(
+      //       `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[genres,bannerImage,coverImage,title,rating,trailer,description,id,totalEpisodes,year,status,format]`
+      //     )
+      //     .catch(() => null)
+      // ]);
 
-      if (!anilistResponse && !anifyResponse) {
-        throw new Error("error fetch anime info.");
-      }
+      // if (!anilistResponse && !anifyResponse) {
+      //   throw new Error("error fetch anime info.");
+      // }
 
-      const animeInfoAnilist = anilistResponse?.data as AnimeInfoAnilist;
-      const animeInfoAnify = anifyResponse?.data as AnimeInfoAnify;
-      return { animeInfoAnilist, animeInfoAnify };
-    }
+      // const animeInfoAnilist = anilistResponse?.data as AnimeInfoAnilist;
+      // const animeInfoAnify = anifyResponse?.data as AnimeInfoAnify;
+      // return { animeInfoAnilist, animeInfoAnify };
+      const { data: anilistResponse } = await axios.get(
+        `${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`
+      );
+
+      return anilistResponse as AnimeInfoAnilist;
+    },
   });
 }
 
@@ -161,7 +166,7 @@ export function useFetchAnimeEpisodes(animeId: string) {
             .get(
               `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
             )
-            .catch(() => null)
+            .catch(() => null),
         ]);
 
       if (!anifyEpsResponse && !anilistEpsResponse) {
@@ -172,7 +177,7 @@ export function useFetchAnimeEpisodes(animeId: string) {
       const anilistEps = anilistEpsResponse?.data as Episode[];
       const anizipEps = anizipResponse?.data as AnimeInfoAnizip;
       return { anifyEps, anilistEps, anizipEps };
-    }
+    },
   });
 }
 
@@ -184,7 +189,7 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
         `${import.meta.env.VITE_ANILIST_URL}/watch/${episodeId}`
       );
       return episodeStreamLinks as EpisodeStreamLinks;
-    }
+    },
   });
 }
 
@@ -205,7 +210,7 @@ export function useEpisodeInfo(
       }
       return foundEpisode as EpisodeToBeRendered;
     },
-    enabled: !!chunkedEpisodes
+    enabled: !!chunkedEpisodes,
   });
 }
 
@@ -223,6 +228,6 @@ export function useChunkAnimeEpisodes(
         30
       );
     },
-    enabled: !!animeEpisodes
+    enabled: !!animeEpisodes,
   });
 }

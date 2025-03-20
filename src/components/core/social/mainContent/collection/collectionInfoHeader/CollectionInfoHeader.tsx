@@ -1,6 +1,7 @@
 import CollectionDetails from "./CollectionDetails";
 import CollectionPhoto from "../CollectionPhoto";
 import { TCollection } from "@/utils/types/social/social";
+import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 type CollectionInfoHeaderProps = {
   collection: TCollection;
@@ -9,9 +10,6 @@ type CollectionInfoHeaderProps = {
 export default function CollectionInfoHeader({
   collection,
 }: CollectionInfoHeaderProps) {
-  const previewPosters = collection.previewMedias
-    .map((previewMedia) => previewMedia.posterImage)
-    .filter(Boolean) as string[];
   return (
     <div className="flex flex-col gap-6 sm:flex-row">
       {collection.photo ? (
@@ -23,7 +21,7 @@ export default function CollectionInfoHeader({
       ) : (
         <CollectionPhoto
           type="previewPosters"
-          previewPosters={previewPosters}
+          previewPosters={getPreviewPosters(collection.previewMedias)}
           className="mx-auto sm:mx-0 sm:size-48"
         />
       )}

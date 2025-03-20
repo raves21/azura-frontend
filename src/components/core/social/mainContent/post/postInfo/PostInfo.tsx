@@ -4,6 +4,7 @@ import PostLikers from "./PostLikers";
 import PostWithAttachment from "../postContent/PostWithAttachment";
 import ActivityHeader from "../../activity/ActivityHeader";
 import { useParams } from "@tanstack/react-router";
+import ActivityContentRenderer from "../../activity/ActivityContentRenderer";
 
 type PostInfoProps = {
   post: TPostInfo;
@@ -11,7 +12,7 @@ type PostInfoProps = {
 
 export default function PostInfo({ post }: PostInfoProps) {
   const { userHandle } = useParams({
-    from: "/_protected/social/$userHandle/posts/$postId/",
+    from: "/_protected/social/$userHandle/posts/$postId/"
   });
 
   return (
@@ -23,8 +24,8 @@ export default function PostInfo({ post }: PostInfoProps) {
           linkProps={{
             to: "/social/$userHandle",
             params: {
-              userHandle,
-            },
+              userHandle
+            }
           }}
         />
       </div>
@@ -46,7 +47,7 @@ export default function PostInfo({ post }: PostInfoProps) {
           />
         ) : (
           <p className="w-full text-sm text-gray-300 mobile-m:text-md sm:text-base">
-            {post.content}
+            <ActivityContentRenderer content={post.content!} />
           </p>
         )}
       </div>

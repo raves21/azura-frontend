@@ -8,7 +8,7 @@ import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
 export const Route = createFileRoute("/_protected/social/$userHandle/")({
-  component: () => <UserProfilePage />
+  component: () => <UserProfilePage />,
 });
 
 function UserProfilePage() {
@@ -21,10 +21,10 @@ function UserProfilePage() {
     isLoading: isUserProfilePostsLoading,
     error: userProfilePostsError,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = useUserProfilePosts(userHandle, currentUser?.handle);
 
-  const ref = useFetchNextPageInView(fetchNextPage);
+  const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -59,7 +59,7 @@ function UserProfilePage() {
               <Post key={post.id} post={post} fromState="user-page" />
             ))}
             {isFetchingNextPage && (
-              <div ref={ref} key={"bottom of page"}>
+              <div ref={bottomPageRef} key={"bottom of page"}>
                 <PostsSkeleton loadingType="fetchingNextPage" />
               </div>
             )}

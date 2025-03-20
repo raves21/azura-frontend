@@ -10,7 +10,7 @@ type UseAnimeEpisodesArgs = {
 
 export function useAnimeEpisodes({
   chunkedEpisodes,
-  currentlyWatchingEpisodeNumber
+  currentlyWatchingEpisodeNumber,
 }: UseAnimeEpisodesArgs) {
   const [selectedChunk, setSelectedChunk] = useState<EpisodeChunk>();
   const [currentlyWatchingEpisode, setCurrentlyWatchingEpisode] =
@@ -54,7 +54,7 @@ export function useAnimeEpisodes({
   useScrollToElement({
     scrollableContainerRef: episodeListContainerRef,
     targetElementRef: currentlyWatchingEpisodeCardRef,
-    deps: [chunkedEpisodes, currentlyWatchingEpisode, selectedChunk]
+    deps: [chunkedEpisodes, currentlyWatchingEpisode, selectedChunk],
   });
 
   //scroll to top if the selected chunk is
@@ -65,7 +65,7 @@ export function useAnimeEpisodes({
       !isEqual(selectedChunk, currentlyWatchingEpisodeChunk)
     ) {
       episodeListContainerRef.current.scrollTo({
-        top: 0
+        top: 0,
       });
     }
   }, [selectedChunk, currentlyWatchingEpisodeChunk]);
@@ -74,6 +74,6 @@ export function useAnimeEpisodes({
     selectedChunk,
     setSelectedChunk,
     episodeListContainerRef,
-    currentlyWatchingEpisodeCardRef
+    currentlyWatchingEpisodeCardRef,
   };
 }

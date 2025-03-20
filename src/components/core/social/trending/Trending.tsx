@@ -1,62 +1,52 @@
+import { useTrends } from "@/services/social/queries/socialQueries";
 import TrendingListItem from "./TrendingListItem";
-
-type TrendingPost = {
-  trend: string;
-  postCount: number;
-};
-
-const tempTrendingPosts: TrendingPost[] = [
-  {
-    trend: "#awesome",
-    postCount: 27,
-  },
-  {
-    trend: "#movies",
-    postCount: 22,
-  },
-  {
-    trend: "Breaking Bad",
-    postCount: 20,
-  },
-  {
-    trend: "Lord of the Rings: Rings of Power",
-    postCount: 19,
-  },
-  {
-    trend: "#damn",
-    postCount: 17,
-  },
-  {
-    trend: "The Prestige",
-    postCount: 17,
-  },
-  {
-    trend: "Dandadan",
-    postCount: 16,
-  },
-  {
-    trend: "#anime",
-    postCount: 13,
-  },
-  {
-    trend: "Shutter Island",
-    postCount: 5,
-  },
-];
+import TrendingListItemSkeleton from "../../loadingSkeletons/social/TrendingListItemSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Trending() {
-  return (
-    <div className="flex flex-col w-full gap-4 overflow-hidden rounded-lg bg-socialPrimary">
-      <p className="px-5 pt-5 text-lg font-semibold">Trending this week</p>
-      <div>
-        {tempTrendingPosts.map((post) => (
-          <TrendingListItem
-            key={post.trend}
-            trend={post.trend}
-            postCount={post.postCount}
-          />
-        ))}
+  const {
+    data: trends,
+    isLoading: isTrendsLoading,
+    error: trendsError,
+  } = useTrends();
+
+  if (isTrendsLoading) {
+    return (
+      <div className="flex flex-col w-full gap-4 overflow-hidden rounded-lg bg-socialPrimary">
+        <Skeleton className="px-5 pt-5 w-[50%] h-[33px] mt-5 ml-5 text-lg font-semibold bg-gray-700" />
+        <div>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <TrendingListItemSkeleton key={i} />
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (trendsError) {
+    return <div>trends error</div>;
+  }
+
+  if (trends) {
+    return (
+      <div className="flex flex-col w-full gap-4 overflow-hidden rounded-lg bg-socialPrimary">
+        <p className="px-5 pt-5 text-lg font-semibold ">Trending this week</p>
+        <div>
+          {trends.length !== 0 ? (
+            trends.map((trend) => (
+              <TrendingListItem
+                key={trend.content}
+                trend={trend.content}
+                postCount={trend.count}
+              />
+            ))
+          ) : (
+            <div className="w-full h-[400px] grid place-items-center text-socialTextSecondary font-medium text-md">
+              Wow, such empty.
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 }

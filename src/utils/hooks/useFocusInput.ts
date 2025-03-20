@@ -1,11 +1,10 @@
-import { useEffect, useRef } from "react";
+import { DependencyList, useEffect, useRef } from "react";
 
 type UseFocusInputArgs = {
-  deps: any[];
+  deps?: DependencyList;
 };
 
-export function useFocusInput(args?: UseFocusInputArgs) {
-  const deps = args?.deps ? args.deps : [];
+export function useFocusInput({ deps = [] }: UseFocusInputArgs) {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -15,6 +14,6 @@ export function useFocusInput(args?: UseFocusInputArgs) {
   }, [...deps]);
 
   return {
-    searchInputRef
+    searchInputRef,
   };
 }

@@ -31,7 +31,7 @@ export function useTipTapEditor({
   maxLength,
   editorProps,
   customExtensions = [],
-  focusOnMount
+  focusOnMount,
 }: UseTipTapEditorArgs): UseTipTapEditorReturnType {
   const [inputLength, setInputLength] = useState(0);
   const [inputText, setInputText] = useState<string | null>(null);
@@ -39,26 +39,26 @@ export function useTipTapEditor({
   const editor = useEditor({
     editorProps: { ...editorProps },
     parseOptions: {
-      preserveWhitespace: "full"
+      preserveWhitespace: "full",
     },
     extensions: [
       StarterKit.configure({
         bold: false,
-        italic: false
+        italic: false,
       }),
       Placeholder.configure({
-        placeholder
+        placeholder,
       }),
       CharacterCount.configure({
-        limit: maxLength
+        limit: maxLength,
       }),
-      ...customExtensions
+      ...customExtensions,
     ],
     onUpdate: ({ editor }) => {
       const text = editor.getText({ blockSeparator: "\n" });
       setInputText(text);
       setInputLength(text.length);
-    }
+    },
   });
 
   const editorContentRef = useRef<HTMLDivElement | null>(null);
@@ -83,7 +83,7 @@ export function useTipTapEditor({
   function setEditorContent(text: string | null) {
     if (editor) {
       editor.commands.setContent(text, false, {
-        preserveWhitespace: "full"
+        preserveWhitespace: "full",
       });
       setInputText(text);
     }
@@ -106,6 +106,6 @@ export function useTipTapEditor({
     inputText,
     setInputText,
     setEditorContent,
-    clearEditorContent
+    clearEditorContent,
   };
 }

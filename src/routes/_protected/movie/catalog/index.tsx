@@ -7,34 +7,50 @@ import {
   useMovieGenres
 } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";
 
 const movieCatalogPageSchema = z.object({
-  page: z.coerce.number().optional(),
+  page: z.number().optional(),
   sortBy: z.nativeEnum(MovieSortBy).optional(),
   genres: z.nativeEnum(MovieGenre).array().optional(),
-  year: z.coerce.number().optional()
+  year: z.number().optional()
 });
+
+type MovieCatalogPageSchema = z.infer<typeof movieCatalogPageSchema> &
+  SearchSchemaValidationStatus;
 
 export const Route = createFileRoute("/_protected/movie/catalog/")({
   component: () => <MovieCatalogPage />,
-  validateSearch: (search) => movieCatalogPageSchema.parse(search),
-  beforeLoad: ({ search }) => {
+  validateSearch: (search): MovieCatalogPageSchema => {
     const validatedSearch = movieCatalogPageSchema.safeParse(search);
     if (validatedSearch.success) {
-      return validatedSearch.data;
+      return {
+        ...validatedSearch.data,
+        success: true
+      };
+    } else {
+      return { success: false };
     }
-    redirect({ to: "/movie" });
   }
 });
 
 function MovieCatalogPage() {
   useCustomScrollRestoration();
-  const { page, sortBy, genres, year } = Route.useSearch();
+  const { page, sortBy, genres, year, success } = Route.useSearch();
+
+  const navigate = useNavigate();
+
+  useHandleSearchValidationFailure({
+    isValidationFail: !success,
+    onValidationError: () => navigate({ to: "/movie" })
+  });
+
   const {
     data: catalogMovieList,
     isLoading: isCatalogMovieListLoading,
@@ -48,7 +64,6 @@ function MovieCatalogPage() {
   } = useMovieGenres();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const navigate = useNavigate();
 
   if (isCatalogMovieListLoading || isMovieGenresLoading) {
     return (

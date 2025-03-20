@@ -19,17 +19,17 @@ export default function WatchPageTVEpisodes({
   totalSeasons,
   episodeListMaxHeight,
   episodes,
-  coverImage
+  coverImage,
 }: WatchPageTVEpisodesProps) {
   const { tvId } = useParams({
-    from: "/_protected/tv/$tvId/watch/"
+    from: "/_protected/tv/$tvId/watch/",
   });
   const { tvEp, tvSeason } = useSearch({
-    from: "/_protected/tv/$tvId/watch/"
+    from: "/_protected/tv/$tvId/watch/",
   });
   const seasons = useMemo(
     () => Array.from({ length: totalSeasons }).map((_, i) => i + 1),
-    []
+    [totalSeasons]
   );
 
   const navigate = useNavigate();
@@ -49,13 +49,13 @@ export default function WatchPageTVEpisodes({
             navigate({
               to: "/tv/$tvId/watch",
               params: {
-                tvId
+                tvId,
               },
               search: {
                 tvEp,
-                tvSeason: season
+                tvSeason: season,
               },
-              replace: true
+              replace: true,
             });
           }}
           showMenuContentBorder
@@ -71,13 +71,13 @@ export default function WatchPageTVEpisodes({
               linkProps={{
                 to: "/tv/$tvId/watch",
                 params: {
-                  tvId
+                  tvId,
                 },
                 search: {
                   tvSeason: episode.season_number,
-                  tvEp: episode.episode_number
+                  tvEp: episode.episode_number,
                 },
-                replace: true
+                replace: true,
               }}
               episodeNumber={`Episode ${episode.episode_number}`}
               episodeTitle={episode.name}

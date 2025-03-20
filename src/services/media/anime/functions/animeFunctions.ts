@@ -81,6 +81,6 @@ export function getRatingScoreAnime(rating: number) {
   return (0.05 * (rating * 10)).toFixed(2);
 }
 
-export function getRatingScoreTMDB(rating: number) {
-  return rating.toFixed(1);
+export function getRatingScoreTMDB(rating: number | null) {
+  return rating ? rating.toFixed(1).split("-")[0] : null
 }

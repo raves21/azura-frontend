@@ -2,12 +2,12 @@ import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function getTMDBImageURL(backdropPath: string) {
-  return `https://image.tmdb.org/t/p/original/${backdropPath}`;
+export function getTMDBImageURL(imagePath: string) {
+  return `https://image.tmdb.org/t/p/original${imagePath}`;
 }
 
 export function getTMDBReleaseYear(releaseDate: string) {
-  return releaseDate.split("-")[0];
+  return releaseDate ? releaseDate.split("-")[0] : "";
 }
 
 type UseMediaScraperArgs = {
@@ -23,12 +23,13 @@ export function useMediaScraper({
   mediaId,
   epNum,
   seasonNum,
-  enabled
+  enabled,
 }: UseMediaScraperArgs) {
   return useQuery({
     queryKey: ["mediaScraper", type, mediaId, epNum, seasonNum],
     queryFn: async () => {
-      const mediaScraperApiBaseURL = "http://127.0.0.1:8787/api/rabbit/fetch";
+      const mediaScraperApiBaseURL = import.meta.env
+        .VITE_HONO_RABBIT_SCRAPER_URL;
       let url: string;
 
       if (type === "TV") {
@@ -39,8 +40,12 @@ export function useMediaScraper({
 
       const { data: mediaScraperResponse } = await axios.get(url);
 
+      if (mediaScraperResponse.message || mediaScraperResponse.error) {
+        throw new Error("Media unavailable.");
+      }
+
       return mediaScraperResponse as MediaScraperResponse;
     },
-    enabled: !!enabled
+    enabled: !!enabled,
   });
 }

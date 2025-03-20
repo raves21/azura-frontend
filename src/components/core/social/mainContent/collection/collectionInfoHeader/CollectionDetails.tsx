@@ -5,7 +5,7 @@ import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 
 type CollectionNameAndDescriptionProps = {
   name: string;
-  description: string;
+  description: string | null;
   owner: EntityOwner;
   privacy: EntityPrivacy;
 };

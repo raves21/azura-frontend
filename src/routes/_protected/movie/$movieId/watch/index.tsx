@@ -95,11 +95,7 @@ function WatchMoviePage() {
               subtitleTracks={mediaScraperData.tracks}
               poster={getTMDBImageURL(movieInfo.backdrop_path)}
               headers={mediaScraperData.headers}
-              streamLink={
-                mediaScraperData.url[0]
-                  ? mediaScraperData.url[0].link
-                  : undefined
-              }
+              streamLink={mediaScraperData.url ? mediaScraperData.url[0].link : undefined}
               title={movieInfo.title}
             />
             <EpisodeTitleAndNumber

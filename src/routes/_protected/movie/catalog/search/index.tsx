@@ -3,6 +3,8 @@ import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFil
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import { useSearchMovie } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
+import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 
@@ -11,20 +13,43 @@ const movieSearchResultsPageSchema = z.object({
   page: z.coerce.number().optional()
 });
 
+type MovieSearchResultPageSchema = z.infer<
+  typeof movieSearchResultsPageSchema
+> &
+  SearchSchemaValidationStatus;
+
 export const Route = createFileRoute("/_protected/movie/catalog/search/")({
   component: () => <MovieSearchPage />,
-  validateSearch: (search) => movieSearchResultsPageSchema.parse(search)
+  validateSearch: (search): MovieSearchResultPageSchema => {
+    const validated = movieSearchResultsPageSchema.safeParse(search);
+    if (validated.success) {
+      return {
+        ...validated.data,
+        success: true
+      };
+    }
+    return {
+      query: "",
+      success: false
+    };
+  }
 });
 
 function MovieSearchPage() {
   useCustomScrollRestoration();
-  const { query, page } = Route.useSearch();
+  const { query, page, success } = Route.useSearch();
+  const navigate = useNavigate();
+
+  useHandleSearchValidationFailure({
+    isValidationFail: !success || !query,
+    onValidationError: () => navigate({ to: "/movie" })
+  });
+
   const {
     data: movieSearchResults,
     isLoading: movieSearchResultsLoading,
     error: movieSearchResultsError
   } = useSearchMovie(query, page || 1, true);
-  const navigate = useNavigate();
 
   if (movieSearchResultsLoading) {
     return (

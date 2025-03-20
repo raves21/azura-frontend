@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { DependencyList, useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
@@ -15,24 +15,22 @@ export default function Description({
   className,
   description,
   adjustHeightBasedOnWidth,
-  showDescriptionLabel
+  showDescriptionLabel,
 }: DescriptionProps) {
   const [readMore, setReadMore] = useState(false);
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const [descriptionHeight, setDescriptionHeight] = useState(0);
 
   const windowWidth = useWindowWidth();
+  const deps: DependencyList = adjustHeightBasedOnWidth ? [windowWidth] : [];
 
-  useEffect(
-    () => {
-      if (descriptionRef.current) {
-        setDescriptionHeight(
-          descriptionRef.current.getBoundingClientRect().height
-        );
-      }
-    },
-    adjustHeightBasedOnWidth ? [windowWidth] : []
-  );
+  useEffect(() => {
+    if (descriptionRef.current) {
+      setDescriptionHeight(
+        descriptionRef.current.getBoundingClientRect().height
+      );
+    }
+  }, [...deps]);
 
   return (
     <div className={cn("relative gap-3 mt-2 w-[75%]", className)}>
@@ -41,13 +39,13 @@ export default function Description({
       )}
       <motion.div
         initial={{
-          height: "80px"
+          height: "80px",
         }}
         animate={{
-          height: readMore ? "auto" : "80px"
+          height: readMore ? "auto" : "80px",
         }}
         transition={{
-          duration: 0.2
+          duration: 0.2,
         }}
         style={{
           maskImage:
@@ -57,7 +55,7 @@ export default function Description({
           WebkitMaskImage:
             readMore || descriptionHeight <= 80
               ? ""
-              : "linear-gradient(to bottom, white 1%, transparent)"
+              : "linear-gradient(to bottom, white 1%, transparent)",
         }}
         className="relative overflow-hidden text-gray-400"
       >
@@ -68,10 +66,10 @@ export default function Description({
       {descriptionHeight > 80 && (
         <motion.div
           animate={{
-            height: readMore ? `${descriptionHeight}px` : "80px"
+            height: readMore ? `${descriptionHeight}px` : "80px",
           }}
           transition={{
-            duration: 0.2
+            duration: 0.2,
           }}
           className="absolute w-full -bottom-3"
         >

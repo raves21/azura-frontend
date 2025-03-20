@@ -6,11 +6,12 @@ import UserCollectionsSkeleton from "@/components/core/loadingSkeletons/social/U
 import Collection from "@/components/core/social/mainContent/collection/Collection";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
+import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/"
 )({
-  component: () => <CollectionsPage />
+  component: () => <CollectionsPage />,
 });
 
 function CollectionsPage() {
@@ -23,10 +24,10 @@ function CollectionsPage() {
     isLoading: isUserCollectionsLoading,
     error: userCollectionsError,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = useUserCollections(userHandle, currentUser?.handle);
 
-  const ref = useFetchNextPageInView(fetchNextPage);
+  const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -63,21 +64,17 @@ function CollectionsPage() {
                   to: "/social/$userHandle/collections/$collectionId",
                   params: {
                     userHandle: userHandle,
-                    collectionId: collection.id
-                  }
+                    collectionId: collection.id,
+                  },
                 }}
                 key={collection.id}
                 name={collection.name}
-                previewPosters={
-                  collection.previewMedias
-                    .map((previewMedia) => previewMedia.posterImage)
-                    .filter(Boolean) as string[]
-                }
+                previewPosters={getPreviewPosters(collection.previewMedias)}
                 photo={collection.photo}
               />
             ))}
             {isFetchingNextPage && (
-              <div ref={ref} key={"bottom of page"}>
+              <div ref={bottomPageRef} key={"bottom of page"}>
                 <UserCollectionsSkeleton />
               </div>
             )}

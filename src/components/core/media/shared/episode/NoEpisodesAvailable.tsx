@@ -10,7 +10,7 @@ export default function NoEpisodesAvailable({
       <p className="text-lg font-semibold lg:text-xl text-mainWhite">
         Episodes
       </p>
-      <div className="self-center py-12 text-xl">
+      <div className="self-center py-12 text-xl text-center">
         {isMovie ? "Movie is currently unavailable." : "No Episodes available"}
       </div>
     </div>

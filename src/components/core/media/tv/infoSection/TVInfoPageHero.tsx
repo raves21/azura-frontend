@@ -3,7 +3,7 @@ import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
 import InfoSectionPoster from "@/components/core/media/shared/info/InfoSectionPoster";
 import PlayNowButton from "@/components/core/media/shared/info/PlayNowButton";
-import AddToListButton from "@/components/core/media/shared/info/AddToListButton";
+import ToggleMediaToCollectionButton from "@/components/core/media/shared/toggleMediaToCollection/ToggleMediaToCollectionButton";
 import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
@@ -39,7 +39,7 @@ export default function TVInfoPageHero({
   genres,
   voteAverage,
   tvId,
-  tvSeasonEpisodes
+  tvSeasonEpisodes,
 }: TVInfoPageHeroProps) {
   const navigate = useNavigate();
 
@@ -87,16 +87,26 @@ export default function TVInfoPageHero({
                 navigate({
                   to: "/tv/$tvId/watch",
                   params: {
-                    tvId
+                    tvId,
                   },
                   search: {
                     tvEp: 1,
-                    tvSeason: 1
-                  }
+                    tvSeason: 1,
+                  },
                 });
               }}
             />
-            <AddToListButton />
+            <ToggleMediaToCollectionButton
+              mediaId={tvId}
+              mediaType="TV"
+              coverImage={cover}
+              description={description}
+              posterImage={image}
+              rating={voteAverage?.toString() ?? null}
+              status={status}
+              title={title}
+              year={year}
+            />
           </div>
 
           <Description
@@ -107,7 +117,9 @@ export default function TVInfoPageHero({
           <InfoDetails className="mt-14" isMobile>
             <div className="flex flex-col gap-3">
               <InfoItem label="Year:" info={year} />
-              {runTime && <InfoItem label="Average runtime:" info={`${runTime} min`} />}
+              {runTime && (
+                <InfoItem label="Average runtime:" info={`${runTime} min`} />
+              )}
               <InfoItem label="Status:" info={status} />
             </div>
             <GenreListTMDB variant="infoPage" genres={genres} />

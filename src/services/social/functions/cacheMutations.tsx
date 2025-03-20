@@ -2,34 +2,48 @@ import { queryClient } from "@/utils/variables/queryClient";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
-  CommentsRequest,
+  PaginatedCommentsResponse,
   Media,
-  PostsRequest,
+  PaginatedUserPreviewsResponse,
+  PaginatedPostsResponse,
   TCollection,
   TPost,
   TPostComment,
   TPostInfo,
-  UserProfile
+  UserProfile,
 } from "@/utils/types/social/social";
 import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
+import { MediaType } from "@/utils/types/shared";
+import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
 
 const POSTS_QUERY_FILTER: QueryFilters = {
   predicate(query) {
     return query.queryKey.includes("posts");
-  }
+  },
 };
 
 const COMMENTS_QUERY_FILTER = (postId: string): QueryKey => [
   "postComments",
-  postId
+  postId,
 ];
 
 const POST_INFO_QUERY_KEY = (postId: string): QueryKey => ["postInfo", postId];
 
 const USER_PROFILE_QUERY_KEY = (userHandle: string): QueryKey => [
   "userProfile",
-  userHandle
+  userHandle,
 ];
+
+const USER_PREVIEW_LIST_QUERY_KEY: QueryFilters = {
+  predicate(query) {
+    return query.queryKey.includes("userPreviewList");
+  },
+};
+
+const CHECK_MEDIA_COLLECTIONS_LIST_QUERY_KEY = (
+  mediaId: string,
+  mediaType: MediaType
+) => ["collections", "mediaExistenceInCollections", mediaId, mediaType];
 
 type CreatePostPostsCacheMutation = {
   queryFilter: QueryFilters;
@@ -45,7 +59,7 @@ type CreatePostPostsCacheMutation = {
 export async function createPost_PostsCacheMutation({
   queryFilter,
   variables,
-  result
+  result,
 }: CreatePostPostsCacheMutation) {
   const { content, media, owner, privacy } = variables;
   const { collection, id } = result;
@@ -58,11 +72,11 @@ export async function createPost_PostsCacheMutation({
       totalLikes: 0,
       collection: null,
       content,
-      createdAt: new Date(),
+      createdAt: new Date().toString(),
       isLikedByCurrentUser: false,
       media,
       owner,
-      privacy
+      privacy,
     };
   } else if (collection) {
     newPost = {
@@ -71,11 +85,11 @@ export async function createPost_PostsCacheMutation({
       totalLikes: 0,
       collection,
       content,
-      createdAt: new Date(),
+      createdAt: new Date().toString(),
       isLikedByCurrentUser: false,
       media: null,
       owner,
-      privacy
+      privacy,
     };
   } else {
     newPost = {
@@ -84,14 +98,14 @@ export async function createPost_PostsCacheMutation({
       totalLikes: 0,
       collection: null,
       content,
-      createdAt: new Date(),
+      createdAt: new Date().toString(),
       isLikedByCurrentUser: false,
       media: null,
       owner,
-      privacy
+      privacy,
     };
   }
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     queryFilter,
     (oldData) => {
       const firstPage = oldData?.pages[0];
@@ -105,10 +119,10 @@ export async function createPost_PostsCacheMutation({
               totalPages: oldData.pages[0].totalPages,
               message: "new post created in cache",
               page: 1,
-              perPage: 10
+              perPage: 10,
             },
-            ...oldData.pages.slice(1)
-          ]
+            ...oldData.pages.slice(1),
+          ],
         };
       }
       //if there are no posts yet
@@ -121,9 +135,9 @@ export async function createPost_PostsCacheMutation({
               message: "success creating the first post",
               page: 1,
               perPage: 10,
-              totalPages: 1
-            }
-          ]
+              totalPages: 1,
+            },
+          ],
         };
       }
     }
@@ -137,10 +151,10 @@ type LikeUnlikePostCacheMutation = {
 
 export async function post_ReactionCacheMutation({
   postId,
-  type
+  type,
 }: LikeUnlikePostCacheMutation) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -153,16 +167,16 @@ export async function post_ReactionCacheMutation({
               ...post,
               totalLikes:
                 type === "like" ? post.totalLikes + 1 : post.totalLikes - 1,
-              isLikedByCurrentUser: type === "like" ? true : false
+              isLikedByCurrentUser: type === "like" ? true : false,
             };
           }
           return post;
-        })
+        }),
       }));
 
       return {
         pageParams: oldData.pageParams,
-        pages: newPages
+        pages: newPages,
       };
     }
   );
@@ -175,7 +189,7 @@ type PostInfoPageLikeUnlikePostCacheMutationArgs = {
 
 export function postInfo_ReactionCacheMutation({
   postId,
-  type
+  type,
 }: PostInfoPageLikeUnlikePostCacheMutationArgs) {
   queryClient.setQueryData<TPostInfo>(
     POST_INFO_QUERY_KEY(postId),
@@ -192,9 +206,9 @@ export function postInfo_ReactionCacheMutation({
             {
               avatar: currentUser.avatar,
               username: currentUser.username,
-              id: currentUser.id
-            }
-          ]
+              id: currentUser.id,
+            },
+          ],
         };
       } else {
         let postFirstLikers: Omit<EntityOwner, "handle">[] | null =
@@ -222,7 +236,7 @@ export function postInfo_ReactionCacheMutation({
           ...oldData,
           totalLikes: oldData.totalLikes - 1,
           isLikedByCurrentUser: false,
-          postFirstLikers
+          postFirstLikers,
         };
       }
     }
@@ -236,7 +250,7 @@ type PostInfoPageTotalCommentsCacheMutationArgs = {
 
 export function postInfo_TotalCommentsCacheMutation({
   postId,
-  incrementTotalComments
+  incrementTotalComments,
 }: PostInfoPageTotalCommentsCacheMutationArgs) {
   queryClient.setQueryData<TPostInfo>(
     POST_INFO_QUERY_KEY(postId),
@@ -247,7 +261,7 @@ export function postInfo_TotalCommentsCacheMutation({
         ...oldData,
         totalComments: incrementTotalComments
           ? oldData.totalComments + 1
-          : oldData.totalComments - 1
+          : oldData.totalComments - 1,
       };
     }
   );
@@ -260,11 +274,11 @@ type CreateCommentCommentsCacheMutationArgs = {
 
 export async function createComment_CommentsCacheMutation({
   postId,
-  newComment
+  newComment,
 }: CreateCommentCommentsCacheMutationArgs) {
   await queryClient.cancelQueries({ queryKey: COMMENTS_QUERY_FILTER(postId) });
 
-  queryClient.setQueriesData<InfiniteData<CommentsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, unknown>>(
     { queryKey: COMMENTS_QUERY_FILTER(postId) },
     (oldData) => {
       const firstPage = oldData?.pages[0];
@@ -278,10 +292,10 @@ export async function createComment_CommentsCacheMutation({
               totalPages: oldData.pages[0].totalPages,
               message: "new post created in cache",
               page: 1,
-              perPage: 5
+              perPage: 5,
             },
-            ...oldData.pages.slice(1)
-          ]
+            ...oldData.pages.slice(1),
+          ],
         };
       }
       //if there are no commnets yet
@@ -294,9 +308,9 @@ export async function createComment_CommentsCacheMutation({
               message: "created first comment in cache",
               page: 1,
               perPage: 5,
-              totalPages: 1
-            }
-          ]
+              totalPages: 1,
+            },
+          ],
         };
       }
     }
@@ -310,10 +324,10 @@ type PostTotalCommentsCacheMutationArgs = {
 
 export async function post_TotalCommentsCacheMutation({
   postId,
-  incrementTotalComments
+  incrementTotalComments,
 }: PostTotalCommentsCacheMutationArgs) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -326,16 +340,16 @@ export async function post_TotalCommentsCacheMutation({
               ...post,
               totalComments: incrementTotalComments
                 ? post.totalComments + 1
-                : post.totalComments - 1
+                : post.totalComments - 1,
             };
           }
           return post;
-        })
+        }),
       }));
 
       return {
         pageParams: oldData.pageParams,
-        pages: newPages
+        pages: newPages,
       };
     }
   );
@@ -343,19 +357,19 @@ export async function post_TotalCommentsCacheMutation({
 
 export async function deletePost_PostsCacheMutation(postId: string) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
 
       const newPages = oldData.pages.map((page) => ({
         ...page,
-        data: page.data.filter((post) => post.id !== postId)
+        data: page.data.filter((post) => post.id !== postId),
       }));
 
       return {
         pageParams: oldData.pageParams,
-        pages: newPages
+        pages: newPages,
       };
     }
   );
@@ -363,7 +377,7 @@ export async function deletePost_PostsCacheMutation(postId: string) {
 
 export async function editPost_PostsCacheMutation(postToEdit: TPost) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -377,16 +391,16 @@ export async function editPost_PostsCacheMutation(postToEdit: TPost) {
               content: postToEdit.content,
               media: postToEdit.media,
               collection: postToEdit.collection,
-              privacy: postToEdit.privacy
+              privacy: postToEdit.privacy,
             };
           }
           return post;
-        })
+        }),
       }));
 
       return {
         pageParams: oldData.pageParams,
-        pages: newPages
+        pages: newPages,
       };
     }
   );
@@ -403,7 +417,7 @@ export function editPost_PostInfoCacheMutation(postToEdit: TPost) {
         content: postToEdit.content,
         media: postToEdit.media,
         collection: postToEdit.collection,
-        privacy: postToEdit.privacy
+        privacy: postToEdit.privacy,
       };
     }
   );
@@ -422,7 +436,7 @@ export function editUserProfile_ProfileCacheMutation({
   username,
   avatar,
   bio,
-  banner
+  banner,
 }: EditUserProfileCacheMutationArgs) {
   queryClient.setQueryData<UserProfile>(
     USER_PROFILE_QUERY_KEY(userHandle),
@@ -434,7 +448,7 @@ export function editUserProfile_ProfileCacheMutation({
         username,
         avatar,
         bio,
-        banner
+        banner,
       };
     }
   );
@@ -443,10 +457,10 @@ export function editUserProfile_ProfileCacheMutation({
 export async function editUserProfile_PostsCacheMutation({
   userHandle,
   username,
-  avatar
+  avatar,
 }: EditUserProfileCacheMutationArgs) {
   await queryClient.cancelQueries(POSTS_QUERY_FILTER);
-  queryClient.setQueriesData<InfiniteData<PostsRequest, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -460,17 +474,17 @@ export async function editUserProfile_PostsCacheMutation({
               owner: {
                 ...post.owner,
                 avatar,
-                username
-              }
+                username,
+              },
             };
           }
           return post;
-        })
+        }),
       }));
 
       return {
         pageParams: oldData.pageParams,
-        pages: newPages
+        pages: newPages,
       };
     }
   );
@@ -478,11 +492,14 @@ export async function editUserProfile_PostsCacheMutation({
 
 type FollowUnfollowCacheMutationArgs = {
   userHandle: string;
+  currentUserHandle: string;
 };
 
 export function followUser_UserProfileCacheMutation({
-  userHandle
+  userHandle,
+  currentUserHandle,
 }: FollowUnfollowCacheMutationArgs) {
+  //mutate the other user's totalFollowers
   queryClient.setQueryData<UserProfile>(
     USER_PROFILE_QUERY_KEY(userHandle),
     (oldData) => {
@@ -491,15 +508,29 @@ export function followUser_UserProfileCacheMutation({
       return {
         ...oldData,
         followedByYou: true,
-        totalFollowers: oldData.totalFollowers + 1
+        totalFollowers: oldData.totalFollowers + 1,
+      };
+    }
+  );
+  //mutate the current user's totalFollowing
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing + 1,
       };
     }
   );
 }
 
 export function unFollowUser_UserProfileCacheMutation({
-  userHandle
+  userHandle,
+  currentUserHandle,
 }: FollowUnfollowCacheMutationArgs) {
+  //mutate the other user's totalFollowers
   queryClient.setQueryData<UserProfile>(
     USER_PROFILE_QUERY_KEY(userHandle),
     (oldData) => {
@@ -508,8 +539,152 @@ export function unFollowUser_UserProfileCacheMutation({
       return {
         ...oldData,
         followedByYou: false,
-        totalFollowers: oldData.totalFollowers - 1
+        totalFollowers: oldData.totalFollowers - 1,
       };
     }
   );
+
+  //mutate the current user's totalFollowing
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing - 1,
+      };
+    }
+  );
+}
+
+export function followUser_CurrentUserProfilePreviewCacheMutation({
+  currentUserHandle,
+}: Pick<FollowUnfollowCacheMutationArgs, "currentUserHandle">) {
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing + 1,
+      };
+    }
+  );
+}
+
+export function unfollowUser_CurrentUserProfilePreviewCacheMutation({
+  currentUserHandle,
+}: Pick<FollowUnfollowCacheMutationArgs, "currentUserHandle">) {
+  queryClient.setQueryData<UserProfile>(
+    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        ...oldData,
+        totalFollowing: oldData.totalFollowing - 1,
+      };
+    }
+  );
+}
+
+export async function followUser_UserPreviewListCacheMutation({
+  userHandle,
+}: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
+  await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedUserPreviewsResponse, unknown>
+  >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
+    if (!oldData) return undefined;
+
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.map((userPreview) => {
+        if (userPreview.handle === userHandle) {
+          return {
+            ...userPreview,
+            isFollowedByCurrentUser: true,
+          };
+        }
+        return userPreview;
+      }),
+    }));
+
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages,
+    };
+  });
+}
+
+export async function unfollowUser_UserPreviewListCacheMutation({
+  userHandle,
+}: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
+  await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedUserPreviewsResponse, unknown>
+  >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
+    if (!oldData) return undefined;
+
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.map((userPreview) => {
+        if (userPreview.handle === userHandle) {
+          return {
+            ...userPreview,
+            isFollowedByCurrentUser: false,
+          };
+        }
+        return userPreview;
+      }),
+    }));
+
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages,
+    };
+  });
+}
+
+export type ToggleCollectionItemCacheMutationArgs = {
+  collectionId: string;
+  mediaId: string;
+  mediaType: MediaType;
+  type: "add" | "remove";
+};
+
+export async function toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+  collectionId,
+  mediaId,
+  mediaType,
+  type,
+}: ToggleCollectionItemCacheMutationArgs) {
+  const queryKey = CHECK_MEDIA_COLLECTIONS_LIST_QUERY_KEY(mediaId, mediaType);
+  await queryClient.cancelQueries({ queryKey });
+
+  queryClient.setQueryData<
+    InfiniteData<PaginatedMediaExistenceInCollectionsResponse, unknown>
+  >(queryKey, (oldData) => {
+    if (!oldData) return undefined;
+
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.map((collection) => {
+        if (collection.id === collectionId) {
+          return {
+            ...collection,
+            doesGivenMediaExist: type === "add" ? true : false,
+          };
+        }
+        return collection;
+      }),
+    }));
+
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages,
+    };
+  });
 }

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
@@ -30,13 +30,23 @@ const anilistGenres = Object.values(AnimeGenre).map((genre) =>
   genre.toString()
 );
 
-const episodePageSearchParams = z.object({
-  id: z.coerce.string()
+const episodePageSearchSchema = z.object({
+  id: z.string()
 });
+
+type EpisodePageSearchSchema = z.infer<typeof episodePageSearchSchema>;
 
 export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
   component: () => <WatchEpisodePage />,
-  validateSearch: (search) => episodePageSearchParams.parse(search)
+  validateSearch: (search): EpisodePageSearchSchema => {
+    const validated = episodePageSearchSchema.safeParse(search);
+    if (validated.success) {
+      return validated.data;
+    } else {
+      redirect({ to: "/anime" });
+      return { id: "" };
+    }
+  }
 });
 
 function WatchEpisodePage() {
@@ -103,7 +113,7 @@ function WatchEpisodePage() {
     );
   }
 
-  if (episodeStreamLinksError && (episodesQuery.error || animeInfoError)) {
+  if (episodeStreamLinksError || episodesQuery.error || animeInfoError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
