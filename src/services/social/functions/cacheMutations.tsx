@@ -56,14 +56,13 @@ type CreatePostPostsCacheMutation = {
   result: { collection: TCollection | null; id: string };
 };
 
-export async function createPost_PostsCacheMutation({
+export function createPost_PostsCacheMutation({
   queryFilter,
   variables,
   result,
 }: CreatePostPostsCacheMutation) {
   const { content, media, owner, privacy } = variables;
   const { collection, id } = result;
-  await queryClient.cancelQueries(queryFilter);
   let newPost: TPost;
   if (media) {
     newPost = {
@@ -149,11 +148,10 @@ type LikeUnlikePostCacheMutation = {
   type: "like" | "unlike";
 };
 
-export async function post_ReactionCacheMutation({
+export function post_ReactionCacheMutation({
   postId,
   type,
 }: LikeUnlikePostCacheMutation) {
-  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
@@ -272,12 +270,10 @@ type CreateCommentCommentsCacheMutationArgs = {
   newComment: TPostComment;
 };
 
-export async function createComment_CommentsCacheMutation({
+export function createComment_CommentsCacheMutation({
   postId,
   newComment,
 }: CreateCommentCommentsCacheMutationArgs) {
-  await queryClient.cancelQueries({ queryKey: COMMENTS_QUERY_FILTER(postId) });
-
   queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, unknown>>(
     { queryKey: COMMENTS_QUERY_FILTER(postId) },
     (oldData) => {
@@ -322,11 +318,10 @@ type PostTotalCommentsCacheMutationArgs = {
   incrementTotalComments: boolean;
 };
 
-export async function post_TotalCommentsCacheMutation({
+export function post_TotalCommentsCacheMutation({
   postId,
   incrementTotalComments,
 }: PostTotalCommentsCacheMutationArgs) {
-  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
@@ -355,8 +350,7 @@ export async function post_TotalCommentsCacheMutation({
   );
 }
 
-export async function deletePost_PostsCacheMutation(postId: string) {
-  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
+export function deletePost_PostsCacheMutation(postId: string) {
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
@@ -375,8 +369,7 @@ export async function deletePost_PostsCacheMutation(postId: string) {
   );
 }
 
-export async function editPost_PostsCacheMutation(postToEdit: TPost) {
-  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
+export function editPost_PostsCacheMutation(postToEdit: TPost) {
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
@@ -454,12 +447,11 @@ export function editUserProfile_ProfileCacheMutation({
   );
 }
 
-export async function editUserProfile_PostsCacheMutation({
+export function editUserProfile_PostsCacheMutation({
   userHandle,
   username,
   avatar,
 }: EditUserProfileCacheMutationArgs) {
-  await queryClient.cancelQueries(POSTS_QUERY_FILTER);
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
@@ -492,7 +484,7 @@ export async function editUserProfile_PostsCacheMutation({
 
 type FollowUnfollowCacheMutationArgs = {
   userHandle: string;
-  currentUserHandle: string;
+  currentUserHandle: string | undefined;
 };
 
 export function followUser_UserProfileCacheMutation({
@@ -514,7 +506,7 @@ export function followUser_UserProfileCacheMutation({
   );
   //mutate the current user's totalFollowing
   queryClient.setQueryData<UserProfile>(
-    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    USER_PROFILE_QUERY_KEY(currentUserHandle!),
     (oldData) => {
       if (!oldData) return undefined;
 
@@ -546,7 +538,7 @@ export function unFollowUser_UserProfileCacheMutation({
 
   //mutate the current user's totalFollowing
   queryClient.setQueryData<UserProfile>(
-    USER_PROFILE_QUERY_KEY(currentUserHandle),
+    USER_PROFILE_QUERY_KEY(currentUserHandle!),
     (oldData) => {
       if (!oldData) return undefined;
 
@@ -558,42 +550,9 @@ export function unFollowUser_UserProfileCacheMutation({
   );
 }
 
-export function followUser_CurrentUserProfilePreviewCacheMutation({
-  currentUserHandle,
-}: Pick<FollowUnfollowCacheMutationArgs, "currentUserHandle">) {
-  queryClient.setQueryData<UserProfile>(
-    USER_PROFILE_QUERY_KEY(currentUserHandle),
-    (oldData) => {
-      if (!oldData) return undefined;
-
-      return {
-        ...oldData,
-        totalFollowing: oldData.totalFollowing + 1,
-      };
-    }
-  );
-}
-
-export function unfollowUser_CurrentUserProfilePreviewCacheMutation({
-  currentUserHandle,
-}: Pick<FollowUnfollowCacheMutationArgs, "currentUserHandle">) {
-  queryClient.setQueryData<UserProfile>(
-    USER_PROFILE_QUERY_KEY(currentUserHandle),
-    (oldData) => {
-      if (!oldData) return undefined;
-
-      return {
-        ...oldData,
-        totalFollowing: oldData.totalFollowing - 1,
-      };
-    }
-  );
-}
-
-export async function followUser_UserPreviewListCacheMutation({
+export function followUser_UserPreviewListCacheMutation({
   userHandle,
 }: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
-  await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
   queryClient.setQueriesData<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>
   >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
@@ -619,10 +578,9 @@ export async function followUser_UserPreviewListCacheMutation({
   });
 }
 
-export async function unfollowUser_UserPreviewListCacheMutation({
+export function unfollowUser_UserPreviewListCacheMutation({
   userHandle,
 }: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
-  await queryClient.cancelQueries(USER_PREVIEW_LIST_QUERY_KEY);
   queryClient.setQueriesData<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>
   >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
@@ -655,14 +613,13 @@ export type ToggleCollectionItemCacheMutationArgs = {
   type: "add" | "remove";
 };
 
-export async function toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+export function toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
   collectionId,
   mediaId,
   mediaType,
   type,
 }: ToggleCollectionItemCacheMutationArgs) {
   const queryKey = CHECK_MEDIA_COLLECTIONS_LIST_QUERY_KEY(mediaId, mediaType);
-  await queryClient.cancelQueries({ queryKey });
 
   queryClient.setQueryData<
     InfiniteData<PaginatedMediaExistenceInCollectionsResponse, unknown>

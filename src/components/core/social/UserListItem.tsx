@@ -1,9 +1,8 @@
-import UnfollowButton from "./mainContent/profile/profileDetails/UnfollowButton";
-import FollowButton from "./mainContent/profile/profileDetails/FollowButton";
 import { UserPreview } from "@/utils/types/social/social";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import ToggleFollowButton from "./mainContent/profile/profileDetails/ToggleFollowButton";
 
 type UserListItemProps = UserPreview & {
   className?: string;
@@ -18,7 +17,7 @@ export default function UserListItem({
   id,
   username,
   className,
-  type
+  type,
 }: UserListItemProps) {
   const navigate = useNavigate();
 
@@ -57,16 +56,14 @@ export default function UserListItem({
             {handle}
           </p>
         </div>
-        {currentUser.id !== id &&
-          (isFollowedByCurrentUser ? (
-            <UnfollowButton
-              type="userPreview"
-              userHandle={handle}
-              userId={id}
-            />
-          ) : (
-            <FollowButton type="userPreview" userHandle={handle} userId={id} />
-          ))}
+        {currentUser.id !== id && (
+          <ToggleFollowButton
+            isFollow={isFollowedByCurrentUser}
+            type="userPreview"
+            userHandle={handle}
+            userId={id}
+          />
+        )}
       </div>
       {bio && (
         <p

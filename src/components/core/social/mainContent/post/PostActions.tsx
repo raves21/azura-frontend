@@ -1,8 +1,13 @@
 import { cn } from "@/lib/utils";
 import {
+  postInfo_ReactionCacheMutation,
+  post_ReactionCacheMutation,
+} from "@/services/social/functions/cacheMutations";
+import {
   useLikePost,
   useUnLikePost,
 } from "@/services/social/queries/socialQueries";
+import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import { useMatchRoute } from "@tanstack/react-router";
 import { Heart, MessageCircle, Circle } from "lucide-react";
 
@@ -28,21 +33,32 @@ export default function PostActions({
     to: "/social/$userHandle/posts/$postId",
   });
 
-  //TODO: add debounce when liking/unliking a post, to avoid spamming the server
   const { mutateAsync: likePost } = useLikePost();
   const { mutateAsync: unlikePost } = useUnLikePost();
 
-  async function handlePostReaction(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    postId: string
-  ) {
-    e.stopPropagation();
+  function handleToggleReactionButton() {
     if (isLikedByCurrentUser) {
-      await unlikePost(postId);
+      postInfo_ReactionCacheMutation({ postId, type: "unlike" });
+      post_ReactionCacheMutation({ postId, type: "unlike" });
     } else {
-      await likePost(postId);
+      postInfo_ReactionCacheMutation({ postId, type: "like" });
+      post_ReactionCacheMutation({ postId, type: "like" });
     }
   }
+
+  async function toggleLike() {
+    if (isLikedByCurrentUser) {
+      await likePost(postId);
+    } else {
+      await unlikePost(postId);
+    }
+  }
+
+  useDebounceOnClick({
+    action: () => toggleLike(),
+    toggleState: isLikedByCurrentUser,
+    skipFirstRender: true,
+  });
 
   return (
     <div
@@ -67,7 +83,10 @@ export default function PostActions({
         )}
       </button>
       <button
-        onClick={async (e) => await handlePostReaction(e, postId)}
+        onClick={async (e) => {
+          e.stopPropagation();
+          handleToggleReactionButton();
+        }}
         className="flex items-center gap-2 group"
       >
         <div className="relative">

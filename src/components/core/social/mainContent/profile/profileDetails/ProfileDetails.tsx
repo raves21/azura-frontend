@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import ProfileBioRenderer from "./ProfileBioRenderer";
 import EditProfileButton from "./EditProfileButton";
-import UnfollowButton from "./UnfollowButton";
-import FollowButton from "./FollowButton";
+import ToggleFollowButton from "./ToggleFollowButton";
 
 type CurrentUserProps = {
   isCurrentUser: true;
@@ -43,11 +42,12 @@ export default function ProfileDetails({
   return (
     <div className="flex flex-col gap-4 px-3 sm:px-5">
       {notCurrentUserProps ? (
-        notCurrentUserProps.isFollowedByCurrentUser ? (
-          <UnfollowButton type="profilePage" userId={id} userHandle={handle} />
-        ) : (
-          <FollowButton type="profilePage" userId={id} userHandle={handle} />
-        )
+        <ToggleFollowButton
+          isFollow={notCurrentUserProps.isFollowedByCurrentUser}
+          type="profilePage"
+          userHandle={handle}
+          userId={id}
+        />
       ) : (
         <EditProfileButton
           avatar={avatar}
@@ -82,12 +82,12 @@ export default function ProfileDetails({
         {totalFollowers !== 0 ? (
           <Link>
             <span className="font-semibold">{totalFollowers}&nbsp;</span>
-            <span className="text-socialTextSecondary">following</span>
+            <span className="text-socialTextSecondary">follower</span>
           </Link>
         ) : (
           <p>
             <span className="font-semibold">0&nbsp;</span>
-            <span className="text-socialTextSecondary">following</span>
+            <span className="text-socialTextSecondary">followers</span>
           </p>
         )}
       </div>
