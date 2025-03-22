@@ -14,6 +14,7 @@ import {
   unFollowUser_UserProfileCacheMutation,
 } from "@/services/social/functions/cacheMutations";
 import { Navigate } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 
 type ToggleFollowButtonProps = {
   type: "profilePage" | "userPreview";
@@ -80,11 +81,12 @@ export default function ToggleFollowButton({
 
   return (
     <button
+      className={cn({ "self-end": type === "profilePage" })}
       onClick={(e) => {
         if (type === "userPreview") {
           e.stopPropagation();
-          handleToggleButton();
         }
+        handleToggleButton();
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}

@@ -44,7 +44,7 @@ export default function ProfileDetails({
       {notCurrentUserProps ? (
         <ToggleFollowButton
           isFollow={notCurrentUserProps.isFollowedByCurrentUser}
-          type="userPreview"
+          type="profilePage"
           userHandle={handle}
           userId={id}
         />
