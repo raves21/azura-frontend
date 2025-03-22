@@ -5,9 +5,6 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Plus, X } from "lucide-react";
 import MediaExistenceInCollectionSkeleton from "@/components/core/loadingSkeletons/media/MediaExistenceInCollectionSkeleton";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { useDebounceToggleCollectionItem } from "@/utils/hooks/useDebounceToggleCollectionItem";
-import { toggleCollectionItem_MediaExistenceInCollectionsCacheMutation } from "@/services/social/functions/cacheMutations";
-import { useCallback } from "react";
 import { ToggleCollectionItemProperties } from "@/utils/types/media/shared";
 import ManageCollectionDialog from "@/components/core/social/mainContent/collection/manageCollectionDialog/ManageCollectionDialog";
 import { useShallow } from "zustand/react/shallow";
@@ -37,73 +34,6 @@ export default function ToggleMediaToCollectionDialog({
   } = useMediaExistenceInCollections(mediaId, mediaType);
 
   const bottomPageRef = useFetchNextPageInView(fetchNextPage);
-
-  const { toggleCollectionItemDebounced } = useDebounceToggleCollectionItem();
-
-  const toggleCollectionItemOnClickHandler = useCallback(
-    ({
-      collectionId,
-      mediaId,
-      mediaType,
-      doesGivenMediaExist,
-      coverImage,
-      description,
-      posterImage,
-      rating,
-      status,
-      title,
-      year,
-    }: ToggleCollectionItemProperties & {
-      doesGivenMediaExist: boolean;
-    }) => {
-      if (doesGivenMediaExist) {
-        //mutate the cache for optimistic updates (set doesGivenMediaExist: false)
-        toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
-          collectionId,
-          mediaId,
-          mediaType,
-          type: "remove",
-        });
-        //run the debounced api call
-        toggleCollectionItemDebounced({
-          type: "remove",
-          collectionId,
-          coverImage,
-          description,
-          mediaId,
-          mediaType,
-          posterImage,
-          rating,
-          status,
-          title,
-          year,
-        });
-      } else {
-        //mutate the cache for optimistic updates (set doesGivenMediaExist: true)
-        toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
-          collectionId,
-          mediaId,
-          mediaType,
-          type: "add",
-        });
-        //run the debounced api call
-        toggleCollectionItemDebounced({
-          type: "add",
-          collectionId,
-          coverImage,
-          description,
-          mediaId,
-          mediaType,
-          posterImage,
-          rating,
-          status,
-          title,
-          year,
-        });
-      }
-    },
-    []
-  );
 
   const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
     useShallow((state) => [
@@ -177,21 +107,16 @@ export default function ToggleMediaToCollectionDialog({
                     key={collection.id}
                     collectionName={collection.name}
                     doesGivenMediaExist={collection.doesGivenMediaExist}
-                    onClick={() =>
-                      toggleCollectionItemOnClickHandler({
-                        collectionId: collection.id,
-                        coverImage,
-                        description,
-                        doesGivenMediaExist: collection.doesGivenMediaExist,
-                        mediaId,
-                        mediaType,
-                        posterImage,
-                        rating,
-                        status,
-                        title,
-                        year,
-                      })
-                    }
+                    collectionId={collection.id}
+                    coverImage={coverImage}
+                    description={description}
+                    mediaId={mediaId}
+                    mediaType={mediaType}
+                    posterImage={posterImage}
+                    rating={rating}
+                    status={status}
+                    title={title}
+                    year={year}
                   />
                 ))}
                 <div ref={bottomPageRef} key={"bottom of page"}>

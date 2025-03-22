@@ -28,7 +28,6 @@ import {
   postInfo_TotalCommentsCacheMutation,
   post_TotalCommentsCacheMutation,
   createPost_PostsCacheMutation,
-  postInfo_ReactionCacheMutation,
   deletePost_PostsCacheMutation,
   editPost_PostsCacheMutation,
   editPost_PostInfoCacheMutation,
@@ -171,12 +170,12 @@ export function useCreatePost() {
         queryKey: ["posts", "userProfilePosts", variables.owner.handle],
         exact: true,
       };
-      await createPost_PostsCacheMutation({
+      createPost_PostsCacheMutation({
         queryFilter: forYouFeedQueryFilter,
         result,
         variables,
       });
-      await createPost_PostsCacheMutation({
+      createPost_PostsCacheMutation({
         queryFilter: currentUserProfilePostsQueryFilter,
         result,
         variables,
@@ -188,15 +187,13 @@ export function useCreatePost() {
 export function useLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
-      //mutate the cache
-      await postInfo_ReactionCacheMutation({ postId, type: "like" });
-      await post_ReactionCacheMutation({ postId, type: "like" });
       //run the api call
       return await api.post(`posts/${postId}/likes`);
     },
-    onError: async (_, postId) => {
-      //revert post cache state back to unliked if it throws an error
-      await post_ReactionCacheMutation({ postId, type: "unlike" });
+    onError: async (error, postId) => {
+      if (!error.message.includes("400")) {
+        post_ReactionCacheMutation({ postId, type: "unlike" });
+      }
     },
   });
 }
@@ -204,15 +201,13 @@ export function useLikePost() {
 export function useUnLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
-      //mutate the cache
-      await postInfo_ReactionCacheMutation({ postId, type: "unlike" });
-      await post_ReactionCacheMutation({ postId, type: "unlike" });
       //run the api call
       return await api.delete(`posts/${postId}/likes`);
     },
-    onError: async (_, postId) => {
-      //revert post cache state back to liked if it throws an error
-      await post_ReactionCacheMutation({ postId, type: "like" });
+    onError: async (error, postId) => {
+      if (!error.message.includes("404")) {
+        post_ReactionCacheMutation({ postId, type: "like" });
+      }
     },
   });
 }
@@ -264,15 +259,15 @@ export function useCreatePostComment() {
         postId,
         id,
       };
-      await createComment_CommentsCacheMutation({
+      createComment_CommentsCacheMutation({
         postId,
         newComment,
       });
-      await post_TotalCommentsCacheMutation({
+      post_TotalCommentsCacheMutation({
         postId,
         incrementTotalComments: true,
       });
-      await postInfo_TotalCommentsCacheMutation({
+      postInfo_TotalCommentsCacheMutation({
         postId,
         incrementTotalComments: true,
       });
@@ -287,7 +282,7 @@ export function useDeletePost(postId: string | null) {
       return await api.delete(`/posts/${postId}`);
     },
     onSuccess: async (_, postId) => {
-      await deletePost_PostsCacheMutation(postId);
+      deletePost_PostsCacheMutation(postId);
     },
   });
 }
@@ -350,8 +345,8 @@ export function useEditPost() {
       });
     },
     onSuccess: async (_, postToEdit) => {
-      await editPost_PostsCacheMutation(postToEdit);
-      await editPost_PostInfoCacheMutation(postToEdit);
+      editPost_PostsCacheMutation(postToEdit);
+      editPost_PostInfoCacheMutation(postToEdit);
     },
   });
 }
@@ -359,52 +354,45 @@ export function useEditPost() {
 type FollowUnfollowArgs = {
   userId: string;
   userHandle: string;
-  currentUserHandle: string;
+  currentUserHandle: string | undefined;
 };
 
 export function useFollowUser() {
   return useMutation({
-    mutationFn: async ({
-      userId,
-      userHandle,
-      currentUserHandle,
-    }: FollowUnfollowArgs) => {
-      //mutate the cache
-      followUser_UserProfileCacheMutation({ userHandle, currentUserHandle });
-      await followUser_UserPreviewListCacheMutation({ userHandle });
+    mutationFn: async ({ userId }: FollowUnfollowArgs) => {
       //run the api call
       await api.post(`/users/${userId}/follow`);
     },
-    onError: async (_, variables) => {
+    onError: async (error, variables) => {
       const { userHandle, currentUserHandle } = variables;
-      //if error, set it data back to unfollowed
-      unFollowUser_UserProfileCacheMutation({ userHandle, currentUserHandle });
-      await unfollowUser_UserPreviewListCacheMutation({ userHandle });
+      if (!error.message.includes("400")) {
+        //if error, set it data back to unfollowed
+        unFollowUser_UserProfileCacheMutation({
+          userHandle,
+          currentUserHandle,
+        });
+        unfollowUser_UserPreviewListCacheMutation({ userHandle });
+      }
     },
   });
 }
 
 export function useUnfollowUser() {
   return useMutation({
-    mutationFn: async ({
-      userId,
-      userHandle,
-      currentUserHandle,
-    }: FollowUnfollowArgs) => {
-      //mutate the cache
-      unFollowUser_UserProfileCacheMutation({ userHandle, currentUserHandle });
-      await unfollowUser_UserPreviewListCacheMutation({ userHandle });
+    mutationFn: async ({ userId }: FollowUnfollowArgs) => {
       //run the api call
       await api.post(`/users/${userId}/unfollow`);
     },
-    onError: async (_, variables) => {
+    onError: async (error, variables) => {
       const { userHandle, currentUserHandle } = variables;
-      //if error, set it data back to followed
-      await followUser_UserProfileCacheMutation({
-        userHandle,
-        currentUserHandle,
-      });
-      await followUser_UserPreviewListCacheMutation({ userHandle });
+      if (!error.message.includes("404")) {
+        //if error, set it data back to followed
+        followUser_UserProfileCacheMutation({
+          userHandle,
+          currentUserHandle,
+        });
+        followUser_UserPreviewListCacheMutation({ userHandle });
+      }
     },
   });
 }
@@ -588,14 +576,6 @@ export function useAddCollectionItem() {
       rating,
       status,
     }: UseAddCollectionItemArgs) => {
-      //mutate the cache (doesGivenMediaExist set to true)
-      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
-        collectionId,
-        mediaId,
-        mediaType,
-        type: "add",
-      });
-
       //run the api call
       await api.post(`/collections/${collectionId}/collection-items`, {
         mediaId,
@@ -609,15 +589,17 @@ export function useAddCollectionItem() {
         status,
       });
     },
-    onError: async (_, variables) => {
+    onError: async (error, variables) => {
       const { collectionId, mediaId, mediaType } = variables;
-      //if error, set it back to doesGivenMediaExist: false
-      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
-        collectionId,
-        mediaId,
-        mediaType,
-        type: "remove",
-      });
+      if (!error.message.includes("400")) {
+        //if error, set it back to doesGivenMediaExist: false
+        toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+          collectionId,
+          mediaId,
+          mediaType,
+          type: "remove",
+        });
+      }
     },
   });
 }
@@ -636,27 +618,22 @@ export function useDeleteCollectionItem() {
       collectionId,
       mediaType,
     }: UseDeleteCollectionItemArgs) => {
-      //mutate the cache (doesGivenMediaExist set to false)
-      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
-        collectionId,
-        mediaId,
-        mediaType,
-        type: "remove",
-      });
       //run the api call
       await api.delete(`/collections/${collectionId}/collection-items`, {
         params: { mediaId, mediaType },
       });
     },
-    onError: async (_, variables) => {
+    onError: async (error, variables) => {
       const { collectionId, mediaId, mediaType } = variables;
-      //if error, set it back to doesGivenMediaExist: true
-      await toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
-        collectionId,
-        mediaId,
-        mediaType,
-        type: "add",
-      });
+      if (!error.message.includes("404")) {
+        //if error, set it back to doesGivenMediaExist: true
+        toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+          collectionId,
+          mediaId,
+          mediaType,
+          type: "add",
+        });
+      }
     },
   });
 }
@@ -665,7 +642,7 @@ type UseCreateCollectionArgs = {
   name: string;
   privacy: EntityPrivacy;
   description: string | null;
-  photo: string | null
+  photo: string | null;
 };
 
 export function useCreateCollection() {
@@ -674,7 +651,7 @@ export function useCreateCollection() {
       name,
       privacy,
       description,
-      photo
+      photo,
     }: UseCreateCollectionArgs) => {
       await api.post("/collections", { name, privacy, description, photo });
     },
