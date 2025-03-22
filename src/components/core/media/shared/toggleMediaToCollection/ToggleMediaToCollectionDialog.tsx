@@ -27,7 +27,7 @@ export default function ToggleMediaToCollectionDialog({
 }: ToggleMediaToCollectionDialogProps) {
   const {
     data: mediaExistenceInCollections,
-    isLoading: isMediaExistenceInCollectionsLoading,
+    isFetching: isMediaExistenceInCollectionsFetching,
     error: mediaExistenceInCollectionsError,
     isFetchingNextPage,
     fetchNextPage,
@@ -42,7 +42,7 @@ export default function ToggleMediaToCollectionDialog({
     ])
   );
 
-  if (isMediaExistenceInCollectionsLoading) {
+  if (isMediaExistenceInCollectionsFetching) {
     return (
       <div className="aspect-square relative bg-socialPrimary w-[500px] text-mainWhite rounded-lg flex flex-col">
         <div className="grid py-6 text-lg font-medium border-b-[0.5px] place-items-center border-socialTextSecondary">
