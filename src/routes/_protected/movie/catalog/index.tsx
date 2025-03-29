@@ -4,7 +4,7 @@ import MovieFiltersDialog from "@/components/core/media/movie/filter/MovieFilter
 import Pagination from "@/components/core/media/shared/catalog/Pagination";
 import {
   useDiscoverMovies,
-  useMovieGenres
+  useMovieGenres,
 } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
@@ -19,7 +19,7 @@ const movieCatalogPageSchema = z.object({
   page: z.number().optional(),
   sortBy: z.nativeEnum(MovieSortBy).optional(),
   genres: z.nativeEnum(MovieGenre).array().optional(),
-  year: z.number().optional()
+  year: z.number().optional(),
 });
 
 type MovieCatalogPageSchema = z.infer<typeof movieCatalogPageSchema> &
@@ -32,12 +32,12 @@ export const Route = createFileRoute("/_protected/movie/catalog/")({
     if (validatedSearch.success) {
       return {
         ...validatedSearch.data,
-        success: true
+        success: true,
       };
     } else {
       return { success: false };
     }
-  }
+  },
 });
 
 function MovieCatalogPage() {
@@ -48,19 +48,19 @@ function MovieCatalogPage() {
 
   useHandleSearchValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/movie" })
+    onValidationError: () => navigate({ to: "/movie" }),
   });
 
   const {
     data: catalogMovieList,
     isLoading: isCatalogMovieListLoading,
-    error: catalogMovieListError
+    error: catalogMovieListError,
   } = useDiscoverMovies({ page, sortBy, genres, year });
 
   const {
     data: movieGenres,
     isLoading: isMovieGenresLoading,
-    error: movieGenresError
+    error: movieGenresError,
   } = useMovieGenres();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -117,7 +117,7 @@ function MovieCatalogPage() {
               currentPage={catalogMovieList.page}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page: page })
+                  search: (prev) => ({ ...prev, page: page }),
                 });
               }}
             />

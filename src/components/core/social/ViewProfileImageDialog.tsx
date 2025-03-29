@@ -43,6 +43,7 @@ export default function ViewProfileImageDialog({
         <img
           onClick={(e) => e.stopPropagation()}
           src={src}
+          onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
           alt="useravatar image"
           className="object-cover rounded-full aspect-square w-[90%] mobile-l:w-[80%] sm:w-[70%] md:w-[50%] max-w-[500px]"
         />
@@ -50,6 +51,7 @@ export default function ViewProfileImageDialog({
         <img
           onClick={(e) => e.stopPropagation()}
           src={src}
+          onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
           alt="user banner image"
           className="aspect-[3/1] w-full object-cover"
         />

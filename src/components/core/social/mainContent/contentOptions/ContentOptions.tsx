@@ -10,14 +10,14 @@ type ContentOptionsProps = {
 export default function ContentOptions({
   contentOptions,
   selectedOption,
-  setSelectedOption
+  setSelectedOption,
 }: ContentOptionsProps) {
   return (
     <div className="flex w-full overflow-hidden font-semibold rounded-lg bg-socialPrimary">
       {contentOptions.map((option, i) => (
         <ContentOption
           key={i}
-          linkProps={option.linkProps}
+          linkProps={option.linkProps || {}}
           option={option}
           onSelectOption={(option) => setSelectedOption(option)}
           selectedOption={selectedOption}

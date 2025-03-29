@@ -7,23 +7,27 @@ import { UseTipTapEditorReturnType } from "@/utils/hooks/useTipTapEditor";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { tempCollectionItems } from "@/utils/variables/temp";
 import { Navigate } from "@tanstack/react-router";
 import { EditorContent } from "@tiptap/react";
 import {
   Globe,
   ChevronDown,
-  X,
   Paperclip,
   Smile,
   Users,
   Lock,
+  Film,
+  LibraryBig,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { TPost } from "@/utils/types/social/social";
 import { isEqual } from "radash";
 import ErrorDialog from "@/components/core/ErrorDialog";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+// import ManagePostMediaAttachment from "./mediaAttachment/ManagePostMediaAttachment";
+import CollectionAttachment from "./postAttachment/collectionAttachment/CollectionAttachment";
+import MediaAttachment from "./postAttachment/mediaAttachment/MediaAttachment";
 
 type EditPostProps = {
   type: "edit";
@@ -50,10 +54,18 @@ export default function ManagePostPage({
   } = tipTapEditor;
   const currentUser = useAuthStore((state) => state.currentUser);
 
-  //todo
-  const tempMediaAttachment = tempCollectionItems[1].media;
-  const [setManagePostPage, selectedPrivacy] = useManagePostStore(
-    useShallow((state) => [state.setManagePostPage, state.selectedPrivacy])
+  const [
+    setManagePostPage,
+    selectedPrivacy,
+    mediaAttachment,
+    collectionAttachment,
+  ] = useManagePostStore(
+    useShallow((state) => [
+      state.setManagePostPage,
+      state.selectedPrivacy,
+      state.mediaAttachment,
+      state.collectionAttachment,
+    ])
   );
   const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
     useShallow((state) => [
@@ -61,7 +73,6 @@ export default function ManagePostPage({
       state.toggleOpenDialogSecondary,
     ])
   );
-  const [isTempMediaAttached, setIsTempMediaAttached] = useState(false);
 
   const {
     mutateAsync: createPost,
@@ -152,39 +163,44 @@ export default function ManagePostPage({
         className="relative flex-grow w-full h-full overflow-y-auto text-lg"
       />
       <div className="flex items-center justify-between w-full">
-        {isTempMediaAttached ? (
-          <div className="relative text-start rounded-lg w-[50%] flex items-center gap-3 p-3 border-[0.5px] border-socialTextSecondary">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsTempMediaAttached(false);
-              }}
-              className="box-content absolute p-1 rounded-full -top-3 -left-2 bg-socialTextSecondary"
-            >
-              <X className="stroke-mainWhite size-4" />
-            </button>
-            <img
-              src={tempMediaAttachment.posterImage ?? "/no-image-2.jpg"}
-              className="aspect-[3/4] h-16 object-cover rounded-md"
-            />
-            <div className="flex flex-col gap-1">
-              <p className="font-medium line-clamp-1">
-                {tempMediaAttachment.title}
-              </p>
-              <p className="text-2xs line-clamp-2 text-socialTextSecondary">
-                {tempMediaAttachment.description}
-              </p>
-            </div>
-          </div>
+        {mediaAttachment ? (
+          <MediaAttachment media={mediaAttachment} />
+        ) : collectionAttachment ? (
+          <CollectionAttachment collection={collectionAttachment} />
         ) : (
-          <button
-            onClick={() => setIsTempMediaAttached(true)}
-            className="flex gap-2 px-3 py-2 transition-colors rounded-full hover:bg-mainAccent bg-socialTextSecondary"
-          >
-            <Paperclip className="transition-colors stroke-mainWhite size-4" />
-            <p className="text-xs font-medium">Attach</p>
-            <ChevronDown className="stroke-mainWhite size-4" />
-          </button>
+          <Menu>
+            <MenuButton className="flex gap-2 px-3 py-2 transition-colors  rounded-full bg-mainAccent hover:bg-fuchsia-800">
+              <Paperclip className="transition-colors stroke-mainWhite size-4" />
+              <p className="text-xs font-medium">Attach</p>
+              <ChevronDown className="stroke-mainWhite size-4" />
+            </MenuButton>
+            <MenuItems
+              transition
+              anchor="top start"
+              className="min-w-52 border border-gray-700 bg-socialPrimary origin-top-right rounded-xl text-sm/6 text-mainWhite transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+            >
+              <MenuItem>
+                <button
+                  onClick={() => setManagePostPage("selectMediaAttachment")}
+                  className="group bg-socialPrimary flex w-full items-center gap-2 rounded-lg py-2 px-3 data-[focus]:bg-white/10"
+                >
+                  <Film className="size-4 fill-white/30" />
+                  Media
+                </button>
+              </MenuItem>
+              <MenuItem>
+                <button
+                  onClick={() =>
+                    setManagePostPage("selectCollectionAttachment")
+                  }
+                  className="group flex bg-socialPrimary w-full items-center gap-2 rounded-lg py-2 px-3 data-[focus]:bg-white/10"
+                >
+                  <LibraryBig className="size-4 fill-white/30" />
+                  Collection
+                </button>
+              </MenuItem>
+            </MenuItems>
+          </Menu>
         )}
         <Smile className="box-content self-start p-2 transition-colors stroke-socialTextSecondary size-7 hover:cursor-pointer hover:stroke-mainAccent" />
       </div>
@@ -193,14 +209,18 @@ export default function ManagePostPage({
           onClick={async () => {
             await createPost({
               owner: currentUser,
-              collectionId: null,
+              collectionId: collectionAttachment?.id ?? null,
               content: inputText,
-              media: null,
+              media: mediaAttachment,
               privacy: selectedPrivacy,
+              currentUserHandle: currentUser.handle,
             });
             toggleOpenDialog(null);
           }}
-          disabled={!inputText || createPostStatus === "pending"}
+          disabled={
+            (!inputText && !collectionAttachment && !mediaAttachment) ||
+            createPostStatus === "pending"
+          }
           className="grid py-2 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
           {createPostStatus === "pending" ? "Posting..." : "Post"}
@@ -213,8 +233,10 @@ export default function ManagePostPage({
             }
             toggleOpenDialog(null);
           }}
-          //todo: disabled should have (!selectedCollection && !selectedMedia && !inputText)
-          disabled={!inputText || editPostStatus === "pending"}
+          disabled={
+            (!inputText && !collectionAttachment && !mediaAttachment) ||
+            editPostStatus === "pending"
+          }
           className="grid py-2 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
           {editPostStatus === "pending" ? "Saving..." : "Save"}

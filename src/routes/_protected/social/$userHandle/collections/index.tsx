@@ -25,7 +25,10 @@ function CollectionsPage() {
     error: userCollectionsError,
     isFetchingNextPage,
     fetchNextPage,
-  } = useUserCollections(userHandle, currentUser?.handle);
+  } = useUserCollections({
+    userHandle,
+    currentUserHandle: currentUser?.handle,
+  });
 
   const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 

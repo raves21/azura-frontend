@@ -67,7 +67,8 @@ export default function MediaAttachment({ media }: MediaAttachmentProps) {
             <p>{year}</p>
           </div>
           <p className="text-2xs mobile-m:text-xs md:text-sm line-clamp-2 text-socialTextSecondary">
-            {media.description || "No overview available"}
+            {media.description.replace(/<[^>]*>/g, "") ||
+              "No overview available"}
           </p>
         </div>
       </div>

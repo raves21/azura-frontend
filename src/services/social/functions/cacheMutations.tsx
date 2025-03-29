@@ -22,6 +22,19 @@ const POSTS_QUERY_FILTER: QueryFilters = {
   },
 };
 
+const FOR_YOU_FEED_QUERY_FILTER: QueryFilters = {
+  predicate(query) {
+    return query.queryKey.includes("forYouFeed");
+  },
+};
+
+const CURRENT_USER_PROFILE_POSTS_QUERY_FILTER = (
+  currentUserHandle: string
+) => ({
+  queryKey: ["posts", "userProfilePosts", currentUserHandle],
+  exact: true,
+});
+
 const COMMENTS_QUERY_FILTER = (postId: string): QueryKey => [
   "postComments",
   postId,
@@ -34,7 +47,7 @@ const USER_PROFILE_QUERY_KEY = (userHandle: string): QueryKey => [
   userHandle,
 ];
 
-const USER_PREVIEW_LIST_QUERY_KEY: QueryFilters = {
+const USER_PREVIEW_LIST_QUERY_FILTER: QueryFilters = {
   predicate(query) {
     return query.queryKey.includes("userPreviewList");
   },
@@ -46,7 +59,8 @@ const CHECK_MEDIA_COLLECTIONS_LIST_QUERY_KEY = (
 ) => ["collections", "mediaExistenceInCollections", mediaId, mediaType];
 
 type CreatePostPostsCacheMutation = {
-  queryFilter: QueryFilters;
+  postsFrom: "forYouFeed" | "currentUserProfile";
+  currentUserHandle: string;
   variables: {
     content: string | null;
     media: Media | null;
@@ -57,9 +71,10 @@ type CreatePostPostsCacheMutation = {
 };
 
 export function createPost_PostsCacheMutation({
-  queryFilter,
+  postsFrom,
   variables,
   result,
+  currentUserHandle,
 }: CreatePostPostsCacheMutation) {
   const { content, media, owner, privacy } = variables;
   const { collection, id } = result;
@@ -105,7 +120,9 @@ export function createPost_PostsCacheMutation({
     };
   }
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
-    queryFilter,
+    postsFrom === "forYouFeed"
+      ? FOR_YOU_FEED_QUERY_FILTER
+      : CURRENT_USER_PROFILE_POSTS_QUERY_FILTER(currentUserHandle),
     (oldData) => {
       const firstPage = oldData?.pages[0];
       //if there are already existing posts
@@ -555,7 +572,7 @@ export function followUser_UserPreviewListCacheMutation({
 }: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
   queryClient.setQueriesData<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>
-  >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
+  >(USER_PREVIEW_LIST_QUERY_FILTER, (oldData) => {
     if (!oldData) return undefined;
 
     const newPages = oldData.pages.map((page) => ({
@@ -583,7 +600,7 @@ export function unfollowUser_UserPreviewListCacheMutation({
 }: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
   queryClient.setQueriesData<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>
-  >(USER_PREVIEW_LIST_QUERY_KEY, (oldData) => {
+  >(USER_PREVIEW_LIST_QUERY_FILTER, (oldData) => {
     if (!oldData) return undefined;
 
     const newPages = oldData.pages.map((page) => ({

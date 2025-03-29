@@ -1,29 +1,38 @@
 import {
   getTMDBImageURL,
+  getTMDBRating,
   getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
-import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
-import { getTMDBRating } from "@/services/media/sharedFunctions";
+import { useShallow } from "zustand/react/shallow";
 
-type TVSearchDialogResultCardProps = {
+type Props = {
   tv: TVShowTMDB;
 };
 
-export default function TVSearchDialogResultCard({
-  tv,
-}: TVSearchDialogResultCardProps) {
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+export default function AttachmentTVSearchResultCard({ tv }: Props) {
+  const [setMediaAttachment, setManagePostPage] = useManagePostStore(
+    useShallow((state) => [state.setMediaAttachment, state.setManagePostPage])
+  );
   return (
-    <Link
-      to="/tv/$tvId"
-      params={{
-        tvId: tv.id.toString(),
+    <button
+      onClick={() => {
+        setMediaAttachment({
+          coverImage: getTMDBImageURL(tv.backdrop_path),
+          description: tv.overview,
+          id: tv.id.toString(),
+          posterImage: getTMDBImageURL(tv.poster_path),
+          rating: getTMDBRating(tv.vote_average),
+          status: null,
+          title: tv.name,
+          type: "TV",
+          year: getTMDBReleaseYear(tv.first_air_date),
+        });
+        setManagePostPage("managePost");
       }}
-      onClick={() => toggleOpenDialog(null)}
-      className="flex w-full gap-4 px-3 py-2 hover:bg-gray-900/70"
+      className="flex text-start w-full gap-4 px-3 py-2 hover:bg-socialPrimaryHover"
     >
       <div className="aspect-[3/4] h-min w-[90px] bg-gray-600 rounded-md">
         <img
@@ -39,9 +48,8 @@ export default function TVSearchDialogResultCard({
           <div className="flex items-center gap-[6px]">
             <p>{getTMDBReleaseYear(tv.first_air_date)}</p>
             <div className="bg-gray-400 rounded-full size-1" />
-            <p>TV</p>
+            <p>MOVIE</p>
             <div className="bg-gray-400 rounded-full size-1" />
-
             <div className="flex items-center gap-1">
               <Star className="size-4" />
               <p>{getTMDBRating(tv.vote_average)}</p>
@@ -49,6 +57,6 @@ export default function TVSearchDialogResultCard({
           </div>
         </div>
       </div>
-    </Link>
+    </button>
   );
 }

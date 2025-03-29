@@ -7,12 +7,12 @@ import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPag
 import {
   getTMDBImageURL,
   getTMDBReleaseYear,
-  useMediaScraper
+  useMediaScraper,
 } from "@/services/media/sharedFunctions";
 import {
   useTVInfo,
   useTVRecommendations,
-  useTVSeasonEpisodes
+  useTVSeasonEpisodes,
 } from "@/services/media/tv/tvQueries";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { createFileRoute } from "@tanstack/react-router";
@@ -27,7 +27,7 @@ import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayer
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
-  tvSeason: z.number()
+  tvSeason: z.number(),
 });
 
 type WatchTVEpisodePageSchema = z.infer<typeof watchTVEpisodePageSchema>;
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
       //if search params validation fails, provide defaults (season 1, episode 1).
       return { tvEp: 1, tvSeason: 1 };
     }
-  }
+  },
 });
 
 function WatchTVEpisodePage() {
@@ -51,7 +51,7 @@ function WatchTVEpisodePage() {
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
     videoAndeEpisodeInfoContainerHeight,
-    setVideoAndEpisodeInfoContainerHeight
+    setVideoAndEpisodeInfoContainerHeight,
   ] = useState(0);
   const [hasMainSeasons, setHasMainSeasons] = useState(false);
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);
@@ -60,7 +60,7 @@ function WatchTVEpisodePage() {
   const {
     data: tvInfo,
     isLoading: isTVInfoLoading,
-    error: tvInfoError
+    error: tvInfoError,
   } = useTVInfo(tvId);
 
   useEffect(() => {
@@ -79,19 +79,19 @@ function WatchTVEpisodePage() {
   const tvSeasonEpisodesQuery = useTVSeasonEpisodes({
     tvId,
     seasonNum: tvSeason,
-    enabled: !!tvInfo && hasMainSeasons
+    enabled: !!tvInfo && hasMainSeasons,
   });
 
   const {
     data: tvSeasonEpisodes,
     isLoading: isTVSeasonEpisodesLoading,
-    error: tvSeasonEpisodesError
+    error: tvSeasonEpisodesError,
   } = tvSeasonEpisodesQuery;
 
   const {
     data: tvRecommendations,
     isLoading: isTVRecommendationsLoading,
-    error: tvRecommendationsError
+    error: tvRecommendationsError,
   } = useTVRecommendations(tvId);
 
   const mediaScraperQuery = useMediaScraper({
@@ -99,13 +99,13 @@ function WatchTVEpisodePage() {
     enabled: !!tvInfo && hasMainSeasons,
     mediaId: tvId,
     epNum: tvEp,
-    seasonNum: tvSeason
+    seasonNum: tvSeason,
   });
 
   const {
     data: mediaScraperData,
     isLoading: isMediaScraperLoading,
-    error: mediaScraperError
+    error: mediaScraperError,
   } = mediaScraperQuery;
 
   //sets the videoAndEpisodeInfoContainerHeight everytime window width changes
@@ -159,6 +159,7 @@ function WatchTVEpisodePage() {
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
             {mediaScraperData ? (
               <VideoPlayer
+                mediaType="TV"
                 poster={getTMDBImageURL(currentEpisode.still_path)}
                 streamLink={
                   mediaScraperData.url ? mediaScraperData.url[0].link : null
@@ -206,10 +207,10 @@ function WatchTVEpisodePage() {
                     image={getTMDBImageURL(recommendation.poster_path)}
                     linkProps={{
                       to: "/tv/$tvId",
-                      params: { tvId: recommendation.id.toString() }
+                      params: { tvId: recommendation.id.toString() },
                     }}
                     subLabels={[
-                      getTMDBReleaseYear(recommendation.first_air_date)
+                      getTMDBReleaseYear(recommendation.first_air_date),
                     ]}
                     title={recommendation.name}
                   />

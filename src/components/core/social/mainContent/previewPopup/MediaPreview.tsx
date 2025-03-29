@@ -2,18 +2,27 @@ import { Media } from "@/utils/types/social/social";
 import Description from "@/components/core/media/shared/info/Description";
 import { Circle, Cat, Clapperboard, Tv, Star } from "lucide-react";
 import PreviewContainer from "./PreviewContainer";
+import {
+  getAnimeRating,
+  getTMDBRating,
+} from "@/services/media/sharedFunctions";
 
 type MediaPreviewProps = {
   media: Media;
+  isSecondaryDialog?: boolean;
 };
 
-export default function MediaPreview({ media }: MediaPreviewProps) {
-  const { coverImage, posterImage, year, rating, title, type } = media;
+export default function MediaPreview({
+  media,
+  isSecondaryDialog,
+}: MediaPreviewProps) {
+  const { coverImage, posterImage, year, rating, title, type, description } =
+    media;
   media.description = media.description.replace("\\", "");
   const heroImage = coverImage ?? posterImage ?? "/no-image-2.jpg";
 
   return (
-    <PreviewContainer>
+    <PreviewContainer isSecondaryDialog={isSecondaryDialog}>
       <div className="absolute w-full h-72 mobile-m:h-80">
         <div className="absolute z-10 size-full bg-gradient-to-t from-gray-950 to-transparent from-[8%]" />
         <img src={heroImage} className="absolute object-cover size-full" />
@@ -36,11 +45,17 @@ export default function MediaPreview({ media }: MediaPreviewProps) {
           <Circle className="size-1 stroke-none fill-gray-400" />
           <div className="flex items-center gap-1">
             <Star className="size-[14px] stroke-none fill-yellow-500" />
-            <p>{rating}</p>
+            <p>
+              {rating
+                ? type === "ANIME"
+                  ? getAnimeRating(parseInt(rating))
+                  : getTMDBRating(parseInt(rating))
+                : "N/A"}
+            </p>
           </div>
         </div>
         <Description
-          description={media.description}
+          description={description}
           showDescriptionLabel={false}
           className="w-full text-sm mobile-m:text-base"
         />

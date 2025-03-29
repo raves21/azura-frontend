@@ -1,7 +1,7 @@
 import { UserBasicInfo } from "../auth/auth";
 import { LinkProps } from "@tanstack/react-router";
 
-export type SocialSearchOption = "posts" | "people";
+export type SocialSearchOption = "Posts" | "People";
 
 export type EntityPrivacy = "FRIENDS_ONLY" | "ONLY_ME" | "PUBLIC";
 
@@ -21,5 +21,5 @@ export type MediaType = "ANIME" | "TV" | "MOVIE";
 
 export type TContentOption = {
   name: string;
-  linkProps: LinkProps;
+  linkProps?: LinkProps;
 };

@@ -7,12 +7,12 @@ import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
-  useMovieRecommendations
+  useMovieRecommendations,
 } from "@/services/media/movie/movieQueries";
 import { useMediaScraper } from "@/services/media/sharedFunctions";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear
+  getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef } from "react";
@@ -22,7 +22,7 @@ import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episod
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 
 export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
-  component: () => <WatchMoviePage />
+  component: () => <WatchMoviePage />,
 });
 
 function WatchMoviePage() {
@@ -32,25 +32,25 @@ function WatchMoviePage() {
   const {
     data: movieInfo,
     isLoading: isMovieInfoLoading,
-    error: movieInfoError
+    error: movieInfoError,
   } = useMovieInfo(movieId);
 
   const {
     data: movieRecommendations,
     isLoading: isMovieRecommendationsLoading,
-    error: movieRecommendationsError
+    error: movieRecommendationsError,
   } = useMovieRecommendations(movieId);
 
   const mediaScraperQuery = useMediaScraper({
     type: "MOVIE",
     enabled: !!movieInfo,
-    mediaId: movieId
+    mediaId: movieId,
   });
 
   const {
     data: mediaScraperData,
     isLoading: isMediaScraperLoading,
-    error: mediaScraperError
+    error: mediaScraperError,
   } = mediaScraperQuery;
 
   if (
@@ -92,10 +92,14 @@ function WatchMoviePage() {
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
             <VideoPlayer
+              mediaType="MOVIE"
+              id={movieId}
               subtitleTracks={mediaScraperData.tracks}
               poster={getTMDBImageURL(movieInfo.backdrop_path)}
               headers={mediaScraperData.headers}
-              streamLink={mediaScraperData.url ? mediaScraperData.url[0].link : undefined}
+              streamLink={
+                mediaScraperData.url ? mediaScraperData.url[0].link : undefined
+              }
               title={movieInfo.title}
             />
             <EpisodeTitleAndNumber
@@ -131,10 +135,10 @@ function WatchMoviePage() {
                     image={getTMDBImageURL(recommendation.poster_path)}
                     linkProps={{
                       to: "/movie/$movieId",
-                      params: { movieId: `${recommendation.id}` }
+                      params: { movieId: `${recommendation.id}` },
                     }}
                     subLabels={[
-                      getTMDBReleaseYear(recommendation.release_date)
+                      getTMDBReleaseYear(recommendation.release_date),
                     ]}
                     title={recommendation.title}
                   />

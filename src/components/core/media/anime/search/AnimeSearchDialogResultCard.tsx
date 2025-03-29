@@ -1,5 +1,5 @@
-import { getRatingScoreAnime } from "@/services/media/anime/functions/animeFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { getAnimeRating } from "@/services/media/sharedFunctions";
 import { Anime, AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
 import { animeStatusLabels } from "@/utils/variables/media/anime";
 import { Link } from "@tanstack/react-router";
@@ -10,7 +10,7 @@ type AnimeSearchDialogResultCardProps = {
 };
 
 export default function AnimeSearchDialogResultCard({
-  anime
+  anime,
 }: AnimeSearchDialogResultCardProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
@@ -35,7 +35,7 @@ export default function AnimeSearchDialogResultCard({
             {![
               AnimeStatus.CANCELLED,
               AnimeStatus.NOT_YET_RELEASED,
-              AnimeStatus.NotYetAired
+              AnimeStatus.NotYetAired,
             ].includes(anime.status) && (
               <>
                 <p>
@@ -50,7 +50,7 @@ export default function AnimeSearchDialogResultCard({
           {![
             AnimeStatus.CANCELLED,
             AnimeStatus.NOT_YET_RELEASED,
-            AnimeStatus.NotYetAired
+            AnimeStatus.NotYetAired,
           ].includes(anime.status) && (
             <div className="flex items-center gap-[6px]">
               {anime.releaseDate && (
@@ -64,7 +64,7 @@ export default function AnimeSearchDialogResultCard({
 
               <div className="flex items-center gap-1">
                 <Star className="size-4" />
-                <p>{getRatingScoreAnime(anime.rating * 0.1)}</p>
+                <p>{getAnimeRating(anime.rating)}</p>
               </div>
             </div>
           )}
