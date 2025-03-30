@@ -18,6 +18,10 @@ export type PaginatedCollectionsResponse = PaginatedResponse & {
   data: TCollection[];
 };
 
+export type PaginatedCollectionItemsResponse = PaginatedResponse & {
+  data: TCollectionItem[];
+};
+
 export type TPost = {
   id: string;
   content: string | null;
@@ -49,7 +53,7 @@ export type Media = {
 
 export type PreviewMedia = Pick<
   Media,
-  "title" | "type" | "year" | "coverImage" | "posterImage"
+  "title" | "type" | "year" | "posterImage"
 >;
 
 export type TCollection = {

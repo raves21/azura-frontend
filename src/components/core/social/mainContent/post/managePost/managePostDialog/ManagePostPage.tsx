@@ -18,6 +18,7 @@ import {
   Lock,
   Film,
   LibraryBig,
+  ChevronUp,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -25,7 +26,6 @@ import { TPost } from "@/utils/types/social/social";
 import { isEqual } from "radash";
 import ErrorDialog from "@/components/core/ErrorDialog";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-// import ManagePostMediaAttachment from "./mediaAttachment/ManagePostMediaAttachment";
 import CollectionAttachment from "./postAttachment/collectionAttachment/CollectionAttachment";
 import MediaAttachment from "./postAttachment/mediaAttachment/MediaAttachment";
 
@@ -172,12 +172,12 @@ export default function ManagePostPage({
             <MenuButton className="flex gap-2 px-3 py-2 transition-colors  rounded-full bg-mainAccent hover:bg-fuchsia-800">
               <Paperclip className="transition-colors stroke-mainWhite size-4" />
               <p className="text-xs font-medium">Attach</p>
-              <ChevronDown className="stroke-mainWhite size-4" />
+              <ChevronUp className="stroke-mainWhite size-4" />
             </MenuButton>
             <MenuItems
               transition
               anchor="top start"
-              className="min-w-52 border border-gray-700 bg-socialPrimary origin-top-right rounded-xl text-sm/6 text-mainWhite transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+              className="min-w-52 font-montserrat border border-gray-700 bg-socialPrimary origin-top-right rounded-md text-sm/6 text-mainWhite transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
             >
               <MenuItem>
                 <button

@@ -8,6 +8,7 @@ type CollectionItemProps = {
   title: string;
   year: string;
   linkProps: LinkProps;
+  onClick?: () => void;
 };
 
 export default function Media({
@@ -16,9 +17,14 @@ export default function Media({
   title,
   year,
   linkProps,
+  onClick,
 }: CollectionItemProps) {
   return (
-    <Link {...linkProps} className="block space-y-3 group">
+    <Link
+      {...linkProps}
+      onClick={() => (onClick ? onClick() : undefined)}
+      className="block space-y-3 group"
+    >
       <div className="relative aspect-[3/4] min-h-[130px] overflow-hidden rounded-md lg:rounded-xl">
         <div className="absolute inset-0 z-10 transition-all duration-300 opacity-0 group-hover:opacity-100 size-full bg-mainAccent/40"></div>
         <img

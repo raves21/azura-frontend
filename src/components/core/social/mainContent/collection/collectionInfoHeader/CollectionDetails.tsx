@@ -30,7 +30,7 @@ export default function CollectionDetails({
         <CollectionPrivacy privacy={privacy} />
       </div>
       <p className="text-sm text-socialTextSecondary line-clamp-4 sm:line-clamp-3">
-        {description ? description : "No description"}
+        {description ? description : <em>No description</em>}
       </p>
     </div>
   );

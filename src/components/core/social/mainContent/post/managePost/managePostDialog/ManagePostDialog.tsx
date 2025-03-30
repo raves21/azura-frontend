@@ -22,9 +22,14 @@ type CreatePostProps = {
   type: "create";
 };
 
-type ManagePostDialogProps = EditPostProps | CreatePostProps;
+type ManagePostDialogProps = {
+  resetStateOnMount?: boolean;
+} & (EditPostProps | CreatePostProps);
 
-export default function ManagePostDialog(props: ManagePostDialogProps) {
+export default function ManagePostDialog({
+  resetStateOnMount = true,
+  ...props
+}: ManagePostDialogProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const [
@@ -58,8 +63,10 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
   });
 
   useEffect(() => {
-    //reset state
-    resetState();
+    if (resetStateOnMount) {
+      //reset state
+      resetState();
+    }
 
     const defaultCreatePostPrivacyPreference = localStorage.getItem(
       "defaultCreatePostPrivacyPreference"

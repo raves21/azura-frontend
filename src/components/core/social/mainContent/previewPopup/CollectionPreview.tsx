@@ -21,7 +21,7 @@ export default function CollectionPreview({
             {collection.previewMedias.map((previewMedia, index) => (
               <Media
                 linkProps={{}}
-                image={previewMedia.posterImage || previewMedia.coverImage}
+                image={previewMedia.posterImage}
                 key={index}
                 title={previewMedia.title}
                 type={previewMedia.type}

@@ -12,6 +12,7 @@ import {
   TPostComment,
   Trend,
   PaginatedUserPreviewsResponse,
+  PaginatedCollectionItemsResponse,
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -695,5 +696,32 @@ export function useEditCollection() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });
     },
+  });
+}
+
+export function useCollectionInfo(collectionId: string) {
+  return useQuery({
+    queryKey: ["collectionInfo", collectionId],
+    queryFn: async () => {
+      const { data: collectionInfo } = await api.get(
+        `/collections/${collectionId}`
+      );
+      return collectionInfo.data as TCollection;
+    },
+  });
+}
+
+export function useCollectionItems(collectionId: string) {
+  return useInfiniteQuery({
+    queryKey: ["collectionItems", collectionId],
+    queryFn: async () => {
+      const { data: collectionItems } = await api.get(
+        `/collections/${collectionId}/collection-items`
+      );
+      return collectionItems as PaginatedCollectionItemsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
