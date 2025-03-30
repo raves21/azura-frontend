@@ -63,8 +63,11 @@ export default function ManagePostDialog({
   });
 
   useEffect(() => {
+    //always set to initial page on mount
+    setManagePostPage("managePost");
+
     if (resetStateOnMount) {
-      //reset state
+      //reset all state
       resetState();
     }
 
