@@ -115,8 +115,8 @@ export default function ManagePostPage({
     editedPost = {
       ...props.postToEdit,
       content: inputText?.trim() ?? null,
-      collection: null, //todo: should be selectedCollection
-      media: null, //todo: should be selectedMedia
+      collection: collectionAttachment,
+      media: mediaAttachment,
       privacy: selectedPrivacy,
     };
     originalPost = props.postToEdit;

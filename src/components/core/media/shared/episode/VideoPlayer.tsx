@@ -78,13 +78,17 @@ export default function VideoPlayer({
     <div
       {...props}
       className={cn(
-        "w-dvw ml-[calc(-50vw+50%)] lg:w-full lg:ml-auto aspect-video rounded-none",
+        "w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none",
         className
       )}
     >
-      <div className="grid text-lg font-medium bg-gray-800 rounded-lg size-full place-items-center">
-        Error: Source Not Found
-      </div>
+      <img
+        src="/static-screen.gif"
+        className="font-medium rounded-lg size-full object-cover"
+      />
+      <p className="text-lg font-semibold absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+        Sorry this media is not available right now
+      </p>
     </div>
   );
 }

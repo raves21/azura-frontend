@@ -61,9 +61,18 @@ export default function ActivityHeader({
 
   //for changing the formatted relative time of the post's/comment's createdAt every 2 minutes
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRelativeTimeCreated(formatToRelativeTime(createdAt));
-    }, FORMAT_TO_RELATIVE_TIME_INTERVAL);
+    const formattedToRelativeTime = formatToRelativeTime(createdAt);
+    let interval: NodeJS.Timeout | undefined = undefined;
+
+    //only do so if the relativeTime was seconds/minutes ago
+    if (
+      formattedToRelativeTime.includes("second") ||
+      formattedToRelativeTime.includes("minute")
+    ) {
+      interval = setInterval(() => {
+        setRelativeTimeCreated(formatToRelativeTime(createdAt));
+      }, FORMAT_TO_RELATIVE_TIME_INTERVAL);
+    }
 
     return () => clearInterval(interval);
   }, []);
