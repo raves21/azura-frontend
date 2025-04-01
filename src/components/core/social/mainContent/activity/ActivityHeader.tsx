@@ -7,7 +7,7 @@ import {
   LinkProps,
   Navigate,
   useMatchRoute,
-  Link
+  Link,
 } from "@tanstack/react-router";
 import { TPost, TPostComment } from "@/utils/types/social/social";
 import PostOptionsDropdown from "./PostOptionsDropdown";
@@ -27,6 +27,9 @@ type ActivityHeaderProps = {
   className?: string;
   linkProps: LinkProps;
 } & (PostProps | CommentProps);
+
+//2 mins
+const FORMAT_TO_RELATIVE_TIME_INTERVAL = 120_000;
 
 export default function ActivityHeader({
   className,
@@ -50,17 +53,26 @@ export default function ActivityHeader({
 
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({
-    to: "/social/$userHandle/posts/$postId"
+    to: "/social/$userHandle/posts/$postId",
   });
   const [relativeTimeCreated, setRelativeTimeCreated] = useState<string>(
     formatToRelativeTime(createdAt)
   );
 
-  //for changing the formatted relative time of the post's/comment's createdAt for every minute
+  //for changing the formatted relative time of the post's/comment's createdAt every 2 minutes
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRelativeTimeCreated(formatToRelativeTime(createdAt));
-    }, 60000);
+    const formattedToRelativeTime = formatToRelativeTime(createdAt);
+    let interval: NodeJS.Timeout | undefined = undefined;
+
+    //only do so if the relativeTime was seconds/minutes ago
+    if (
+      formattedToRelativeTime.includes("second") ||
+      formattedToRelativeTime.includes("minute")
+    ) {
+      interval = setInterval(() => {
+        setRelativeTimeCreated(formatToRelativeTime(createdAt));
+      }, FORMAT_TO_RELATIVE_TIME_INTERVAL);
+    }
 
     return () => clearInterval(interval);
   }, []);
@@ -88,7 +100,7 @@ export default function ActivityHeader({
             onClick={(e) => e.stopPropagation()}
             to="/social/$userHandle"
             params={{
-              userHandle: handle
+              userHandle: handle,
             }}
             className="font-semibold hover:underline hover:decoration-[0.5px] hover:underline-offset-4 hover:decoration-mainWhite text-ellipsis whitespace-nowrap overflow-hidden max-w-[130px] mobile-m:max-w-[150px] mobile-l:max-w-[200px] sm:max-w-[380px] md:max-w-[250px] lg:max-w-[380px]"
           >
@@ -111,7 +123,7 @@ export default function ActivityHeader({
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
                         {
-                          "opacity-90": isPrivacyHovered
+                          "opacity-90": isPrivacyHovered,
                         }
                       )}
                     >
@@ -126,7 +138,7 @@ export default function ActivityHeader({
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
                         {
-                          "opacity-90": isPrivacyHovered
+                          "opacity-90": isPrivacyHovered,
                         }
                       )}
                     >
@@ -141,7 +153,7 @@ export default function ActivityHeader({
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
                         {
-                          "opacity-90": isPrivacyHovered
+                          "opacity-90": isPrivacyHovered,
                         }
                       )}
                     >

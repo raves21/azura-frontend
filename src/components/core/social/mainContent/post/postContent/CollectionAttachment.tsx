@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
-import CollectionPreview from "../../previewPopup/CollectionPreview";
+import CollectionPreviewDialog from "../../previewPopup/CollectionPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
@@ -46,9 +46,9 @@ export default function CollectionAttachment({
   ) {
     e.stopPropagation();
     if (isTablet) {
-      toggleOpenDialog(<CollectionPreview collection={collection} />);
+      toggleOpenDialog(<CollectionPreviewDialog collection={collection} />);
     } else {
-      toggleOpenDrawer(<CollectionPreview collection={collection} />);
+      toggleOpenDrawer(<CollectionPreviewDialog collection={collection} />);
     }
   }
 
@@ -71,7 +71,7 @@ export default function CollectionAttachment({
             photo={collection.photo}
             className="h-[60%] mobile-m:h-[65%] w-auto rounded-lg"
           />
-      ) : (
+        ) : (
           <CollectionPhoto
             type="previewPosters"
             previewPosters={getPreviewPosters(collection.previewMedias)}

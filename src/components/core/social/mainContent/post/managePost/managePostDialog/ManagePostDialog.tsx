@@ -10,6 +10,8 @@ import { TPost } from "@/utils/types/social/social";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
+import SelectMediaAttachment from "./SelectMediaAttachment";
+import SelectCollectionAttachment from "./SelectCollectionAttachment";
 
 type EditPostProps = {
   type: "edit";
@@ -20,19 +22,33 @@ type CreatePostProps = {
   type: "create";
 };
 
-type ManagePostDialogProps = EditPostProps | CreatePostProps;
+type ManagePostDialogProps = {
+  resetStateOnMount?: boolean;
+} & (EditPostProps | CreatePostProps);
 
-export default function ManagePostDialog(props: ManagePostDialogProps) {
+export default function ManagePostDialog({
+  resetStateOnMount = true,
+  ...props
+}: ManagePostDialogProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
 
-  const [managePostPage, setManagePostPage, setSelectedPrivacy] =
-    useManagePostStore(
-      useShallow((state) => [
-        state.managePostPage,
-        state.setManagePostPage,
-        state.setSelectedPrivacy,
-      ])
-    );
+  const [
+    resetState,
+    managePostPage,
+    setManagePostPage,
+    setSelectedPrivacy,
+    setCollectionAttachment,
+    setMediaAttachment,
+  ] = useManagePostStore(
+    useShallow((state) => [
+      state.resetState,
+      state.managePostPage,
+      state.setManagePostPage,
+      state.setSelectedPrivacy,
+      state.setCollectionAttachment,
+      state.setMediaAttachment,
+    ])
+  );
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   const tipTapEditor = useTipTapEditor({
@@ -47,8 +63,13 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
   });
 
   useEffect(() => {
-    //reset the managePostPage to createPost
+    //always set to initial page on mount
     setManagePostPage("managePost");
+
+    if (resetStateOnMount) {
+      //reset all state
+      resetState();
+    }
 
     const defaultCreatePostPrivacyPreference = localStorage.getItem(
       "defaultCreatePostPrivacyPreference"
@@ -63,10 +84,12 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
         setSelectedPrivacy("PUBLIC");
       }
     } else {
-      const { content, privacy } = props.postToEdit;
+      const { content, privacy, collection, media } = props.postToEdit;
       if (tipTapEditor && tipTapEditor.editor) {
         tipTapEditor.setEditorContent(content);
       }
+      setCollectionAttachment(collection);
+      setMediaAttachment(media);
       setSelectedPrivacy(privacy);
     }
   }, []);
@@ -90,10 +113,14 @@ export default function ManagePostDialog(props: ManagePostDialogProps) {
     }
   } else if (managePostPage === "selectPrivacy") {
     currentPage = <SelectPrivacyPage />;
+  } else if (managePostPage === "selectMediaAttachment") {
+    currentPage = <SelectMediaAttachment />;
+  } else {
+    currentPage = <SelectCollectionAttachment />;
   }
 
   return (
-    <div className="h-[500px] bg-socialPrimary rounded-lg flex flex-col w-[550px] text-mainWhite">
+    <div className="h-[500px] overflow-hidden bg-socialPrimary rounded-lg flex flex-col w-[550px] text-mainWhite">
       <div className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
         {managePostPage !== "managePost" && (
           <button

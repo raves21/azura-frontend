@@ -32,7 +32,7 @@ export default function SocialSearchDialog() {
   );
 
   useEffect(() => {
-    setSelectedSocialSearchOption("people");
+    setSelectedSocialSearchOption("People");
   }, []);
 
   const { searchInputRef } = useFocusInput({
@@ -41,14 +41,14 @@ export default function SocialSearchDialog() {
 
   const searchPostsQuery = useSearchPosts(
     debouncedSearch.trim(),
-    debouncedSearch.trim().length > 0 && selectedSocialSearchOption === "posts"
+    debouncedSearch.trim().length > 0 && selectedSocialSearchOption === "Posts"
   );
 
   const { error: searchPostsError } = searchPostsQuery;
 
   const searchPeopleQuery = useSearchPeople(
     debouncedSearch.trim(),
-    debouncedSearch.trim().length > 0 && selectedSocialSearchOption === "people"
+    debouncedSearch.trim().length > 0 && selectedSocialSearchOption === "People"
   );
 
   const { error: searchPeopleError } = searchPeopleQuery;
@@ -57,7 +57,7 @@ export default function SocialSearchDialog() {
     toggleOpenDialog(null);
     const query = searchInput.trim();
     setSocialSearchKeyword(query);
-    if (selectedSocialSearchOption === "people") {
+    if (selectedSocialSearchOption === "People") {
       navigate({
         to: "/social/search/people",
         search: { query },
@@ -70,7 +70,7 @@ export default function SocialSearchDialog() {
     }
   };
 
-  if (selectedSocialSearchOption === "people") {
+  if (selectedSocialSearchOption === "People") {
     return (
       <SearchDialogContainer>
         <SearchDialogForm

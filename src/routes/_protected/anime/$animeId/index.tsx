@@ -71,44 +71,44 @@ function AnimeInfoPage() {
         <AnimeInfoPageHero
           episodesQuery={episodesQuery}
           animeId={animeId}
-          title={animeInfo?.title.english || animeInfo?.title.romaji || "N/A"}
+          title={animeInfo.title.english || animeInfo.title.romaji || "N/A"}
           cover={
             // animeInfoAnify?.bannerImage ||
-            animeInfo?.cover
+            animeInfo.cover
           }
           image={
-            animeInfo?.image
+            animeInfo.image
             // || animeInfoAnify?.coverImage
           }
           description={
-            animeInfo?.description
+            animeInfo.description
             // || animeInfoAnify?.description
           }
           genres={
-            animeInfo?.genres ||
+            animeInfo.genres ||
             // animeInfoAnify?.genres?.filter((anifyGenre) =>
             //   anilistGenres.includes(anifyGenre)
             // ) ||
             undefined
           }
           status={
-            animeInfo?.status
+            animeInfo.status
             // || animeInfoAnify?.status
           }
           totalEpisodes={
-            animeInfo?.totalEpisodes
+            animeInfo.totalEpisodes
             //  || animeInfoAnify?.totalEpisodes
           }
           type={
-            animeInfo?.type
+            animeInfo.type
             // || animeInfoAnify?.format
           }
           year={
-            animeInfo?.releaseDate
+            animeInfo.releaseDate
             // || animeInfoAnify?.year
           }
           rating={
-            animeInfo?.rating * 0.1 ||
+            parseInt((animeInfo.rating * 0.1).toFixed(1)) ||
             // animeInfoAnify?.rating?.anilist ||
             null
           }
@@ -116,16 +116,16 @@ function AnimeInfoPage() {
         <InfoPageAnimeEpisodes
           episodesQuery={episodesQuery}
           replace={false}
-          type={animeInfo?.type}
+          type={animeInfo.type}
           episodeImageFallback={
-            animeInfo?.cover ||
+            animeInfo.cover ||
             // animeInfoAnify?.coverImage ||
-            animeInfo?.image
+            animeInfo.image
             // || animeInfoAnify?.bannerImage
           }
         />
-        {animeInfo?.recommendations &&
-          animeInfo?.recommendations.length !== 0 && (
+        {animeInfo.recommendations &&
+          animeInfo.recommendations.length !== 0 && (
             <CategoryCarousel
               carouselItems={animeInfo.recommendations}
               categoryName="Recommendations:"

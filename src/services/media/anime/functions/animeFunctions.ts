@@ -17,7 +17,7 @@ export function chunkEpisodes(
         label: `${start} - ${end}`,
         startEp: start,
         endEp: end,
-        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk)
+        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk),
       };
     }
   );
@@ -48,7 +48,7 @@ export function getEpisodesToBeRendered(
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
             ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
-            : `EP ${ep.number}`
+            : `EP ${ep.number}`,
       };
     });
     return a;
@@ -66,21 +66,11 @@ export function getEpisodesToBeRendered(
         title:
           animeInfoAnizip && animeInfoAnizip?.episodes[ep.number]
             ? animeInfoAnizip?.episodes[ep.number].title.en || `EP ${ep.number}`
-            : `EP ${ep.number}`
+            : `EP ${ep.number}`,
       };
     });
   } else {
     //if no anify and anilist, accept the fact that the selected anime has no episodes
     return null;
   }
-}
-
-export function getRatingScoreAnime(rating: number) {
-  const decimal = (rating * 10).toString().split(".")[1];
-  if (!decimal || decimal.length < 1) return (0.05 * (rating * 10)).toFixed(1);
-  return (0.05 * (rating * 10)).toFixed(2);
-}
-
-export function getRatingScoreTMDB(rating: number | null) {
-  return rating ? rating.toFixed(1).split("-")[0] : null
 }

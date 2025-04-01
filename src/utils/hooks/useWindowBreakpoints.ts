@@ -5,6 +5,7 @@ export default function useWindowBreakpoints() {
   const isMobileSmall = windowWidth >= 320;
   const isMobileMedium = windowWidth >= 375;
   const isMobileLarge = windowWidth >= 425;
+  const isTabletEXtraSmall = windowWidth >= 570;
   const isTabletSmall = windowWidth >= 640;
   const isTablet = windowWidth >= 768;
   const isDesktopSmall = windowWidth >= 1024;
@@ -14,6 +15,7 @@ export default function useWindowBreakpoints() {
     isMobileSmall,
     isMobileMedium,
     isMobileLarge,
+    isTabletEXtraSmall,
     isTabletSmall,
     isTablet,
     isDesktopSmall,

@@ -4,13 +4,25 @@ import { useShallow } from "zustand/react/shallow";
 import { X, SquareArrowOutUpRight } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
-export default function PreviewContainer({ children }: PropsWithChildren) {
+type Props = {
+  isSecondaryDialog?: boolean;
+} & PropsWithChildren;
+
+export default function PreviewContainer({
+  children,
+  isSecondaryDialog,
+}: Props) {
   const { isTablet } = useWindowBreakpoints();
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
-    useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
-  );
+  const [toggleOpenDialog, toggleOpenDialogSecondary, toggleOpenDrawer] =
+    useGlobalStore(
+      useShallow((state) => [
+        state.toggleOpenDialog,
+        state.toggleOpenDialogSecondary,
+        state.toggleOpenDrawer,
+      ])
+    );
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);
@@ -19,7 +31,9 @@ export default function PreviewContainer({ children }: PropsWithChildren) {
 
   function closePopup() {
     if (isTablet) {
-      toggleOpenDialog(null);
+      isSecondaryDialog
+        ? toggleOpenDialogSecondary(null)
+        : toggleOpenDialog(null);
     } else {
       toggleOpenDrawer(null);
     }

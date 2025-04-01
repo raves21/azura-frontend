@@ -1,8 +1,15 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
-export default function SearchDialogResultCardSkeleton() {
+type SearchDialogResultCardSkeletonProps = {
+  className?: string;
+};
+
+export default function SearchDialogResultCardSkeleton({
+  className,
+}: SearchDialogResultCardSkeletonProps) {
   return (
-    <div className="flex w-full gap-4 px-3 py-2 bg-gray-800">
+    <div className={cn("flex w-full gap-4 px-3 py-2 bg-gray-800", className)}>
       <Skeleton className="aspect-[3/4] h-min w-[90px] bg-gray-700 rounded-md" />
       <div className="flex flex-col justify-center w-full gap-3">
         <Skeleton className="self-start text-lg font-semibold bg-gray-700 line-clamp-1">

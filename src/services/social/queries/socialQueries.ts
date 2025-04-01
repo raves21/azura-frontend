@@ -1,9 +1,4 @@
-import {
-  QueryFilters,
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-} from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import {
   PaginatedCommentsResponse,
@@ -17,6 +12,7 @@ import {
   TPostComment,
   Trend,
   PaginatedUserPreviewsResponse,
+  PaginatedCollectionItemsResponse,
 } from "@/utils/types/social/social";
 import {
   EntityOwner,
@@ -139,6 +135,7 @@ type CreatePostArgs = {
   collectionId: string | null;
   privacy: EntityPrivacy;
   owner: EntityOwner;
+  currentUserHandle: string | undefined;
 };
 
 export function useCreatePost() {
@@ -161,25 +158,20 @@ export function useCreatePost() {
       };
     },
     onSuccess: async (result, variables) => {
-      const forYouFeedQueryFilter: QueryFilters = {
-        predicate(query) {
-          return query.queryKey.includes("forYouFeed");
-        },
-      };
-      const currentUserProfilePostsQueryFilter: QueryFilters = {
-        queryKey: ["posts", "userProfilePosts", variables.owner.handle],
-        exact: true,
-      };
-      createPost_PostsCacheMutation({
-        queryFilter: forYouFeedQueryFilter,
-        result,
-        variables,
-      });
-      createPost_PostsCacheMutation({
-        queryFilter: currentUserProfilePostsQueryFilter,
-        result,
-        variables,
-      });
+      if (variables.currentUserHandle) {
+        createPost_PostsCacheMutation({
+          currentUserHandle: variables.currentUserHandle,
+          postsFrom: "forYouFeed",
+          result,
+          variables,
+        });
+        createPost_PostsCacheMutation({
+          currentUserHandle: variables.currentUserHandle,
+          postsFrom: "currentUserProfile",
+          result,
+          variables,
+        });
+      }
     },
   });
 }
@@ -251,26 +243,28 @@ export function useCreatePostComment() {
     onSuccess: async (result, variables) => {
       const { id } = result;
       const { postId, content } = variables;
-      const currentUser = useAuthStore.getState().currentUser!;
-      const newComment: TPostComment = {
-        author: currentUser,
-        content,
-        createdAt: new Date().toString(),
-        postId,
-        id,
-      };
-      createComment_CommentsCacheMutation({
-        postId,
-        newComment,
-      });
-      post_TotalCommentsCacheMutation({
-        postId,
-        incrementTotalComments: true,
-      });
-      postInfo_TotalCommentsCacheMutation({
-        postId,
-        incrementTotalComments: true,
-      });
+      const currentUser = useAuthStore.getState().currentUser;
+      if (currentUser) {
+        const newComment: TPostComment = {
+          author: currentUser,
+          content,
+          createdAt: new Date().toString(),
+          postId,
+          id,
+        };
+        createComment_CommentsCacheMutation({
+          postId,
+          newComment,
+        });
+        post_TotalCommentsCacheMutation({
+          postId,
+          incrementTotalComments: true,
+        });
+        postInfo_TotalCommentsCacheMutation({
+          postId,
+          incrementTotalComments: true,
+        });
+      }
     },
   });
 }
@@ -310,10 +304,15 @@ export function useUserProfilePosts(
   });
 }
 
-export function useUserCollections(
-  userHandle: string,
-  currentUserHandle?: string
-) {
+type UseUserCollectionArgs = {
+  userHandle: string;
+  currentUserHandle?: string;
+};
+
+export function useUserCollections({
+  userHandle,
+  currentUserHandle,
+}: UseUserCollectionArgs) {
   return useInfiniteQuery({
     queryKey: ["collections", "userCollections", userHandle],
     queryFn: async ({ pageParam }) => {
@@ -330,6 +329,21 @@ export function useUserCollections(
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!currentUserHandle,
+  });
+}
+
+export function useCurrentUserCollections() {
+  return useInfiniteQuery({
+    queryKey: ["collections", "currentUserCollections"],
+    queryFn: async ({ pageParam }) => {
+      const { data: collections } = await api.get("/collections/user/me", {
+        params: { page: pageParam },
+      });
+      return collections as PaginatedCollectionsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
 
@@ -682,5 +696,32 @@ export function useEditCollection() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });
     },
+  });
+}
+
+export function useCollectionInfo(collectionId: string) {
+  return useQuery({
+    queryKey: ["collectionInfo", collectionId],
+    queryFn: async () => {
+      const { data: collectionInfo } = await api.get(
+        `/collections/${collectionId}`
+      );
+      return collectionInfo.data as TCollection;
+    },
+  });
+}
+
+export function useCollectionItems(collectionId: string) {
+  return useInfiniteQuery({
+    queryKey: ["collectionItems", collectionId],
+    queryFn: async () => {
+      const { data: collectionItems } = await api.get(
+        `/collections/${collectionId}/collection-items`
+      );
+      return collectionItems as PaginatedCollectionItemsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }

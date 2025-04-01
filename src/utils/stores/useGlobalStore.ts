@@ -37,8 +37,8 @@ const globalStoreDefaultValues: GlobalStoreValues = {
   dialogSecondaryContent: null,
   sheetContent: null,
   drawerContent: null,
-  selectedSocialSearchOption: "people",
-  socialSearchKeyword: undefined
+  selectedSocialSearchOption: "People",
+  socialSearchKeyword: undefined,
 };
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -47,7 +47,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     if (dialogContent) {
       set({
         dialogContent,
-        isDialogOpen: true
+        isDialogOpen: true,
       });
     } else {
       set({ isDialogOpen: false });
@@ -62,7 +62,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     if (dialogSecondaryContent) {
       set({
         dialogSecondaryContent,
-        isDialogSecondaryOpen: true
+        isDialogSecondaryOpen: true,
       });
     } else {
       set({ isDialogSecondaryOpen: false });
@@ -77,7 +77,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     if (sheetContent) {
       set({
         sheetContent,
-        isSheetOpen: true
+        isSheetOpen: true,
       });
     } else {
       set({ isSheetOpen: false });
@@ -92,7 +92,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     if (drawerContent) {
       set({
         drawerContent,
-        isDrawerOpen: true
+        isDrawerOpen: true,
       });
     } else {
       set({ isDrawerOpen: false });
@@ -107,5 +107,5 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     selectedSocialSearchOption: SocialSearchOption
   ) => set({ selectedSocialSearchOption }),
   setSocialSearchKeyword: (socialSearchKeyword: string | undefined) =>
-    set({ socialSearchKeyword })
+    set({ socialSearchKeyword }),
 }));

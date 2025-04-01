@@ -3,7 +3,7 @@ import { Link, ReactNode, useNavigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
 export default function ActivityContentRenderer({
-  content
+  content,
 }: {
   content: string;
 }) {
@@ -24,9 +24,12 @@ export default function ActivityContentRenderer({
             <Link
               to="/social/search/posts"
               search={{
-                query: token
+                query: token,
               }}
-              onClick={() => setSocialSearchKeyword(token)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSocialSearchKeyword(token);
+              }}
               key={`hashtag-${index}`}
               className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"
             >
@@ -43,8 +46,8 @@ export default function ActivityContentRenderer({
                 navigate({
                   to: "/social/$userHandle",
                   params: {
-                    userHandle: "geromepenalosa"
-                  }
+                    userHandle: "geromepenalosa",
+                  },
                 });
               }}
               className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"

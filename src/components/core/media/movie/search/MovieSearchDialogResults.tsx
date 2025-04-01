@@ -9,17 +9,18 @@ import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media
 type MovieSearchDialogResultsProps = {
   query: string;
   movieSearchQuery: UseQueryResult<PaginatedMovieResponse, Error>;
+  resultCardClassName?: string;
 };
 
 export default function MovieSearchDialogResults({
   movieSearchQuery,
-  query
+  query,
 }: MovieSearchDialogResultsProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
-    error: searchResultsError
+    error: searchResultsError,
   } = movieSearchQuery;
 
   if (isSearchResultsLoading) {
@@ -56,7 +57,7 @@ export default function MovieSearchDialogResults({
             to="/movie/catalog/search"
             search={{
               page: 1,
-              query
+              query,
             }}
             onClick={() => toggleOpenDialog(null)}
             className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent"

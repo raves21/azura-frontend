@@ -33,10 +33,10 @@ export const tempPosts: TPost[] = [
       year: "2013",
       rating: "9.5",
       status: "Completed",
-      createdAt: new Date("2023-12-01T10:00:00Z"),
+      // createdAt: new Date("2023-12-01T10:00:00Z"),
     },
     collection: null,
-    createdAt: new Date("2023-12-02T08:30:00Z"),
+    createdAt: "",
   },
   {
     id: "2",
@@ -86,7 +86,7 @@ export const tempPosts: TPost[] = [
         },
       ],
     },
-    createdAt: new Date("2023-12-03T12:15:00Z"),
+    createdAt: "",
   },
   {
     id: "3",
@@ -115,10 +115,10 @@ export const tempPosts: TPost[] = [
       year: "2008",
       rating: "9.8",
       status: "Completed",
-      createdAt: new Date("2023-12-04T09:00:00Z"),
+      // createdAt: new Date("2023-12-04T09:00:00Z"),
     },
     collection: null,
-    createdAt: new Date("2023-12-05T14:00:00Z"),
+    createdAt: "",
   },
   {
     id: "4",
@@ -136,7 +136,7 @@ export const tempPosts: TPost[] = [
     },
     media: null,
     collection: null,
-    createdAt: new Date("2023-12-05T14:00:00Z"),
+    createdAt: "",
   },
 ];
 
@@ -151,7 +151,7 @@ export const tempPostComments: TPostComment[] = [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuDSrq5ajYlrjwPGHl1BGcHSUAOEGHM535mBuAWzuttq6JF3LFINBpp3kmMUZU8DHRJKw&usqp=CAU",
     },
     content: "Awesome bro what the fuckkkkk",
-    createdAt: new Date("2023-12-05T14:00:00Z"),
+    createdAt: "",
     postId: "2",
   },
   {
@@ -164,7 +164,7 @@ export const tempPostComments: TPostComment[] = [
         "https://creatorset.com/cdn/shop/files/preview_images/Screenshot_2024-04-24_173231_530x@2x.png?v=1713973028",
     },
     content: "FIRE SHEESHH!!!",
-    createdAt: new Date("2023-13-05T14:00:00Z"),
+    createdAt: "",
     postId: "2",
   },
   {
@@ -176,7 +176,7 @@ export const tempPostComments: TPostComment[] = [
       avatar: "https://i.redd.it/91ofcs730ij61.png",
     },
     content: "Burikaaaaaaaaaaaaat!",
-    createdAt: new Date("2023-14-05T14:00:00Z"),
+    createdAt: "",
     postId: "2",
   },
 ];
@@ -368,7 +368,7 @@ export const tempCollectionItems: TCollectionItem[] = [
       id: "1",
       coverImage:
         "https://artworks.thetvdb.com/banners/fanart/original/79481-17.jpg",
-      createdAt: new Date(),
+      // createdAt: new Date(),
       posterImage:
         "https://artworks.thetvdb.com/banners/v4/series/79481/posters/6149bfa178b20.jpg",
       rating: "8.8",
@@ -387,7 +387,7 @@ export const tempCollectionItems: TCollectionItem[] = [
       id: "2",
       coverImage:
         "https://image.tmdb.org/t/p/original/f6G8QPeod5ngQMs5Fe1O4LdphB7.jpg",
-      createdAt: new Date(),
+      // createdAt: new Date(),
       posterImage:
         "https://image.tmdb.org/t/p/original/cioNnsPSHJH9gsUSETPFHh0m6MT.jpg",
       rating: "8.5",
@@ -406,7 +406,7 @@ export const tempCollectionItems: TCollectionItem[] = [
       id: "3",
       coverImage:
         "https://image.tmdb.org/t/p/original/9SSEUrSqhljBMzRe4aBTh17rUaC.jpg",
-      createdAt: new Date(),
+      // createdAt: new Date(),
       posterImage:
         "https://image.tmdb.org/t/p/original/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
       rating: "8.8",
@@ -425,7 +425,7 @@ export const tempCollectionItems: TCollectionItem[] = [
       id: "4",
       coverImage:
         "https://image.tmdb.org/t/p/original/7cqKGQMnNabzOpi7qaIgZvQ7NGV.jpg",
-      createdAt: new Date(),
+      // createdAt: new Date(),
       posterImage:
         "https://image.tmdb.org/t/p/original/2zmTngn1tYC1AvfnrFLhxeD82hz.jpg",
       rating: "8.8",
@@ -444,7 +444,7 @@ export const tempCollectionItems: TCollectionItem[] = [
       id: "1",
       coverImage:
         "https://image.tmdb.org/t/p/original/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg",
-      createdAt: new Date(),
+      // createdAt: new Date(),
       posterImage:
         "https://image.tmdb.org/t/p/original/vfJFJPepRKapMd5G2ro7klIRysq.jpg",
       rating: "8.8",

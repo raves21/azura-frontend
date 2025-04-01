@@ -10,6 +10,14 @@ export function getTMDBReleaseYear(releaseDate: string) {
   return releaseDate ? releaseDate.split("-")[0] : "";
 }
 
+export function getAnimeRating(rating: number | null) {
+  return rating ? (rating * 0.1).toFixed(1) : null;
+}
+
+export function getTMDBRating(rating: number | null) {
+  return rating ? rating.toFixed(1).split("-")[0] : null;
+}
+
 type UseMediaScraperArgs = {
   type: "TV" | "MOVIE";
   mediaId: string;

@@ -1,26 +1,26 @@
-import { getRatingScoreTMDB } from "@/services/media/anime/functions/animeFunctions";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear
+  getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
+import { getTMDBRating } from "@/services/media/sharedFunctions";
 
 type TVSearchDialogResultCardProps = {
   tv: TVShowTMDB;
 };
 
 export default function TVSearchDialogResultCard({
-  tv
+  tv,
 }: TVSearchDialogResultCardProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <Link
       to="/tv/$tvId"
       params={{
-        tvId: tv.id.toString()
+        tvId: tv.id.toString(),
       }}
       onClick={() => toggleOpenDialog(null)}
       className="flex w-full gap-4 px-3 py-2 hover:bg-gray-900/70"
@@ -44,7 +44,7 @@ export default function TVSearchDialogResultCard({
 
             <div className="flex items-center gap-1">
               <Star className="size-4" />
-              <p>{getRatingScoreTMDB(tv.vote_average)}</p>
+              <p>{getTMDBRating(tv.vote_average)}</p>
             </div>
           </div>
         </div>

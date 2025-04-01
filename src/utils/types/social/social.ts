@@ -15,10 +15,12 @@ export type PaginatedCommentsResponse = PaginatedResponse & {
 };
 
 export type PaginatedCollectionsResponse = PaginatedResponse & {
-  data: CollectionListItem[];
+  data: TCollection[];
 };
 
-export type CollectionListItem = Omit<TCollection, "privacy" | "description">;
+export type PaginatedCollectionItemsResponse = PaginatedResponse & {
+  data: TCollectionItem[];
+};
 
 export type TPost = {
   id: string;
@@ -40,19 +42,18 @@ export type TPostInfo = TPost & {
 export type Media = {
   id: string;
   title: string;
-  description: string;
   type: MediaType;
-  posterImage: string | null;
-  coverImage: string | null;
   year: string;
-  rating: string;
+  description: string;
+  coverImage: string | null;
+  posterImage: string | null;
+  rating: string | null;
   status: string | null;
-  createdAt: Date;
 };
 
 export type PreviewMedia = Pick<
   Media,
-  "title" | "type" | "year" | "coverImage" | "posterImage"
+  "title" | "type" | "year" | "posterImage"
 >;
 
 export type TCollection = {
@@ -61,8 +62,8 @@ export type TCollection = {
   photo: string | null;
   description: string | null;
   privacy: EntityPrivacy;
-  previewMedias: PreviewMedia[];
   owner: EntityOwner;
+  previewMedias: PreviewMedia[];
 };
 
 export type TCollectionItem = {

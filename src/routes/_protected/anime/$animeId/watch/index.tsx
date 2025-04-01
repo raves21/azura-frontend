@@ -12,10 +12,10 @@ import {
   useFetchAnimeEpisodes,
   useFetchAnimeInfo,
   useChunkAnimeEpisodes,
-  useEpisodeInfo
+  useEpisodeInfo,
 } from "@/services/media/anime/queries/animeQueries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
+// import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
@@ -26,12 +26,12 @@ import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
 
-const anilistGenres = Object.values(AnimeGenre).map((genre) =>
-  genre.toString()
-);
+// const anilistGenres = Object.values(AnimeGenre).map((genre) =>
+//   genre.toString()
+// );
 
 const episodePageSearchSchema = z.object({
-  id: z.string()
+  id: z.string(),
 });
 
 type EpisodePageSearchSchema = z.infer<typeof episodePageSearchSchema>;
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
       redirect({ to: "/anime" });
       return { id: "" };
     }
-  }
+  },
 });
 
 function WatchEpisodePage() {
@@ -56,7 +56,7 @@ function WatchEpisodePage() {
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
     videoAndeEpisodeInfoContainerHeight,
-    setVideoAndEpisodeInfoContainerHeight
+    setVideoAndEpisodeInfoContainerHeight,
   ] = useState(0);
 
   const windowWidth = useWindowWidth();
@@ -71,7 +71,7 @@ function WatchEpisodePage() {
   const {
     data: episodeStreamLinks,
     isLoading: isEpisodeStreamLinksLoading,
-    error: episodeStreamLinksError
+    error: episodeStreamLinksError,
   } = useFetchEpisodeStreamLinks(id);
 
   const episodesQuery = useFetchAnimeEpisodes(animeId);
@@ -79,7 +79,7 @@ function WatchEpisodePage() {
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
-    error: animeInfoError
+    error: animeInfoError,
   } = useFetchAnimeInfo(animeId);
 
   const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
@@ -123,18 +123,14 @@ function WatchEpisodePage() {
   }
 
   if (animeInfo && episodesQuery.data && episodeInfo) {
-    const { animeInfoAnilist, animeInfoAnify } = animeInfo;
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
             {episodeStreamLinks ? (
               <VideoPlayer
-                poster={
-                  episodeInfo.image ||
-                  animeInfoAnilist.cover ||
-                  animeInfoAnify.bannerImage
-                }
+                mediaType="ANIME"
+                poster={episodeInfo.image || animeInfo.cover}
                 streamLink={
                   episodeStreamLinks.sources.find(
                     (source) => source.quality === "backup"
@@ -157,52 +153,28 @@ function WatchEpisodePage() {
           </div>
           <WatchPageAnimeEpisodes
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
-            episodeImageFallback={
-              animeInfoAnilist?.cover ||
-              animeInfoAnify?.coverImage ||
-              animeInfoAnilist?.image ||
-              animeInfoAnify?.bannerImage
-            }
+            episodeImageFallback={animeInfo.cover || animeInfo.image}
             episodesQuery={episodesQuery}
             replace
-            type={animeInfoAnilist?.type || animeInfoAnify?.format}
+            type={animeInfo.type}
             currentlyWatchingEpisodeNumber={episodeInfo.number}
           />
         </section>
         <WatchPageAnimeInfo
-          title={
-            animeInfoAnilist?.title.english ||
-            animeInfoAnilist?.title.romaji ||
-            animeInfoAnify?.title.english ||
-            animeInfoAnify?.title.romaji
-          }
-          cover={animeInfoAnify?.bannerImage || animeInfoAnilist?.cover}
-          image={animeInfoAnilist?.image || animeInfoAnify?.coverImage}
-          description={
-            animeInfoAnilist?.description || animeInfoAnify?.description
-          }
-          genres={
-            animeInfoAnilist?.genres || animeInfoAnify?.genres
-              ? animeInfoAnify?.genres.filter((genre) =>
-                  anilistGenres.includes(genre)
-                )
-              : undefined
-          }
-          status={animeInfoAnilist?.status || animeInfoAnify?.status}
-          totalEpisodes={
-            animeInfoAnilist?.totalEpisodes || animeInfoAnify?.totalEpisodes
-          }
-          type={animeInfoAnilist?.type || animeInfoAnify?.format}
-          year={animeInfoAnilist?.releaseDate || animeInfoAnify?.year}
-          rating={
-            animeInfoAnilist?.rating * 0.1 ||
-            animeInfoAnify?.rating?.anilist ||
-            null
-          }
+          title={animeInfo.title.english || animeInfo.title.romaji}
+          cover={animeInfo.cover}
+          image={animeInfo.image}
+          description={animeInfo.description}
+          genres={animeInfo.genres}
+          status={animeInfo.status}
+          totalEpisodes={animeInfo.totalEpisodes}
+          type={animeInfo.type}
+          year={animeInfo.releaseDate}
+          rating={parseInt((animeInfo.rating * 0.1).toFixed(1))}
         />
-        {animeInfoAnilist?.recommendations && (
+        {animeInfo.recommendations && (
           <CategoryCarousel
-            carouselItems={animeInfoAnilist.recommendations}
+            carouselItems={animeInfo.recommendations}
             categoryName="Recommendations:"
             renderCarouselItems={(recommendation, i) => {
               return (
@@ -211,7 +183,7 @@ function WatchEpisodePage() {
                     image={recommendation.image || recommendation.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: `${recommendation.id}` }
+                      params: { animeId: `${recommendation.id}` },
                     }}
                     subLabels={[recommendation.type, recommendation.status]}
                     title={

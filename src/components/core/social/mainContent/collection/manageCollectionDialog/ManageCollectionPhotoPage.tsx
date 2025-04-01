@@ -1,5 +1,5 @@
 import { useManageCollectionStore } from "@/utils/stores/useManageCollectionStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import CollectionPhoto from "../CollectionPhoto";
 import { cn } from "@/lib/utils";
@@ -27,9 +27,6 @@ export default function ManageCollectionPhotoPage() {
   const [isImageError, setIsImageError] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("DDSAD", collectionPreviewPosters);
-  }, []);
   function handleImageLoadSuccess() {
     setIsImageError(false);
     setIsImageLoading(false);

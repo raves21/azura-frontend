@@ -1,7 +1,7 @@
-import { getRatingScoreTMDB } from "@/services/media/anime/functions/animeFunctions";
+import { getTMDBRating } from "@/services/media/sharedFunctions";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear
+  getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { MovieTMDB } from "@/utils/types/media/movie/movieTmdb";
@@ -13,14 +13,14 @@ type MovieSearchDialogResultCardProps = {
 };
 
 export default function MovieSearchDialogResultCard({
-  movie
+  movie,
 }: MovieSearchDialogResultCardProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <Link
       to="/movie/$movieId"
       params={{
-        movieId: movie.id.toString()
+        movieId: movie.id.toString(),
       }}
       onClick={() => toggleOpenDialog(null)}
       className="flex w-full gap-4 px-3 py-2 hover:bg-gray-900/70"
@@ -44,7 +44,7 @@ export default function MovieSearchDialogResultCard({
 
             <div className="flex items-center gap-1">
               <Star className="size-4" />
-              <p>{getRatingScoreTMDB(movie.vote_average)}</p>
+              <p>{getTMDBRating(movie.vote_average)}</p>
             </div>
           </div>
         </div>

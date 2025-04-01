@@ -43,6 +43,7 @@ export default function UserListItem({
             "object-cover rounded-full",
             type === "searchPeople" ? "size-12" : "size-10"
           )}
+          onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
         />
         <div
           className={cn(
