@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Clapperboard, Tv, X } from "lucide-react";
-import MediaPreview from "@/components/core/social/mainContent/previewPopup/MediaPreview";
+import MediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/MediaPreviewDialog";
 
 type Props = {
   media: Media;
@@ -19,7 +19,9 @@ export default function MediaAttachment({ media }: Props) {
 
   return (
     <button
-      onClick={() => toggleOpenDialogSecondary(<MediaPreview media={media} />)}
+      onClick={() =>
+        toggleOpenDialogSecondary(<MediaPreviewDialog media={media} />)
+      }
       className="relative hover:border-mainAccent text-start rounded-lg w-[55%] flex items-center gap-3 p-3 border-[0.5px] border-socialTextSecondary"
     >
       {media.type === "ANIME" ? (

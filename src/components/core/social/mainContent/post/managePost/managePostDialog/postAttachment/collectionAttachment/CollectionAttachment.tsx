@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TCollection } from "@/utils/types/social/social";
-import CollectionPreview from "@/components/core/social/mainContent/previewPopup/CollectionPreview";
+import CollectionPreviewDialog from "@/components/core/social/mainContent/previewPopup/CollectionPreviewDialog";
 import { LibraryBig, X } from "lucide-react";
 import CollectionPhoto from "@/components/core/social/mainContent/collection/CollectionPhoto";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
@@ -22,7 +22,10 @@ export default function CollectionAttachment({ collection }: Props) {
     <button
       onClick={() =>
         toggleOpenDialogSecondary(
-          <CollectionPreview collection={collection} isSecondaryDialog={true} />
+          <CollectionPreviewDialog
+            collection={collection}
+            isSecondaryDialog={true}
+          />
         )
       }
       className="relative hover:cursor-pointer hover:border-mainAccent transition-colors duration-300 text-start rounded-lg w-[55%] flex gap-3 p-3 border-[0.5px] border-socialTextSecondary"

@@ -12,7 +12,7 @@ type MediaPreviewProps = {
   isSecondaryDialog?: boolean;
 };
 
-export default function MediaPreview({
+export default function MediaPreviewDialog({
   media,
   isSecondaryDialog,
 }: MediaPreviewProps) {

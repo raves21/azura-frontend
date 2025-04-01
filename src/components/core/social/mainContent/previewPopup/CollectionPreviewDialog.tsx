@@ -8,7 +8,7 @@ type CollectionPreviewProps = {
   isSecondaryDialog?: boolean;
 };
 
-export default function CollectionPreview({
+export default function CollectionPreviewDialog({
   collection,
   isSecondaryDialog,
 }: CollectionPreviewProps) {

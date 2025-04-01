@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Circle, Clapperboard, Tv } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
-import MediaPreview from "../../previewPopup/MediaPreview";
+import MediaPreviewDialog from "../../previewPopup/MediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type MediaAttachmentProps = {
@@ -26,9 +26,9 @@ export default function MediaAttachment({ media }: MediaAttachmentProps) {
   ) {
     e.stopPropagation();
     if (isTablet) {
-      toggleOpenDialog(<MediaPreview media={media} />);
+      toggleOpenDialog(<MediaPreviewDialog media={media} />);
     } else {
-      toggleOpenDrawer(<MediaPreview media={media} />);
+      toggleOpenDrawer(<MediaPreviewDialog media={media} />);
     }
   }
 

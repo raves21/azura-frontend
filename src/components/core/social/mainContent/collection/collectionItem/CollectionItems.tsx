@@ -5,7 +5,7 @@ import { Fragment } from "react/jsx-runtime";
 import MediaSkeleton from "@/components/core/loadingSkeletons/social/MediaSkeleton";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import MediaPreview from "../../previewPopup/MediaPreview";
+import MediaPreviewDialog from "../../previewPopup/MediaPreviewDialog";
 
 type CollectionItemsProps = {
   collectionId: string;
@@ -64,7 +64,7 @@ export default function CollectionItems({
                   linkProps={{}}
                   onClick={() =>
                     toggleOpenDialog(
-                      <MediaPreview media={collectionItem.media} />
+                      <MediaPreviewDialog media={collectionItem.media} />
                     )
                   }
                   image={
