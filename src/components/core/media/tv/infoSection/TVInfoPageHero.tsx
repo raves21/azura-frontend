@@ -97,15 +97,17 @@ export default function TVInfoPageHero({
               }}
             />
             <ToggleMediaToCollectionButton
-              mediaId={tvId}
-              mediaType="TV"
-              coverImage={cover}
-              description={description}
-              posterImage={image}
-              rating={voteAverage?.toString() ?? null}
-              status={status}
-              title={title}
-              year={year}
+              media={{
+                id: tvId,
+                type: "TV",
+                coverImage: cover,
+                description,
+                posterImage: image,
+                rating: voteAverage?.toString() ?? null,
+                status,
+                title,
+                year,
+              }}
             />
           </div>
 

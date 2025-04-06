@@ -55,6 +55,7 @@ export default function ActivityHeader({
   const isPostInfoPage = matchRoute({
     to: "/social/$userHandle/posts/$postId",
   });
+
   const [relativeTimeCreated, setRelativeTimeCreated] = useState<string>(
     formatToRelativeTime(createdAt)
   );

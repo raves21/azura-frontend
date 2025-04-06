@@ -1,7 +1,7 @@
 import { useManageCollectionStore } from "@/utils/stores/useManageCollectionStore";
 import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-import CollectionPhoto from "../CollectionPhoto";
+import CollectionPhoto from "../../CollectionPhoto";
 import { cn } from "@/lib/utils";
 import { LoaderCircle } from "lucide-react";
 

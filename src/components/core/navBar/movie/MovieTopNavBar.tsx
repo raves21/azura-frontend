@@ -7,7 +7,7 @@ import MovieTopNavBarMobile from "./MovieTopNavBarMobile";
 import { useMatchRoute } from "@tanstack/react-router";
 
 export default function MovieTopNavBar() {
-  const { isDesktopSmall } = useWindowBreakpoints();
+  const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const isMovieRoute = matchRoute({ to: "/movie", fuzzy: true });
   const isMovieCatalogRoute = matchRoute({ to: "/movie/catalog", fuzzy: true });
@@ -23,7 +23,7 @@ export default function MovieTopNavBar() {
 
   return (
     <header className="font-montserrat">
-      {isDesktopSmall ? (
+      {isDesktopSmallUp ? (
         <MovieTopNavBarDesktop
           isMovieCatalogRoute={!!isMovieCatalogRoute}
           isMovieRoute={!!isMovieRoute}

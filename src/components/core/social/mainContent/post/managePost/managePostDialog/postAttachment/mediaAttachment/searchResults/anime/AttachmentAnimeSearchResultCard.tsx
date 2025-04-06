@@ -9,12 +9,18 @@ type Props = {
 };
 
 export default function AttachmentAnimeSearchResultCard({ anime }: Props) {
-  const [setMediaAttachment, setManagePostPage] = useManagePostStore(
-    useShallow((state) => [state.setMediaAttachment, state.setManagePostPage])
-  );
+  const [setMediaAttachment, setManagePostPage, selectCollectionAttachment] =
+    useManagePostStore(
+      useShallow((state) => [
+        state.setMediaAttachment,
+        state.setManagePostPage,
+        state.setCollectionAttachment,
+      ])
+    );
   return (
     <button
       onClick={() => {
+        selectCollectionAttachment(null);
         setMediaAttachment({
           coverImage: anime.cover,
           description: anime.description,

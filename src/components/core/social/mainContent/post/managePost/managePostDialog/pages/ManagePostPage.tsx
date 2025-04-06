@@ -26,8 +26,8 @@ import { TPost } from "@/utils/types/social/social";
 import { isEqual } from "radash";
 import ErrorDialog from "@/components/core/ErrorDialog";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import CollectionAttachment from "./postAttachment/collectionAttachment/CollectionAttachment";
-import MediaAttachment from "./postAttachment/mediaAttachment/MediaAttachment";
+import CollectionAttachment from "../postAttachment/collectionAttachment/CollectionAttachment";
+import MediaAttachment from "../postAttachment/mediaAttachment/MediaAttachment";
 
 type EditPostProps = {
   type: "edit";
@@ -119,6 +119,9 @@ export default function ManagePostPage({
       media: mediaAttachment,
       privacy: selectedPrivacy,
     };
+
+    //TODO: this shit doesnt change
+    console.log("EDITEDPOST", editedPost);
     originalPost = props.postToEdit;
     editPostNoChanges = isEqual(editedPost, originalPost);
   }

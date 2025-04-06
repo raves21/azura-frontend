@@ -2,13 +2,13 @@ import { useState } from "react";
 import SearchOptions from "@/components/core/media/shared/search/SearchOptions";
 import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import AttachmentMovieSearchResults from "./postAttachment/mediaAttachment/movie/AttachmentMovieSearchResults";
-import AttachmentTVSearchResults from "./postAttachment/mediaAttachment/tv/AttachmentTVSearchResults";
-import AttachmentAnimeSearchResults from "./postAttachment/mediaAttachment/anime/AttachmentAnimeSearchResults";
+import AttachmentMovieSearchResults from "../postAttachment/mediaAttachment/searchResults/movie/AttachmentMovieSearchResults";
+import AttachmentTVSearchResults from "../postAttachment/mediaAttachment/searchResults/tv/AttachmentTVSearchResults";
+import AttachmentAnimeSearchResults from "../postAttachment/mediaAttachment/searchResults/anime/AttachmentAnimeSearchResults";
 
 const mediaTypes = ["Movie", "TV", "Anime"];
 
-export default function SelectMediaAttachment() {
+export default function SelectMediaAttachmentPage() {
   const [selectedMediaType, setSelectedMediaType] = useState(mediaTypes[0]);
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });

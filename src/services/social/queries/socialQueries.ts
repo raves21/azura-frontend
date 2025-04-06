@@ -34,7 +34,9 @@ import {
   unFollowUser_UserProfileCacheMutation,
   followUser_UserPreviewListCacheMutation,
   unfollowUser_UserPreviewListCacheMutation,
-  toggleCollectionItem_MediaExistenceInCollectionsCacheMutation,
+  toggleMediaExistenceInCollectionCacheMutation,
+  deleteCollectionItem_CollectionIitemsCacheMutation,
+  addCollectionItem_CollectionIitemsCacheMutation,
 } from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
@@ -326,6 +328,7 @@ export function useUserCollections({
       return data as PaginatedCollectionsResponse;
     },
     initialPageParam: 1,
+    refetchOnMount: userHandle === currentUserHandle,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!currentUserHandle,
@@ -349,8 +352,8 @@ export function useCurrentUserCollections() {
 
 export function useEditPost() {
   return useMutation({
-    mutationFn: async (postToEdit: TPost) => {
-      const { id, content, privacy, media, collection } = postToEdit;
+    mutationFn: async (editedPost: TPost) => {
+      const { id, content, privacy, media, collection } = editedPost;
       return await api.put(`/posts/${id}`, {
         content,
         privacy,
@@ -358,9 +361,9 @@ export function useEditPost() {
         collectionId: collection?.id ?? null,
       });
     },
-    onSuccess: async (_, postToEdit) => {
-      editPost_PostsCacheMutation(postToEdit);
-      editPost_PostInfoCacheMutation(postToEdit);
+    onSuccess: async (_, editedPost) => {
+      editPost_PostsCacheMutation(editedPost);
+      editPost_PostInfoCacheMutation(editedPost);
     },
   });
 }
@@ -539,10 +542,15 @@ export function useSearchPosts(query: string, enabled: boolean) {
   });
 }
 
-export function useMediaExistenceInCollections(
-  mediaId: string,
-  mediaType: MediaType
-) {
+type UseMediaExistenceInCollectionsArgs = {
+  mediaId: string;
+  mediaType: MediaType;
+};
+
+export function useMediaExistenceInCollections({
+  mediaId,
+  mediaType,
+}: UseMediaExistenceInCollectionsArgs) {
   return useInfiniteQuery({
     queryKey: [
       "collections",
@@ -557,6 +565,7 @@ export function useMediaExistenceInCollections(
       );
       return mediaExistenceInCollections as PaginatedMediaExistenceInCollectionsResponse;
     },
+    refetchOnMount: true,
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
@@ -565,52 +574,57 @@ export function useMediaExistenceInCollections(
 
 type UseAddCollectionItemArgs = {
   collectionId: string;
-  mediaId: string;
-  mediaType: MediaType;
-  title: string;
-  year: string | null;
-  description: string | null;
-  coverImage: string | null;
-  posterImage: string | null;
-  rating: string | null;
-  status: string | null;
+  media: Media;
+  currentUserHandle: string | undefined;
 };
 
 export function useAddCollectionItem() {
   return useMutation({
-    mutationFn: async ({
-      collectionId,
-      mediaId,
-      mediaType,
-      title,
-      year,
-      description,
-      coverImage,
-      posterImage,
-      rating,
-      status,
-    }: UseAddCollectionItemArgs) => {
+    mutationFn: async ({ collectionId, media }: UseAddCollectionItemArgs) => {
+      //mutate the cache
+      addCollectionItem_CollectionIitemsCacheMutation({
+        collectionId,
+        media,
+      });
       //run the api call
       await api.post(`/collections/${collectionId}/collection-items`, {
-        mediaId,
-        type: mediaType,
-        title,
-        year,
-        description,
-        coverImage,
-        posterImage,
-        rating,
-        status,
+        mediaId: media.id,
+        type: media.type,
+        title: media.title,
+        year: media.year,
+        description: media.description,
+        coverImage: media.coverImage,
+        posterImage: media.posterImage,
+        rating: media.rating,
+        status: media.status,
       });
     },
+    onSuccess: (_, { currentUserHandle, media }) => {
+      if (currentUserHandle) {
+        queryClient.invalidateQueries({
+          queryKey: [
+            "collections",
+            "mediaExistenceInCollections",
+            media.id,
+            media.type,
+          ],
+          refetchType: "none",
+          exact: true,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["collections", "userCollections", currentUserHandle],
+          exact: true,
+        });
+      }
+    },
     onError: async (error, variables) => {
-      const { collectionId, mediaId, mediaType } = variables;
+      const { collectionId, media } = variables;
       if (!error.message.includes("400")) {
         //if error, set it back to doesGivenMediaExist: false
-        toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+        toggleMediaExistenceInCollectionCacheMutation({
           collectionId,
-          mediaId,
-          mediaType,
+          mediaId: media.id,
+          mediaType: media.type,
           type: "remove",
         });
       }
@@ -619,32 +633,39 @@ export function useAddCollectionItem() {
 }
 
 type UseDeleteCollectionItemArgs = {
-  //ids of collection items to delete
-  mediaId: string;
   collectionId: string;
-  mediaType: MediaType;
+  media: Media;
 };
 
-export function useDeleteCollectionItem() {
+export function useDeleteCollectionItem({
+  collectionId,
+  media,
+}: UseDeleteCollectionItemArgs) {
   return useMutation({
+    mutationKey: ["deleteCollectionItem", collectionId, media.id, media.type],
     mutationFn: async ({
-      mediaId,
       collectionId,
-      mediaType,
+      media,
     }: UseDeleteCollectionItemArgs) => {
+      //mutate cache
+      deleteCollectionItem_CollectionIitemsCacheMutation({
+        collectionId,
+        mediaId: media.id,
+        mediaType: media.type,
+      });
       //run the api call
       await api.delete(`/collections/${collectionId}/collection-items`, {
-        params: { mediaId, mediaType },
+        params: { mediaId: media.id, mediaType: media.type },
       });
     },
     onError: async (error, variables) => {
-      const { collectionId, mediaId, mediaType } = variables;
+      const { collectionId, media } = variables;
       if (!error.message.includes("404")) {
         //if error, set it back to doesGivenMediaExist: true
-        toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+        toggleMediaExistenceInCollectionCacheMutation({
           collectionId,
-          mediaId,
-          mediaType,
+          mediaId: media.id,
+          mediaType: media.type,
           type: "add",
         });
       }
@@ -711,7 +732,15 @@ export function useCollectionInfo(collectionId: string) {
   });
 }
 
-export function useCollectionItems(collectionId: string) {
+type UseCollectionItemsArgs = {
+  collectionId: string;
+  isCurrentUser: boolean;
+};
+
+export function useCollectionItems({
+  collectionId,
+  isCurrentUser,
+}: UseCollectionItemsArgs) {
   return useInfiniteQuery({
     queryKey: ["collectionItems", collectionId],
     queryFn: async () => {
@@ -720,6 +749,7 @@ export function useCollectionItems(collectionId: string) {
       );
       return collectionItems as PaginatedCollectionItemsResponse;
     },
+    refetchOnMount: isCurrentUser,
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,

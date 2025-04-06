@@ -13,12 +13,18 @@ type Props = {
 };
 
 export default function AttachmentMovieSearchResultCard({ movie }: Props) {
-  const [setMediaAttachment, setManagePostPage] = useManagePostStore(
-    useShallow((state) => [state.setMediaAttachment, state.setManagePostPage])
-  );
+  const [setMediaAttachment, setManagePostPage, setCollectionAttachment] =
+    useManagePostStore(
+      useShallow((state) => [
+        state.setMediaAttachment,
+        state.setManagePostPage,
+        state.setCollectionAttachment,
+      ])
+    );
   return (
     <button
       onClick={() => {
+        setCollectionAttachment(null);
         setMediaAttachment({
           coverImage: getTMDBImageURL(movie.backdrop_path),
           description: movie.overview,

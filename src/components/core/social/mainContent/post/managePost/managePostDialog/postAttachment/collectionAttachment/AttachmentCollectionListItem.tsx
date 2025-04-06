@@ -9,16 +9,19 @@ type Props = {
 };
 
 export default function AttachmentCollectionListItem({ collection }: Props) {
-  const [setCollectionAttachment, setManagePostPage] = useManagePostStore(
-    useShallow((state) => [
-      state.setCollectionAttachment,
-      state.setManagePostPage,
-    ])
-  );
+  const [setCollectionAttachment, setManagePostPage, setMediaAttachment] =
+    useManagePostStore(
+      useShallow((state) => [
+        state.setCollectionAttachment,
+        state.setManagePostPage,
+        state.setMediaAttachment,
+      ])
+    );
 
   return (
     <button
       onClick={() => {
+        setMediaAttachment(null);
         setCollectionAttachment(collection);
         setManagePostPage("managePost");
       }}

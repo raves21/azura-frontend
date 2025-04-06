@@ -24,7 +24,8 @@ export default function CollectionDetails({
       <div className="flex items-center gap-3">
         <CollectionOwner
           avatar={owner.avatar || "/no-image-2.jpg"}
-          userHandle={owner.username}
+          ownerUserName={owner.username}
+          ownerHandle={owner.handle}
         />
         <Circle className="size-[6px] stroke-none fill-socialTextSecondary" />
         <CollectionPrivacy privacy={privacy} />

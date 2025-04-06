@@ -11,7 +11,7 @@ import { Navigate } from "@tanstack/react-router";
 import { useManageCollectionStore } from "@/utils/stores/useManageCollectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { isEqual } from "radash";
-import CollectionPhoto from "../CollectionPhoto";
+import CollectionPhoto from "../../CollectionPhoto";
 import { UseTipTapEditorReturnType } from "@/utils/hooks/useTipTapEditor";
 import { EditorContent } from "@tiptap/react";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";

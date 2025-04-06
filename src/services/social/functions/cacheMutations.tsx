@@ -11,6 +11,8 @@ import {
   TPostComment,
   TPostInfo,
   UserProfile,
+  PaginatedCollectionItemsResponse,
+  TCollectionItem,
 } from "@/utils/types/social/social";
 import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
@@ -35,7 +37,7 @@ const CURRENT_USER_PROFILE_POSTS_QUERY_FILTER = (
   exact: true,
 });
 
-const COMMENTS_QUERY_FILTER = (postId: string): QueryKey => [
+const POST_COMMENTS_QUERY_KEY = (postId: string): QueryKey => [
   "postComments",
   postId,
 ];
@@ -53,10 +55,16 @@ const USER_PREVIEW_LIST_QUERY_FILTER: QueryFilters = {
   },
 };
 
-const CHECK_MEDIA_COLLECTIONS_LIST_QUERY_KEY = (
+const MEDIA_EXISTENCE_IN_COLLECTIONS_QUERY_KEY = (
   mediaId: string,
   mediaType: MediaType
 ) => ["collections", "mediaExistenceInCollections", mediaId, mediaType];
+
+const COLLECTION_ITEMS_QUERY_FILTER: QueryFilters = {
+  predicate(query) {
+    return query.queryKey.includes("collectionItems");
+  },
+};
 
 type CreatePostPostsCacheMutation = {
   postsFrom: "forYouFeed" | "currentUserProfile";
@@ -119,7 +127,7 @@ export function createPost_PostsCacheMutation({
       privacy,
     };
   }
-  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     postsFrom === "forYouFeed"
       ? FOR_YOU_FEED_QUERY_FILTER
       : CURRENT_USER_PROFILE_POSTS_QUERY_FILTER(currentUserHandle),
@@ -135,7 +143,7 @@ export function createPost_PostsCacheMutation({
               totalPages: oldData.pages[0].totalPages,
               message: "new post created in cache",
               page: 1,
-              perPage: 10,
+              perPage: oldData.pages[0].perPage,
             },
             ...oldData.pages.slice(1),
           ],
@@ -169,7 +177,7 @@ export function post_ReactionCacheMutation({
   postId,
   type,
 }: LikeUnlikePostCacheMutation) {
-  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -291,8 +299,8 @@ export function createComment_CommentsCacheMutation({
   postId,
   newComment,
 }: CreateCommentCommentsCacheMutationArgs) {
-  queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, unknown>>(
-    { queryKey: COMMENTS_QUERY_FILTER(postId) },
+  queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, number>>(
+    { queryKey: POST_COMMENTS_QUERY_KEY(postId) },
     (oldData) => {
       const firstPage = oldData?.pages[0];
       //if there are already existing comments
@@ -339,7 +347,7 @@ export function post_TotalCommentsCacheMutation({
   postId,
   incrementTotalComments,
 }: PostTotalCommentsCacheMutationArgs) {
-  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -368,7 +376,7 @@ export function post_TotalCommentsCacheMutation({
 }
 
 export function deletePost_PostsCacheMutation(postId: string) {
-  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -387,7 +395,7 @@ export function deletePost_PostsCacheMutation(postId: string) {
 }
 
 export function editPost_PostsCacheMutation(postToEdit: TPost) {
-  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -469,7 +477,7 @@ export function editUserProfile_PostsCacheMutation({
   username,
   avatar,
 }: EditUserProfileCacheMutationArgs) {
-  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, unknown>>(
+  queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     POSTS_QUERY_FILTER,
     (oldData) => {
       if (!oldData) return undefined;
@@ -571,7 +579,7 @@ export function followUser_UserPreviewListCacheMutation({
   userHandle,
 }: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
   queryClient.setQueriesData<
-    InfiniteData<PaginatedUserPreviewsResponse, unknown>
+    InfiniteData<PaginatedUserPreviewsResponse, number>
   >(USER_PREVIEW_LIST_QUERY_FILTER, (oldData) => {
     if (!oldData) return undefined;
 
@@ -599,7 +607,7 @@ export function unfollowUser_UserPreviewListCacheMutation({
   userHandle,
 }: Pick<FollowUnfollowCacheMutationArgs, "userHandle">) {
   queryClient.setQueriesData<
-    InfiniteData<PaginatedUserPreviewsResponse, unknown>
+    InfiniteData<PaginatedUserPreviewsResponse, number>
   >(USER_PREVIEW_LIST_QUERY_FILTER, (oldData) => {
     if (!oldData) return undefined;
 
@@ -623,24 +631,22 @@ export function unfollowUser_UserPreviewListCacheMutation({
   });
 }
 
-export type ToggleCollectionItemCacheMutationArgs = {
+type ToggleMediaExistenceInCollectionCacheMutationArgs = {
   collectionId: string;
   mediaId: string;
   mediaType: MediaType;
   type: "add" | "remove";
 };
 
-export function toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+export function toggleMediaExistenceInCollectionCacheMutation({
   collectionId,
   mediaId,
   mediaType,
   type,
-}: ToggleCollectionItemCacheMutationArgs) {
-  const queryKey = CHECK_MEDIA_COLLECTIONS_LIST_QUERY_KEY(mediaId, mediaType);
-
+}: ToggleMediaExistenceInCollectionCacheMutationArgs) {
   queryClient.setQueryData<
-    InfiniteData<PaginatedMediaExistenceInCollectionsResponse, unknown>
-  >(queryKey, (oldData) => {
+    InfiniteData<PaginatedMediaExistenceInCollectionsResponse, number>
+  >(MEDIA_EXISTENCE_IN_COLLECTIONS_QUERY_KEY(mediaId, mediaType), (oldData) => {
     if (!oldData) return undefined;
 
     const newPages = oldData.pages.map((page) => ({
@@ -660,5 +666,90 @@ export function toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
       pageParams: oldData.pageParams,
       pages: newPages,
     };
+  });
+}
+
+export function deleteCollectionItem_CollectionIitemsCacheMutation({
+  collectionId,
+  mediaId,
+  mediaType,
+}: Omit<ToggleMediaExistenceInCollectionCacheMutationArgs, "type">) {
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedCollectionItemsResponse, number>
+  >(COLLECTION_ITEMS_QUERY_FILTER, (oldData) => {
+    if (!oldData) return undefined;
+
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.filter(
+        (collectionItem) =>
+          !(
+            collectionItem.media.id === mediaId &&
+            collectionItem.media.type === mediaType &&
+            collectionItem.collectionId === collectionId
+          )
+      ),
+    }));
+
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages,
+    };
+  });
+}
+
+type AddCollectionItemCollectionItemsCacheMutationArgs = {
+  collectionId: string;
+  media: Media;
+};
+
+export function addCollectionItem_CollectionIitemsCacheMutation({
+  collectionId,
+  media,
+}: AddCollectionItemCollectionItemsCacheMutationArgs) {
+  const newCollectionItem: TCollectionItem = {
+    collectionId,
+    id: Math.random().toString(),
+    media,
+  };
+
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedCollectionItemsResponse, number>
+  >(COLLECTION_ITEMS_QUERY_FILTER, (oldData) => {
+    const firstPage = oldData?.pages[0];
+
+    //if has existing collectionItems
+    if (firstPage && firstPage.data.length > 0) {
+      return {
+        pageParams: oldData.pageParams,
+        pages: [
+          {
+            data: [newCollectionItem, ...firstPage.data],
+            message: "new collectionitem created in cache",
+            page: 1,
+            perPage: oldData.pages[0].perPage,
+            totalPages: oldData.pages[0].totalPages,
+          },
+          ...oldData.pages.slice(1),
+        ],
+      };
+    } else {
+      return {
+        pageParams: [1],
+        pages: [
+          {
+            data: [newCollectionItem],
+            message: "",
+            page: 1,
+            perPage: 10,
+            totalPages: 1,
+          },
+        ],
+        message: "success creating the first colectionitem",
+        page: 1,
+        perPage: 10,
+        totalPages: 1,
+      };
+    }
   });
 }

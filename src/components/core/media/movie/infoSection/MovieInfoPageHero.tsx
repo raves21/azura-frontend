@@ -84,15 +84,17 @@ export default function MovieInfoPageHero({
               }}
             />
             <ToggleMediaToCollectionButton
-              mediaId={movieId}
-              mediaType="MOVIE"
-              coverImage={cover}
-              description={description}
-              posterImage={image}
-              rating={voteAverage?.toString() ?? null}
-              status={status}
-              title={title}
-              year={year}
+              media={{
+                id: movieId,
+                type: "MOVIE",
+                coverImage: cover,
+                description,
+                posterImage: image,
+                rating: voteAverage?.toString() ?? null,
+                status,
+                title,
+                year,
+              }}
             />
           </div>
 

@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TCollection } from "@/utils/types/social/social";
-import CollectionPreviewDialog from "@/components/core/social/mainContent/previewPopup/CollectionPreviewDialog";
+import CollectionPreviewDialog from "@/components/core/social/mainContent/previewPopup/collection/CollectionPreviewDialog";
 import { LibraryBig, X } from "lucide-react";
 import CollectionPhoto from "@/components/core/social/mainContent/collection/CollectionPhoto";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";

@@ -1,47 +1,46 @@
 import CustomCheckBox from "@/components/core/CustomCheckBox";
-import { toggleCollectionItem_MediaExistenceInCollectionsCacheMutation } from "@/services/social/functions/cacheMutations";
+import { toggleMediaExistenceInCollectionCacheMutation } from "@/services/social/functions/cacheMutations";
 import {
   useAddCollectionItem,
   useDeleteCollectionItem,
 } from "@/services/social/queries/socialQueries";
 import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
-import { ToggleCollectionItemProperties } from "@/utils/types/media/shared";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { Media } from "@/utils/types/social/social";
 
 type MediaExistenceInCollectionProps = {
   collectionName: string;
   doesGivenMediaExist: boolean;
-} & ToggleCollectionItemProperties;
+  collectionId: string;
+  media: Media;
+};
 
 export default function MediaExistenceInCollection({
   collectionName,
   doesGivenMediaExist,
   collectionId,
-  coverImage,
-  description,
-  mediaId,
-  mediaType,
-  posterImage,
-  rating,
-  status,
-  title,
-  year,
+  media,
 }: MediaExistenceInCollectionProps) {
   const { mutateAsync: addCollectionItem } = useAddCollectionItem();
-  const { mutateAsync: deleteCollectionItem } = useDeleteCollectionItem();
+  const { mutateAsync: deleteCollectionItem } = useDeleteCollectionItem({
+    collectionId,
+    media,
+  });
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   function handleToggleButton() {
     if (doesGivenMediaExist) {
-      toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+      toggleMediaExistenceInCollectionCacheMutation({
         collectionId,
-        mediaId,
-        mediaType,
+        mediaId: media.id,
+        mediaType: media.type,
         type: "remove",
       });
     } else {
-      toggleCollectionItem_MediaExistenceInCollectionsCacheMutation({
+      toggleMediaExistenceInCollectionCacheMutation({
         collectionId,
-        mediaId,
-        mediaType,
+        mediaId: media.id,
+        mediaType: media.type,
         type: "add",
       });
     }
@@ -51,21 +50,13 @@ export default function MediaExistenceInCollection({
     if (doesGivenMediaExist) {
       await addCollectionItem({
         collectionId,
-        coverImage,
-        description,
-        mediaId,
-        mediaType,
-        posterImage,
-        rating,
-        status,
-        title,
-        year,
+        media,
+        currentUserHandle: currentUser?.handle,
       });
     } else {
       await deleteCollectionItem({
         collectionId,
-        mediaId,
-        mediaType,
+        media,
       });
     }
   }

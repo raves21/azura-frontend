@@ -1,7 +1,7 @@
 import { TCollection } from "@/utils/types/social/social";
-import PreviewContainer from "./PreviewContainer";
-import CollectionInfoHeader from "../collection/collectionInfoHeader/CollectionInfoHeader";
-import Media from "../collection/collectionItem/Media";
+import CollectionInfo from "../../collection/collectionInfo/CollectionInfo";
+import Media from "../../collection/collectionItem/Media";
+import CollectionPreviewContainer from "./CollectionPreviewContainer";
 
 type CollectionPreviewProps = {
   collection: TCollection;
@@ -13,14 +13,19 @@ export default function CollectionPreviewDialog({
   isSecondaryDialog,
 }: CollectionPreviewProps) {
   return (
-    <PreviewContainer isSecondaryDialog={isSecondaryDialog}>
+    <CollectionPreviewContainer
+      collectionOwnerHandle={collection.owner.handle}
+      collectionId={collection.id}
+      isSecondaryDialog={isSecondaryDialog}
+    >
       <section className="flex flex-col w-full gap-8 p-3 mt-16 mb-20 rounded-lg sm:p-5">
-        <CollectionInfoHeader collection={collection} />
+        <CollectionInfo collection={collection} />
         {collection.previewMedias.length !== 0 ? (
           <div className="grid grid-cols-2 570:grid-cols-3 gap-x-4 pt-8 gap-y-5 border-t-[0.5px] border-socialTextSecondary/40">
             {collection.previewMedias.map((previewMedia, index) => (
               <Media
-                linkProps={{}}
+                isCollectionItem={true}
+                onClick={() => {}}
                 image={previewMedia.posterImage}
                 key={index}
                 title={previewMedia.title}
@@ -31,10 +36,10 @@ export default function CollectionPreviewDialog({
           </div>
         ) : (
           <div className="grid place-items-center border-t-[0.5px] pt-12 text-lg font-medium border-socialTextSecondary/40">
-            Empty.
+            No items yet.
           </div>
         )}
       </section>
-    </PreviewContainer>
+    </CollectionPreviewContainer>
   );
 }

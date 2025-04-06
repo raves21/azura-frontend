@@ -37,7 +37,7 @@ export default function CreateComment({
     from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
-  const { isMobileMedium } = useWindowBreakpoints();
+  const { isMobileMediumUp } = useWindowBreakpoints();
 
   const { mutateAsync: createComment, status: createCommentStatus } =
     useCreatePostComment();
@@ -86,7 +86,7 @@ export default function CreateComment({
           </button>
         </div>
       </div>
-      {isMobileMedium ? (
+      {isMobileMediumUp ? (
         <button
           onClick={async () => await handleCreateComment(inputText!)}
           disabled={!inputText || isSendingComment}

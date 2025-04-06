@@ -41,12 +41,12 @@ export default function Pagination({
   totalPages,
   currentPage,
   handlePageChange,
-  className
+  className,
 }: PaginationProps) {
   const { items } = usePagination({
     onChange: handlePageChange,
     count: totalPages,
-    page: currentPage
+    page: currentPage,
   });
 
   return (

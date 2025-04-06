@@ -9,7 +9,7 @@ import { Fragment } from "react";
 import { z } from "zod";
 
 const postsSearchResultsPageSchema = z.object({
-  query: z.string()
+  query: z.string(),
 });
 
 type PostsSearchResultsPageSchema = z.infer<
@@ -24,11 +24,11 @@ export const Route = createFileRoute("/_protected/social/search/posts/")({
     if (validated.success) {
       return {
         ...validated.data,
-        success: true
+        success: true,
       };
     }
     return { query: "", success: true };
-  }
+  },
 });
 
 function PostsSearchResultsPage() {
@@ -38,13 +38,13 @@ function PostsSearchResultsPage() {
   useHandleSearchValidationFailure({
     isValidationFail: success === false || !query,
     onValidationError: () => navigate({ to: "/social" }),
-    deps: [success, query]
+    deps: [success, query],
   });
 
   const {
     data: searchPostsResults,
     isLoading: isSearchPostsLoading,
-    error: searchPostsError
+    error: searchPostsError,
   } = useSearchPosts(query, !!query && !!success);
 
   if (isSearchPostsLoading) {

@@ -43,18 +43,15 @@ export type Media = {
   id: string;
   title: string;
   type: MediaType;
-  year: string;
-  description: string;
+  year: string | null;
+  description: string | null;
   coverImage: string | null;
   posterImage: string | null;
   rating: string | null;
   status: string | null;
 };
 
-export type PreviewMedia = Pick<
-  Media,
-  "title" | "type" | "year" | "posterImage"
->;
+export type PreviewMedia = Omit<Media, "status">;
 
 export type TCollection = {
   id: string;

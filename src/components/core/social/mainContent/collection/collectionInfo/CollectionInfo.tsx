@@ -3,13 +3,11 @@ import CollectionPhoto from "../CollectionPhoto";
 import { TCollection } from "@/utils/types/social/social";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
-type CollectionInfoHeaderProps = {
+type Props = {
   collection: TCollection;
 };
 
-export default function CollectionInfoHeader({
-  collection,
-}: CollectionInfoHeaderProps) {
+export default function CollectionInfo({ collection }: Props) {
   return (
     <div className="flex flex-col gap-6 sm:flex-row">
       {collection.photo ? (

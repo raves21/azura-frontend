@@ -1,10 +1,10 @@
 import { useCurrentUserCollections } from "@/services/social/queries/socialQueries";
-import AttachmentCollectionListItem from "./postAttachment/collectionAttachment/AttachmentCollectionListItem";
+import AttachmentCollectionListItem from "../postAttachment/collectionAttachment/AttachmentCollectionListItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
 
-export default function SelectCollectionAttachment() {
+export default function SelectCollectionAttachmentPage() {
   const {
     data: currentUserCollections,
     isLoading: isCurrentUserCollectionsLoading,
@@ -37,6 +37,7 @@ export default function SelectCollectionAttachment() {
     return (
       <div className="size-full flex flex-col overflow-y-auto py-2">
         {currentUserCollections.pages[0].data.length === 0 ? (
+          //todo
           <div></div>
         ) : (
           currentUserCollections.pages.map((page) => (

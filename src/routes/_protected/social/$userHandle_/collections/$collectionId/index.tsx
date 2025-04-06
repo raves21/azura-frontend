@@ -1,13 +1,13 @@
 import BackButton from "@/components/core/BackButton";
 import CollectionPhotoSkeleton from "@/components/core/loadingSkeletons/social/CollectionPhotoSkeleton";
-import CollectionActions from "@/components/core/social/mainContent/collection/collectionInfoHeader/CollectionActions";
-import CollectionInfoHeader from "@/components/core/social/mainContent/collection/collectionInfoHeader/CollectionInfoHeader";
+import CollectionActions from "@/components/core/social/mainContent/collection/collectionInfo/CollectionActions";
+import CollectionInfo from "@/components/core/social/mainContent/collection/collectionInfo/CollectionInfo";
 import CollectionItems from "@/components/core/social/mainContent/collection/collectionItem/CollectionItems";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCollectionInfo } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { createFileRoute } from "@tanstack/react-router";
-import { Circle } from "lucide-react";
+import { Circle, Pencil } from "lucide-react";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/$collectionId/"
@@ -78,15 +78,21 @@ function CollectionInfoPage() {
   if (collectionInfo) {
     return (
       <section className="flex flex-col w-full gap-8 p-3 mb-20 rounded-lg sm:p-5 bg-socialPrimary">
-        <BackButton
-          linkProps={{
-            to: "/social/$userHandle/collections",
-            params: {
-              userHandle,
-            },
-          }}
-        />
-        <CollectionInfoHeader collection={collectionInfo} />
+        <div className="w-full flex items-center justify-between">
+          <BackButton
+            linkProps={{
+              to: "/social/$userHandle/collections",
+              params: {
+                userHandle,
+              },
+            }}
+          />
+          <button className="relative w-min group">
+            <Pencil className="transition-colors size-6 stroke-mainWhite group-hover:stroke-mainAccent" />
+            <Circle className="fill-gray-700/20 stroke-none size-[220%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+          </button>
+        </div>
+        <CollectionInfo collection={collectionInfo} />
         <CollectionActions disabled={false} collection={collectionInfo} />
         <CollectionItems collectionId={collectionId} />
       </section>

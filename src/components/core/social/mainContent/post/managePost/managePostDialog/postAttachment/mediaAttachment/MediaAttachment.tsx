@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Clapperboard, Tv, X } from "lucide-react";
-import MediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/MediaPreviewDialog";
+import MediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/media/MediaPreviewDialog";
 
 type Props = {
   media: Media;

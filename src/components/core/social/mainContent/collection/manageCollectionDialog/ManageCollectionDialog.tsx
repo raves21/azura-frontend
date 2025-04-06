@@ -5,11 +5,11 @@ import { TCollection } from "@/utils/types/social/social";
 import { ReactNode } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
-import ManageCollectionDetailsPage from "./ManageCollectionDetailsPage";
-import SelectPrivacyPage from "./SelectPrivacyPage";
+import ManageCollectionDetailsPage from "./pages/ManageCollectionDetailsPage";
+import SelectPrivacyPage from "./pages/SelectPrivacyPage";
 import { ArrowLeft, X } from "lucide-react";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
-import ManageCollectionPhotoPage from "./ManageCollectionPhotoPage";
+import ManageCollectionPhotoPage from "./pages/ManageCollectionPhotoPage";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
 type EditCollectionProps = {
