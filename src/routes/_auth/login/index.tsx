@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import LoginForm from "./-LoginForm";
+import LoginForm from "../../../components/core/auth/login/LoginForm";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";

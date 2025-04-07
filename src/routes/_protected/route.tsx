@@ -1,11 +1,11 @@
-import PulseCheckJWT from "@/components/core/auth/PulseCheckJWT";
+import PulseCheckJWT from "@/components/core/auth/shared/PulseCheckJWT";
 import StaticLoadingPage from "@/components/core/StaticLoadingPage";
 import { useRefreshJWT } from "@/services/auth/authQueries";
 import {
   createFileRoute,
   Navigate,
   Outlet,
-  useMatchRoute
+  useMatchRoute,
 } from "@tanstack/react-router";
 import MovieTopNavBar from "@/components/core/navBar/movie/MovieTopNavBar";
 import AnimeTopNavBar from "@/components/core/navBar/anime/AnimeTopNavBar";
@@ -16,7 +16,7 @@ import { ReactNode } from "react";
 import { LastMediaRouteVisited } from "@/utils/types/shared";
 
 export const Route = createFileRoute("/_protected")({
-  component: () => <Protected />
+  component: () => <Protected />,
 });
 
 function Protected() {

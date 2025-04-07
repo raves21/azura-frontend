@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import FindAccountForm from "./-FindAccountForm";
+import FindAccountForm from "../../../../../components/core/auth/login/forgotPassword/findAccount/FindAccountForm";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/find-account/"

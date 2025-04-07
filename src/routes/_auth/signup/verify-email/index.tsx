@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import CodeVerificationForm from "@/components/core/auth/CodeVerificationForm";
+import CodeVerificationForm from "@/components/core/auth/shared/CodeVerificationForm";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
@@ -9,7 +9,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/ErrorDialog";
 
 export const Route = createFileRoute("/_auth/signup/verify-email/")({
-  component: () => <VerifyEmailPage />
+  component: () => <VerifyEmailPage />,
 });
 
 function VerifyEmailPage() {
@@ -17,7 +17,7 @@ function VerifyEmailPage() {
     useShallow((state) => [
       state.signUpStep,
       state.setSignUpStep,
-      state.signUpValues
+      state.signUpValues,
     ])
   );
   const router = useRouter();
@@ -29,7 +29,7 @@ function VerifyEmailPage() {
   useEffect(() => {
     if (signUpStep !== SignUpStep.VERIFY_EMAIL) {
       router.navigate({
-        to: "/login"
+        to: "/login",
       });
     }
   }, []);
@@ -61,11 +61,11 @@ function VerifyEmailPage() {
             username: signUpValues.username,
             email: signUpValues.email,
             handle: signUpValues.handle,
-            password: signUpValues.password
+            password: signUpValues.password,
           });
           await login({
             email: signUpValues.email,
-            password: signUpValues.password
+            password: signUpValues.password,
           });
         } catch (error) {
           toggleOpenDialog(
