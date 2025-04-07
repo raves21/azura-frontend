@@ -16,7 +16,7 @@ export default function PlayNowButton({
 }: Props) {
   return (
     <button
-      onClick={() => onClick}
+      onClick={onClick}
       disabled={isDisabled}
       className={cn(
         "hover:scale-[1.02] transition-transform duration-200 flex items-center gap-2 px-4 py-4 rounded-full disabled:bg-fuchsia-800 disabled:text-gray-400 mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-mainAccent",
