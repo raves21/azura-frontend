@@ -1,14 +1,11 @@
 import { EntityOwner } from "@/utils/types/social/shared";
 
-type PostLikersProps = {
+type Props = {
   postFirstLikers: Omit<EntityOwner, "handle">[];
   totalLikes: number;
 };
 
-export default function PostLikers({
-  postFirstLikers,
-  totalLikes,
-}: PostLikersProps) {
+export default function PostLikers({ postFirstLikers, totalLikes }: Props) {
   return (
     <button className="flex items-center w-full gap-2 mobile-m:gap-3 group">
       <img

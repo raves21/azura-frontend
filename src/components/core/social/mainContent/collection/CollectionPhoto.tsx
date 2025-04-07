@@ -10,14 +10,11 @@ type WithPreviewPostersProps = {
   previewPosters: string[];
 };
 
-type CollectionPhotoProps = {
+type Props = {
   className?: string;
 } & (WithPhotoProps | WithPreviewPostersProps);
 
-export default function CollectionPhoto({
-  className,
-  ...props
-}: CollectionPhotoProps) {
+export default function CollectionPhoto({ className, ...props }: Props) {
   const { type } = props;
 
   if (type === "previewPosters" && props.previewPosters.length === 0) {

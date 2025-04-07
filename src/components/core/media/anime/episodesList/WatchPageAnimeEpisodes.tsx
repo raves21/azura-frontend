@@ -1,6 +1,6 @@
 import {
   AnimeEpisodesData,
-  AnimeFormat
+  AnimeFormat,
 } from "@/utils/types/media/anime/animeAnilist";
 import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 
-type WatchPageAnimeEpisodesProps = {
+type Props = {
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
@@ -30,16 +30,16 @@ export default function WatchPageAnimeEpisodes({
   episodesQuery,
   episodeImageFallback,
   episodeListMaxHeight,
-  currentlyWatchingEpisodeNumber
-}: WatchPageAnimeEpisodesProps) {
+  currentlyWatchingEpisodeNumber,
+}: Props) {
   const { animeId } = useParams({
-    from: "/_protected/anime/$animeId/watch/"
+    from: "/_protected/anime/$animeId/watch/",
   });
 
   const {
     data: episodes,
     isLoading: isEpisodesLoading,
-    error: episodesError
+    error: episodesError,
   } = episodesQuery;
 
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
@@ -49,10 +49,10 @@ export default function WatchPageAnimeEpisodes({
     selectedChunk,
     setSelectedChunk,
     currentlyWatchingEpisodeCardRef,
-    episodeListContainerRef
+    episodeListContainerRef,
   } = useAnimeEpisodes({
     chunkedEpisodes,
-    currentlyWatchingEpisodeNumber
+    currentlyWatchingEpisodeNumber,
   });
 
   if (isEpisodesLoading || isChunkEpisodesLoading) {
@@ -98,11 +98,11 @@ export default function WatchPageAnimeEpisodes({
                   linkProps={{
                     to: `/anime/$animeId/watch`,
                     params: {
-                      animeId: animeId
+                      animeId: animeId,
                     },
                     search: {
-                      id: episode.id.replace(/^\//, "")
-                    }
+                      id: episode.id.replace(/^\//, ""),
+                    },
                   }}
                   episodeNumber={
                     type === AnimeFormat.MOVIE

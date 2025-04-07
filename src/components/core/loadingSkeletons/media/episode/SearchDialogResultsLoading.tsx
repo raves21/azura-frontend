@@ -1,13 +1,11 @@
 import { cn } from "@/lib/utils";
 import SearchDialogResultCardSkeleton from "./SearchDialogResultCardSkeleton";
 
-type SearchDialogResultsLoadingProps = {
+type Props = {
   className?: string;
 };
 
-export default function SearchDialogResultsLoading({
-  className,
-}: SearchDialogResultsLoadingProps) {
+export default function SearchDialogResultsLoading({ className }: Props) {
   return (
     <div
       className={cn(

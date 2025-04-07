@@ -4,15 +4,12 @@ import ActivitySkeleton from "./ActivitySkeleton";
 import PostCommentsSkeleton from "./PostCommentsSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type PostInfoSkeletonProps = {
+type Props = {
   withAttachment: boolean;
   linkProps: LinkProps;
 };
 
-export default function PostInfoSkeleton({
-  withAttachment,
-  linkProps,
-}: PostInfoSkeletonProps) {
+export default function PostInfoSkeleton({ withAttachment, linkProps }: Props) {
   return (
     <div className="flex flex-col w-full gap-2 mb-24 overflow-hidden rounded-lg bg-socialPrimary">
       <div className="flex flex-col w-full gap-8 px-3 py-4 sm:p-5">

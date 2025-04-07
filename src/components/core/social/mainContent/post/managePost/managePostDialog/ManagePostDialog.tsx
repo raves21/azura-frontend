@@ -22,14 +22,14 @@ type CreatePostProps = {
   type: "create";
 };
 
-type ManagePostDialogProps = {
+type Props = {
   resetStateOnMount?: boolean;
 } & (EditPostProps | CreatePostProps);
 
 export default function ManagePostDialog({
   resetStateOnMount = true,
   ...props
-}: ManagePostDialogProps) {
+}: Props) {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const [

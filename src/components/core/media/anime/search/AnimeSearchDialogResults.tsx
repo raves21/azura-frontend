@@ -6,20 +6,20 @@ import AnimeSearchDialogResultCard from "./AnimeSearchDialogResultCard";
 import { UseQueryResult } from "@tanstack/react-query";
 import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
-type AnimeSearchDialogResultsProps = {
+type Props = {
   query: string;
   animeSearchQuery: UseQueryResult<PaginatedAnimeResponse, Error>;
 };
 
 export default function AnimeSearchDialogResults({
   animeSearchQuery,
-  query
-}: AnimeSearchDialogResultsProps) {
+  query,
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
-    error: searchResultsError
+    error: searchResultsError,
   } = animeSearchQuery;
 
   if (isSearchResultsLoading) {
@@ -56,7 +56,7 @@ export default function AnimeSearchDialogResults({
             to="/anime/catalog"
             search={{
               page: 1,
-              query: query
+              query: query,
             }}
             onClick={() => toggleOpenDialog(null)}
             className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent"

@@ -1,7 +1,7 @@
 import { Link, LinkProps } from "@tanstack/react-router";
 import CollectionPhoto from "./CollectionPhoto";
 
-type CollectionProps = {
+type Props = {
   name: string;
   previewPosters: string[];
   photo: string | null;
@@ -13,7 +13,7 @@ export default function Collection({
   previewPosters,
   photo,
   linkProps,
-}: CollectionProps) {
+}: Props) {
   return (
     <Link
       {...linkProps}

@@ -3,7 +3,7 @@ import CollectionInfo from "../../collection/collectionInfo/CollectionInfo";
 import Media from "../../collection/collectionItem/Media";
 import CollectionPreviewContainer from "./CollectionPreviewContainer";
 
-type CollectionPreviewProps = {
+type Props = {
   collection: TCollection;
   isSecondaryDialog?: boolean;
 };
@@ -11,7 +11,7 @@ type CollectionPreviewProps = {
 export default function CollectionPreviewDialog({
   collection,
   isSecondaryDialog,
-}: CollectionPreviewProps) {
+}: Props) {
   return (
     <CollectionPreviewContainer
       collectionOwnerHandle={collection.owner.handle}

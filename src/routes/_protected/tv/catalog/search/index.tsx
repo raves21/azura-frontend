@@ -1,5 +1,5 @@
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
-import Pagination from "@/components/core/media/shared/catalog/Pagination";
+import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import { useSearchTV } from "@/services/media/tv/tvQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
@@ -10,7 +10,7 @@ import { z } from "zod";
 
 const tvSearchResultsPageSchema = z.object({
   query: z.string(),
-  page: z.coerce.number().optional()
+  page: z.coerce.number().optional(),
 });
 
 type TVSearchResultsPageSchema = z.infer<typeof tvSearchResultsPageSchema> &
@@ -23,14 +23,14 @@ export const Route = createFileRoute("/_protected/tv/catalog/search/")({
     if (validated.success) {
       return {
         ...validated.data,
-        success: true
+        success: true,
       };
     }
     return {
       query: "",
-      success: false
+      success: false,
     };
-  }
+  },
 });
 
 function TVSearchPage() {
@@ -40,13 +40,13 @@ function TVSearchPage() {
 
   useHandleSearchValidationFailure({
     isValidationFail: !success || !query,
-    onValidationError: () => navigate({ to: "/tv" })
+    onValidationError: () => navigate({ to: "/tv" }),
   });
 
   const {
     data: tvSearchResults,
     isLoading: tvSearchResultsLoading,
-    error: tvSearchResultsError
+    error: tvSearchResultsError,
   } = useSearchTV(query, page || 1, true);
 
   if (tvSearchResultsLoading) {
@@ -97,7 +97,7 @@ function TVSearchPage() {
               currentPage={page || 1}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page })
+                  search: (prev) => ({ ...prev, page }),
                 });
               }}
             />

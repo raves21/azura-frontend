@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type InfoItemProps = {
+type Props = {
   label: string;
   info: string | undefined | null;
   className?: string;
@@ -13,8 +13,8 @@ export default function InfoItem({
   info,
   className,
   labelClassName,
-  infoClassName
-}: InfoItemProps) {
+  infoClassName,
+}: Props) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <p className={cn("text-gray-400", labelClassName)}>{label}</p>

@@ -11,13 +11,11 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import DeleteConfirmationDialog from "@/components/core/DeleteConfirmationDialog";
 import ManagePostDialog from "../post/managePost/managePostDialog/ManagePostDialog";
 
-type PostOptionsDropdownProps = {
+type Props = {
   post: TPost;
 };
 
-export default function PostOptionsDropdown({
-  post,
-}: PostOptionsDropdownProps) {
+export default function PostOptionsDropdown({ post }: Props) {
   const { mutateAsync: deletePost } = useDeletePost(post.id);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 

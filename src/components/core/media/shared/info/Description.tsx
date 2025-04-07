@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 
-type DescriptionProps = {
+type Props = {
   description: string | undefined | null;
   className?: string;
   adjustHeightBasedOnWidth?: boolean;
@@ -16,7 +16,7 @@ export default function Description({
   description,
   adjustHeightBasedOnWidth,
   showDescriptionLabel,
-}: DescriptionProps) {
+}: Props) {
   const [readMore, setReadMore] = useState(false);
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const [descriptionHeight, setDescriptionHeight] = useState(0);

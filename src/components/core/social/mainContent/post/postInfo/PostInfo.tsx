@@ -6,13 +6,13 @@ import ActivityHeader from "../../activity/ActivityHeader";
 import { useParams } from "@tanstack/react-router";
 import ActivityContentRenderer from "../../activity/ActivityContentRenderer";
 
-type PostInfoProps = {
+type Props = {
   post: TPostInfo;
 };
 
-export default function PostInfo({ post }: PostInfoProps) {
+export default function PostInfo({ post }: Props) {
   const { userHandle } = useParams({
-    from: "/_protected/social/$userHandle/posts/$postId/"
+    from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   return (
@@ -24,8 +24,8 @@ export default function PostInfo({ post }: PostInfoProps) {
           linkProps={{
             to: "/social/$userHandle",
             params: {
-              userHandle
-            }
+              userHandle,
+            },
           }}
         />
       </div>

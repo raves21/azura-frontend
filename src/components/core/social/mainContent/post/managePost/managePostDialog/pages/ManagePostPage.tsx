@@ -38,14 +38,11 @@ type CreatePostProps = {
   type: "create";
 };
 
-type ManagePostPageProps = {
+type Props = {
   tipTapEditor: UseTipTapEditorReturnType;
 } & (EditPostProps | CreatePostProps);
 
-export default function ManagePostPage({
-  tipTapEditor,
-  ...props
-}: ManagePostPageProps) {
+export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
   const {
     editor: editor,
     editorContentRef,

@@ -12,11 +12,9 @@ type WatchPageProps = {
   isMobile: boolean;
 };
 
-type GenreListSkeletonProps = InfoPageProps | WatchPageProps;
+type Props = InfoPageProps | WatchPageProps;
 
-export default function GenreListSkeleton({
-  ...props
-}: GenreListSkeletonProps) {
+export default function GenreListSkeleton({ ...props }: Props) {
   if (props.variant === "infoPage") {
     return (
       <div className={cn("flex gap-2 items-center", props.className)}>

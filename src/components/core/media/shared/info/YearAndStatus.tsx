@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 import { AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
 
-type YearAndStatusProps = {
+type Props = {
   year: number | undefined;
   status: string | undefined;
 };
 
-export default function YearAndStatus({ year, status }: YearAndStatusProps) {
+export default function YearAndStatus({ year, status }: Props) {
   return (
     <div className="flex items-center gap-2 lg:hidden">
       <p>{year}</p>
@@ -16,16 +16,16 @@ export default function YearAndStatus({ year, status }: YearAndStatusProps) {
           className={cn("font-semibold text-orange-500", {
             "text-green-500": [
               AnimeStatus.Ongoing,
-              AnimeStatus.RELEASING
+              AnimeStatus.RELEASING,
             ].includes(status as AnimeStatus),
             "text-blue-500": [
               AnimeStatus.FINISHED,
-              AnimeStatus.Completed
+              AnimeStatus.Completed,
             ].includes(status as AnimeStatus),
             "text-red-500": [
               AnimeStatus.CANCELLED,
-              AnimeStatus.Cancelled
-            ].includes(status as AnimeStatus)
+              AnimeStatus.Cancelled,
+            ].includes(status as AnimeStatus),
           })}
         >
           {status}

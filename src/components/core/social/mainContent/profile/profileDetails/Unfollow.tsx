@@ -1,11 +1,11 @@
 import { X, Check } from "lucide-react";
 
-type UnfollowButtonProps = {
+type Props = {
   type: "profilePage" | "userPreview";
   isHovering: boolean;
 };
 
-export default function Unfollow({ type, isHovering }: UnfollowButtonProps) {
+export default function Unfollow({ type, isHovering }: Props) {
   if (type === "profilePage") {
     return (
       <div className="w-min flex items-center self-end gap-2 px-4 py-2 font-semibold transition-colors border border-gray-600 rounded-full sm:px-5 lg:text-md hover:text-red-500 hover:border-red-500 lg:mt-2 sm:text-sm text-2xs mobile-m:text-xs hover:bg-red-500/20">

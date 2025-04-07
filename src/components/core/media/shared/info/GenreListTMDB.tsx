@@ -14,14 +14,11 @@ type WatchPageProps = {
   isMobile: boolean;
 };
 
-type GenreListTMDBProps = {
+type Props = {
   genres: TMDBGenre[];
 } & (InfoPageProps | WatchPageProps);
 
-export default function GenreListTMDB({
-  genres,
-  ...props
-}: GenreListTMDBProps) {
+export default function GenreListTMDB({ genres, ...props }: Props) {
   if (props.variant === "infoPage") {
     return (
       <div className={cn("flex gap-2", props.className)}>
@@ -37,7 +34,7 @@ export default function GenreListTMDB({
                 <Link
                   to="/movie/catalog"
                   search={{
-                    genres: [genre.id]
+                    genres: [genre.id],
                   }}
                   key={i}
                   className="hover:text-mainAccent"
@@ -64,7 +61,7 @@ export default function GenreListTMDB({
             <Link
               to="/movie/catalog"
               search={{
-                genres: [genre.id]
+                genres: [genre.id],
               }}
               key={genre.id}
               className="px-3 py-2 transition-colors border rounded-full border-mainAccent/75 hover:text-mainAccent/75"

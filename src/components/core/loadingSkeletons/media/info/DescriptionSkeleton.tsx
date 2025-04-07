@@ -2,15 +2,15 @@ import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type DescriptionSkeletonProps = {
+type Props = {
   className?: string;
   showDescriptionLabel: boolean;
 };
 
 export default function DescriptionSkeleton({
   className,
-  showDescriptionLabel
-}: DescriptionSkeletonProps) {
+  showDescriptionLabel,
+}: Props) {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
 
   return (

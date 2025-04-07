@@ -1,23 +1,21 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link } from "@tanstack/react-router";
 
-type TrendingListItemProps = {
+type Props = {
   trend: string;
   postCount: number;
 };
 
-export default function TrendingListItem({
-  trend,
-  postCount
-}: TrendingListItemProps) {
+export default function TrendingListItem({ trend, postCount }: Props) {
+  const setSocialSearchKeyword = useGlobalStore(
+    (state) => state.setSocialSearchKeyword
+  );
 
-  const setSocialSearchKeyword = useGlobalStore((state) => state.setSocialSearchKeyword)
-  
   return (
     <Link
       to="/social/search/posts"
       search={{
-        query: trend
+        query: trend,
       }}
       onClick={() => setSocialSearchKeyword(trend)}
       className="block w-full px-5 py-4 hover:bg-socialPrimaryHover"

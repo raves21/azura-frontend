@@ -16,14 +16,11 @@ type CommentActivityProps = {
   comment: TPostComment;
 };
 
-type ActivityProps = {
+type Props = {
   ownerProfileLinkProps: LinkProps;
 } & (PostActivityProps | CommentActivityProps);
 
-export default function Activity({
-  ownerProfileLinkProps,
-  ...props
-}: ActivityProps) {
+export default function Activity({ ownerProfileLinkProps, ...props }: Props) {
   const { type } = props;
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({

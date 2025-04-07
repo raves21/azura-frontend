@@ -3,7 +3,7 @@ import CollectionOwner from "./CollectionOwner";
 import CollectionPrivacy from "./CollectionPrivacy";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 
-type CollectionNameAndDescriptionProps = {
+type Props = {
   name: string;
   description: string | null;
   owner: EntityOwner;
@@ -15,7 +15,7 @@ export default function CollectionDetails({
   description,
   owner,
   privacy,
-}: CollectionNameAndDescriptionProps) {
+}: Props) {
   return (
     <div className="flex flex-col items-center gap-5 sm:items-start">
       <p className="text-xl font-bold text-center 570:px-12 sm:px-0 lg:text-3xl sm:text-start mobile-m:text-2xl line-clamp-3">

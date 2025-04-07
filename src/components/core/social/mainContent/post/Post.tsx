@@ -1,12 +1,12 @@
 import { TPost } from "@/utils/types/social/social";
 import Activity from "../activity/Activity";
 
-type PostProps = {
+type Props = {
   fromState?: "home-page" | "user-page" | "search-page";
   post: TPost;
 };
 
-export default function Post({ fromState, post }: PostProps) {
+export default function Post({ fromState, post }: Props) {
   return (
     <Activity
       type="post"

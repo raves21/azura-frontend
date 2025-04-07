@@ -9,15 +9,12 @@ import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
-type CreateCommentProps = {
+type Props = {
   author: EntityOwner;
   isFloatingCommentBar: boolean;
 };
 
-export default function CreateComment({
-  author,
-  isFloatingCommentBar,
-}: CreateCommentProps) {
+export default function CreateComment({ author, isFloatingCommentBar }: Props) {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const {

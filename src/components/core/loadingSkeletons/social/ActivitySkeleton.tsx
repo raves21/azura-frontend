@@ -12,12 +12,9 @@ type PostProps = {
   withAttachment: boolean;
 };
 
-type ActivitySkeletonProps = CommentProps | PostProps;
+type Props = CommentProps | PostProps;
 
-export default function ActivitySkeleton({
-  type,
-  ...props
-}: ActivitySkeletonProps) {
+export default function ActivitySkeleton({ type, ...props }: Props) {
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({
     to: "/social/$userHandle/posts/$postId",

@@ -8,7 +8,7 @@ import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Media } from "@/utils/types/social/social";
 
-type MediaExistenceInCollectionProps = {
+type Props = {
   collectionName: string;
   doesGivenMediaExist: boolean;
   collectionId: string;
@@ -20,7 +20,7 @@ export default function MediaExistenceInCollection({
   doesGivenMediaExist,
   collectionId,
   media,
-}: MediaExistenceInCollectionProps) {
+}: Props) {
   const { mutateAsync: addCollectionItem } = useAddCollectionItem();
   const { mutateAsync: deleteCollectionItem } = useDeleteCollectionItem({
     collectionId,

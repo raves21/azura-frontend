@@ -1,11 +1,11 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ViewProfileImageDialog from "../../../ViewProfileImageDialog";
 
-type ProfileBannerProps = {
+type Props = {
   banner: string | null;
 };
 
-export default function ProfileBanner({ banner }: ProfileBannerProps) {
+export default function ProfileBanner({ banner }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <img

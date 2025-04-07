@@ -1,6 +1,6 @@
 import {
   PostWithCollectionAttachment,
-  PostWithMediaAttachment
+  PostWithMediaAttachment,
 } from "@/utils/types/social/social";
 import MediaAttachment from "./MediaAttachment";
 import CollectionAttachment from "./CollectionAttachment";
@@ -8,20 +8,20 @@ import { cn } from "@/lib/utils";
 import { useMatchRoute } from "@tanstack/react-router";
 import ActivityContentRenderer from "../../activity/ActivityContentRenderer";
 
-type PostWithAttachmentProps = {
+type Props = {
   contentClassName?: string;
 } & (PostWithCollectionAttachment | PostWithMediaAttachment);
 
 export default function PostWithAttachment({
   contentClassName,
   ...props
-}: PostWithAttachmentProps) {
+}: Props) {
   const matchRoute = useMatchRoute();
 
   return (
     <div
       className={cn("flex flex-col w-full gap-3", {
-        "sm:pl-14": !matchRoute({ to: "/social/$userHandle/posts/$postId" })
+        "sm:pl-14": !matchRoute({ to: "/social/$userHandle/posts/$postId" }),
       })}
     >
       {props.content && (

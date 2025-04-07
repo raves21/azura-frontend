@@ -6,7 +6,7 @@ import { PaginatedMovieResponse } from "@/utils/types/media/movie/movieTmdb";
 import { UseQueryResult } from "@tanstack/react-query";
 import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
-type MovieSearchDialogResultsProps = {
+type Props = {
   query: string;
   movieSearchQuery: UseQueryResult<PaginatedMovieResponse, Error>;
   resultCardClassName?: string;
@@ -15,7 +15,7 @@ type MovieSearchDialogResultsProps = {
 export default function MovieSearchDialogResults({
   movieSearchQuery,
   query,
-}: MovieSearchDialogResultsProps) {
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,

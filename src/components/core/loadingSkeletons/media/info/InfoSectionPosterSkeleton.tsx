@@ -1,12 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-type InfoSectionPosterProps = {
+type Props = {
   variant: "infoPage" | "watchPage";
 };
 
-export default function InfoSectionPosterSkeleton({
-  variant
-}: InfoSectionPosterProps) {
+export default function InfoSectionPosterSkeleton({ variant }: Props) {
   if (variant === "infoPage") {
     return (
       <Skeleton className="aspect-[3/4] h-[230px] sm:h-[280px] lg:h-[300px] xl:h-[320px] rounded-xl overflow-hidden z-10 bg-gray-800" />

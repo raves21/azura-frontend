@@ -11,7 +11,7 @@ import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../CustomDropdown";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
 
-type InfoPageTVEpisodesProps = {
+type Props = {
   totalSeasons: number | null;
   tvSeasonEpisodesQuery: UseQueryResult<TMDBTVEpisode[], Error>;
   coverImage?: string | null;
@@ -20,10 +20,10 @@ type InfoPageTVEpisodesProps = {
 export default function InfoPageTVEpisodes({
   totalSeasons,
   tvSeasonEpisodesQuery,
-  coverImage
-}: InfoPageTVEpisodesProps) {
+  coverImage,
+}: Props) {
   const { tvId } = useParams({
-    from: "/_protected/tv/$tvId/"
+    from: "/_protected/tv/$tvId/",
   });
   const { s } = useSearch({ from: "/_protected/tv/$tvId/" });
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function InfoPageTVEpisodes({
   const {
     data: tvSeasonEpisodes,
     isLoading: isTvSeasonEpisodesLoading,
-    error: tvSeasonEpisodesError
+    error: tvSeasonEpisodesError,
   } = tvSeasonEpisodesQuery;
 
   if (isTvSeasonEpisodesLoading || !totalSeasons) {
@@ -59,7 +59,7 @@ export default function InfoPageTVEpisodes({
                   to: "/tv/$tvId",
                   params: { tvId },
                   search: { s: season },
-                  replace: true
+                  replace: true,
                 })
               }
               showMenuContentBorder
@@ -76,12 +76,12 @@ export default function InfoPageTVEpisodes({
                 linkProps={{
                   to: "/tv/$tvId/watch",
                   params: {
-                    tvId
+                    tvId,
                   },
                   search: {
                     tvSeason: episode.season_number,
-                    tvEp: episode.episode_number
-                  }
+                    tvEp: episode.episode_number,
+                  },
                 }}
                 episodeNumber={`Episode ${episode.episode_number}`}
                 episodeTitle={episode.name}

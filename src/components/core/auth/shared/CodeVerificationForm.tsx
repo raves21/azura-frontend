@@ -26,7 +26,7 @@ import { CodeVerificationFormData } from "@/utils/types/auth/forms";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 
-type CodeVerificationFormProps = {
+type Props = {
   backButtonAction: () => void;
   afterVerificationSuccessAction: (values: CodeVerificationFormData) => void;
   email: string;
@@ -36,7 +36,7 @@ export default function CodeVerificationForm({
   backButtonAction,
   afterVerificationSuccessAction,
   email,
-}: CodeVerificationFormProps) {
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const queryClient = useQueryClient();
   const navigate = useNavigate();

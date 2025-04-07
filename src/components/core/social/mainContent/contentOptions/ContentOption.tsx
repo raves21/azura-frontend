@@ -3,7 +3,7 @@ import { LinkProps, Link } from "@tanstack/react-router";
 import { TContentOption } from "@/utils/types/social/shared";
 import { isEqual } from "radash";
 
-type ContentOptionProps = {
+type Props = {
   option: TContentOption;
   selectedOption: TContentOption;
   linkProps: LinkProps;
@@ -14,8 +14,8 @@ export default function ContentOption({
   option,
   selectedOption,
   linkProps,
-  onSelectOption
-}: ContentOptionProps) {
+  onSelectOption,
+}: Props) {
   return (
     <Link
       {...linkProps}

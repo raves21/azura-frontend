@@ -1,7 +1,7 @@
 import ContentOption from "./ContentOption";
 import { TContentOption } from "@/utils/types/social/shared";
 
-type ContentOptionsProps = {
+type Props = {
   contentOptions: TContentOption[];
   selectedOption: TContentOption;
   setSelectedOption: (option: TContentOption) => void;
@@ -11,7 +11,7 @@ export default function ContentOptions({
   contentOptions,
   selectedOption,
   setSelectedOption,
-}: ContentOptionsProps) {
+}: Props) {
   return (
     <div className="flex w-full overflow-hidden font-semibold rounded-lg bg-socialPrimary">
       {contentOptions.map((option, i) => (

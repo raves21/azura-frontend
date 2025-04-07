@@ -9,13 +9,11 @@ import ManageCollectionDialog from "@/components/core/social/mainContent/collect
 import { useShallow } from "zustand/react/shallow";
 import { Media } from "@/utils/types/social/social";
 
-type ToggleMediaToCollectionDialogProps = {
+type Props = {
   media: Media;
 };
 
-export default function ToggleMediaToCollectionDialog({
-  media,
-}: ToggleMediaToCollectionDialogProps) {
+export default function ToggleMediaToCollectionDialog({ media }: Props) {
   const {
     data: mediaExistenceInCollections,
     isFetching: isMediaExistenceInCollectionsFetching,

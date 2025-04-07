@@ -8,13 +8,11 @@ import { MovieTMDB } from "@/utils/types/media/movie/movieTmdb";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 
-type MovieSearchDialogResultCardProps = {
+type Props = {
   movie: MovieTMDB;
 };
 
-export default function MovieSearchDialogResultCard({
-  movie,
-}: MovieSearchDialogResultCardProps) {
+export default function MovieSearchDialogResultCard({ movie }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <Link

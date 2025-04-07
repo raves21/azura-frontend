@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link, LinkProps } from "@tanstack/react-router";
 
-type UserAvatarProps = {
+type Props = {
   imageClassName?: string;
   onClick?: () => void;
   className?: string;
@@ -14,8 +14,8 @@ export default function UserAvatar({
   onClick,
   className,
   imageClassName,
-  src
-}: UserAvatarProps) {
+  src,
+}: Props) {
   return (
     <Link
       onClick={(e) => {

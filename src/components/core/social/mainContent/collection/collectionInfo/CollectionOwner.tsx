@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-type CollectionOwnerProps = {
+type Props = {
   avatar: string;
   ownerHandle: string;
   ownerUserName: string;
@@ -10,7 +10,7 @@ export default function CollectionOwner({
   avatar,
   ownerHandle,
   ownerUserName,
-}: CollectionOwnerProps) {
+}: Props) {
   return (
     <Link
       to="/social/$userHandle"

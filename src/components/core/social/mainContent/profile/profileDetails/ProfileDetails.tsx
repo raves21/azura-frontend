@@ -13,7 +13,7 @@ type NotCurrentUserProps = {
   isFollowedByCurrentUser: boolean;
 };
 
-type ProfileDetailsProps = {
+type Props = {
   id: string;
   userName: string;
   handle: string;
@@ -34,7 +34,7 @@ export default function ProfileDetails({
   totalFollowers,
   totalFollowing,
   ...props
-}: ProfileDetailsProps) {
+}: Props) {
   const notCurrentUserProps = !props.isCurrentUser
     ? (props as NotCurrentUserProps)
     : undefined;

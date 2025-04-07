@@ -1,4 +1,4 @@
-import Pagination from "@/components/core/media/shared/catalog/Pagination";
+import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters";
 import TVFiltersDialog from "@/components/core/media/tv/filter/TVFiltersDialog";
@@ -16,7 +16,7 @@ const tvCatalogPageSchema = z.object({
   page: z.coerce.number().optional(),
   sortBy: z.nativeEnum(TVSortBy).optional(),
   genres: z.nativeEnum(TVGenre).array().optional(),
-  year: z.coerce.number().optional()
+  year: z.coerce.number().optional(),
 });
 
 type TVCatalogPageSchema = z.infer<typeof tvCatalogPageSchema> &
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_protected/tv/catalog/")({
       return { ...validated.data, success: true };
     }
     return { success: false };
-  }
+  },
 });
 
 function TVCatalogPage() {
@@ -40,19 +40,19 @@ function TVCatalogPage() {
 
   useHandleSearchValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/tv" })
+    onValidationError: () => navigate({ to: "/tv" }),
   });
 
   const {
     data: catalogTVList,
     isLoading: isCatalogTVListLoading,
-    error: catalogTVListError
+    error: catalogTVListError,
   } = useDiscoverTV({ page, sortBy, genres, year });
 
   const {
     data: tvGenres,
     isLoading: isTVGenresLoading,
-    error: tvGenresError
+    error: tvGenresError,
   } = useTVGenres();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -109,7 +109,7 @@ function TVCatalogPage() {
               currentPage={catalogTVList.page}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page: page })
+                  search: (prev) => ({ ...prev, page: page }),
                 });
               }}
             />

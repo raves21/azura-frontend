@@ -8,7 +8,7 @@ import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import { useParams } from "@tanstack/react-router";
 
-type MovieEpisodeProps = {
+type Props = {
   variant: "infoPage" | "watchPage";
   mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
   moviePoster: string | null;
@@ -17,18 +17,18 @@ type MovieEpisodeProps = {
 export default function MovieEpisode({
   mediaScraperQuery,
   variant,
-  moviePoster
-}: MovieEpisodeProps) {
+  moviePoster,
+}: Props) {
   const { movieId } = useParams({
     from:
       variant === "infoPage"
         ? "/_protected/movie/$movieId/"
-        : "/_protected/movie/$movieId/watch/"
+        : "/_protected/movie/$movieId/watch/",
   });
   const {
     data: mediaScraperData,
     isLoading: isMediaScraperLoading,
-    error: mediaScraperError
+    error: mediaScraperError,
   } = mediaScraperQuery;
 
   if (isMediaScraperLoading) {
@@ -49,8 +49,8 @@ export default function MovieEpisode({
               linkProps={{
                 to: "/movie/$movieId/watch",
                 params: {
-                  movieId
-                }
+                  movieId,
+                },
               }}
               episodeNumber={`MOVIE`}
               episodeTitle={"FULL"}
@@ -69,8 +69,8 @@ export default function MovieEpisode({
             linkProps={{
               to: "/movie/$movieId/watch",
               params: {
-                movieId
-              }
+                movieId,
+              },
             }}
             episodeNumber={`MOVIE`}
             episodeTitle={"FULL"}

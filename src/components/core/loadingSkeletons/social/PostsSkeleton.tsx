@@ -1,10 +1,10 @@
 import ActivitySkeleton from "./ActivitySkeleton";
 
-type PostsSkeletonProps = {
+type Props = {
   loadingType: "fetchingNextPage" | "loadingAllPosts";
 };
 
-export default function PostsSkeleton({ loadingType }: PostsSkeletonProps) {
+export default function PostsSkeleton({ loadingType }: Props) {
   return (
     <div className="flex flex-col w-full gap-3 pb-24">
       {loadingType === "fetchingNextPage" ? (

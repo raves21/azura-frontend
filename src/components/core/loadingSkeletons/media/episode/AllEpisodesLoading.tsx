@@ -11,16 +11,13 @@ type WatchPageVariant = {
   episodeListMaxHeight?: number;
 };
 
-type AllEpisodesLoadingProps = { isMovie?: boolean } & (
-  | InfoPageVariant
-  | WatchPageVariant
-);
+type Props = { isMovie?: boolean } & (InfoPageVariant | WatchPageVariant);
 
 export default function AllEpisodesLoading({
   variant,
   isMovie,
   ...props
-}: AllEpisodesLoadingProps) {
+}: Props) {
   const watchPageProps =
     variant === "watchPage" ? (props as WatchPageVariant) : null;
 

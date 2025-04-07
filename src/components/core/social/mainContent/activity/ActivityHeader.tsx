@@ -23,7 +23,7 @@ type CommentProps = {
   comment: TPostComment;
 };
 
-type ActivityHeaderProps = {
+type Props = {
   className?: string;
   linkProps: LinkProps;
 } & (PostProps | CommentProps);
@@ -35,7 +35,7 @@ export default function ActivityHeader({
   className,
   linkProps,
   ...props
-}: ActivityHeaderProps) {
+}: Props) {
   const avatar =
     props.type === "post"
       ? props.post.owner.avatar

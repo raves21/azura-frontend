@@ -7,7 +7,7 @@ import ManageBannerPage from "./pages/ManageBannerPage";
 import { useShallow } from "zustand/react/shallow";
 import ManageAvatarPage from "./pages/ManageAvatarPage";
 
-type EditProfileDialogProps = {
+type Props = {
   avatar: string | null;
   banner: string | null;
   userName: string;
@@ -19,7 +19,7 @@ export default function EditProfileDialog({
   banner,
   userName,
   bio,
-}: EditProfileDialogProps) {
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
     editProfilePage,

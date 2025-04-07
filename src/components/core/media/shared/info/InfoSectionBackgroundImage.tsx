@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type InfoPageHeroBackgroundProps = {
+type Props = {
   image: string | undefined;
   className?: string;
   variant: "infoPage" | "watchPage";
@@ -10,7 +10,7 @@ export default function InfoSectionBackgroundImage({
   image,
   className,
   variant,
-}: InfoPageHeroBackgroundProps) {
+}: Props) {
   if (variant === "infoPage") {
     return (
       <div

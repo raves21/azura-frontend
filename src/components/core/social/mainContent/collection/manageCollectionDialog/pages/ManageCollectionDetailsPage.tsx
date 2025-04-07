@@ -26,7 +26,7 @@ type CreatePostProps = {
   type: "create";
 };
 
-type ManagePostPageProps = { tipTapEditor: UseTipTapEditorReturnType } & (
+type Props = { tipTapEditor: UseTipTapEditorReturnType } & (
   | EditPostProps
   | CreatePostProps
 );
@@ -34,7 +34,7 @@ type ManagePostPageProps = { tipTapEditor: UseTipTapEditorReturnType } & (
 export default function ManageCollectionDetailsPage({
   tipTapEditor,
   ...props
-}: ManagePostPageProps) {
+}: Props) {
   const {
     editor,
     editorContentRef,

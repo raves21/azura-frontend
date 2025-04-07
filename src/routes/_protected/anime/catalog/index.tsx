@@ -9,11 +9,11 @@ import {
   AnimeFormat,
   AnimeGenre,
   AnimeSeason,
-  AnimeSortBy
+  AnimeSortBy,
 } from "@/utils/types/media/anime/animeAnilist";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AnimeFiltersDialog from "../../../../components/core/media/anime/filter/AnimeFiltersDialog";
-import Pagination from "@/components/core/media/shared/catalog/Pagination";
+import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
 
@@ -25,7 +25,7 @@ const filterPageSearchSchema = z.object({
   year: z.number().optional(),
   sortBy: z.nativeEnum(AnimeSortBy).optional(),
   format: z.nativeEnum(AnimeFormat).optional(),
-  status: z.nativeEnum(AnilistAnimeStatus).optional()
+  status: z.nativeEnum(AnilistAnimeStatus).optional(),
 });
 
 type FilterPageSearchSchema = z.infer<typeof filterPageSearchSchema> &
@@ -38,13 +38,13 @@ export const Route = createFileRoute("/_protected/anime/catalog/")({
     if (validated.success) {
       return {
         ...validated.data,
-        success: true
+        success: true,
       };
     }
     return {
-      success: false
+      success: false,
     };
-  }
+  },
 });
 
 function AnimeCatalogPage() {
@@ -54,13 +54,13 @@ function AnimeCatalogPage() {
 
   useHandleSearchValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/anime" })
+    onValidationError: () => navigate({ to: "/anime" }),
   });
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: filteredAnimes,
     isLoading: isFilteredAnimesLoading,
-    error: filteredAnimeError
+    error: filteredAnimeError,
   } = useFilterAnime({
     query: query?.trim(),
     season,
@@ -69,7 +69,7 @@ function AnimeCatalogPage() {
     sortBy,
     format,
     page: page ?? 1,
-    status
+    status,
   });
 
   if (isFilteredAnimesLoading) {
@@ -124,7 +124,7 @@ function AnimeCatalogPage() {
               currentPage={filteredAnimes.currentPage}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page: page })
+                  search: (prev) => ({ ...prev, page: page }),
                 });
               }}
             />

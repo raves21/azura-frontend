@@ -16,7 +16,7 @@ import {
 import { Navigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
-type ToggleFollowButtonProps = {
+type Props = {
   type: "profilePage" | "userPreview";
   userId: string;
   userHandle: string;
@@ -28,7 +28,7 @@ export default function ToggleFollowButton({
   type,
   userHandle,
   userId,
-}: ToggleFollowButtonProps) {
+}: Props) {
   const [isHovering, setIsHovering] = useState(false);
   const currentUser = useAuthStore((state) => state.currentUser);
 

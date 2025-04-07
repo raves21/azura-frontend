@@ -6,7 +6,7 @@ import SideMenuSheet from "../../sideMenuSheet/SideMenuSheet";
 import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 
-type MovieTopNavBarDesktopProps = {
+type Props = {
   isMovieRoute: boolean;
   isMovieCatalogRoute: boolean;
   isSocialRoute: boolean;
@@ -17,11 +17,11 @@ export default function MovieTopNavBarDesktop({
   isMovieRoute,
   isMovieCatalogRoute,
   isSocialRoute,
-  searchDialogComponent
-}: MovieTopNavBarDesktopProps) {
+  searchDialogComponent,
+}: Props) {
   const [toggleOpenSheet, toggleOpenDialog] = useGlobalStore((state) => [
     state.toggleOpenSheet,
-    state.toggleOpenDialog
+    state.toggleOpenDialog,
   ]);
   const navigate = useNavigate();
   const { isScrolledDown } = useScrolledState();
@@ -47,7 +47,7 @@ export default function MovieTopNavBarDesktop({
             className={cn(
               "p-[6px]",
               {
-                "text-mainWhite": isMovieRoute
+                "text-mainWhite": isMovieRoute,
               },
               { "text-gray-300": isMovieCatalogRoute }
             )}
@@ -57,7 +57,7 @@ export default function MovieTopNavBarDesktop({
           <Link
             to="/movie/catalog"
             className={cn("p-[6px]", {
-              "text-mainWhite": isMovieCatalogRoute
+              "text-mainWhite": isMovieCatalogRoute,
             })}
           >
             Catalog
@@ -69,7 +69,7 @@ export default function MovieTopNavBarDesktop({
                   <button
                     onClick={() => {
                       navigate({
-                        to: "/anime"
+                        to: "/anime",
                       });
                       toggleOpenDialog(null);
                     }}
@@ -80,7 +80,7 @@ export default function MovieTopNavBarDesktop({
                   <button
                     onClick={() => {
                       navigate({
-                        to: "/movie"
+                        to: "/movie",
                       });
                       toggleOpenDialog(null);
                     }}
@@ -91,7 +91,7 @@ export default function MovieTopNavBarDesktop({
                   <button
                     onClick={() => {
                       navigate({
-                        to: "/tv"
+                        to: "/tv",
                       });
                       toggleOpenDialog(null);
                     }}
@@ -108,7 +108,7 @@ export default function MovieTopNavBarDesktop({
           <Link
             to="/social"
             className={cn("p-[6px]", {
-              "text-mainWhite": isSocialRoute
+              "text-mainWhite": isSocialRoute,
             })}
           >
             Social

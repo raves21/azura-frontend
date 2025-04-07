@@ -6,7 +6,7 @@ import SideMenuSheet from "../../sideMenuSheet/SideMenuSheet";
 import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 
-type AnimeTopNavBarDesktopProps = {
+type Props = {
   isAnimeRoute: boolean;
   isAnimeCatalogRoute: boolean;
   isSocialRoute: boolean;
@@ -17,11 +17,11 @@ export default function AnimeTopNavBarDesktop({
   isAnimeRoute,
   isAnimeCatalogRoute,
   isSocialRoute,
-  searchDialogComponent
-}: AnimeTopNavBarDesktopProps) {
+  searchDialogComponent,
+}: Props) {
   const [toggleOpenSheet, toggleOpenDialog] = useGlobalStore((state) => [
     state.toggleOpenSheet,
-    state.toggleOpenDialog
+    state.toggleOpenDialog,
   ]);
   const navigate = useNavigate();
   const { isScrolledDown } = useScrolledState();
@@ -47,7 +47,7 @@ export default function AnimeTopNavBarDesktop({
             className={cn(
               "p-[6px]",
               {
-                "text-mainWhite": isAnimeRoute
+                "text-mainWhite": isAnimeRoute,
               },
               { "text-gray-300": isAnimeCatalogRoute }
             )}
@@ -57,7 +57,7 @@ export default function AnimeTopNavBarDesktop({
           <Link
             to="/anime/catalog"
             className={cn("p-[6px]", {
-              "text-mainWhite": isAnimeCatalogRoute
+              "text-mainWhite": isAnimeCatalogRoute,
             })}
           >
             Catalog
@@ -69,7 +69,7 @@ export default function AnimeTopNavBarDesktop({
                   <button
                     onClick={() => {
                       navigate({
-                        to: "/anime"
+                        to: "/anime",
                       });
                       toggleOpenDialog(null);
                     }}
@@ -80,7 +80,7 @@ export default function AnimeTopNavBarDesktop({
                   <button
                     onClick={() => {
                       navigate({
-                        to: "/movie"
+                        to: "/movie",
                       });
                       toggleOpenDialog(null);
                     }}
@@ -91,7 +91,7 @@ export default function AnimeTopNavBarDesktop({
                   <button
                     onClick={() => {
                       navigate({
-                        to: "/tv"
+                        to: "/tv",
                       });
                       toggleOpenDialog(null);
                     }}
@@ -108,7 +108,7 @@ export default function AnimeTopNavBarDesktop({
           <Link
             to="/social"
             className={cn("p-[6px]", {
-              "text-mainWhite": isSocialRoute
+              "text-mainWhite": isSocialRoute,
             })}
           >
             Social

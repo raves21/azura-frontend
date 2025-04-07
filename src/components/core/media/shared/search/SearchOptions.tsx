@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import SearchOption from "./SearchOption";
 
-type SearchOptionsProps = {
+type Props = {
   searchOptions: string[];
   selectedSearchOption: string;
   setSelectedSearchOption: (option: string) => void;
@@ -13,7 +13,7 @@ export default function SearchOptions({
   selectedSearchOption,
   setSelectedSearchOption,
   className,
-}: SearchOptionsProps) {
+}: Props) {
   return (
     <div
       className={cn(

@@ -5,13 +5,11 @@ import { animeStatusLabels } from "@/utils/variables/media/anime";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 
-type AnimeSearchDialogResultCardProps = {
+type Props = {
   anime: Anime;
 };
 
-export default function AnimeSearchDialogResultCard({
-  anime,
-}: AnimeSearchDialogResultCardProps) {
+export default function AnimeSearchDialogResultCard({ anime }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <Link

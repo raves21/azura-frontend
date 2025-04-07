@@ -25,7 +25,7 @@ import {
 } from "@/utils/variables/media/anime";
 import { getAnimeRating } from "@/services/media/sharedFunctions";
 
-type AnimeInfoPageHeroProps = {
+type Props = {
   image: string | undefined;
   cover: string | undefined;
   title: string;
@@ -53,7 +53,7 @@ export default function AnimeInfoPageHero({
   rating,
   animeId,
   episodesQuery,
-}: AnimeInfoPageHeroProps) {
+}: Props) {
   const navigate = useNavigate();
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
     useChunkAnimeEpisodes(episodesQuery.data);

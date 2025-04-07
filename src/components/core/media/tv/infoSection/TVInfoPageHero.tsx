@@ -14,7 +14,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import { useEffect, useState } from "react";
 
-type TVInfoPageHeroProps = {
+type Props = {
   image: string;
   cover: string;
   title: string;
@@ -40,7 +40,7 @@ export default function TVInfoPageHero({
   voteAverage,
   tvId,
   tvSeasonEpisodes,
-}: TVInfoPageHeroProps) {
+}: Props) {
   const navigate = useNavigate();
 
   const [hasEpisodes, setHasEpisodes] = useState(false);

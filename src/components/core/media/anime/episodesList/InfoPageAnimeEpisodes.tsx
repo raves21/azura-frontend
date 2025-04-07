@@ -1,6 +1,6 @@
 import {
   AnimeEpisodesData,
-  AnimeFormat
+  AnimeFormat,
 } from "@/utils/types/media/anime/animeAnilist";
 import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 
-type InfoPageAnimeEpisodesProps = {
+type Props = {
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
@@ -29,16 +29,16 @@ export default function InfoPageAnimeEpisodes({
   replace,
   episodesQuery,
   episodeImageFallback,
-  currentlyWatchingEpisodeNumber
-}: InfoPageAnimeEpisodesProps) {
+  currentlyWatchingEpisodeNumber,
+}: Props) {
   const { animeId } = useParams({
-    from: "/_protected/anime/$animeId/"
+    from: "/_protected/anime/$animeId/",
   });
 
   const {
     data: episodes,
     isLoading: isEpisodesLoading,
-    error: episodesError
+    error: episodesError,
   } = episodesQuery;
 
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
@@ -46,7 +46,7 @@ export default function InfoPageAnimeEpisodes({
 
   const { selectedChunk, setSelectedChunk } = useAnimeEpisodes({
     chunkedEpisodes,
-    currentlyWatchingEpisodeNumber
+    currentlyWatchingEpisodeNumber,
   });
 
   if (isEpisodesLoading || isChunkEpisodesLoading) {
@@ -82,11 +82,11 @@ export default function InfoPageAnimeEpisodes({
               linkProps={{
                 to: `/anime/$animeId/watch`,
                 params: {
-                  animeId
+                  animeId,
                 },
                 search: {
-                  id: episode.id.replace(/^\//, "")
-                }
+                  id: episode.id.replace(/^\//, ""),
+                },
               }}
               episodeNumber={
                 type === AnimeFormat.MOVIE

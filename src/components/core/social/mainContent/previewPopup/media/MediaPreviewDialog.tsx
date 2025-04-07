@@ -7,7 +7,7 @@ import {
 } from "@/services/media/sharedFunctions";
 import MediaPreviewContainer from "./MediaPreviewContainer";
 
-type MediaPreviewProps = {
+type Props = {
   media: Media;
   isSecondaryDialog?: boolean;
 };
@@ -15,7 +15,7 @@ type MediaPreviewProps = {
 export default function MediaPreviewDialog({
   media,
   isSecondaryDialog,
-}: MediaPreviewProps) {
+}: Props) {
   const { coverImage, posterImage, year, rating, title, type, description } =
     media;
   media.description = media.description?.replace("\\", "") || null;

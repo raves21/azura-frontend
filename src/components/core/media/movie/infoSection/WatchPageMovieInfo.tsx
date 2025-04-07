@@ -7,7 +7,7 @@ import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
 
-type WatchPageMovieInfoProps = {
+type Props = {
   cover: string;
   image: string;
   title: string;
@@ -28,8 +28,8 @@ export default function WatchPageMovieInfo({
   runTime,
   status,
   genres,
-  voteAverage
-}: WatchPageMovieInfoProps) {
+  voteAverage,
+}: Props) {
   return (
     <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />

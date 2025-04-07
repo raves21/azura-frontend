@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import EditProfileDialog from "../editProfileDialog/EditProfileDialog";
 
-type EditProfileButtonProps = {
+type Props = {
   avatar: string | null;
   bio: string | null;
   userName: string;
@@ -12,8 +12,8 @@ export default function EditProfileButton({
   avatar,
   bio,
   userName,
-  banner
-}: EditProfileButtonProps) {
+  banner,
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   return (

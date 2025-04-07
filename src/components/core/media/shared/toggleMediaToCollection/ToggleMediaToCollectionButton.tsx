@@ -4,7 +4,7 @@ import { Bookmark } from "lucide-react";
 import ToggleMediaToCollectionDialog from "./ToggleMediaToCollectionDialog";
 import { Media } from "@/utils/types/social/social";
 
-type ToggleMediaToCollectionButtonProps = {
+type Props = {
   media: Media;
   className?: string;
 };
@@ -12,7 +12,7 @@ type ToggleMediaToCollectionButtonProps = {
 export default function ToggleMediaToCollectionButton({
   className,
   media,
-}: ToggleMediaToCollectionButtonProps) {
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   return (

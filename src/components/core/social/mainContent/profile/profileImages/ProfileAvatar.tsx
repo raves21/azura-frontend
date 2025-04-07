@@ -1,11 +1,11 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ViewProfileImageDialog from "../../../ViewProfileImageDialog";
 
-type ProfileAvatarProps = {
+type Props = {
   avatar: string | null;
 };
 
-export default function ProfileAvatar({ avatar }: ProfileAvatarProps) {
+export default function ProfileAvatar({ avatar }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <img

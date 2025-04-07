@@ -1,6 +1,6 @@
 import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
-import Pagination from "@/components/core/media/shared/catalog/Pagination";
+import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import { useSearchMovie } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";

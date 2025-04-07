@@ -7,7 +7,7 @@ import ErrorDialog from "./ErrorDialog";
 import { MutationKey } from "@tanstack/react-query";
 import { useShallow } from "zustand/react/shallow";
 
-type DeleteConfirmationDialogProps = {
+type Props = {
   nameOfResourceToDelete: string;
   deleteAction: () => void;
   mutationKey: MutationKey;
@@ -23,7 +23,7 @@ export default function DeleteConfirmationDialog({
   customHeader,
   customMessage,
   isSecondaryDialog,
-}: DeleteConfirmationDialogProps) {
+}: Props) {
   console.log("MUTATINOEKY", mutationKey);
   const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
     useShallow((state) => [

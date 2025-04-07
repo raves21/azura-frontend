@@ -2,13 +2,11 @@ import { cn } from "@/lib/utils";
 import { Heart, MessageCircle, Circle } from "lucide-react";
 import { useState } from "react";
 
-type ActivityActionsProps = {
+type Props = {
   iconClassName?: string;
 };
 
-export default function ActivityActions({
-  iconClassName,
-}: ActivityActionsProps) {
+export default function ActivityActions({ iconClassName }: Props) {
   const [liked, setLiked] = useState(false);
 
   return (

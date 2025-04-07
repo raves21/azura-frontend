@@ -21,11 +21,9 @@ type CreateCollectionProps = {
   type: "create";
 };
 
-type ManageCollectionDialogProps = EditCollectionProps | CreateCollectionProps;
+type Props = EditCollectionProps | CreateCollectionProps;
 
-export default function ManageCollectionDialog(
-  props: ManageCollectionDialogProps
-) {
+export default function ManageCollectionDialog(props: Props) {
   const [
     manageCollectionPage,
     setManageCollectionPage,

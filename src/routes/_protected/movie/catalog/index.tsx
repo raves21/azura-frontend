@@ -1,7 +1,7 @@
 import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
 import MovieAppliedFilters from "@/components/core/media/movie/filter/MovieAppliedFilters";
 import MovieFiltersDialog from "@/components/core/media/movie/filter/MovieFiltersDialog";
-import Pagination from "@/components/core/media/shared/catalog/Pagination";
+import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import {
   useDiscoverMovies,
   useMovieGenres,

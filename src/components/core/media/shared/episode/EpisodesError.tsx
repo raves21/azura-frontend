@@ -1,8 +1,8 @@
-type EpisodesErrorProps = {
+type Props = {
   isMovie?: boolean;
 };
 
-export default function EpisodesError({ isMovie }: EpisodesErrorProps) {
+export default function EpisodesError({ isMovie }: Props) {
   return (
     <div className="flex flex-col pt-8 pb-16 space-y-6 text-gray-400">
       <p className="text-lg font-semibold lg:text-xl text-mainWhite">

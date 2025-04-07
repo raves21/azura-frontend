@@ -5,16 +5,14 @@ import { Link } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { ReactNode } from "react";
 
-type MovieTopNavBarMobileProps = {
+type Props = {
   isMovieRoute: boolean;
   isMovieCatalogRoute: boolean;
   isSocialRoute: boolean;
   searchDialogComponent: ReactNode;
 };
 
-export default function MovieTopNavBarMobile({
-  searchDialogComponent
-}: MovieTopNavBarMobileProps) {
+export default function MovieTopNavBarMobile({ searchDialogComponent }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { isScrolledDown } = useScrolledState();
 

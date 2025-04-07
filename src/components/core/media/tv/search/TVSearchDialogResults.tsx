@@ -6,20 +6,17 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { PaginatedTVShowResponse } from "@/utils/types/media/TV/tvShowTmdb";
 import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 
-type TVSearchDialogResultsProps = {
+type Props = {
   query: string;
   tvSearchQuery: UseQueryResult<PaginatedTVShowResponse, Error>;
 };
 
-export default function TVSearchDialogResults({
-  tvSearchQuery,
-  query
-}: TVSearchDialogResultsProps) {
+export default function TVSearchDialogResults({ tvSearchQuery, query }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
-    error: searchResultsError
+    error: searchResultsError,
   } = tvSearchQuery;
 
   if (isSearchResultsLoading) {
@@ -56,7 +53,7 @@ export default function TVSearchDialogResults({
             to="/movie/catalog/search"
             search={{
               page: 1,
-              query
+              query,
             }}
             onClick={() => toggleOpenDialog(null)}
             className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent"

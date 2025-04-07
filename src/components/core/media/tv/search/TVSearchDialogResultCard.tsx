@@ -8,13 +8,11 @@ import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { getTMDBRating } from "@/services/media/sharedFunctions";
 
-type TVSearchDialogResultCardProps = {
+type Props = {
   tv: TVShowTMDB;
 };
 
-export default function TVSearchDialogResultCard({
-  tv,
-}: TVSearchDialogResultCardProps) {
+export default function TVSearchDialogResultCard({ tv }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   return (
     <Link

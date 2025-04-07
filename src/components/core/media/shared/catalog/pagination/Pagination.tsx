@@ -1,36 +1,8 @@
 import usePagination from "@mui/material/usePagination";
-import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { forwardRef, ButtonHTMLAttributes } from "react";
+import PaginationButton from "./PaginationButton";
 
-//PAGINATION BUTTON
-
-type PaginationButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  isSelected: boolean;
-};
-
-//TODO: make this a Link instead of a button
-const PaginationButton = forwardRef<HTMLButtonElement, PaginationButtonProps>(
-  ({ className, children, isSelected, ...props }, ref) => {
-    return (
-      <button
-        ref={ref}
-        className={cn(
-          "bg-gray-700 font-medium size-10 text-sm mobile-m:size-12 mobile-m:text-base grid place-items-center transition-colors duration-100 rounded-full hover:border-mainAccent hover:bg-mainAccent",
-          { "bg-mainAccent": isSelected },
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  }
-);
-
-//PAGINATION COMPONENT
-
-type PaginationProps = {
+type Props = {
   totalPages: number;
   currentPage: number;
   handlePageChange: (e: React.ChangeEvent<unknown>, page: number) => void;
@@ -42,7 +14,7 @@ export default function Pagination({
   currentPage,
   handlePageChange,
   className,
-}: PaginationProps) {
+}: Props) {
   const { items } = usePagination({
     onChange: handlePageChange,
     count: totalPages,

@@ -5,13 +5,13 @@ import { useShallow } from "zustand/react/shallow";
 import MediaPreviewDialog from "../../previewPopup/media/MediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
-type MediaAttachmentProps = {
+type Props = {
   media: Media;
 };
 
-export default function MediaAttachment({ media }: MediaAttachmentProps) {
+export default function MediaAttachment({ media }: Props) {
   const { coverImage, posterImage, title, type, year } = media;
-  media.description = media.description.replace("\\", "");
+  media.description = media.description?.replace("\\", "") || null;
   const attachmentBg = coverImage ?? posterImage ?? "/no-image-2.jpg";
   const attachmentPoster = posterImage ?? coverImage ?? "/no-image.png";
 
@@ -67,7 +67,7 @@ export default function MediaAttachment({ media }: MediaAttachmentProps) {
             <p>{year}</p>
           </div>
           <p className="text-2xs mobile-m:text-xs md:text-sm line-clamp-2 text-socialTextSecondary">
-            {media.description.replace(/<[^>]*>/g, "") ||
+            {media.description?.replace(/<[^>]*>/g, "") ||
               "No overview available"}
           </p>
         </div>

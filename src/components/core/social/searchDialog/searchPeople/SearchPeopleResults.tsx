@@ -7,7 +7,7 @@ import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media
 import { PaginatedUserPreviewsResponse } from "@/utils/types/social/social";
 import { Fragment } from "react/jsx-runtime";
 
-type SearchPeopleResultsProps = {
+type Props = {
   query: string;
   searchPeopleQuery: UseInfiniteQueryResult<
     InfiniteData<PaginatedUserPreviewsResponse, unknown>,
@@ -18,7 +18,7 @@ type SearchPeopleResultsProps = {
 export default function SearchPeopleResults({
   searchPeopleQuery,
   query,
-}: SearchPeopleResultsProps) {
+}: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,

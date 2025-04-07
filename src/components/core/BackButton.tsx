@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { LinkProps, Link } from "@tanstack/react-router";
 import { ArrowLeft, Circle } from "lucide-react";
 
-type BackButtonProps = {
+type Props = {
   linkProps?: LinkProps;
   className?: string;
   arrowIconClassName?: string;
@@ -12,7 +12,7 @@ export default function BackButton({
   linkProps,
   className,
   arrowIconClassName,
-}: BackButtonProps) {
+}: Props) {
   return (
     <Link {...linkProps} className={cn("relative w-min group", className)}>
       <ArrowLeft

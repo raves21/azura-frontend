@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 
-type TitleProps = {
+type Props = {
   title: string;
   variant: "infoPage" | "watchPage";
 };
 
-export default function Title({ title, variant }: TitleProps) {
+export default function Title({ title, variant }: Props) {
   return (
     <p
       className={cn(

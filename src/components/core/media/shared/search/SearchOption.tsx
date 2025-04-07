@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type SearchOptionProps = {
+type Props = {
   option: string;
   selectedOption: string;
   onSelectOption: (option: string) => void;
@@ -10,7 +10,7 @@ export default function SearchOption({
   onSelectOption,
   option,
   selectedOption,
-}: SearchOptionProps) {
+}: Props) {
   return (
     <button
       onClick={() => onSelectOption(option)}

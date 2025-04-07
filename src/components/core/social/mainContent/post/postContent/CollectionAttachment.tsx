@@ -10,15 +10,12 @@ import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPre
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
-type CollectionAttachmentProps = {
+type Props = {
   collection: TCollection;
   owner: EntityOwner;
 };
 
-export default function CollectionAttachment({
-  collection,
-  owner,
-}: CollectionAttachmentProps) {
+export default function CollectionAttachment({ collection, owner }: Props) {
   let attachmentBg: string | null | undefined;
 
   if (collection.previewMedias.length !== 0) {

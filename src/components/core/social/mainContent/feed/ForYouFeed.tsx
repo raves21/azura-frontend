@@ -8,7 +8,7 @@ import CreatePost from "../post/managePost/CreatePost";
 import Post from "../post/Post";
 import { TContentOption } from "@/utils/types/social/shared";
 
-type ForYouFeedProps = {
+type Props = {
   feedOptions: TContentOption[];
   selectedFeedOption: TContentOption;
   setSelectedFeedOption: (option: TContentOption) => void;
@@ -18,7 +18,7 @@ export default function ForYouFeed({
   feedOptions,
   selectedFeedOption,
   setSelectedFeedOption,
-}: ForYouFeedProps) {
+}: Props) {
   const {
     data: forYouFeed,
     isLoading: isForYouFeedLoading,

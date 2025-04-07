@@ -7,7 +7,7 @@ import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media
 import { PaginatedPostsResponse } from "@/utils/types/social/social";
 import SearchPostsResultCard from "./SearchPostsResultCard";
 
-type SearchPostsResultsProps = {
+type Props = {
   query: string;
   searchPostsQuery: UseInfiniteQueryResult<
     InfiniteData<PaginatedPostsResponse, unknown>,
@@ -15,10 +15,7 @@ type SearchPostsResultsProps = {
   >;
 };
 
-export default function SearchPostsResults({
-  searchPostsQuery,
-  query,
-}: SearchPostsResultsProps) {
+export default function SearchPostsResults({ searchPostsQuery, query }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,

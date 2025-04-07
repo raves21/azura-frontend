@@ -1,11 +1,11 @@
 import Activity from "../../../activity/Activity";
 import { TPostComment } from "@/utils/types/social/social";
 
-type PostCommentProps = {
+type Props = {
   comment: TPostComment;
 };
 
-export default function PostComment({ comment }: PostCommentProps) {
+export default function PostComment({ comment }: Props) {
   return (
     <Activity
       type="comment"

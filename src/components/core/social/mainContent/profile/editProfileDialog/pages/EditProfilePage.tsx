@@ -9,7 +9,7 @@ import { ImageUp, LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
-type EditProfilePageProps = {
+type Props = {
   avatar: string | null;
   banner: string | null;
   userName: string;
@@ -21,7 +21,7 @@ export default function EditProfilePage({
   banner,
   userName,
   bio,
-}: EditProfilePageProps) {
+}: Props) {
   const currentUser = useAuthStore((state) => state.currentUser);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [

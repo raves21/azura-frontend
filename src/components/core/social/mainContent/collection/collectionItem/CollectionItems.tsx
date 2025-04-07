@@ -7,13 +7,11 @@ import CollectionItem from "./CollectionItem";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useParams } from "@tanstack/react-router";
 
-type CollectionItemsProps = {
+type Props = {
   collectionId: string;
 };
 
-export default function CollectionItems({
-  collectionId,
-}: CollectionItemsProps) {
+export default function CollectionItems({ collectionId }: Props) {
   const currentUser = useAuthStore((state) => state.currentUser);
   const { userHandle } = useParams({
     from: "/_protected/social/$userHandle/collections/$collectionId/",

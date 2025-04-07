@@ -1,11 +1,11 @@
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { Users, Globe, Lock } from "lucide-react";
 
-type CollectionPrivacyProps = {
+type Props = {
   privacy: EntityPrivacy;
 };
 
-export default function CollectionPrivacy({ privacy }: CollectionPrivacyProps) {
+export default function CollectionPrivacy({ privacy }: Props) {
   return (
     <div className="flex items-center gap-[6px]">
       {privacy === "FRIENDS_ONLY" && (

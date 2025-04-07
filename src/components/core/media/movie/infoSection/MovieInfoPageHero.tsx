@@ -14,7 +14,7 @@ import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { UseQueryResult } from "@tanstack/react-query";
 
-type MovieInfoPageHeroProps = {
+type Props = {
   image: string;
   cover: string;
   title: string;
@@ -40,7 +40,7 @@ export default function MovieInfoPageHero({
   voteAverage,
   movieId,
   mediaScraperQuery,
-}: MovieInfoPageHeroProps) {
+}: Props) {
   const navigate = useNavigate();
 
   const { isLoading: isMediaScraperLoading, error: mediaScraperError } =

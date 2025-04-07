@@ -14,7 +14,7 @@ type WatchPageVariant = {
   variant: "watchPage";
 };
 
-type StarsRatingProps = {
+type Props = {
   rating: number | undefined | null;
   mediaType: "anime" | "tmdb";
   className?: string;
@@ -30,7 +30,7 @@ export default function Rating({
   ratingLabelClassName,
   variant,
   ...props
-}: StarsRatingProps) {
+}: Props) {
   const infoPageProps =
     variant === "infoPage" ? (props as InfoPageVariant) : null;
 

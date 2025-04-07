@@ -1,15 +1,12 @@
 // import { X } from "lucide-react"
 import { cn } from "@/lib/utils";
 
-type FilterPillProps = {
+type Props = {
   className: string;
   label: string;
 };
 
-export default function AppliedFilterPill({
-  className,
-  label,
-}: FilterPillProps) {
+export default function AppliedFilterPill({ className, label }: Props) {
   return (
     <div
       className={cn(

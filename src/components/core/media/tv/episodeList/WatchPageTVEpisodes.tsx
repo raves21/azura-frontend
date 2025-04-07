@@ -8,7 +8,7 @@ import { getTMDBImageURL } from "@/services/media/sharedFunctions";
 import CustomDropdown from "../../../CustomDropdown";
 import { useMemo } from "react";
 
-type WatchPageTVEpisodesProps = {
+type Props = {
   totalSeasons: number;
   episodes: TMDBTVEpisode[];
   episodeListMaxHeight: number;
@@ -20,7 +20,7 @@ export default function WatchPageTVEpisodes({
   episodeListMaxHeight,
   episodes,
   coverImage,
-}: WatchPageTVEpisodesProps) {
+}: Props) {
   const { tvId } = useParams({
     from: "/_protected/tv/$tvId/watch/",
   });

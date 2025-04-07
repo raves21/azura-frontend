@@ -14,11 +14,11 @@ type WatchPageProps = {
   isMobile: boolean;
 };
 
-type GenreListProps = {
+type Props = {
   genres: AnimeGenre[] | undefined;
 } & (InfoPageProps | WatchPageProps);
 
-export default function GenreListAnime({ genres, ...props }: GenreListProps) {
+export default function GenreListAnime({ genres, ...props }: Props) {
   if (props.variant === "infoPage") {
     return (
       <div className={cn("flex gap-2", props.className)}>
@@ -34,7 +34,7 @@ export default function GenreListAnime({ genres, ...props }: GenreListProps) {
                 <Link
                   to="/anime/catalog"
                   search={{
-                    genres: [genre]
+                    genres: [genre],
                   }}
                   key={i}
                   className="hover:text-mainAccent"
@@ -61,7 +61,7 @@ export default function GenreListAnime({ genres, ...props }: GenreListProps) {
             <Link
               to="/anime/catalog"
               search={{
-                genres: [genre]
+                genres: [genre],
               }}
               key={genre}
               className="px-3 py-2 transition-colors border rounded-full border-mainAccent/75 hover:text-mainAccent/75"

@@ -11,7 +11,7 @@ import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import { useMatchRoute } from "@tanstack/react-router";
 import { Heart, MessageCircle, Circle } from "lucide-react";
 
-type PostActionsProps = {
+type Props = {
   className?: string;
   iconClassName?: string;
   totalComments: number;
@@ -27,7 +27,7 @@ export default function PostActions({
   totalLikes,
   isLikedByCurrentUser,
   postId,
-}: PostActionsProps) {
+}: Props) {
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({
     to: "/social/$userHandle/posts/$postId",

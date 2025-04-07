@@ -2,7 +2,7 @@ import { LinkProps, useNavigate } from "@tanstack/react-router";
 import { Bookmark, Play } from "lucide-react";
 import { CarouselItem } from "@/components/ui/custom-carousel";
 
-type TrendingHeroCarouselItemProps = {
+type Props = {
   posterImage: string;
   backgroundImage: string | null | undefined;
   title: string;
@@ -17,8 +17,8 @@ export default function TrendingHeroCarouselItem({
   title,
   description,
   toInfoPageLinkProps,
-  trendingRank
-}: TrendingHeroCarouselItemProps) {
+  trendingRank,
+}: Props) {
   const navigate = useNavigate();
 
   return (
