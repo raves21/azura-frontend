@@ -108,12 +108,8 @@ export default function AnimeInfoPageHero({
           <YearAndStatus year={year} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              disabled={
-                episodesQuery.isLoading ||
-                episodesQuery.isError ||
-                isChunkEpisodesLoading ||
-                !chunkedEpisodes
-              }
+              isDisabled={episodesQuery.isError || !chunkedEpisodes}
+              isLoading={episodesQuery.isLoading || isChunkEpisodesLoading}
               onClick={() => {
                 chunkedEpisodes &&
                   navigate({

@@ -75,7 +75,8 @@ export default function MovieInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              disabled={isMediaScraperLoading || !!mediaScraperError}
+              isDisabled={!!mediaScraperError}
+              isLoading={isMediaScraperLoading}
               onClick={() => {
                 navigate({
                   to: "/movie/$movieId/watch",

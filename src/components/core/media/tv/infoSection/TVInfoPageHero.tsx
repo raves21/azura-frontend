@@ -82,7 +82,13 @@ export default function TVInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              disabled={!hasEpisodes}
+              //The loading state of the entire page depends if the
+              //episodes are still fetching. They are not separate from each
+              //other like movie and anime. So its okay to explicitly give
+              //isLoading a value of false because this button will only
+              //render if either the tvinfo has episodes or not
+              isLoading={false}
+              isDisabled={!hasEpisodes}
               onClick={() => {
                 navigate({
                   to: "/tv/$tvId/watch",
