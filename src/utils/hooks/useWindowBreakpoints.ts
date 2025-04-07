@@ -2,23 +2,23 @@ import { useWindowWidth } from "./useWindowWidth";
 
 export default function useWindowBreakpoints() {
   const windowWidth = useWindowWidth();
-  const isMobileSmall = windowWidth >= 320;
-  const isMobileMedium = windowWidth >= 375;
-  const isMobileLarge = windowWidth >= 425;
-  const isTabletEXtraSmall = windowWidth >= 570;
-  const isTabletSmall = windowWidth >= 640;
-  const isTablet = windowWidth >= 768;
-  const isDesktopSmall = windowWidth >= 1024;
-  const isDesktop = windowWidth >= 1440;
+  const isMobileSmallUp = windowWidth >= 320;
+  const isMobileMediumUp = windowWidth >= 375;
+  const isMobileLargeUp = windowWidth >= 425;
+  const isTabletExtraSmallUp = windowWidth >= 570;
+  const isTabletSmallUp = windowWidth >= 640;
+  const isTabletUp = windowWidth >= 768;
+  const isDesktopSmallUp = windowWidth >= 1024;
+  const isDesktopUp = windowWidth >= 1440;
 
   return {
-    isMobileSmall,
-    isMobileMedium,
-    isMobileLarge,
-    isTabletEXtraSmall,
-    isTabletSmall,
-    isTablet,
-    isDesktopSmall,
-    isDesktop,
+    isMobileSmallUp,
+    isMobileMediumUp,
+    isMobileLargeUp,
+    isTabletExtraSmallUp,
+    isTabletSmallUp,
+    isTabletUp,
+    isDesktopSmallUp,
+    isDesktopUp,
   };
 }

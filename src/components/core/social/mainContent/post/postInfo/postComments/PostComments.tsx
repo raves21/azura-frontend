@@ -24,7 +24,7 @@ export default function PostComments() {
     fetchNextPage,
   } = usePostComments(postId);
 
-  const { isDesktopSmall } = useWindowBreakpoints();
+  const { isDesktopSmallUp } = useWindowBreakpoints();
 
   const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
@@ -54,7 +54,7 @@ export default function PostComments() {
 
   if (comments) {
     if (comments.pages[0].data.length === 0) {
-      renderedResult = isDesktopSmall && (
+      renderedResult = isDesktopSmallUp && (
         <div className="w-full pb-5">
           <CreateComment isFloatingCommentBar={false} author={currentUser} />
         </div>
@@ -62,7 +62,7 @@ export default function PostComments() {
     } else {
       renderedResult = (
         <>
-          {isDesktopSmall && (
+          {isDesktopSmallUp && (
             <CreateComment isFloatingCommentBar={false} author={currentUser} />
           )}
           <div className="flex flex-col gap-2 pt-2">

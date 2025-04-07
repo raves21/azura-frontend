@@ -23,6 +23,7 @@ import {
   animeCompletedStatus,
   animeOngoingStatus,
 } from "@/utils/variables/media/anime";
+import { getAnimeRating } from "@/services/media/sharedFunctions";
 
 type AnimeInfoPageHeroProps = {
   image: string | undefined;
@@ -67,7 +68,7 @@ export default function AnimeInfoPageHero({
           <Rating
             mediaType="anime"
             variant="infoPage"
-            rating={rating}
+            rating={Number(getAnimeRating(rating ?? null))}
             isMobile={false}
           />
           <InfoDetails isMobile={false}>
@@ -125,15 +126,17 @@ export default function AnimeInfoPageHero({
               }}
             />
             <ToggleMediaToCollectionButton
-              mediaId={animeId}
-              mediaType="ANIME"
-              coverImage={cover ?? null}
-              description={description ?? null}
-              posterImage={image ?? null}
-              rating={rating?.toString() ?? null}
-              status={status ?? null}
-              title={title}
-              year={year?.toString() ?? null}
+              media={{
+                id: animeId,
+                type: "ANIME",
+                coverImage: cover ?? null,
+                description: description ?? null,
+                posterImage: image ?? null,
+                rating: rating?.toString() ?? null,
+                status: status ?? null,
+                title: title,
+                year: year?.toString() ?? null,
+              }}
             />
           </div>
 

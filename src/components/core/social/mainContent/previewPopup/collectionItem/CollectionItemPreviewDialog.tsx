@@ -1,28 +1,41 @@
-import { Media } from "@/utils/types/social/social";
-import Description from "@/components/core/media/shared/info/Description";
-import { Circle, Cat, Clapperboard, Tv, Star } from "lucide-react";
-import PreviewContainer from "./PreviewContainer";
 import {
   getAnimeRating,
   getTMDBRating,
 } from "@/services/media/sharedFunctions";
+import { Media } from "@/utils/types/social/social";
+import Description from "@/components/core/media/shared/info/Description";
+import { MutationKey } from "@tanstack/react-query";
+import { Circle, Cat, Clapperboard, Tv, Star } from "lucide-react";
+import CollectionItemPreviewContainer from "./CollectionItemPreviewContainer";
 
-type MediaPreviewProps = {
-  media: Media;
+type Props = {
   isSecondaryDialog?: boolean;
+  media: Media;
+  mutationKey: MutationKey;
+  collectionOwnerHandle: string;
+  deleteAction: () => void;
 };
 
-export default function MediaPreviewDialog({
+export default function CollectionItemPreviewDialog({
+  mutationKey,
   media,
+  deleteAction,
   isSecondaryDialog,
-}: MediaPreviewProps) {
+}: Props) {
   const { coverImage, posterImage, year, rating, title, type, description } =
     media;
-  media.description = media.description.replace("\\", "");
+
+  media.description = media.description?.replace("\\", "") || null;
   const heroImage = coverImage ?? posterImage ?? "/no-image-2.jpg";
 
   return (
-    <PreviewContainer isSecondaryDialog={isSecondaryDialog}>
+    <CollectionItemPreviewContainer
+      mediaId={media.id}
+      mediaType={media.type}
+      deleteAction={deleteAction}
+      mutationKey={mutationKey}
+      isSecondaryDialog={isSecondaryDialog}
+    >
       <div className="absolute w-full h-72 mobile-m:h-80">
         <div className="absolute z-10 size-full bg-gradient-to-t from-gray-950 to-transparent from-[8%]" />
         <img src={heroImage} className="absolute object-cover size-full" />
@@ -60,6 +73,6 @@ export default function MediaPreviewDialog({
           className="w-full text-sm mobile-m:text-base"
         />
       </div>
-    </PreviewContainer>
+    </CollectionItemPreviewContainer>
   );
 }

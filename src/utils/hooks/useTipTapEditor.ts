@@ -78,7 +78,7 @@ export function useTipTapEditor({
         editorContentRef.current.getBoundingClientRect().height
       );
     }
-  }, []);
+  }, [editor, focusOnMount]);
 
   function setEditorContent(text: string | null) {
     if (editor) {

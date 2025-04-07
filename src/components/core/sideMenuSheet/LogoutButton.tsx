@@ -36,7 +36,7 @@ export default function LogoutButton() {
     if (logoutStatus === "success") {
       toggleOpenDialog(null);
     }
-  }, [logoutStatus]);
+  }, [logoutStatus, logoutError]);
 
   return (
     <SideMenuSheetButton

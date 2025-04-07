@@ -2,22 +2,23 @@ import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Bookmark } from "lucide-react";
 import ToggleMediaToCollectionDialog from "./ToggleMediaToCollectionDialog";
-import { ToggleCollectionItemProperties } from "@/utils/types/media/shared";
+import { Media } from "@/utils/types/social/social";
 
 type ToggleMediaToCollectionButtonProps = {
+  media: Media;
   className?: string;
-} & Omit<ToggleCollectionItemProperties, "collectionId">;
+};
 
 export default function ToggleMediaToCollectionButton({
   className,
-  ...props
+  media,
 }: ToggleMediaToCollectionButtonProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   return (
     <button
       onClick={() =>
-        toggleOpenDialog(<ToggleMediaToCollectionDialog {...props} />)
+        toggleOpenDialog(<ToggleMediaToCollectionDialog media={media} />)
       }
       className={cn(
         "hover:scale-[1.02] transition-transform duration-200 flex items-center gap-2 px-4 py-4 bg-black rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2",

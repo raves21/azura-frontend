@@ -1,11 +1,11 @@
-import Media from "./Media";
 import { useCollectionItems } from "@/services/social/queries/socialQueries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
-import MediaSkeleton from "@/components/core/loadingSkeletons/social/MediaSkeleton";
+import MediaSkeleton from "@/components/core/loadingSkeletons/media/MediaSkeleton";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import MediaPreviewDialog from "../../previewPopup/MediaPreviewDialog";
+import CollectionItem from "./CollectionItem";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useParams } from "@tanstack/react-router";
 
 type CollectionItemsProps = {
   collectionId: string;
@@ -14,19 +14,24 @@ type CollectionItemsProps = {
 export default function CollectionItems({
   collectionId,
 }: CollectionItemsProps) {
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const { userHandle } = useParams({
+    from: "/_protected/social/$userHandle/collections/$collectionId/",
+  });
+
   const {
     data: collectionItems,
     isLoading: isCollectionItemsLoading,
     error: collectionItemsError,
     isFetchingNextPage,
     fetchNextPage,
-  } = useCollectionItems(collectionId);
+  } = useCollectionItems({
+    collectionId,
+    isCurrentUser: currentUser ? userHandle === currentUser.handle : false,
+  });
 
   const bottomPageRef = useFetchNextPageInView(fetchNextPage);
-
-  const { isTabletEXtraSmall } = useWindowBreakpoints();
-
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+  const { isTabletExtraSmallUp } = useWindowBreakpoints();
 
   if (isCollectionItemsLoading) {
     return (
@@ -60,21 +65,9 @@ export default function CollectionItems({
           {collectionItems.pages.map((page) => (
             <Fragment key={page.page}>
               {page.data.map((collectionItem) => (
-                <Media
-                  linkProps={{}}
-                  onClick={() =>
-                    toggleOpenDialog(
-                      <MediaPreviewDialog media={collectionItem.media} />
-                    )
-                  }
-                  image={
-                    collectionItem.media.posterImage ||
-                    collectionItem.media.coverImage
-                  }
+                <CollectionItem
                   key={collectionItem.id}
-                  title={collectionItem.media.title}
-                  type={collectionItem.media.type}
-                  year={collectionItem.media.year}
+                  collectionItem={collectionItem}
                 />
               ))}
             </Fragment>
@@ -86,7 +79,7 @@ export default function CollectionItems({
           className="grid grid-cols-2 570:grid-cols-3 gap-x-4 gap-y-5"
         >
           {isFetchingNextPage &&
-            Array.from({ length: isTabletEXtraSmall ? 3 : 2 }).map((_, i) => (
+            Array.from({ length: isTabletExtraSmallUp ? 3 : 2 }).map((_, i) => (
               <MediaSkeleton key={i} />
             ))}
         </div>

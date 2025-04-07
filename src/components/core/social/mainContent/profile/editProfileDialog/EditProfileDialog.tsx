@@ -2,10 +2,10 @@ import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { ReactNode } from "@tanstack/react-router";
 import { ArrowLeft, X } from "lucide-react";
-import EditProfilePage from "./EditProfilePage";
-import ManageBannerPage from "./ManageBannerPage";
+import EditProfilePage from "./pages/EditProfilePage";
+import ManageBannerPage from "./pages/ManageBannerPage";
 import { useShallow } from "zustand/react/shallow";
-import ManageAvatarPage from "./ManageAvatarPage";
+import ManageAvatarPage from "./pages/ManageAvatarPage";
 
 type EditProfileDialogProps = {
   avatar: string | null;
@@ -18,7 +18,7 @@ export default function EditProfileDialog({
   avatar,
   banner,
   userName,
-  bio
+  bio,
 }: EditProfileDialogProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
@@ -27,7 +27,7 @@ export default function EditProfileDialog({
     setEditProfileUsername,
     setEditProfileBio,
     setEditProfileAvatar,
-    setEditProfileBanner
+    setEditProfileBanner,
   ] = useEditProfileStore(
     useShallow((state) => [
       state.editProfilePage,
@@ -35,7 +35,7 @@ export default function EditProfileDialog({
       state.setEditProfileUsername,
       state.setEditProfileBio,
       state.setEditProfileAvatar,
-      state.setEditProfileBanner
+      state.setEditProfileBanner,
     ])
   );
 

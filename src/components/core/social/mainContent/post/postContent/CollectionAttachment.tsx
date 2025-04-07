@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
-import CollectionPreviewDialog from "../../previewPopup/CollectionPreviewDialog";
+import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 
@@ -39,13 +39,10 @@ export default function CollectionAttachment({
   const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
   );
-  const { isTablet } = useWindowBreakpoints();
+  const { isTabletUp } = useWindowBreakpoints();
 
-  function openCollectionPreviewPopup(
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) {
-    e.stopPropagation();
-    if (isTablet) {
+  function openCollectionPreviewPopup() {
+    if (isTabletUp) {
       toggleOpenDialog(<CollectionPreviewDialog collection={collection} />);
     } else {
       toggleOpenDrawer(<CollectionPreviewDialog collection={collection} />);
@@ -54,7 +51,10 @@ export default function CollectionAttachment({
 
   return (
     <div
-      onClick={openCollectionPreviewPopup}
+      onClick={(e) => {
+        e.stopPropagation();
+        openCollectionPreviewPopup();
+      }}
       className="relative w-full overflow-hidden bg-gray-800 rounded-lg hover:cursor-pointer h-36 mobile-m:h-40 sm:h-44 md:h-48 xl:h-56"
     >
       <div className="absolute size-full">

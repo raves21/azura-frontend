@@ -5,31 +5,31 @@ import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/Tr
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear
+  getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { useTVByCategory } from "@/services/media/tv/tvQueries";
 import { TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/tv/")({
-  component: () => <TVHomePage />
+  component: () => <TVHomePage />,
 });
 
 function TVHomePage() {
   const {
     data: trendingTV,
     isLoading: isTrendingTVLoading,
-    error: trendingTVError
+    error: trendingTVError,
   } = useTVByCategory("trending");
   const {
     data: popularTV,
     isLoading: isPopularTVLoading,
-    error: popularTVError
+    error: popularTVError,
   } = useTVByCategory("popular");
   const {
     data: topRatedTV,
     isLoading: isTopRatedTVLoading,
-    error: topRatedTVError
+    error: topRatedTVError,
   } = useTVByCategory("topRated");
 
   if (isTrendingTVLoading || isPopularTVLoading || isTopRatedTVLoading) {
@@ -69,8 +69,8 @@ function TVHomePage() {
                 toInfoPageLinkProps={{
                   to: "/tv/$tvId",
                   params: {
-                    tvId: tv.id.toString()
-                  }
+                    tvId: tv.id.toString(),
+                  },
                 }}
               />
             )}
@@ -88,7 +88,7 @@ function TVHomePage() {
                     image={getTMDBImageURL(tv.poster_path)}
                     linkProps={{
                       to: "/tv/$tvId",
-                      params: { tvId: tv.id.toString() }
+                      params: { tvId: tv.id.toString() },
                     }}
                     subLabels={[getTMDBReleaseYear(tv.first_air_date)]}
                     title={tv.name}
@@ -104,8 +104,8 @@ function TVHomePage() {
             gotoLinkProps={{
               to: "/tv/catalog",
               search: {
-                sortBy: TVSortBy.POPULARITY_DESC
-              }
+                sortBy: TVSortBy.POPULARITY_DESC,
+              },
             }}
             carouselItems={popularTV.results.slice(0, 12)}
             renderCarouselItems={(tv, i) => {
@@ -115,7 +115,7 @@ function TVHomePage() {
                     image={getTMDBImageURL(tv.poster_path)}
                     linkProps={{
                       to: "/tv/$tvId",
-                      params: { tvId: tv.id.toString() }
+                      params: { tvId: tv.id.toString() },
                     }}
                     subLabels={[getTMDBReleaseYear(tv.first_air_date)]}
                     title={tv.name}
@@ -131,8 +131,8 @@ function TVHomePage() {
             gotoLinkProps={{
               to: "/tv/catalog",
               search: {
-                sortBy: TVSortBy.VOTE_AVERAGE_DESC
-              }
+                sortBy: TVSortBy.VOTE_AVERAGE_DESC,
+              },
             }}
             carouselItems={topRatedTV.results.slice(0, 12)}
             renderCarouselItems={(tv, i) => {
@@ -142,7 +142,7 @@ function TVHomePage() {
                     image={getTMDBImageURL(tv.poster_path)}
                     linkProps={{
                       to: "/tv/$tvId",
-                      params: { tvId: tv.id.toString() }
+                      params: { tvId: tv.id.toString() },
                     }}
                     subLabels={[getTMDBReleaseYear(tv.first_air_date)]}
                     title={tv.name}

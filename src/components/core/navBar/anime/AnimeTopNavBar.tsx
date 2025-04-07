@@ -7,7 +7,7 @@ import AnimeTopNavBarMobile from "./AnimeTopNavBarMobile";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 export default function AnimeTopNavBar() {
-  const { isDesktopSmall } = useWindowBreakpoints();
+  const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const isAnimeRoute = matchRoute({ to: "/anime", fuzzy: true });
   const isAnimeCatalogRoute = matchRoute({ to: "/anime/catalog", fuzzy: true });
@@ -23,7 +23,7 @@ export default function AnimeTopNavBar() {
 
   return (
     <header className="font-montserrat">
-      {isDesktopSmall ? (
+      {isDesktopSmallUp ? (
         <AnimeTopNavBarDesktop
           isAnimeCatalogRoute={!!isAnimeCatalogRoute}
           isAnimeRoute={!!isAnimeRoute}

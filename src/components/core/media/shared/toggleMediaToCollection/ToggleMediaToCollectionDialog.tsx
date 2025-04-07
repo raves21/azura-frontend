@@ -5,25 +5,16 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Plus, X } from "lucide-react";
 import MediaExistenceInCollectionSkeleton from "@/components/core/loadingSkeletons/media/MediaExistenceInCollectionSkeleton";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { ToggleCollectionItemProperties } from "@/utils/types/media/shared";
 import ManageCollectionDialog from "@/components/core/social/mainContent/collection/manageCollectionDialog/ManageCollectionDialog";
 import { useShallow } from "zustand/react/shallow";
+import { Media } from "@/utils/types/social/social";
 
-type ToggleMediaToCollectionDialogProps = Omit<
-  ToggleCollectionItemProperties,
-  "collectionId"
->;
+type ToggleMediaToCollectionDialogProps = {
+  media: Media;
+};
 
 export default function ToggleMediaToCollectionDialog({
-  mediaId,
-  mediaType,
-  coverImage,
-  description,
-  posterImage,
-  rating,
-  status,
-  title,
-  year,
+  media,
 }: ToggleMediaToCollectionDialogProps) {
   const {
     data: mediaExistenceInCollections,
@@ -31,7 +22,10 @@ export default function ToggleMediaToCollectionDialog({
     error: mediaExistenceInCollectionsError,
     isFetchingNextPage,
     fetchNextPage,
-  } = useMediaExistenceInCollections(mediaId, mediaType);
+  } = useMediaExistenceInCollections({
+    mediaId: media.id,
+    mediaType: media.type,
+  });
 
   const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
@@ -108,15 +102,7 @@ export default function ToggleMediaToCollectionDialog({
                     collectionName={collection.name}
                     doesGivenMediaExist={collection.doesGivenMediaExist}
                     collectionId={collection.id}
-                    coverImage={coverImage}
-                    description={description}
-                    mediaId={mediaId}
-                    mediaType={mediaType}
-                    posterImage={posterImage}
-                    rating={rating}
-                    status={status}
-                    title={title}
-                    year={year}
+                    media={media}
                   />
                 ))}
                 <div ref={bottomPageRef} key={"bottom of page"}>

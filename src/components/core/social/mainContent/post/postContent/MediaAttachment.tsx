@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Circle, Clapperboard, Tv } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
-import MediaPreviewDialog from "../../previewPopup/MediaPreviewDialog";
+import MediaPreviewDialog from "../../previewPopup/media/MediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type MediaAttachmentProps = {
@@ -19,13 +19,13 @@ export default function MediaAttachment({ media }: MediaAttachmentProps) {
     useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
   );
 
-  const { isTablet } = useWindowBreakpoints();
+  const { isTabletUp } = useWindowBreakpoints();
 
   function openMediaPreviewPopup(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) {
     e.stopPropagation();
-    if (isTablet) {
+    if (isTabletUp) {
       toggleOpenDialog(<MediaPreviewDialog media={media} />);
     } else {
       toggleOpenDrawer(<MediaPreviewDialog media={media} />);

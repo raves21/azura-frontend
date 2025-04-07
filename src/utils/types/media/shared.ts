@@ -1,5 +1,4 @@
 import { PaginatedResponse } from "../social/shared";
-import { MediaType } from "../shared";
 
 export type EpisodeToBeRendered = {
   id: string;
@@ -77,17 +76,4 @@ export type MediaExistenceInCollection = {
 
 export type PaginatedMediaExistenceInCollectionsResponse = PaginatedResponse & {
   data: MediaExistenceInCollection[];
-};
-
-export type ToggleCollectionItemProperties = {
-  collectionId: string;
-  mediaId: string;
-  mediaType: MediaType;
-  title: string;
-  year: string | null;
-  description: string | null;
-  coverImage: string | null;
-  posterImage: string | null;
-  rating: string | null;
-  status: string | null;
 };

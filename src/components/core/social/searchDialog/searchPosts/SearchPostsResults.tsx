@@ -17,13 +17,13 @@ type SearchPostsResultsProps = {
 
 export default function SearchPostsResults({
   searchPostsQuery,
-  query
+  query,
 }: SearchPostsResultsProps) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
-    error: searchResultsError
+    error: searchResultsError,
   } = searchPostsQuery;
 
   if (isSearchResultsLoading) {
@@ -58,7 +58,10 @@ export default function SearchPostsResults({
               ))}
               {page.page < page.totalPages && (
                 <Link
-                  //todo: link to /search/people
+                  to="/social/search/people"
+                  search={{
+                    query,
+                  }}
                   onClick={() => toggleOpenDialog(null)}
                   className="grid w-full py-3 mt-4 text-lg text-center place-items-center bg-mainAccent"
                 >

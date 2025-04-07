@@ -7,7 +7,7 @@ import { useMatchRoute } from "@tanstack/react-router";
 import TVSearchDialog from "../../media/tv/search/TVSearchDialog";
 
 export default function TVTopNavBar() {
-  const { isDesktopSmall } = useWindowBreakpoints();
+  const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const isTVRoute = matchRoute({ to: "/tv", fuzzy: true });
   const isTVCatalogRoute = matchRoute({ to: "/tv/catalog", fuzzy: true });
@@ -23,7 +23,7 @@ export default function TVTopNavBar() {
 
   return (
     <header className="font-montserrat">
-      {isDesktopSmall ? (
+      {isDesktopSmallUp ? (
         <TVTopNavBarDesktop
           isTVCatalogRoute={!!isTVCatalogRoute}
           isTVRoute={!!isTVRoute}

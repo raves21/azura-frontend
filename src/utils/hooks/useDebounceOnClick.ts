@@ -6,6 +6,7 @@ type UseDebounceOnClickArgs = {
   skipFirstRender: boolean;
 };
 
+//1 second
 const DEBOUNCE_DELAY = 1000;
 
 export function useDebounceOnClick({

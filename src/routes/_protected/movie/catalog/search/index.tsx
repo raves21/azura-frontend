@@ -10,7 +10,7 @@ import { z } from "zod";
 
 const movieSearchResultsPageSchema = z.object({
   query: z.string(),
-  page: z.coerce.number().optional()
+  page: z.coerce.number().optional(),
 });
 
 type MovieSearchResultPageSchema = z.infer<
@@ -25,14 +25,14 @@ export const Route = createFileRoute("/_protected/movie/catalog/search/")({
     if (validated.success) {
       return {
         ...validated.data,
-        success: true
+        success: true,
       };
     }
     return {
       query: "",
-      success: false
+      success: false,
     };
-  }
+  },
 });
 
 function MovieSearchPage() {
@@ -42,13 +42,13 @@ function MovieSearchPage() {
 
   useHandleSearchValidationFailure({
     isValidationFail: !success || !query,
-    onValidationError: () => navigate({ to: "/movie" })
+    onValidationError: () => navigate({ to: "/movie" }),
   });
 
   const {
     data: movieSearchResults,
     isLoading: movieSearchResultsLoading,
-    error: movieSearchResultsError
+    error: movieSearchResultsError,
   } = useSearchMovie(query, page || 1, true);
 
   if (movieSearchResultsLoading) {
@@ -99,7 +99,7 @@ function MovieSearchPage() {
               currentPage={page || 1}
               handlePageChange={(_, page) => {
                 navigate({
-                  search: (prev) => ({ ...prev, page })
+                  search: (prev) => ({ ...prev, page }),
                 });
               }}
             />

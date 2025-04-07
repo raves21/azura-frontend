@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
-import ManagePostPage from "./ManagePostPage";
+import ManagePostPage from "./pages/ManagePostPage";
 import SelectPrivacyPage from "./SelectPrivacyPage";
 import { ArrowLeft, X } from "lucide-react";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
@@ -10,8 +10,8 @@ import { TPost } from "@/utils/types/social/social";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
-import SelectMediaAttachment from "./SelectMediaAttachment";
-import SelectCollectionAttachment from "./SelectCollectionAttachment";
+import SelectMediaAttachmentPage from "./pages/SelectMediaAttachmentPage";
+import SelectCollectionAttachmentPage from "./pages/SelectCollectionAttachmentPage";
 
 type EditPostProps = {
   type: "edit";
@@ -114,9 +114,9 @@ export default function ManagePostDialog({
   } else if (managePostPage === "selectPrivacy") {
     currentPage = <SelectPrivacyPage />;
   } else if (managePostPage === "selectMediaAttachment") {
-    currentPage = <SelectMediaAttachment />;
+    currentPage = <SelectMediaAttachmentPage />;
   } else {
-    currentPage = <SelectCollectionAttachment />;
+    currentPage = <SelectCollectionAttachmentPage />;
   }
 
   return (

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 
 type DescriptionProps = {
-  description: string | undefined;
+  description: string | undefined | null;
   className?: string;
   adjustHeightBasedOnWidth?: boolean;
   showDescriptionLabel: boolean;

@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TCollection } from "@/utils/types/social/social";
-import { Forward, Settings } from "lucide-react";
+import { Forward, Plus } from "lucide-react";
 import ManagePostDialog from "../../post/managePost/managePostDialog/ManagePostDialog";
 
 type DisabledProps = {
@@ -25,15 +25,6 @@ export default function CollectionActions(props: Props) {
     <div className="flex flex-col w-full">
       <div className="flex items-center justify-between w-full">
         <button
-          className="group flex items-center gap-2"
-          disabled={props.disabled}
-        >
-          <Settings className="size-4 mobile-l:size-5 transition-colors group-hover:stroke-mainAccent stroke-mainWhite group-disabled:stroke-gray-700" />
-          <p className="group-hover:text-mainAccent transition-colors text-xs mobile-l:text-sm">
-            Edit
-          </p>
-        </button>
-        <button
           onClick={() => {
             if (!props.disabled) {
               setCollectionAttachment(props.collection);
@@ -43,11 +34,20 @@ export default function CollectionActions(props: Props) {
             }
           }}
           disabled={props.disabled}
-          className="flex items-center gap-2 group"
+          className="flex items-center gap-2 group py-2 pr-3"
         >
           <Forward className="size-4 mobile-l:size-5 transition-colors stroke-mainWhite group-hover:stroke-mainAccent group-disabled:stroke-gray-700" />
-          <p className="transition-colors text-xs mobile-l:text-sm text-mainWhite group-hover:text-mainAccent group-disabled:text-gray-700">
+          <p className="transition-colors text-xs mobile-l:text-sm sm:text-md text-mainWhite group-hover:text-mainAccent group-disabled:text-gray-700">
             Share
+          </p>
+        </button>
+        <button
+          disabled={props.disabled}
+          className="rounded-xl transition-colors flex items-center gap-2 py-2 group px-3 border border-mainAccent hover:bg-mainAccent disabled:border-gray-700 text-md"
+        >
+          <Plus className="group-hover:stroke-mainWhite group-disabled:stroke-gray-700 transition-colors stroke-mainAccent size-4" />
+          <p className="group-hover:text-mainWhite group-disabled:text-gray-700 text-mainAccent transition-colors">
+            Add Item
           </p>
         </button>
       </div>

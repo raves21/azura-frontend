@@ -65,9 +65,10 @@ export default function CodeVerificationForm({
 
   //this is for clearing the error message for every input completion
   //so that the error message that was there before will be cleared.
+  const formCode = form.getValues().code;
   useEffect(() => {
     setVerificationErrorMessage(null);
-  }, [form.getValues().code]);
+  }, [formCode]);
 
   //this is for setting the verification error message.
   //this will only trigger when clicking the verify button, since
