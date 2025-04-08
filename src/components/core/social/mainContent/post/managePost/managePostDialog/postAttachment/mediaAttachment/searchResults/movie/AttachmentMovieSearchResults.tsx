@@ -21,7 +21,7 @@ export default function AttachmentMovieSearchResults({ query }: Props) {
     data: trendingMovies,
     isLoading: isTrendingMoviesLoading,
     error: trendingMoviesError,
-  } = useMoviesByCategory("trending");
+  } = useMoviesByCategory({ category: "trending" });
 
   if (isSearchResultsLoading || isTrendingMoviesLoading) {
     return <SearchDialogResultsLoading className="bg-socialPrimary" />;

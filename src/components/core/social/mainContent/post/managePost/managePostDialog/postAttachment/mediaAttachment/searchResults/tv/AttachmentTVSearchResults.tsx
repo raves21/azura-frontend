@@ -18,7 +18,7 @@ export default function AttachmentTVSearchResults({ query }: Props) {
     data: trendingTV,
     isLoading: isTrendingTVLoading,
     error: trendingTVError,
-  } = useTVByCategory("trending");
+  } = useTVByCategory({ category: "trending" });
 
   if (isSearchResultsLoading || isTrendingTVLoading) {
     return <SearchDialogResultsLoading className="bg-socialPrimary" />;

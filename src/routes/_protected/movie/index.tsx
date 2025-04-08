@@ -6,31 +6,31 @@ import MediaCard from "@/components/core/media/shared/MediaCard";
 import { useMoviesByCategory } from "@/services/media/movie/movieQueries";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear
+  getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/movie/")({
-  component: () => <MovieHomePage />
+  component: () => <MovieHomePage />,
 });
 
 function MovieHomePage() {
   const {
     data: trendingMovies,
     isLoading: isTrendingMoviesLoading,
-    error: trendingMoviesError
-  } = useMoviesByCategory("trending");
+    error: trendingMoviesError,
+  } = useMoviesByCategory({ category: "trending" });
   const {
     data: popularMovies,
     isLoading: isPopularMoviesLoading,
-    error: popularMoviesError
-  } = useMoviesByCategory("popular");
+    error: popularMoviesError,
+  } = useMoviesByCategory({ category: "popular" });
   const {
     data: topRatedMovies,
     isLoading: isTopRatedMoviesLoading,
-    error: topRatedMoviesError
-  } = useMoviesByCategory("topRated");
+    error: topRatedMoviesError,
+  } = useMoviesByCategory({ category: "topRated" });
 
   if (
     isTrendingMoviesLoading ||
@@ -73,8 +73,8 @@ function MovieHomePage() {
                 toInfoPageLinkProps={{
                   to: "/movie/$movieId",
                   params: {
-                    movieId: movie.id.toString()
-                  }
+                    movieId: movie.id.toString(),
+                  },
                 }}
               />
             )}
@@ -92,7 +92,7 @@ function MovieHomePage() {
                     image={getTMDBImageURL(movie.poster_path)}
                     linkProps={{
                       to: "/movie/$movieId",
-                      params: { movieId: movie.id.toString() }
+                      params: { movieId: movie.id.toString() },
                     }}
                     subLabels={[getTMDBReleaseYear(movie.release_date)]}
                     title={movie.title}
@@ -108,8 +108,8 @@ function MovieHomePage() {
             gotoLinkProps={{
               to: "/movie/catalog",
               search: {
-                sortBy: MovieSortBy.POPULARITY_DESC
-              }
+                sortBy: MovieSortBy.POPULARITY_DESC,
+              },
             }}
             carouselItems={popularMovies.results.slice(0, 12)}
             renderCarouselItems={(movie, i) => {
@@ -119,7 +119,7 @@ function MovieHomePage() {
                     image={getTMDBImageURL(movie.poster_path)}
                     linkProps={{
                       to: "/movie/$movieId",
-                      params: { movieId: movie.id.toString() }
+                      params: { movieId: movie.id.toString() },
                     }}
                     subLabels={[getTMDBReleaseYear(movie.release_date)]}
                     title={movie.title}
@@ -135,8 +135,8 @@ function MovieHomePage() {
             gotoLinkProps={{
               to: "/movie/catalog",
               search: {
-                sortBy: MovieSortBy.VOTE_AVERAGE_DESC
-              }
+                sortBy: MovieSortBy.VOTE_AVERAGE_DESC,
+              },
             }}
             carouselItems={topRatedMovies.results.slice(0, 12)}
             renderCarouselItems={(movie, i) => {
@@ -146,7 +146,7 @@ function MovieHomePage() {
                     image={getTMDBImageURL(movie.poster_path)}
                     linkProps={{
                       to: "/movie/$movieId",
-                      params: { movieId: movie.id.toString() }
+                      params: { movieId: movie.id.toString() },
                     }}
                     subLabels={[getTMDBReleaseYear(movie.release_date)]}
                     title={movie.title}

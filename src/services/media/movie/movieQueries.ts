@@ -1,14 +1,18 @@
 import {
   MovieGenre,
   MovieInfo,
-  PaginatedMovieResponse
+  PaginatedMovieResponse,
 } from "@/utils/types/media/movie/movieTmdb";
 import { MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { TMDBGenre } from "@/utils/types/media/shared";
 import { tmdbApi } from "@/utils/variables/axiosInstances/tmdbAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 
-export function useMoviesByCategory(category: string) {
+type UseMoviesByCategoryArgs = {
+  category: "trending" | "popular" | "topRated";
+};
+
+export function useMoviesByCategory({ category }: UseMoviesByCategoryArgs) {
   return useQuery({
     queryKey: ["categoryMovies", category],
     queryFn: async () => {
@@ -22,7 +26,7 @@ export function useMoviesByCategory(category: string) {
       }
       const { data: categoryMovies } = await tmdbApi.get(url);
       return categoryMovies as PaginatedMovieResponse;
-    }
+    },
   });
 }
 
@@ -32,7 +36,7 @@ export function useMovieInfo(movieId: string) {
     queryFn: async () => {
       const { data: movieInfo } = await tmdbApi.get(`/movie/${movieId}`);
       return movieInfo as MovieInfo;
-    }
+    },
   });
 }
 
@@ -44,7 +48,7 @@ export function useMovieRecommendations(movieId: string) {
         `/movie/${movieId}/recommendations`
       );
       return movieRecommendations as PaginatedMovieResponse;
-    }
+    },
   });
 }
 
@@ -55,7 +59,7 @@ export function useMovieGenres() {
       const { data: movieGenres } = await tmdbApi.get(`/genre/movie/list`);
       return movieGenres.genres as TMDBGenre[];
     },
-    retryOnMount: false
+    retryOnMount: false,
   });
 }
 
@@ -70,7 +74,7 @@ export function useDiscoverMovies({
   page,
   sortBy,
   genres,
-  year
+  year,
 }: UseDiscoverMoviesArgs) {
   return useQuery({
     queryKey: ["discoverMovies", page, sortBy, genres, year],
@@ -82,12 +86,12 @@ export function useDiscoverMovies({
             page,
             sort_by: sortBy,
             with_genres: genres?.join(","),
-            year
-          }
+            year,
+          },
         }
       );
       return discoverMoviesList as PaginatedMovieResponse;
-    }
+    },
   });
 }
 
@@ -98,11 +102,11 @@ export function useSearchMovie(query: string, page: number, enabled?: boolean) {
       const { data: searchMovieResults } = await tmdbApi.get("/search/movie", {
         params: {
           query,
-          page
-        }
+          page,
+        },
       });
       return searchMovieResults as PaginatedMovieResponse;
     },
-    enabled: !!enabled
+    enabled: !!enabled,
   });
 }

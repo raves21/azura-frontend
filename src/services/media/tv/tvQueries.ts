@@ -5,11 +5,15 @@ import {
   TMDBTVEpisode,
   TVGenre,
   TVShowInfo,
-  TVSortBy
+  TVSortBy,
 } from "@/utils/types/media/TV/tvShowTmdb";
 import { TMDBGenre } from "@/utils/types/media/shared";
 
-export function useTVByCategory(category: string) {
+type UseTVByCategoryArgs = {
+  category: "trending" | "popular" | "topRated";
+};
+
+export function useTVByCategory({ category }: UseTVByCategoryArgs) {
   return useQuery({
     queryKey: ["categoryTV", category],
     queryFn: async () => {
@@ -23,7 +27,7 @@ export function useTVByCategory(category: string) {
       }
       const { data: categoryTVShows } = await tmdbApi.get(url);
       return categoryTVShows as PaginatedTVShowResponse;
-    }
+    },
   });
 }
 
@@ -34,7 +38,7 @@ export function useTVInfo(tvShowId: string) {
       const { data: tvShowInfo } = await tmdbApi.get(`/tv/${tvShowId}`);
       return tvShowInfo as TVShowInfo;
     },
-    retryOnMount: false
+    retryOnMount: false,
   });
 }
 
@@ -46,7 +50,7 @@ export function useTVRecommendations(tvShowId: string) {
         `/tv/${tvShowId}/recommendations`
       );
       return tvShowRecommendations as PaginatedTVShowResponse;
-    }
+    },
   });
 }
 
@@ -57,7 +61,7 @@ export function useTVGenres() {
       const { data: tvGenres } = await tmdbApi.get(`/genre/tv/list`);
       return tvGenres.genres as TMDBGenre[];
     },
-    retryOnMount: false
+    retryOnMount: false,
   });
 }
 
@@ -72,7 +76,7 @@ export function useDiscoverTV({
   page,
   sortBy,
   genres,
-  year
+  year,
 }: UseDiscoverTVArgs) {
   return useQuery({
     queryKey: ["discoverTv", page, sortBy, genres, year],
@@ -82,11 +86,11 @@ export function useDiscoverTV({
           page,
           sort_by: sortBy,
           with_genres: genres?.join(","),
-          year
-        }
+          year,
+        },
       });
       return discoverTvList as PaginatedTVShowResponse;
-    }
+    },
   });
 }
 
@@ -97,12 +101,12 @@ export function useSearchTV(query: string, page: number, enabled?: boolean) {
       const { data: searchTvResult } = await tmdbApi.get("/search/tv", {
         params: {
           query,
-          page
-        }
+          page,
+        },
       });
       return searchTvResult as PaginatedTVShowResponse;
     },
-    enabled: !!enabled
+    enabled: !!enabled,
   });
 }
 
@@ -115,7 +119,7 @@ type UseTVSeasonEpisodesArgs = {
 export function useTVSeasonEpisodes({
   tvId,
   seasonNum,
-  enabled
+  enabled,
 }: UseTVSeasonEpisodesArgs) {
   return useQuery({
     queryKey: ["tvSeasonEpisodes", tvId, seasonNum],
@@ -125,6 +129,6 @@ export function useTVSeasonEpisodes({
       );
       return tvSeasonEpisodes.episodes as TMDBTVEpisode[];
     },
-    enabled: !!enabled
+    enabled: !!enabled,
   });
 }

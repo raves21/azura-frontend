@@ -20,17 +20,17 @@ function TVHomePage() {
     data: trendingTV,
     isLoading: isTrendingTVLoading,
     error: trendingTVError,
-  } = useTVByCategory("trending");
+  } = useTVByCategory({ category: "trending" });
   const {
     data: popularTV,
     isLoading: isPopularTVLoading,
     error: popularTVError,
-  } = useTVByCategory("popular");
+  } = useTVByCategory({ category: "popular" });
   const {
     data: topRatedTV,
     isLoading: isTopRatedTVLoading,
     error: topRatedTVError,
-  } = useTVByCategory("topRated");
+  } = useTVByCategory({ category: "topRated" });
 
   if (isTrendingTVLoading || isPopularTVLoading || isTopRatedTVLoading) {
     return (
