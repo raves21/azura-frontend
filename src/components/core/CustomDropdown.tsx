@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useHandleClickOutside } from "@/utils/hooks/useHandleClickOutside";
 
-type CustomDropdownProps<T> = {
+type Props<T> = {
   menuItems: T[];
   menuItemLabelNames?: string[];
   onSelectItem: (item: T) => void;
@@ -26,7 +26,7 @@ export default function CustomDropdown<T>({
   menuItemClassName,
   menuContentMaxHeight,
   showMenuContentBorder,
-}: CustomDropdownProps<T>) {
+}: Props<T>) {
   const dropdownMenuListRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dropdownMenuListHeight, setDropdownMenuListHeight] = useState<

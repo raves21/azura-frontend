@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/custom-carousel";
 import { LinkProps } from "@tanstack/react-router";
 
-type AnimeCategoryCarouselProps<T> = {
+type Props<T> = {
   categoryName: string;
   gotoLinkProps?: LinkProps;
   carouselItems: T[];
@@ -20,7 +20,7 @@ export default function CategoryCarousel<T>({
   carouselItems,
   renderCarouselItems,
   gotoLinkProps,
-}: AnimeCategoryCarouselProps<T>) {
+}: Props<T>) {
   return (
     <div className="w-full pt-5 space-y-6 text-gray-400">
       <div className="flex items-center justify-between w-full">

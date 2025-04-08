@@ -2,19 +2,19 @@ import {
   Carousel,
   CarouselContent,
   CarouselNext,
-  CarouselPrevious
+  CarouselPrevious,
 } from "@/components/ui/custom-carousel";
 import { ReactNode } from "react";
 
-type TrendingHeroCarouselProps<T> = {
+type Props<T> = {
   carouselItems: T[];
   renderCarouselItems: (carouselItem: T, index: number) => ReactNode;
 };
 
 export default function TrendingHeroCarousel<T>({
   carouselItems,
-  renderCarouselItems
-}: TrendingHeroCarouselProps<T>) {
+  renderCarouselItems,
+}: Props<T>) {
   return (
     <Carousel>
       <CarouselContent>
