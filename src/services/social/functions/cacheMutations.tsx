@@ -66,6 +66,11 @@ const COLLECTION_ITEMS_QUERY_FILTER: QueryFilters = {
   },
 };
 
+const COLLECTION_INFO_QUERY_KEY = (collectionId: string): QueryKey => [
+  "collectionInfo",
+  collectionId,
+];
+
 type CreatePostPostsCacheMutation = {
   postsFrom: "forYouFeed" | "currentUserProfile";
   currentUserHandle: string;
@@ -752,4 +757,17 @@ export function addCollectionItem_CollectionIitemsCacheMutation({
       };
     }
   });
+}
+
+export function editCollectionInfo_CollectionInfoCacheMutation(
+  editedCollection: TCollection
+) {
+  queryClient.setQueryData<TCollection>(
+    COLLECTION_INFO_QUERY_KEY(editedCollection.id),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return editedCollection;
+    }
+  );
 }

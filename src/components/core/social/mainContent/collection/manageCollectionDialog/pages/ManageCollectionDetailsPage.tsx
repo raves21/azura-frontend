@@ -26,13 +26,16 @@ type CreatePostProps = {
   type: "create";
 };
 
-type Props = { tipTapEditor: UseTipTapEditorReturnType } & (
-  | EditPostProps
-  | CreatePostProps
-);
+type Props = {
+  tipTapEditor: UseTipTapEditorReturnType;
+  closeDialog: () => void;
+  isSecondaryDialog: boolean;
+} & (EditPostProps | CreatePostProps);
 
 export default function ManageCollectionDetailsPage({
   tipTapEditor,
+  closeDialog,
+  isSecondaryDialog,
   ...props
 }: Props) {
   const {
@@ -43,8 +46,11 @@ export default function ManageCollectionDetailsPage({
     inputText: collectionDescription,
   } = tipTapEditor;
   const currentUser = useAuthStore((state) => state.currentUser);
-  const toggleOpenDialogSecondary = useGlobalStore(
-    (state) => state.toggleOpenDialogSecondary
+  const [toggleOpenDialogSecondary, toggleOpenDialog] = useGlobalStore(
+    useShallow((state) => [
+      state.toggleOpenDialogSecondary,
+      state.toggleOpenDialog,
+    ])
   );
   const [
     collectionName,
@@ -76,32 +82,32 @@ export default function ManageCollectionDetailsPage({
   } = useEditCollection();
 
   useEffect(() => {
-    if (createCollectionError) {
-      toggleOpenDialogSecondary(null);
-      setTimeout(() => {
-        toggleOpenDialogSecondary(
-          <ErrorDialog
-            error={
-              new Error("An error occured while creating this collection.")
-            }
-            okButtonAction={() => toggleOpenDialogSecondary(null)}
-          />
-        );
-      }, 180);
-    }
-
-    if (editCollectionError) {
-      toggleOpenDialogSecondary(null);
-      setTimeout(() => {
-        toggleOpenDialogSecondary(
-          <ErrorDialog
-            error={
-              new Error("An error occured while updating this collection.")
-            }
-            okButtonAction={() => toggleOpenDialogSecondary(null)}
-          />
-        );
-      }, 180);
+    if (createCollectionError || editCollectionError) {
+      if (isSecondaryDialog) {
+        toggleOpenDialogSecondary(null);
+        setTimeout(() => {
+          toggleOpenDialogSecondary(
+            <ErrorDialog
+              error={
+                new Error("An error occured while creating this collection.")
+              }
+              okButtonAction={() => toggleOpenDialogSecondary(null)}
+            />
+          );
+        }, 180);
+      } else {
+        toggleOpenDialog(null);
+        setTimeout(() => {
+          toggleOpenDialog(
+            <ErrorDialog
+              error={
+                new Error("An error occured while creating this collection.")
+              }
+              okButtonAction={() => toggleOpenDialog(null)}
+            />
+          );
+        }, 180);
+      }
     }
   }, [createCollectionError, editCollectionError]);
 
@@ -127,7 +133,7 @@ export default function ManageCollectionDetailsPage({
     <div className="flex flex-col px-4 size-full">
       <div className="flex w-full gap-3 h-[70%] my-auto">
         <div className="relative grid w-1/2 rounded-md size-auto aspect-square place-items-center">
-          {props.type === "edit" ? (
+          {props.type === "edit" && !collectionPhoto ? (
             props.collectionToEdit.photo ? (
               <CollectionPhoto
                 className="absolute size-full"
@@ -153,14 +159,14 @@ export default function ManageCollectionDetailsPage({
           <div className="z-10 flex gap-3">
             <button
               onClick={() => setManageCollectionPage("manageCollecionPhoto")}
-              className="transition-colors rounded-full hover:bg-gray-700/80 size-16 bg-socialPrimary/60 place-items-center"
+              className="transition-colors rounded-full border-[0.5px] border-mainAccent hover:bg-gray-700/80 size-16 bg-socialPrimary/60 place-items-center"
             >
               <ImageUp className="size-[55%] stroke-[1.5px]" />
             </button>
             {collectionPhoto && (
               <button
                 onClick={() => setCollectionPhoto(null)}
-                className="transition-colors rounded-full hover:bg-gray-700/80 size-16 bg-socialPrimary/60 place-items-center"
+                className="transition-colors rounded-full hover:bg-gray-700/80 size-16 border-[0.5px] border-mainAccent bg-socialPrimary/60 place-items-center"
               >
                 <X className="size-[55%] stroke-[1.5px]" />
               </button>
@@ -213,14 +219,14 @@ export default function ManageCollectionDetailsPage({
       </div>
       {props.type === "create" ? (
         <button
-          onClick={() => {
-            createCollection({
+          onClick={async () => {
+            await createCollection({
               description: collectionDescription,
               name: collectionName || "",
               privacy: selectedPrivacy,
               photo: collectionPhoto,
             });
-            toggleOpenDialogSecondary(null);
+            closeDialog();
           }}
           disabled={!collectionName || createCollectionStatus === "pending"}
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
@@ -229,17 +235,11 @@ export default function ManageCollectionDetailsPage({
         </button>
       ) : (
         <button
-          onClick={() => {
+          onClick={async () => {
             if (!editCollectionNoChanges) {
-              editCollection({
-                collectionId: props.collectionToEdit.id,
-                description: collectionDescription,
-                name: collectionName || "",
-                photo: collectionPhoto,
-                privacy: selectedPrivacy,
-              });
+              await editCollection(editedCollection);
             }
-            toggleOpenDialogSecondary(null);
+            closeDialog();
           }}
           disabled={!collectionName || editCollectionStatus === "pending"}
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"

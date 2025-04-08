@@ -37,6 +37,7 @@ import {
   toggleMediaExistenceInCollectionCacheMutation,
   deleteCollectionItem_CollectionIitemsCacheMutation,
   addCollectionItem_CollectionIitemsCacheMutation,
+  editCollectionInfo_CollectionInfoCacheMutation,
 } from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
@@ -696,26 +697,21 @@ export function useCreateCollection() {
   });
 }
 
-type UseEditCollectionArgs = UseCreateCollectionArgs & {
-  collectionId: string;
-};
-
 export function useEditCollection() {
   return useMutation({
-    mutationFn: async ({
-      collectionId,
-      description,
-      name,
-      privacy,
-    }: UseEditCollectionArgs) => {
-      await api.put(`/collections/${collectionId}`, {
+    mutationFn: async (editedCollection: TCollection) => {
+      const { description, id, name, privacy, photo } = editedCollection;
+      await api.put(`/collections/${id}`, {
         description,
         name,
         privacy,
+        photo,
       });
     },
-    onSuccess: () => {
+    onSuccess: (_, editedCollection) => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      editCollectionInfo_CollectionInfoCacheMutation(editedCollection);
     },
   });
 }
