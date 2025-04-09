@@ -13,6 +13,7 @@ import {
   UserProfile,
   PaginatedCollectionItemsResponse,
   TCollectionItem,
+  PaginatedCollectionsResponse,
 } from "@/utils/types/social/social";
 import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
@@ -70,6 +71,12 @@ const COLLECTION_INFO_QUERY_KEY = (collectionId: string): QueryKey => [
   "collectionInfo",
   collectionId,
 ];
+
+const COLLECTIONS_QUERY_FILTER: QueryFilters = {
+  predicate(query) {
+    return query.queryKey.includes("collections");
+  },
+};
 
 type CreatePostPostsCacheMutation = {
   postsFrom: "forYouFeed" | "currentUserProfile";
@@ -770,4 +777,24 @@ export function editCollectionInfo_CollectionInfoCacheMutation(
       return editedCollection;
     }
   );
+}
+
+export function deleteCollection_CollectionsCacheMutation(
+  collectionId: string
+) {
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedCollectionsResponse, number>
+  >(COLLECTIONS_QUERY_FILTER, (oldData) => {
+    if (!oldData) return undefined;
+
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.filter((collection) => collection.id !== collectionId),
+    }));
+
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages,
+    };
+  });
 }

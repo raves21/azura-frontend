@@ -37,8 +37,7 @@ export default function SelectCollectionAttachmentPage() {
     return (
       <div className="size-full flex flex-col overflow-y-auto py-2">
         {currentUserCollections.pages[0].data.length === 0 ? (
-          //todo
-          <div></div>
+          <p className="text-center mt-12">You have no collections yet.</p>
         ) : (
           currentUserCollections.pages.map((page) => (
             <Fragment key={page.page}>
