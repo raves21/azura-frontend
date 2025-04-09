@@ -709,8 +709,16 @@ export function useEditCollection() {
       });
     },
     onSuccess: (_, editedCollection) => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({
+        predicate(query) {
+          return query.queryKey.includes("collections");
+        },
+      });
+      queryClient.invalidateQueries({
+        predicate(query) {
+          return query.queryKey.includes("posts");
+        },
+      });
       editCollectionInfo_CollectionInfoCacheMutation(editedCollection);
     },
   });
