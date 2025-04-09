@@ -113,7 +113,7 @@ export default function ManageCollectionPhotoPage() {
           </p>
           <div className="flex flex-col w-full gap-2">
             <div className="flex justify-between">
-              <p className="font-medium">Avatar Image-Address/URL</p>
+              <p className="font-medium">Image-Address/URL</p>
               <p className="text-sm font-light text-socialTextSecondary"></p>
             </div>
             <input

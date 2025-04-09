@@ -37,6 +37,8 @@ import {
   toggleMediaExistenceInCollectionCacheMutation,
   deleteCollectionItem_CollectionIitemsCacheMutation,
   addCollectionItem_CollectionIitemsCacheMutation,
+  editCollectionInfo_CollectionInfoCacheMutation,
+  deleteCollection_CollectionsCacheMutation,
 } from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
@@ -696,26 +698,29 @@ export function useCreateCollection() {
   });
 }
 
-type UseEditCollectionArgs = UseCreateCollectionArgs & {
-  collectionId: string;
-};
-
 export function useEditCollection() {
   return useMutation({
-    mutationFn: async ({
-      collectionId,
-      description,
-      name,
-      privacy,
-    }: UseEditCollectionArgs) => {
-      await api.put(`/collections/${collectionId}`, {
+    mutationFn: async (editedCollection: TCollection) => {
+      const { description, id, name, privacy, photo } = editedCollection;
+      await api.put(`/collections/${id}`, {
         description,
         name,
         privacy,
+        photo,
       });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
+    onSuccess: (_, editedCollection) => {
+      queryClient.invalidateQueries({
+        predicate(query) {
+          return query.queryKey.includes("collections");
+        },
+      });
+      queryClient.invalidateQueries({
+        predicate(query) {
+          return query.queryKey.includes("posts");
+        },
+      });
+      editCollectionInfo_CollectionInfoCacheMutation(editedCollection);
     },
   });
 }
@@ -753,5 +758,32 @@ export function useCollectionItems({
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+type UseDeleteCollectionArgs = {
+  collectionId: string;
+  userHandle: string;
+};
+
+export function useDeleteCollection({ collectionId }: UseDeleteCollectionArgs) {
+  return useMutation({
+    mutationKey: ["deleteCollection", collectionId],
+    mutationFn: async ({ collectionId }: UseDeleteCollectionArgs) => {
+      await api.delete(`/collections/${collectionId}`);
+    },
+    onSuccess: (_, { userHandle, collectionId }) => {
+      queryClient.invalidateQueries({
+        predicate(query) {
+          return query.queryKey.includes("posts");
+        },
+      });
+      queryClient.removeQueries({
+        queryKey: ["collectionInfo", collectionId],
+        exact: true,
+      });
+      deleteCollection_CollectionsCacheMutation(collectionId);
+      history.pushState(null, "", `/social/${userHandle}/collections`);
+    },
   });
 }

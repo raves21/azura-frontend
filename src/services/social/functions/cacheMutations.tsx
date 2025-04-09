@@ -13,6 +13,7 @@ import {
   UserProfile,
   PaginatedCollectionItemsResponse,
   TCollectionItem,
+  PaginatedCollectionsResponse,
 } from "@/utils/types/social/social";
 import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
@@ -63,6 +64,17 @@ const MEDIA_EXISTENCE_IN_COLLECTIONS_QUERY_KEY = (
 const COLLECTION_ITEMS_QUERY_FILTER: QueryFilters = {
   predicate(query) {
     return query.queryKey.includes("collectionItems");
+  },
+};
+
+const COLLECTION_INFO_QUERY_KEY = (collectionId: string): QueryKey => [
+  "collectionInfo",
+  collectionId,
+];
+
+const COLLECTIONS_QUERY_FILTER: QueryFilters = {
+  predicate(query) {
+    return query.queryKey.includes("collections");
   },
 };
 
@@ -751,5 +763,38 @@ export function addCollectionItem_CollectionIitemsCacheMutation({
         totalPages: 1,
       };
     }
+  });
+}
+
+export function editCollectionInfo_CollectionInfoCacheMutation(
+  editedCollection: TCollection
+) {
+  queryClient.setQueryData<TCollection>(
+    COLLECTION_INFO_QUERY_KEY(editedCollection.id),
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      return editedCollection;
+    }
+  );
+}
+
+export function deleteCollection_CollectionsCacheMutation(
+  collectionId: string
+) {
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedCollectionsResponse, number>
+  >(COLLECTIONS_QUERY_FILTER, (oldData) => {
+    if (!oldData) return undefined;
+
+    const newPages = oldData.pages.map((page) => ({
+      ...page,
+      data: page.data.filter((collection) => collection.id !== collectionId),
+    }));
+
+    return {
+      pageParams: oldData.pageParams,
+      pages: newPages,
+    };
   });
 }

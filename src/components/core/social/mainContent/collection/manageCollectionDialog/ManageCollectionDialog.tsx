@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManageCollectionStore } from "@/utils/stores/useManageCollectionStore";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TCollection } from "@/utils/types/social/social";
-import { ReactNode } from "@tanstack/react-router";
+import { ReactNode, useMatchRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import ManageCollectionDetailsPage from "./pages/ManageCollectionDetailsPage";
@@ -44,8 +44,19 @@ export default function ManageCollectionDialog(props: Props) {
     ])
   );
 
-  const toggleOpenDialogSecondary = useGlobalStore(
-    (state) => state.toggleOpenDialogSecondary
+  const matchRoute = useMatchRoute();
+  const isUserProfileCollectionsRoute = matchRoute({
+    to: "/social/$userHandle/collections",
+  });
+  const isCollectionInfoRoute = matchRoute({
+    to: "/social/$userHandle/collections/$collectionId",
+  });
+
+  const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
+    useShallow((state) => [
+      state.toggleOpenDialog,
+      state.toggleOpenDialogSecondary,
+    ])
   );
 
   const tipTapEditor = useTipTapEditor({
@@ -94,6 +105,14 @@ export default function ManageCollectionDialog(props: Props) {
     }
   }, []);
 
+  function closeDialog() {
+    if (!!isUserProfileCollectionsRoute || !!isCollectionInfoRoute) {
+      toggleOpenDialog(null);
+    } else {
+      toggleOpenDialogSecondary(null);
+    }
+  }
+
   let currentPage: ReactNode;
   if (manageCollectionPage === "manageCollectionDetails") {
     if (props.type === "edit") {
@@ -102,6 +121,10 @@ export default function ManageCollectionDialog(props: Props) {
           type="edit"
           tipTapEditor={tipTapEditor}
           collectionToEdit={props.collectionToEdit}
+          isSecondaryDialog={
+            !!isCollectionInfoRoute || !!isUserProfileCollectionsRoute
+          }
+          closeDialog={closeDialog}
         />
       );
     } else {
@@ -109,6 +132,10 @@ export default function ManageCollectionDialog(props: Props) {
         <ManageCollectionDetailsPage
           type="create"
           tipTapEditor={tipTapEditor}
+          isSecondaryDialog={
+            !!isCollectionInfoRoute || !!isUserProfileCollectionsRoute
+          }
+          closeDialog={closeDialog}
         />
       );
     }
@@ -134,7 +161,7 @@ export default function ManageCollectionDialog(props: Props) {
         </p>
         {manageCollectionPage === "manageCollectionDetails" && (
           <button
-            onClick={() => toggleOpenDialogSecondary(null)}
+            onClick={closeDialog}
             className="group absolute top-1/2 -translate-y-1/2 right-4 rounded-full p-2 border-[0.5px] border-socialTextSecondary"
           >
             <X className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
