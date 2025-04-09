@@ -241,7 +241,11 @@ export default function ManageCollectionDetailsPage({
             }
             closeDialog();
           }}
-          disabled={!collectionName || editCollectionStatus === "pending"}
+          disabled={
+            !collectionName ||
+            editCollectionStatus === "pending" ||
+            editCollectionNoChanges
+          }
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
           {editCollectionStatus === "pending" ? "Saving..." : "Save"}

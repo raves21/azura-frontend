@@ -7,7 +7,8 @@ import CollectionItems from "@/components/core/social/mainContent/collection/col
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCollectionInfo } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { createFileRoute } from "@tanstack/react-router";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Circle } from "lucide-react";
 
 export const Route = createFileRoute(
@@ -20,12 +21,15 @@ function CollectionInfoPage() {
   useCustomScrollRestoration();
 
   const { collectionId, userHandle } = Route.useParams();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   const {
     data: collectionInfo,
     isLoading: isCollectionInfoLoading,
     error: collectionInfoError,
   } = useCollectionInfo(collectionId);
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   if (isCollectionInfoLoading) {
     return (
@@ -88,7 +92,9 @@ function CollectionInfoPage() {
               },
             }}
           />
-          <CollectionEditButton collection={collectionInfo} />
+          {currentUser.handle === userHandle && (
+            <CollectionEditButton collection={collectionInfo} />
+          )}
         </div>
         <CollectionInfo collection={collectionInfo} />
         <CollectionActions disabled={false} collection={collectionInfo} />

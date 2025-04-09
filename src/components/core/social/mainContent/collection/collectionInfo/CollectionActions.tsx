@@ -3,6 +3,8 @@ import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TCollection } from "@/utils/types/social/social";
 import { Forward, Plus } from "lucide-react";
 import ManagePostDialog from "../../post/managePost/managePostDialog/ManagePostDialog";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { Navigate, useParams } from "@tanstack/react-router";
 
 type DisabledProps = {
   disabled: true;
@@ -20,6 +22,12 @@ export default function CollectionActions(props: Props) {
   const setCollectionAttachment = useManagePostStore(
     (state) => state.setCollectionAttachment
   );
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const { userHandle } = useParams({
+    from: "/_protected/social/$userHandle/collections/$collectionId/",
+  });
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
     <div className="flex flex-col w-full">
@@ -41,15 +49,17 @@ export default function CollectionActions(props: Props) {
             Share
           </p>
         </button>
-        <button
-          disabled={props.disabled}
-          className="rounded-xl transition-colors flex items-center gap-2 py-2 group px-3 border border-mainAccent hover:bg-mainAccent disabled:border-gray-700 text-md"
-        >
-          <Plus className="group-hover:stroke-mainWhite group-disabled:stroke-gray-700 transition-colors stroke-mainAccent size-4" />
-          <p className="group-hover:text-mainWhite group-disabled:text-gray-700 text-mainAccent transition-colors">
-            Add Item
-          </p>
-        </button>
+        {currentUser.handle === userHandle && (
+          <button
+            disabled={props.disabled}
+            className="rounded-xl transition-colors flex items-center gap-2 py-2 group px-3 border border-mainAccent hover:bg-mainAccent disabled:border-gray-700 text-md"
+          >
+            <Plus className="group-hover:stroke-mainWhite group-disabled:stroke-gray-700 transition-colors stroke-mainAccent size-4" />
+            <p className="group-hover:text-mainWhite group-disabled:text-gray-700 text-mainAccent transition-colors">
+              Add Item
+            </p>
+          </button>
+        )}
       </div>
       <div className="w-full mt-4 h-[0.5px] bg-socialTextSecondary/40" />
     </div>
