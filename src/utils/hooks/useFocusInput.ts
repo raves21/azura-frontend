@@ -1,10 +1,10 @@
 import { DependencyList, useEffect, useRef } from "react";
 
-type UseFocusInputArgs = {
+type Args = {
   deps?: DependencyList;
 };
 
-export function useFocusInput({ deps = [] }: UseFocusInputArgs) {
+export function useFocusInput({ deps = [] }: Args) {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

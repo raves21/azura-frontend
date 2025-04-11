@@ -5,6 +5,7 @@ import { Forward, Plus } from "lucide-react";
 import ManagePostDialog from "../../post/managePost/managePostDialog/ManagePostDialog";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate, useParams } from "@tanstack/react-router";
+import AddCollectionItemDialog from "./addCollectionItemDialog/AddCollectionItemDialog";
 
 type DisabledProps = {
   disabled: true;
@@ -51,6 +52,7 @@ export default function CollectionActions(props: Props) {
         </button>
         {currentUser.handle === userHandle && (
           <button
+            onClick={() => toggleOpenDialog(<AddCollectionItemDialog />)}
             disabled={props.disabled}
             className="rounded-xl transition-colors flex items-center gap-2 py-2 group px-3 border border-mainAccent hover:bg-mainAccent disabled:border-gray-700 text-md"
           >

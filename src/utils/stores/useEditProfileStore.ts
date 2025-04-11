@@ -5,7 +5,7 @@ type EditProfilePage =
   | "manageBannerPage"
   | "manageAvatarPage";
 
-type EditProfileStoreValues = {
+type Values = {
   editProfileUsername: string;
   editProfileBio: string | null;
   editProfileBanner: string | null;
@@ -13,7 +13,7 @@ type EditProfileStoreValues = {
   editProfilePage: EditProfilePage;
 };
 
-type EditProfileStoreActions = {
+type Actions = {
   setEditProfileUsername: (editProfileUsername: string) => void;
   setEditProfileBio: (editProfileBio: string | null) => void;
   setEditProfileBanner: (editProfileBanner: string | null) => void;
@@ -21,18 +21,18 @@ type EditProfileStoreActions = {
   setEditProfilePage: (editProfilePage: EditProfilePage) => void;
 };
 
-type EditProfileStore = EditProfileStoreValues & EditProfileStoreActions;
+type Store = Values & Actions;
 
-const editProfileStoreDefaultValues: EditProfileStoreValues = {
+const defaultValues: Values = {
   editProfileUsername: "",
   editProfileBio: null,
   editProfileBanner: null,
   editProfileAvatar: null,
-  editProfilePage: "editProfilePage"
+  editProfilePage: "editProfilePage",
 };
 
-export const useEditProfileStore = create<EditProfileStore>((set) => ({
-  ...editProfileStoreDefaultValues,
+export const useEditProfileStore = create<Store>((set) => ({
+  ...defaultValues,
   setEditProfileBanner: (editProfileBanner: string | null) =>
     set({ editProfileBanner }),
   setEditProfileAvatar: (editProfileAvatar: string | null) =>
@@ -41,5 +41,5 @@ export const useEditProfileStore = create<EditProfileStore>((set) => ({
     set({ editProfilePage }),
   setEditProfileUsername: (editProfileUsername: string) =>
     set({ editProfileUsername }),
-  setEditProfileBio: (editProfileBio: string | null) => set({ editProfileBio })
+  setEditProfileBio: (editProfileBio: string | null) => set({ editProfileBio }),
 }));

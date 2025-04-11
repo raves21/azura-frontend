@@ -8,7 +8,7 @@ import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
-import CustomDropdown from "../../../CustomDropdown";
+import CustomDropdown from "../../../shared/CustomDropdown";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
 
 type Props = {

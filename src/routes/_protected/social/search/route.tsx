@@ -1,17 +1,17 @@
-import ContentOptions from "@/components/core/social/mainContent/contentOptions/ContentOptions";
+import ContentOptions from "@/components/core/social/shared/contentOptions/ContentOptions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TContentOption } from "@/utils/types/social/shared";
 import {
   createFileRoute,
   Outlet,
   useMatchRoute,
-  useRouter
+  useRouter,
 } from "@tanstack/react-router";
 import { ArrowLeft, Circle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/_protected/social/search")({
-  component: () => <SearchPageLayout />
+  component: () => <SearchPageLayout />,
 });
 
 function SearchPageLayout() {
@@ -31,21 +31,21 @@ function SearchPageLayout() {
         linkProps: {
           to: "/social/search/posts",
           search: {
-            query: socialSearchKeyword
+            query: socialSearchKeyword,
           },
-          replace: true
-        }
+          replace: true,
+        },
       },
       {
         name: "People",
         linkProps: {
           to: "/social/search/people",
           search: {
-            query: socialSearchKeyword
+            query: socialSearchKeyword,
           },
-          replace: true
-        }
-      }
+          replace: true,
+        },
+      },
     ],
     [socialSearchKeyword]
   );

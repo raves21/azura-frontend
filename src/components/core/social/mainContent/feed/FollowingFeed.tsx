@@ -3,7 +3,7 @@ import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkelet
 import { useFollowingFeed } from "@/services/social/queries/socialQueries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
-import ContentOptions from "../contentOptions/ContentOptions";
+import ContentOptions from "../../shared/contentOptions/ContentOptions";
 import CreatePost from "../post/managePost/CreatePost";
 import Post from "../post/Post";
 import { TContentOption } from "@/utils/types/social/shared";

@@ -4,8 +4,8 @@ import AnimeSearchDialogResults from "./AnimeSearchDialogResults";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import SearchDialogContainer from "@/components/core/media/shared/search/SearchDialogContainer";
-import SearchDialogForm from "@/components/core/media/shared/search/SearchDialogForm";
+import SearchDialogContainer from "@/components/core/shared/search/SearchDialogContainer";
+import SearchDialogForm from "@/components/core/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import { useSearchAnime } from "@/services/media/anime/queries/animeQueries";
 

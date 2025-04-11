@@ -6,7 +6,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useEffect } from "react";
 import { useCreateAccount, useLogin } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 export const Route = createFileRoute("/_auth/signup/verify-email/")({
   component: () => <VerifyEmailPage />,

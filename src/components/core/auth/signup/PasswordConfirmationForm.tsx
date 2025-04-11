@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
@@ -17,7 +17,7 @@ import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
 import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
 import { useSendOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { AxiosError } from "axios";
 
 export default function PasswordConfirmationForm() {
@@ -25,7 +25,7 @@ export default function PasswordConfirmationForm() {
     useShallow((state) => [
       state.setSignUpStep,
       state.setSignUpValues,
-      state.signUpValues
+      state.signUpValues,
     ])
   );
 
@@ -38,8 +38,8 @@ export default function PasswordConfirmationForm() {
     resolver: zodResolver(passwordConfirmationFormSchema),
     defaultValues: {
       password: signUpValues.password,
-      confirmPassword: signUpValues.password
-    }
+      confirmPassword: signUpValues.password,
+    },
   });
 
   async function onSubmit(values: PasswordConfirmationFormData) {
@@ -48,11 +48,11 @@ export default function PasswordConfirmationForm() {
       await sendOTC(signUpValues.email);
       setSignUpValues({
         ...signUpValues,
-        password: values.password
+        password: values.password,
       });
       setSignUpStep(SignUpStep.VERIFY_EMAIL);
       navigate({
-        to: "/signup/verify-email"
+        to: "/signup/verify-email",
       });
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -123,7 +123,7 @@ export default function PasswordConfirmationForm() {
               setSignUpStep(SignUpStep.USER_DETAILS);
               setSignUpValues({
                 ...signUpValues,
-                password: form.getValues().password
+                password: form.getValues().password,
               });
             }}
             className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"

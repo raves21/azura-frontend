@@ -2,7 +2,7 @@ import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkelet
 import Post from "@/components/core/social/mainContent/post/Post";
 import { useSearchPosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Fragment } from "react";
@@ -35,7 +35,7 @@ function PostsSearchResultsPage() {
   useCustomScrollRestoration();
   const { query, success } = Route.useSearch();
   const navigate = useNavigate();
-  useHandleSearchValidationFailure({
+  useHandleSearchParamsValidationFailure({
     isValidationFail: success === false || !query,
     onValidationError: () => navigate({ to: "/social" }),
     deps: [success, query],

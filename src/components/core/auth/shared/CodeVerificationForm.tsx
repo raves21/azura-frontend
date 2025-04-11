@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useOTC, useVerifyOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "../../ErrorDialog";
+import ErrorDialog from "../../shared/ErrorDialog";
 import { Check } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";

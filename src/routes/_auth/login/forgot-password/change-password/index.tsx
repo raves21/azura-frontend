@@ -5,7 +5,7 @@ import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
 import { useLogin } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/change-password/"

@@ -17,7 +17,7 @@ export type UseTipTapEditorReturnType = {
   clearEditorContent: () => void;
 };
 
-type UseTipTapEditorArgs = {
+type Args = {
   placeholder?: string;
   maxLength?: number;
   editorProps?: EditorProps;
@@ -32,7 +32,7 @@ export function useTipTapEditor({
   editorProps,
   customExtensions = [],
   focusOnMount,
-}: UseTipTapEditorArgs): UseTipTapEditorReturnType {
+}: Args): UseTipTapEditorReturnType {
   const [inputLength, setInputLength] = useState(0);
   const [inputText, setInputText] = useState<string | null>(null);
 

@@ -9,7 +9,6 @@ import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media
 type Props = {
   query: string;
   movieSearchQuery: UseQueryResult<PaginatedMovieResponse, Error>;
-  resultCardClassName?: string;
 };
 
 export default function MovieSearchDialogResults({

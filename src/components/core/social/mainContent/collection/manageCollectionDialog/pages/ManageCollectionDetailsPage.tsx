@@ -1,4 +1,4 @@
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import {
   useCreateCollection,
   useEditCollection,

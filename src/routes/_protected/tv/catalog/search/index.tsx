@@ -3,7 +3,7 @@ import Pagination from "@/components/core/media/shared/catalog/pagination/Pagina
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import { useSearchTV } from "@/services/media/tv/tvQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
@@ -38,7 +38,7 @@ function TVSearchPage() {
   const { query, page, success } = Route.useSearch();
   const navigate = useNavigate();
 
-  useHandleSearchValidationFailure({
+  useHandleSearchParamsValidationFailure({
     isValidationFail: !success || !query,
     onValidationError: () => navigate({ to: "/tv" }),
   });

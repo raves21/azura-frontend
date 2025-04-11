@@ -3,25 +3,38 @@ import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Clapperboard, Tv, X } from "lucide-react";
 import MediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/media/MediaPreviewDialog";
+import { useShallow } from "zustand/react/shallow";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type Props = {
   media: Media;
 };
 
-export default function MediaAttachment({ media }: Props) {
+export default function MediaAttachmentPreview({ media }: Props) {
   const setMediaAttachment = useManagePostStore(
     (state) => state.setMediaAttachment
   );
 
-  const toggleOpenDialogSecondary = useGlobalStore(
-    (state) => state.toggleOpenDialogSecondary
+  const { isTabletUp } = useWindowBreakpoints();
+
+  const [toggleOpenDialogSecondary, toggleOpenDrawer] = useGlobalStore(
+    useShallow((state) => [
+      state.toggleOpenDialogSecondary,
+      state.toggleOpenDrawer,
+    ])
   );
+
+  function openMediaAttachmentPreview() {
+    if (isTabletUp) {
+      toggleOpenDialogSecondary(<MediaPreviewDialog media={media} />);
+    } else {
+      toggleOpenDrawer(<MediaPreviewDialog media={media} />);
+    }
+  }
 
   return (
     <button
-      onClick={() =>
-        toggleOpenDialogSecondary(<MediaPreviewDialog media={media} />)
-      }
+      onClick={() => openMediaAttachmentPreview()}
       className="relative hover:border-mainAccent text-start rounded-lg w-[55%] flex items-center gap-3 p-3 border-[0.5px] border-socialTextSecondary"
     >
       {media.type === "ANIME" ? (

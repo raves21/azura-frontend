@@ -4,16 +4,16 @@ import {
   AnimeFormat,
   AnimeGenre,
   AnimeSeason,
-  AnimeSortBy
+  AnimeSortBy,
 } from "@/utils/types/media/anime/animeAnilist";
 import FilterPill from "@/components/core/media/shared/catalog/FilterPill";
 import { useState } from "react";
-import CustomDropdown from "@/components/core/CustomDropdown";
+import CustomDropdown from "@/components/core/shared/CustomDropdown";
 import {
   animeFormatLabels,
   animeSeasonLabels,
   animeSortByLabels,
-  animeAnilistStatusLabels
+  animeAnilistStatusLabels,
 } from "@/utils/variables/media/anime";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { isEqual } from "radash";
@@ -38,7 +38,7 @@ export default function AnimeFiltersDialog() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
   const { format, genres, season, sortBy, year, status, query } = useSearch({
-    from: "/_protected/anime/catalog/"
+    from: "/_protected/anime/catalog/",
   });
 
   const [selectedGenres, setSelectedGenres] = useState<AnimeGenre[]>(
@@ -66,7 +66,7 @@ export default function AnimeFiltersDialog() {
     season: selectedSeason,
     sortBy: selectedSortBy,
     status: selectedStatus,
-    year: selectedYear
+    year: selectedYear,
   });
 
   const selectGenre = (genre: AnimeGenre) => {
@@ -95,7 +95,7 @@ export default function AnimeFiltersDialog() {
       status: selectedStatus ?? undefined,
       season: selectedSeason ?? undefined,
       year: selectedYear ?? undefined,
-      genres: selectedGenres ?? []
+      genres: selectedGenres ?? [],
     };
     if (!isEqual(initialFilters, appliedFilters)) {
       navigate({
@@ -110,8 +110,8 @@ export default function AnimeFiltersDialog() {
               : undefined,
           status: selectedStatus,
           year: selectedYear,
-          query
-        }
+          query,
+        },
       });
     }
     toggleOpenDialog(null);

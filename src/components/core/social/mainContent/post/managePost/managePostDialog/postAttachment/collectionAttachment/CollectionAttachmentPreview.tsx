@@ -5,29 +5,46 @@ import CollectionPreviewDialog from "@/components/core/social/mainContent/previe
 import { LibraryBig, X } from "lucide-react";
 import CollectionPhoto from "@/components/core/social/mainContent/collection/CollectionPhoto";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { useShallow } from "zustand/react/shallow";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type Props = {
   collection: TCollection;
 };
 
-export default function CollectionAttachment({ collection }: Props) {
-  const toggleOpenDialogSecondary = useGlobalStore(
-    (state) => state.toggleOpenDialogSecondary
+export default function CollectionAttachmentPreview({ collection }: Props) {
+  const [toggleOpenDialogSecondary, toggleOpenDrawer] = useGlobalStore(
+    useShallow((state) => [
+      state.toggleOpenDialogSecondary,
+      state.toggleOpenDrawer,
+    ])
   );
+  const { isTabletUp } = useWindowBreakpoints();
   const setCollectionAttachment = useManagePostStore(
     (state) => state.setCollectionAttachment
   );
 
+  function openCollectionAttachmentPreview() {
+    if (isTabletUp) {
+      toggleOpenDialogSecondary(
+        <CollectionPreviewDialog
+          collection={collection}
+          isSecondaryDialog={true}
+        />
+      );
+    } else {
+      toggleOpenDrawer(
+        <CollectionPreviewDialog
+          collection={collection}
+          isSecondaryDialog={true}
+        />
+      );
+    }
+  }
+
   return (
     <button
-      onClick={() =>
-        toggleOpenDialogSecondary(
-          <CollectionPreviewDialog
-            collection={collection}
-            isSecondaryDialog={true}
-          />
-        )
-      }
+      onClick={() => openCollectionAttachmentPreview()}
       className="relative hover:cursor-pointer hover:border-mainAccent transition-colors duration-300 text-start rounded-lg w-[55%] flex gap-3 p-3 border-[0.5px] border-socialTextSecondary"
     >
       <div className="rounded-md bg-blue-500 px-2 py-1 flex items-center gap-1 absolute -top-[14px] -right-4">

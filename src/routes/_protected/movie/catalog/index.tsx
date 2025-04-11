@@ -7,7 +7,7 @@ import {
   useMovieGenres,
 } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { MovieGenre, MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
@@ -46,7 +46,7 @@ function MovieCatalogPage() {
 
   const navigate = useNavigate();
 
-  useHandleSearchValidationFailure({
+  useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
     onValidationError: () => navigate({ to: "/movie" }),
   });

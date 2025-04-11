@@ -3,7 +3,7 @@ import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFil
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import { useSearchMovie } from "@/services/media/movie/movieQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
@@ -40,7 +40,7 @@ function MovieSearchPage() {
   const { query, page, success } = Route.useSearch();
   const navigate = useNavigate();
 
-  useHandleSearchValidationFailure({
+  useHandleSearchParamsValidationFailure({
     isValidationFail: !success || !query,
     onValidationError: () => navigate({ to: "/movie" }),
   });

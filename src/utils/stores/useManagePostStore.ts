@@ -8,14 +8,14 @@ type ManagePostPage =
   | "selectMediaAttachment"
   | "selectCollectionAttachment";
 
-type ManagePostStoreValues = {
+type Values = {
   managePostPage: ManagePostPage;
   selectedPrivacy: EntityPrivacy;
   mediaAttachment: Media | null;
   collectionAttachment: TCollection | null;
 };
 
-type ManagePostStoreActions = {
+type Actions = {
   setManagePostPage: (managePostPage: ManagePostPage) => void;
   setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) => void;
   setMediaAttachment: (mediaAttachment: Media | null) => void;
@@ -23,20 +23,20 @@ type ManagePostStoreActions = {
   resetState: () => void;
 };
 
-type ManagePostStore = ManagePostStoreValues & ManagePostStoreActions;
+type Store = Values & Actions;
 
 const defaultCreatePostPrivacyPreference = localStorage.getItem(
   "defaultCreatePostPrivacyPreference"
 ) as EntityPrivacy;
-const managePostStoreDefaultValues: ManagePostStoreValues = {
+const defaultValues: Values = {
   managePostPage: "managePost",
   selectedPrivacy: defaultCreatePostPrivacyPreference || "PUBLIC",
   mediaAttachment: null,
   collectionAttachment: null,
 };
 
-export const useManagePostStore = create<ManagePostStore>((set) => ({
-  ...managePostStoreDefaultValues,
+export const useManagePostStore = create<Store>((set) => ({
+  ...defaultValues,
   setManagePostPage: (managePostPage: ManagePostPage) =>
     set({ managePostPage }),
   setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) =>
@@ -45,5 +45,5 @@ export const useManagePostStore = create<ManagePostStore>((set) => ({
     set({ mediaAttachment }),
   setCollectionAttachment: (collectionAttachment: TCollection | null) =>
     set({ collectionAttachment }),
-  resetState: () => set({ ...managePostStoreDefaultValues }),
+  resetState: () => set({ ...defaultValues }),
 }));

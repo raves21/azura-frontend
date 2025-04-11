@@ -15,7 +15,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AnimeFiltersDialog from "../../../../components/core/media/anime/filter/AnimeFiltersDialog";
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
@@ -52,7 +52,7 @@ function AnimeCatalogPage() {
     Route.useSearch();
   const navigate = useNavigate();
 
-  useHandleSearchValidationFailure({
+  useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
     onValidationError: () => navigate({ to: "/anime" }),
   });

@@ -7,7 +7,7 @@ import {
   UserBasicInfo,
 } from "../types/auth/auth";
 
-type AuthStoreValues = {
+type Values = {
   signUpStep: SignUpStep;
   signUpValues: SignUpValues;
   forgotPasswordStep: ForgotPasswordStep | null;
@@ -16,7 +16,7 @@ type AuthStoreValues = {
   currentUser: UserBasicInfo | null;
 };
 
-type AuthStoreActions = {
+type Actions = {
   setSignUpStep: (signUpStep: SignUpStep) => void;
   setSignUpValues: (signUpValues: SignUpValues) => void;
   setForgotPasswordStep: (
@@ -29,9 +29,9 @@ type AuthStoreActions = {
   setCurrentUser: (currentUser: UserBasicInfo | null) => void;
 };
 
-type AuthStore = AuthStoreValues & AuthStoreActions;
+type Store = Values & Actions;
 
-const authStoreDefaultValues: AuthStoreValues = {
+const defaultValues: Values = {
   signUpStep: SignUpStep.USER_DETAILS,
   signUpValues: {
     email: "",
@@ -45,8 +45,8 @@ const authStoreDefaultValues: AuthStoreValues = {
   currentUser: null,
 };
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  ...authStoreDefaultValues,
+export const useAuthStore = create<Store>((set) => ({
+  ...defaultValues,
   setSignUpStep: (signUpStep: SignUpStep) => set({ signUpStep }),
   setSignUpValues: (signUpValues: SignUpValues) => set({ signUpValues }),
   setForgotPasswordStep: (forgotPasswordStep: ForgotPasswordStep | null) =>

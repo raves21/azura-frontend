@@ -6,7 +6,7 @@ type ManageCollectionPage =
   | "manageCollecionPhoto"
   | "selectPrivacy";
 
-type ManageCollectionStoreValues = {
+type Values = {
   manageCollectionPage: ManageCollectionPage;
   collectionPhoto: string | null;
   collectionPreviewPosters: string[] | null;
@@ -15,24 +15,25 @@ type ManageCollectionStoreValues = {
   selectedPrivacy: EntityPrivacy;
 };
 
-type ManageCollectionStoreActions = {
+type Actions = {
   setManageCollectionPage: (manageCollectionPage: ManageCollectionPage) => void;
   setCollectionPhoto: (collectionPhoto: string | null) => void;
-  setCollectionPreviewPosters: (collectionPreviewPosters: string[] | null) => void;
+  setCollectionPreviewPosters: (
+    collectionPreviewPosters: string[] | null
+  ) => void;
   setCollectionName: (collectionName: string | null) => void;
   setCollectionDescription: (collectionDescription: string | null) => void;
   setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) => void;
-  resetState: () => void
+  resetState: () => void;
 };
 
-type ManageCollectionStore = ManageCollectionStoreValues &
-  ManageCollectionStoreActions;
+type Store = Values & Actions;
 
 const defaultCreateCollectionPrivacyPreference = localStorage.getItem(
   "defaultCreateCollectionPrivacyPreference"
 ) as EntityPrivacy;
 
-const manageCollectionStoreDefaultValues: ManageCollectionStoreValues = {
+const defaultValues: Values = {
   manageCollectionPage: "manageCollectionDetails",
   collectionDescription: null,
   collectionName: "",
@@ -41,19 +42,18 @@ const manageCollectionStoreDefaultValues: ManageCollectionStoreValues = {
   selectedPrivacy: defaultCreateCollectionPrivacyPreference || "PUBLIC",
 };
 
-export const useManageCollectionStore = create<ManageCollectionStore>(
-  (set) => ({
-    ...manageCollectionStoreDefaultValues,
-    resetState: () => set({...manageCollectionStoreDefaultValues}),
-    setManageCollectionPage: (manageCollectionPage: ManageCollectionPage) =>
-      set({ manageCollectionPage }),
-    setCollectionPhoto: (collectionPhoto: string | null) =>
-      set({ collectionPhoto }),
-    setCollectionPreviewPosters: (collectionPreviewPosters: string[] | null) => set({collectionPreviewPosters}),
-    setCollectionName: (collectionName: string | null) => set({ collectionName }),
-    setCollectionDescription: (collectionDescription: string | null) =>
-      set({ collectionDescription }),
-    setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) =>
-      set({ selectedPrivacy }),
-  })
-);
+export const useManageCollectionStore = create<Store>((set) => ({
+  ...defaultValues,
+  resetState: () => set({ ...defaultValues }),
+  setManageCollectionPage: (manageCollectionPage: ManageCollectionPage) =>
+    set({ manageCollectionPage }),
+  setCollectionPhoto: (collectionPhoto: string | null) =>
+    set({ collectionPhoto }),
+  setCollectionPreviewPosters: (collectionPreviewPosters: string[] | null) =>
+    set({ collectionPreviewPosters }),
+  setCollectionName: (collectionName: string | null) => set({ collectionName }),
+  setCollectionDescription: (collectionDescription: string | null) =>
+    set({ collectionDescription }),
+  setSelectedPrivacy: (selectedPrivacy: EntityPrivacy) =>
+    set({ selectedPrivacy }),
+}));

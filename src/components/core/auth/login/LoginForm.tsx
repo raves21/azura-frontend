@@ -6,11 +6,11 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { Link } from "@tanstack/react-router";
 import { loginFormSchema } from "@/utils/variables/formSchemas";
 import { LoginFormData } from "@/utils/types/auth/forms";
@@ -21,8 +21,8 @@ export default function LoginForm() {
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   });
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
@@ -31,7 +31,7 @@ export default function LoginForm() {
     try {
       await login({
         email: values.email.trim(),
-        password: values.password.trim()
+        password: values.password.trim(),
       });
     } catch (error) {
       toggleOpenDialog(<ErrorDialog error={error} />);

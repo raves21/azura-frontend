@@ -15,7 +15,7 @@ import { ChangePasswordFormData } from "@/utils/types/auth/forms";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useChangePassword } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 type Props = {
   afterChangePasswordSuccessAction: (values: ChangePasswordFormData) => void;

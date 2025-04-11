@@ -1,14 +1,11 @@
 import { RefObject, useEffect } from "react";
 
-type UseHandleClickOutsideArgs = {
+type Args = {
   ref: RefObject<HTMLElement | undefined>;
   callBack: () => void;
 };
 
-export const useHandleClickOutside = ({
-  ref,
-  callBack,
-}: UseHandleClickOutsideArgs) => {
+export const useHandleClickOutside = ({ ref, callBack }: Args) => {
   const handleClick = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as HTMLElement)) {
       callBack();

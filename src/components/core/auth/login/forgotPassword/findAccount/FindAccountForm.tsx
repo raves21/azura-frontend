@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
@@ -17,14 +17,14 @@ import { FindAccountFormData } from "@/utils/types/auth/forms";
 import { useFindUserByEmail, useSendOTC } from "@/services/auth/authQueries";
 import { useShallow } from "zustand/react/shallow";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 export default function FindAccountForm() {
   const navigate = useNavigate();
   const [setForgotPasswordStep, setFindAccountFoundUser] = useAuthStore(
     useShallow((state) => [
       state.setForgotPasswordStep,
-      state.setFindAccountFoundUser
+      state.setFindAccountFoundUser,
     ])
   );
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -32,8 +32,8 @@ export default function FindAccountForm() {
   const form = useForm<FindAccountFormData>({
     resolver: zodResolver(findAccountFormSchema),
     defaultValues: {
-      email: ""
-    }
+      email: "",
+    },
   });
 
   const { mutateAsync: findUserByEmail, isPending: isFindingUserByEmail } =
@@ -48,7 +48,7 @@ export default function FindAccountForm() {
       setFindAccountFoundUser(foundUser);
       setForgotPasswordStep(ForgotPasswordStep.VERIFY_EMAIL);
       navigate({
-        to: "/login/forgot-password/verify-email"
+        to: "/login/forgot-password/verify-email",
       });
     } catch (error) {
       toggleOpenDialog(<ErrorDialog error={error} />);

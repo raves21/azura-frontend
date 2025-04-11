@@ -8,7 +8,7 @@ import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
 import { useParams } from "@tanstack/react-router";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
-import CustomDropdown from "@/components/core/CustomDropdown";
+import CustomDropdown from "@/components/core/shared/CustomDropdown";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";

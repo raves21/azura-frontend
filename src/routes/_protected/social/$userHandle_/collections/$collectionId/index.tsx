@@ -1,9 +1,9 @@
-import BackButton from "@/components/core/BackButton";
+import BackButton from "@/components/core/shared/BackButton";
 import CollectionPhotoSkeleton from "@/components/core/loadingSkeletons/social/CollectionPhotoSkeleton";
 import CollectionActions from "@/components/core/social/mainContent/collection/collectionInfo/CollectionActions";
 import CollectionEditButton from "@/components/core/social/mainContent/collection/collectionInfo/CollectionEditButton";
 import CollectionInfo from "@/components/core/social/mainContent/collection/collectionInfo/CollectionInfo";
-import CollectionItems from "@/components/core/social/mainContent/collection/collectionItem/CollectionItems";
+import CollectionItems from "@/components/core/social/mainContent/collection/collectionInfo/collectionItems/CollectionItems";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCollectionInfo } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";

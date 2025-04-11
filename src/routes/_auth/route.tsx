@@ -1,5 +1,5 @@
-import StaticLoadingPage from "@/components/core/StaticLoadingPage";
-import Waves from "@/components/core/Waves";
+import StaticLoadingPage from "@/components/core/shared/StaticLoadingPage";
+import Waves from "@/components/core/shared/Waves";
 import { useRefreshJWT } from "@/services/auth/authQueries";
 import { LastMediaRouteVisited } from "@/utils/types/shared";
 import {
@@ -7,11 +7,11 @@ import {
   Link,
   LinkProps,
   Navigate,
-  Outlet
+  Outlet,
 } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
-  component: () => <AuthLayout />
+  component: () => <AuthLayout />,
 });
 
 function AuthLayout() {
