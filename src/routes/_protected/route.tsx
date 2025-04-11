@@ -1,5 +1,5 @@
 import PulseCheckJWT from "@/components/core/auth/shared/PulseCheckJWT";
-import StaticLoadingPage from "@/components/core/StaticLoadingPage";
+import StaticLoadingPage from "@/components/core/shared/StaticLoadingPage";
 import { useRefreshJWT } from "@/services/auth/authQueries";
 import {
   createFileRoute,

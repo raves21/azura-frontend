@@ -1,5 +1,5 @@
 import { LinkProps } from "@tanstack/react-router";
-import BackButton from "../../BackButton";
+import BackButton from "../../shared/BackButton";
 import ActivitySkeleton from "./ActivitySkeleton";
 import PostCommentsSkeleton from "./PostCommentsSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";

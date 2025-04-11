@@ -14,11 +14,7 @@ import {
   PaginatedUserPreviewsResponse,
   PaginatedCollectionItemsResponse,
 } from "@/utils/types/social/social";
-import {
-  EntityOwner,
-  EntityPrivacy,
-  ResponseWithMessage,
-} from "@/utils/types/social/shared";
+import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
   post_ReactionCacheMutation,
   postInfo_TotalCommentsCacheMutation,
@@ -36,13 +32,17 @@ import {
   unfollowUser_UserPreviewListCacheMutation,
   toggleMediaExistenceInCollectionCacheMutation,
   deleteCollectionItem_CollectionIitemsCacheMutation,
-  addCollectionItem_CollectionIitemsCacheMutation,
-  editCollectionInfo_CollectionInfoCacheMutation,
+  addCollectionItem_CollectionItemsCacheMutation,
+  editCollection_CollectionInfoCacheMutation,
   deleteCollection_CollectionsCacheMutation,
+  createCollection_CollectionsCacheMutation,
 } from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
-import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
+import {
+  MediaExistenceInCollection,
+  PaginatedMediaExistenceInCollectionsResponse,
+} from "@/utils/types/media/shared";
 import { queryClient } from "@/utils/variables/queryClient";
 
 export function useForYouFeed() {
@@ -156,24 +156,24 @@ export function useCreatePost() {
         collectionId,
         privacy,
       });
-      return data.data as ResponseWithMessage & {
-        collection: TCollection | null;
-        id: string;
-      };
+      return {
+        ...data.data,
+        totalLikes: 0,
+        totalComments: 0,
+        isLikedByCurrentUser: false,
+      } as TPost;
     },
-    onSuccess: async (result, variables) => {
-      if (variables.currentUserHandle) {
+    onSuccess: async (result, { currentUserHandle }) => {
+      if (currentUserHandle) {
         createPost_PostsCacheMutation({
-          currentUserHandle: variables.currentUserHandle,
+          currentUserHandle,
           postsFrom: "forYouFeed",
           result,
-          variables,
         });
         createPost_PostsCacheMutation({
-          currentUserHandle: variables.currentUserHandle,
+          currentUserHandle,
           postsFrom: "currentUserProfile",
           result,
-          variables,
         });
       }
     },
@@ -527,7 +527,7 @@ export function useSearchPeople(query: string, enabled: boolean) {
 
 export function useSearchPosts(query: string, enabled: boolean) {
   return useInfiniteQuery({
-    queryKey: ["searchPosts", query],
+    queryKey: ["searchPosts", "posts", query],
     queryFn: async ({ pageParam }) => {
       const { data: searchPostsResults } = await api.get("/search/posts", {
         params: {
@@ -544,7 +544,7 @@ export function useSearchPosts(query: string, enabled: boolean) {
   });
 }
 
-type UseMediaExistenceInCollectionsArgs = {
+type UseMediaExistenceInCollectionArgs = {
   mediaId: string;
   mediaType: MediaType;
 };
@@ -552,7 +552,7 @@ type UseMediaExistenceInCollectionsArgs = {
 export function useMediaExistenceInCollections({
   mediaId,
   mediaType,
-}: UseMediaExistenceInCollectionsArgs) {
+}: UseMediaExistenceInCollectionArgs) {
   return useInfiniteQuery({
     queryKey: [
       "collections",
@@ -562,8 +562,8 @@ export function useMediaExistenceInCollections({
     ],
     queryFn: async ({ pageParam }) => {
       const { data: mediaExistenceInCollections } = await api.get(
-        `/collections/check-media-existence/${mediaId}`,
-        { params: { type: mediaType, page: pageParam } }
+        `/collections/check-media-existence`,
+        { params: { mediaId, type: mediaType, page: pageParam } }
       );
       return mediaExistenceInCollections as PaginatedMediaExistenceInCollectionsResponse;
     },
@@ -571,6 +571,26 @@ export function useMediaExistenceInCollections({
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useMediaExistenceInCollection({
+  mediaId,
+  mediaType,
+  collectionId,
+}: UseMediaExistenceInCollectionArgs & { collectionId: string }) {
+  return useQuery({
+    queryKey: ["mediaExistenceInCollection", mediaId, mediaType],
+    queryFn: async () => {
+      const { data: mediaExistenceInCollection } = await api.get(
+        `/collections/${collectionId}/check-media-existence`,
+        { params: { mediaId, type: mediaType } }
+      );
+      return mediaExistenceInCollection.data as Omit<
+        MediaExistenceInCollection,
+        "id" | "name"
+      >;
+    },
   });
 }
 
@@ -584,7 +604,7 @@ export function useAddCollectionItem() {
   return useMutation({
     mutationFn: async ({ collectionId, media }: UseAddCollectionItemArgs) => {
       //mutate the cache
-      addCollectionItem_CollectionIitemsCacheMutation({
+      addCollectionItem_CollectionItemsCacheMutation({
         collectionId,
         media,
       });
@@ -690,10 +710,16 @@ export function useCreateCollection() {
       description,
       photo,
     }: UseCreateCollectionArgs) => {
-      await api.post("/collections", { name, privacy, description, photo });
+      const { data: newCollection } = await api.post("/collections", {
+        name,
+        privacy,
+        description,
+        photo,
+      });
+      return newCollection.data as TCollection;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
+    onSuccess: (result) => {
+      createCollection_CollectionsCacheMutation(result);
     },
   });
 }
@@ -720,7 +746,7 @@ export function useEditCollection() {
           return query.queryKey.includes("posts");
         },
       });
-      editCollectionInfo_CollectionInfoCacheMutation(editedCollection);
+      editCollection_CollectionInfoCacheMutation(editedCollection);
     },
   });
 }

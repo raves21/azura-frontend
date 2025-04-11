@@ -1,44 +1,21 @@
 import {
   getTMDBImageURL,
-  getTMDBRating,
   getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
-import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
 import { Star } from "lucide-react";
-import { useShallow } from "zustand/react/shallow";
+import { getTMDBRating } from "@/services/media/sharedFunctions";
 
 type Props = {
   tv: TVShowTMDB;
+  onClick: () => void;
 };
 
-export default function AttachmentTVSearchResultCard({ tv }: Props) {
-  const [setMediaAttachment, setManagePostPage, setCollectionAttachment] =
-    useManagePostStore(
-      useShallow((state) => [
-        state.setMediaAttachment,
-        state.setManagePostPage,
-        state.setCollectionAttachment,
-      ])
-    );
+export default function TVSearchResultCard({ tv, onClick }: Props) {
   return (
     <button
-      onClick={() => {
-        setCollectionAttachment(null);
-        setMediaAttachment({
-          coverImage: getTMDBImageURL(tv.backdrop_path),
-          description: tv.overview,
-          id: tv.id.toString(),
-          posterImage: getTMDBImageURL(tv.poster_path),
-          rating: getTMDBRating(tv.vote_average),
-          status: null,
-          title: tv.name,
-          type: "TV",
-          year: getTMDBReleaseYear(tv.first_air_date),
-        });
-        setManagePostPage("managePost");
-      }}
-      className="flex text-start w-full gap-4 px-3 py-2 hover:bg-socialPrimaryHover"
+      onClick={onClick}
+      className="flex w-full text-start gap-4 px-3 py-2 hover:bg-gray-900/70"
     >
       <div className="aspect-[3/4] h-min w-[90px] bg-gray-600 rounded-md">
         <img
@@ -54,8 +31,9 @@ export default function AttachmentTVSearchResultCard({ tv }: Props) {
           <div className="flex items-center gap-[6px]">
             <p>{getTMDBReleaseYear(tv.first_air_date)}</p>
             <div className="bg-gray-400 rounded-full size-1" />
-            <p>MOVIE</p>
+            <p>TV</p>
             <div className="bg-gray-400 rounded-full size-1" />
+
             <div className="flex items-center gap-1">
               <Star className="size-4" />
               <p>{getTMDBRating(tv.vote_average)}</p>

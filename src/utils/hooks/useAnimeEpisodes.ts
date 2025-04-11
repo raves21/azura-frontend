@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { EpisodeChunk, EpisodeToBeRendered } from "../types/media/shared";
 import { useScrollToElement } from "./useScrollToElement";
 
-type UseAnimeEpisodesArgs = {
+type Args = {
   chunkedEpisodes: EpisodeChunk[] | null | undefined;
   currentlyWatchingEpisodeNumber: number | undefined;
 };
@@ -11,7 +11,7 @@ type UseAnimeEpisodesArgs = {
 export function useAnimeEpisodes({
   chunkedEpisodes,
   currentlyWatchingEpisodeNumber,
-}: UseAnimeEpisodesArgs) {
+}: Args) {
   const [selectedChunk, setSelectedChunk] = useState<EpisodeChunk>();
   const [currentlyWatchingEpisode, setCurrentlyWatchingEpisode] =
     useState<EpisodeToBeRendered>();

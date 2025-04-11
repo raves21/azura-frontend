@@ -1,6 +1,6 @@
 import { DependencyList, useEffect } from "react";
 
-type UseScrollToElementArgs = {
+type Args = {
   scrollableContainerRef: React.MutableRefObject<HTMLElement | null>;
   targetElementRef: React.MutableRefObject<HTMLElement | null>;
   deps?: DependencyList;
@@ -11,8 +11,8 @@ export function useScrollToElement({
   scrollableContainerRef,
   targetElementRef,
   deps = [],
-  condition = true
-}: UseScrollToElementArgs) {
+  condition = true,
+}: Args) {
   useEffect(() => {
     if (condition) {
       const scrollableContainer = scrollableContainerRef.current;
@@ -29,7 +29,7 @@ export function useScrollToElement({
           scrollableContainer.scrollTop;
 
         scrollableContainer.scrollTo({
-          top: relativeTop
+          top: relativeTop,
         });
       }
     }

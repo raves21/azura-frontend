@@ -6,7 +6,7 @@ import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueri
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
 import { useParams } from "@tanstack/react-router";
-import CustomDropdown from "@/components/core/CustomDropdown";
+import CustomDropdown from "@/components/core/shared/CustomDropdown";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";

@@ -1,6 +1,6 @@
 import { TCollectionItem } from "@/utils/types/social/social";
-import Media from "./Media";
-import CollectionItemPreviewDialog from "../../previewPopup/collectionItem/CollectionItemPreviewDialog";
+import Media from "@/components/core/shared/Media";
+import CollectionItemPreviewDialog from "../../../previewPopup/collectionItem/CollectionItemPreviewDialog";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";

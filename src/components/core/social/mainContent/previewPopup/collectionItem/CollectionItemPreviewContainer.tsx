@@ -5,7 +5,7 @@ import { X, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Link, LinkProps, Navigate, useParams } from "@tanstack/react-router";
-import DeleteConfirmationDialog from "@/components/core/DeleteConfirmationDialog";
+import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
 import { MutationKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
 import { cn } from "@/lib/utils";

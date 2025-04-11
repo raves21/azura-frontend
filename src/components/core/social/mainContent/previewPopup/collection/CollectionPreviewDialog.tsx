@@ -1,6 +1,6 @@
 import { TCollection } from "@/utils/types/social/social";
 import CollectionInfo from "../../collection/collectionInfo/CollectionInfo";
-import Media from "../../collection/collectionItem/Media";
+import Media from "../../../../shared/Media";
 import CollectionPreviewContainer from "./CollectionPreviewContainer";
 
 type Props = {

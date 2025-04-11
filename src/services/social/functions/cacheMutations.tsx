@@ -1,6 +1,6 @@
 import { queryClient } from "@/utils/variables/queryClient";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
-import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
+import { EntityOwner } from "@/utils/types/social/shared";
 import {
   PaginatedCommentsResponse,
   Media,
@@ -61,11 +61,9 @@ const MEDIA_EXISTENCE_IN_COLLECTIONS_QUERY_KEY = (
   mediaType: MediaType
 ) => ["collections", "mediaExistenceInCollections", mediaId, mediaType];
 
-const COLLECTION_ITEMS_QUERY_FILTER: QueryFilters = {
-  predicate(query) {
-    return query.queryKey.includes("collectionItems");
-  },
-};
+const COLLECTION_ITEMS_QUERY_FILTER = (collectionId: string): QueryFilters => ({
+  queryKey: ["collectionItems", collectionId],
+});
 
 const COLLECTION_INFO_QUERY_KEY = (collectionId: string): QueryKey => [
   "collectionInfo",
@@ -81,64 +79,15 @@ const COLLECTIONS_QUERY_FILTER: QueryFilters = {
 type CreatePostPostsCacheMutation = {
   postsFrom: "forYouFeed" | "currentUserProfile";
   currentUserHandle: string;
-  variables: {
-    content: string | null;
-    media: Media | null;
-    privacy: EntityPrivacy;
-    owner: EntityOwner;
-  };
-  result: { collection: TCollection | null; id: string };
+  result: TPost;
 };
 
 export function createPost_PostsCacheMutation({
   postsFrom,
-  variables,
   result,
   currentUserHandle,
 }: CreatePostPostsCacheMutation) {
-  const { content, media, owner, privacy } = variables;
-  const { collection, id } = result;
-  let newPost: TPost;
-  if (media) {
-    newPost = {
-      id,
-      totalComments: 0,
-      totalLikes: 0,
-      collection: null,
-      content,
-      createdAt: new Date().toString(),
-      isLikedByCurrentUser: false,
-      media,
-      owner,
-      privacy,
-    };
-  } else if (collection) {
-    newPost = {
-      id,
-      totalComments: 0,
-      totalLikes: 0,
-      collection,
-      content,
-      createdAt: new Date().toString(),
-      isLikedByCurrentUser: false,
-      media: null,
-      owner,
-      privacy,
-    };
-  } else {
-    newPost = {
-      id,
-      totalComments: 0,
-      totalLikes: 0,
-      collection: null,
-      content,
-      createdAt: new Date().toString(),
-      isLikedByCurrentUser: false,
-      media: null,
-      owner,
-      privacy,
-    };
-  }
+  const newPost: TPost = result;
   queryClient.setQueriesData<InfiniteData<PaginatedPostsResponse, number>>(
     postsFrom === "forYouFeed"
       ? FOR_YOU_FEED_QUERY_FILTER
@@ -153,7 +102,7 @@ export function createPost_PostsCacheMutation({
             {
               data: [newPost, ...firstPage.data],
               totalPages: oldData.pages[0].totalPages,
-              message: "new post created in cache",
+              message: "added post",
               page: 1,
               perPage: oldData.pages[0].perPage,
             },
@@ -168,7 +117,7 @@ export function createPost_PostsCacheMutation({
           pages: [
             {
               data: [newPost],
-              message: "success creating the first post",
+              message: "first post",
               page: 1,
               perPage: 10,
               totalPages: 1,
@@ -314,7 +263,8 @@ export function createComment_CommentsCacheMutation({
   queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, number>>(
     { queryKey: POST_COMMENTS_QUERY_KEY(postId) },
     (oldData) => {
-      const firstPage = oldData?.pages[0];
+      if (!oldData) return undefined;
+      const firstPage = oldData.pages[0];
       //if there are already existing comments
       if (firstPage && firstPage.data.length > 0) {
         return {
@@ -322,10 +272,10 @@ export function createComment_CommentsCacheMutation({
           pages: [
             {
               data: [newComment, ...firstPage.data],
-              totalPages: oldData.pages[0].totalPages,
-              message: "new post created in cache",
+              message: "added post",
               page: 1,
-              perPage: 5,
+              totalPages: firstPage.totalPages,
+              perPage: firstPage.perPage,
             },
             ...oldData.pages.slice(1),
           ],
@@ -338,7 +288,7 @@ export function createComment_CommentsCacheMutation({
           pages: [
             {
               data: [newComment],
-              message: "created first comment in cache",
+              message: "first comment",
               page: 1,
               perPage: 5,
               totalPages: 1,
@@ -688,7 +638,7 @@ export function deleteCollectionItem_CollectionIitemsCacheMutation({
 }: Omit<ToggleMediaExistenceInCollectionCacheMutationArgs, "type">) {
   queryClient.setQueriesData<
     InfiniteData<PaginatedCollectionItemsResponse, number>
-  >(COLLECTION_ITEMS_QUERY_FILTER, (oldData) => {
+  >(COLLECTION_ITEMS_QUERY_FILTER(collectionId), (oldData) => {
     if (!oldData) return undefined;
 
     const newPages = oldData.pages.map((page) => ({
@@ -697,8 +647,7 @@ export function deleteCollectionItem_CollectionIitemsCacheMutation({
         (collectionItem) =>
           !(
             collectionItem.media.id === mediaId &&
-            collectionItem.media.type === mediaType &&
-            collectionItem.collectionId === collectionId
+            collectionItem.media.type === mediaType
           )
       ),
     }));
@@ -715,7 +664,7 @@ type AddCollectionItemCollectionItemsCacheMutationArgs = {
   media: Media;
 };
 
-export function addCollectionItem_CollectionIitemsCacheMutation({
+export function addCollectionItem_CollectionItemsCacheMutation({
   collectionId,
   media,
 }: AddCollectionItemCollectionItemsCacheMutationArgs) {
@@ -727,8 +676,9 @@ export function addCollectionItem_CollectionIitemsCacheMutation({
 
   queryClient.setQueriesData<
     InfiniteData<PaginatedCollectionItemsResponse, number>
-  >(COLLECTION_ITEMS_QUERY_FILTER, (oldData) => {
-    const firstPage = oldData?.pages[0];
+  >(COLLECTION_ITEMS_QUERY_FILTER(collectionId), (oldData) => {
+    if (!oldData) return undefined;
+    const firstPage = oldData.pages[0];
 
     //if has existing collectionItems
     if (firstPage && firstPage.data.length > 0) {
@@ -737,10 +687,10 @@ export function addCollectionItem_CollectionIitemsCacheMutation({
         pages: [
           {
             data: [newCollectionItem, ...firstPage.data],
-            message: "new collectionitem created in cache",
+            message: "added collectionitem",
             page: 1,
-            perPage: oldData.pages[0].perPage,
-            totalPages: oldData.pages[0].totalPages,
+            perPage: firstPage.perPage,
+            totalPages: firstPage.totalPages,
           },
           ...oldData.pages.slice(1),
         ],
@@ -757,7 +707,7 @@ export function addCollectionItem_CollectionIitemsCacheMutation({
             totalPages: 1,
           },
         ],
-        message: "success creating the first colectionitem",
+        message: "first collectionitem created",
         page: 1,
         perPage: 10,
         totalPages: 1,
@@ -766,7 +716,7 @@ export function addCollectionItem_CollectionIitemsCacheMutation({
   });
 }
 
-export function editCollectionInfo_CollectionInfoCacheMutation(
+export function editCollection_CollectionInfoCacheMutation(
   editedCollection: TCollection
 ) {
   queryClient.setQueryData<TCollection>(
@@ -777,6 +727,46 @@ export function editCollectionInfo_CollectionInfoCacheMutation(
       return editedCollection;
     }
   );
+}
+
+export function createCollection_CollectionsCacheMutation(
+  newCollection: TCollection
+) {
+  queryClient.setQueriesData<
+    InfiniteData<PaginatedCollectionsResponse, number>
+  >(COLLECTIONS_QUERY_FILTER, (oldData) => {
+    if (!oldData) return undefined;
+    const firstPage = oldData.pages[0];
+
+    if (firstPage && firstPage.data.length > 0) {
+      return {
+        pageParams: oldData.pageParams,
+        pages: [
+          {
+            data: [newCollection, ...firstPage.data],
+            message: "added collection",
+            page: 1,
+            perPage: firstPage.perPage,
+            totalPages: firstPage.totalPages,
+          },
+          ...oldData.pages.slice(1),
+        ],
+      };
+    } else {
+      return {
+        pageParams: [1],
+        pages: [
+          {
+            data: [newCollection],
+            message: "first collection created",
+            page: 1,
+            perPage: 10,
+            totalPages: 1,
+          },
+        ],
+      };
+    }
+  });
 }
 
 export function deleteCollection_CollectionsCacheMutation(

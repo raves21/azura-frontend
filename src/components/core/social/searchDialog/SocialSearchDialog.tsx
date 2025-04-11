@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
-import SearchDialogForm from "../../media/shared/search/SearchDialogForm";
+import SearchDialogForm from "../../shared/search/SearchDialogForm";
 import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useEffect, useState } from "react";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import SearchDialogContainer from "../../media/shared/search/SearchDialogContainer";
+import SearchDialogContainer from "../../shared/search/SearchDialogContainer";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import {

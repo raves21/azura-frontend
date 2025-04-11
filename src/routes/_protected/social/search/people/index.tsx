@@ -1,14 +1,14 @@
 import { Fragment } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchPeople } from "@/services/social/queries/socialQueries";
-import { useHandleSearchValidationFailure } from "@/utils/hooks/useHandleSearchValidationFailure";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import UserListItem from "@/components/core/social/UserListItem";
 
 const peopleSearchResultsPageSchema = z.object({
-  query: z.string()
+  query: z.string(),
 });
 
 type PeopleSearchResultsPageSchema = z.infer<
@@ -23,29 +23,29 @@ export const Route = createFileRoute("/_protected/social/search/people/")({
     if (validated.success) {
       return {
         ...validated.data,
-        success: true
+        success: true,
       };
     }
     return {
       query: "",
-      success: false
+      success: false,
     };
-  }
+  },
 });
 
 function PeopleSearchResultsPage() {
   const { query, success } = Route.useSearch();
   const navigate = useNavigate();
 
-  useHandleSearchValidationFailure({
+  useHandleSearchParamsValidationFailure({
     isValidationFail: !success || !query,
-    onValidationError: () => navigate({ to: "/social" })
+    onValidationError: () => navigate({ to: "/social" }),
   });
 
   const {
     data: searchPeopleResults,
     isLoading: isSearchPeopleLoading,
-    error: searchPeopleError
+    error: searchPeopleError,
   } = useSearchPeople(query, !!success && !!query);
 
   if (isSearchPeopleLoading) {

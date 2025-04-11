@@ -1,44 +1,21 @@
+import { getTMDBRating } from "@/services/media/sharedFunctions";
 import {
   getTMDBImageURL,
-  getTMDBRating,
   getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
-import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { MovieTMDB } from "@/utils/types/media/movie/movieTmdb";
 import { Star } from "lucide-react";
-import { useShallow } from "zustand/react/shallow";
 
 type Props = {
   movie: MovieTMDB;
+  onClick: () => void;
 };
 
-export default function AttachmentMovieSearchResultCard({ movie }: Props) {
-  const [setMediaAttachment, setManagePostPage, setCollectionAttachment] =
-    useManagePostStore(
-      useShallow((state) => [
-        state.setMediaAttachment,
-        state.setManagePostPage,
-        state.setCollectionAttachment,
-      ])
-    );
+export default function MovieSearchResultCard({ movie, onClick }: Props) {
   return (
     <button
-      onClick={() => {
-        setCollectionAttachment(null);
-        setMediaAttachment({
-          coverImage: getTMDBImageURL(movie.backdrop_path),
-          description: movie.overview,
-          id: movie.id.toString(),
-          posterImage: getTMDBImageURL(movie.poster_path),
-          rating: getTMDBRating(movie.vote_average),
-          status: null,
-          title: movie.title,
-          type: "MOVIE",
-          year: getTMDBReleaseYear(movie.release_date),
-        });
-        setManagePostPage("managePost");
-      }}
-      className="flex text-start w-full gap-4 px-3 py-2 hover:bg-socialPrimaryHover"
+      onClick={onClick}
+      className="flex w-full text-start gap-4 px-3 py-2 hover:bg-gray-900/70"
     >
       <div className="aspect-[3/4] h-min w-[90px] bg-gray-600 rounded-md">
         <img
@@ -56,6 +33,7 @@ export default function AttachmentMovieSearchResultCard({ movie }: Props) {
             <div className="bg-gray-400 rounded-full size-1" />
             <p>MOVIE</p>
             <div className="bg-gray-400 rounded-full size-1" />
+
             <div className="flex items-center gap-1">
               <Star className="size-4" />
               <p>{getTMDBRating(movie.vote_average)}</p>

@@ -1,11 +1,11 @@
-import BackButton from "@/components/core/BackButton";
+import BackButton from "@/components/core/shared/BackButton";
 import PostComments from "@/components/core/social/mainContent/post/postInfo/postComments/PostComments";
 import PostInfo from "@/components/core/social/mainContent/post/postInfo/PostInfo";
 import {
   createFileRoute,
   LinkProps,
   Navigate,
-  useRouterState
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import PostInfoSkeleton from "@/components/core/loadingSkeletons/social/PostInfoSkeleton";
@@ -15,7 +15,7 @@ import { useAuthStore } from "@/utils/stores/useAuthStore";
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/posts/$postId/"
 )({
-  component: () => <PostInfoPage />
+  component: () => <PostInfoPage />,
 });
 
 function PostInfoPage() {
@@ -25,7 +25,7 @@ function PostInfoPage() {
   const {
     data: postInfo,
     isLoading: isPostInfoLoading,
-    error: postInfoError
+    error: postInfoError,
   } = usePostInfo(postId);
 
   useEffect(() => {
@@ -39,18 +39,18 @@ function PostInfoPage() {
 
   if (!postInfoState || (postInfoState && postInfoState.from === "home-page")) {
     linkProps = {
-      to: "/social"
+      to: "/social",
     };
   } else if (postInfoState.from === "search-page") {
     linkProps = {
-      to: "/social/search/posts"
+      to: "/social/search/posts",
     };
   } else {
     linkProps = {
       to: "/social/$userHandle",
       params: {
-        userHandle
-      }
+        userHandle,
+      },
     };
   }
 

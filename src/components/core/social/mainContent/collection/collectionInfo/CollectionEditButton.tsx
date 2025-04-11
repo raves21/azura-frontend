@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDeleteCollection } from "@/services/social/queries/socialQueries";
 import { useParams } from "@tanstack/react-router";
-import DeleteConfirmationDialog from "@/components/core/DeleteConfirmationDialog";
+import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
 
 type Props = {
   collection: TCollection;

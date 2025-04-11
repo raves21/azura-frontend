@@ -5,7 +5,7 @@ import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
-import CustomDropdown from "../../../CustomDropdown";
+import CustomDropdown from "../../../shared/CustomDropdown";
 import { useMemo } from "react";
 
 type Props = {

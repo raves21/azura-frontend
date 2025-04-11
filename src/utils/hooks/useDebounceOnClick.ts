@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-type UseDebounceOnClickArgs = {
+type Args = {
   toggleState: boolean;
   action: () => void;
   skipFirstRender: boolean;
@@ -13,7 +13,7 @@ export function useDebounceOnClick({
   action,
   toggleState,
   skipFirstRender,
-}: UseDebounceOnClickArgs) {
+}: Args) {
   const timeOutRef = useRef<NodeJS.Timeout>();
   const isMounted = useRef(false);
 

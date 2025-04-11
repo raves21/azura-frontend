@@ -8,7 +8,7 @@ import {
 import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
 import { useDeletePost } from "@/services/social/queries/socialQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import DeleteConfirmationDialog from "@/components/core/DeleteConfirmationDialog";
+import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
 import ManagePostDialog from "../post/managePost/managePostDialog/ManagePostDialog";
 
 type Props = {

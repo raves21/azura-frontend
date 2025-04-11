@@ -24,10 +24,10 @@ import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { TPost } from "@/utils/types/social/social";
 import { isEqual } from "radash";
-import ErrorDialog from "@/components/core/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import CollectionAttachment from "../postAttachment/collectionAttachment/CollectionAttachment";
-import MediaAttachment from "../postAttachment/mediaAttachment/MediaAttachment";
+import CollectionAttachmentPreview from "../postAttachment/collectionAttachment/CollectionAttachmentPreview";
+import MediaAttachmentPreview from "../postAttachment/mediaAttachment/MediaAttachmentPreview";
 
 type EditPostProps = {
   type: "edit";
@@ -116,9 +116,6 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
       media: mediaAttachment,
       privacy: selectedPrivacy,
     };
-
-    //TODO: this shit doesnt change
-    console.log("EDITEDPOST", editedPost);
     originalPost = props.postToEdit;
     editPostNoChanges = isEqual(editedPost, originalPost);
   }
@@ -164,9 +161,9 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
       />
       <div className="flex items-center justify-between w-full">
         {mediaAttachment ? (
-          <MediaAttachment media={mediaAttachment} />
+          <MediaAttachmentPreview media={mediaAttachment} />
         ) : collectionAttachment ? (
-          <CollectionAttachment collection={collectionAttachment} />
+          <CollectionAttachmentPreview collection={collectionAttachment} />
         ) : (
           <Menu>
             <MenuButton className="flex gap-2 px-3 py-2 transition-colors  rounded-full bg-mainAccent hover:bg-fuchsia-800">

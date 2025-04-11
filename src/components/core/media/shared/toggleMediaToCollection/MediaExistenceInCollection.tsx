@@ -1,4 +1,4 @@
-import CustomCheckBox from "@/components/core/CustomCheckBox";
+import CustomCheckBox from "@/components/core/shared/CustomCheckBox";
 import { toggleMediaExistenceInCollectionCacheMutation } from "@/services/social/functions/cacheMutations";
 import {
   useAddCollectionItem,

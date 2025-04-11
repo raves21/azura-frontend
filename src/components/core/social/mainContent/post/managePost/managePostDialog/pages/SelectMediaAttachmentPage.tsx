@@ -1,10 +1,10 @@
 import { useState } from "react";
-import SearchOptions from "@/components/core/media/shared/search/SearchOptions";
+import SearchOptions from "@/components/core/shared/search/SearchOptions";
 import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import AttachmentMovieSearchResults from "../postAttachment/mediaAttachment/searchResults/movie/AttachmentMovieSearchResults";
-import AttachmentTVSearchResults from "../postAttachment/mediaAttachment/searchResults/tv/AttachmentTVSearchResults";
-import AttachmentAnimeSearchResults from "../postAttachment/mediaAttachment/searchResults/anime/AttachmentAnimeSearchResults";
+import MediaSelectionMovieSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionMovieSearchResults";
+import MediaSelectionTVSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionTVSearchResults";
+import MediaSelectionAnimeSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionAnimeSearchResults";
 
 const mediaTypes = ["Movie", "TV", "Anime"];
 
@@ -31,11 +31,20 @@ export default function SelectMediaAttachmentPage() {
         className="w-full outline-none border-b-[0.5px] border-socialTextSecondary py-5 px-4 text-lg text-mainWhite bg-socialPrimary"
       />
       {selectedMediaType === "Movie" ? (
-        <AttachmentMovieSearchResults query={debouncedSearch.trim()} />
+        <MediaSelectionMovieSearchResults
+          query={debouncedSearch.trim()}
+          type="managePostMediaAttachment"
+        />
       ) : selectedMediaType === "TV" ? (
-        <AttachmentTVSearchResults query={debouncedSearch.trim()} />
+        <MediaSelectionTVSearchResults
+          query={debouncedSearch.trim()}
+          type="managePostMediaAttachment"
+        />
       ) : (
-        <AttachmentAnimeSearchResults query={debouncedSearch.trim()} />
+        <MediaSelectionAnimeSearchResults
+          query={debouncedSearch.trim()}
+          type="managePostMediaAttachment"
+        />
       )}
     </div>
   );

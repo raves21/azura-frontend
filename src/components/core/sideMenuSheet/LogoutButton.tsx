@@ -4,7 +4,7 @@ import { LoaderCircle, LogOut } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheetButton from "./SideMenuSheetButton";
 import { useEffect } from "react";
-import ErrorDialog from "../ErrorDialog";
+import ErrorDialog from "../shared/ErrorDialog";
 
 export default function LogoutButton() {
   const {

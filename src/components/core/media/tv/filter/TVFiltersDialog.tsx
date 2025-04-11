@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import FilterPill from "@/components/core/media/shared/catalog/FilterPill";
 import { useState } from "react";
-import CustomDropdown from "@/components/core/CustomDropdown";
+import CustomDropdown from "@/components/core/shared/CustomDropdown";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { isEqual } from "radash";
 import { X } from "lucide-react";
@@ -25,7 +25,7 @@ export default function TVFiltersDialog() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
   const { sortBy, genres, year } = useSearch({
-    from: "/_protected/tv/catalog/"
+    from: "/_protected/tv/catalog/",
   });
 
   //already fetched in /tv/catalog->index.tsx so it wont need to load anymore
@@ -42,7 +42,7 @@ export default function TVFiltersDialog() {
   const [initialFilters] = useState<Filters>({
     genres: selectedGenres,
     sortBy: selectedSortBy,
-    year: selectedYear
+    year: selectedYear,
   });
 
   const selectGenre = (genre: TVGenre) => {
@@ -65,7 +65,7 @@ export default function TVFiltersDialog() {
     const appliedFilters: Filters = {
       sortBy: selectedSortBy,
       year: selectedYear,
-      genres: selectedGenres ?? []
+      genres: selectedGenres ?? [],
     };
     if (!isEqual(initialFilters, appliedFilters)) {
       navigate({
@@ -76,8 +76,8 @@ export default function TVFiltersDialog() {
             selectedSortBy !== initialFilters.sortBy
               ? selectedSortBy
               : undefined,
-          year: selectedYear
-        }
+          year: selectedYear,
+        },
       });
     }
     toggleOpenDialog(null);
