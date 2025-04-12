@@ -1,7 +1,7 @@
 import { TCollection } from "@/utils/types/social/social";
 import CollectionPhoto from "../../collection/CollectionPhoto";
 import { LibraryBig } from "lucide-react";
-import UserAvatar from "../../../UserAvatar";
+import UserAvatar from "../../../shared/UserAvatar";
 import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
 import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPreviewDialog";

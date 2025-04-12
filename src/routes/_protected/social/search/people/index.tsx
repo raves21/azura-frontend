@@ -5,7 +5,7 @@ import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleS
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
-import UserListItem from "@/components/core/social/UserListItem";
+import UserListItem from "@/components/core/social/shared/UserListItem";
 
 const peopleSearchResultsPageSchema = z.object({
   query: z.string(),

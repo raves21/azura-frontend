@@ -1,5 +1,5 @@
 import { useDiscoverPeople } from "@/services/social/queries/socialQueries";
-import UserListItem from "../../UserListItem";
+import UserListItem from "../../shared/UserListItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Fragment } from "react/jsx-runtime";
 
@@ -7,7 +7,7 @@ export default function DiscoverPeople() {
   const {
     data: discoverPeople,
     isLoading: isDiscoverPeopleLoading,
-    error: discoverPeopleError
+    error: discoverPeopleError,
   } = useDiscoverPeople();
 
   if (isDiscoverPeopleLoading) {
@@ -52,11 +52,11 @@ export default function DiscoverPeople() {
   if (discoverPeople) {
     return (
       <div className="flex flex-col w-full gap-3 rounded-lg justfiy-center bg-socialPrimary">
-        <p className="px-5 pt-5 pb-3 text-lg font-semibold">
-          Discover People
-        </p>
+        <p className="px-5 pt-5 pb-3 text-lg font-semibold">Discover People</p>
         {discoverPeople.pages[0].data.length === 0 ? (
-          <p className="self-center my-6 text-base font-md text-socialTextSecondary">No users yet.</p>
+          <p className="self-center my-6 text-base font-md text-socialTextSecondary">
+            No users yet.
+          </p>
         ) : (
           <>
             <div className="space-y-2">

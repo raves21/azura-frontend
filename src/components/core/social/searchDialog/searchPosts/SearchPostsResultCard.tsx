@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TPost } from "@/utils/types/social/social";
 import { Link } from "@tanstack/react-router";
-import UserAvatar from "../../UserAvatar";
+import UserAvatar from "../../shared/UserAvatar";
 import ActivityContentRenderer from "../../mainContent/activity/ActivityContentRenderer";
 
 type Props = {

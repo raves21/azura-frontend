@@ -5,16 +5,16 @@ import {
 } from "@/services/media/movie/movieQueries";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import MovieSearchResultCard from "@/components/core/social/shared/mediaSelectionSearchDialog/media/MovieSearchResultCard";
 import {
   getTMDBImageURL,
   getTMDBRating,
   getTMDBReleaseYear,
   toggleDialogOrDrawer,
 } from "@/services/media/sharedFunctions";
-import AddCollectionItemMediaPreviewDialog from "../../mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
+import AddCollectionItemMediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
+import MovieSearchResultCard from "../mediaSearchResultCards/MovieSearchResultCard";
 
 type Props = {
   query: string;

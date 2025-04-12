@@ -1,7 +1,7 @@
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { Circle, LoaderCircle, SendHorizonal, Smile } from "lucide-react";
 import { EditorContent } from "@tiptap/react";
-import UserAvatar from "@/components/core/social/UserAvatar";
+import UserAvatar from "@/components/core/social/shared/UserAvatar";
 import { EntityOwner } from "@/utils/types/social/shared";
 import { useCreatePostComment } from "@/services/social/queries/socialQueries";
 import { Navigate, useParams } from "@tanstack/react-router";
