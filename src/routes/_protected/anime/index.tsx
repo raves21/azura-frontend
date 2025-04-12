@@ -79,6 +79,10 @@ function AnimeHomePage() {
                   params: {
                     animeId: anime.id,
                   },
+                  search: {
+                    title: anime.title.english || anime.title.romaji,
+                    lang: anime.title.english ? "eng" : "jap",
+                  },
                 }}
               />
             )}
