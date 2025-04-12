@@ -1,4 +1,3 @@
-import { HTMLAttributes } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import { MediaPlayer, MediaProvider, Poster, Track } from "@vidstack/react";
@@ -9,7 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Subtitle } from "@/utils/types/media/shared";
 
-type VideoPlayerProps = HTMLAttributes<HTMLDivElement> & {
+type VideoPlayerProps = {
   streamLink: string | undefined | null;
   poster: string | undefined;
   headers?: Record<string, string>;
@@ -33,7 +32,8 @@ export default function VideoPlayer({
   if (streamLink) {
     let streamLinkFinal: string;
     if (mediaType === "ANIME") {
-      streamLinkFinal = `${import.meta.env.VITE_ANIME_PROXY_URL}/proxy?url=${encodeURIComponent(btoa(streamLink))}&headers=${btoa(JSON.stringify(headers))}`;
+      // streamLinkFinal = `${import.meta.env.VITE_ANIME_PROXY_URL}/proxy?url=${encodeURIComponent(btoa(streamLink))}&headers=${btoa(JSON.stringify(headers))}`;
+      streamLinkFinal = `http://localhost:5050/${btoa(`${streamLink}|${headers?.Referer}`)}.m3u8`;
     } else {
       streamLinkFinal = `${import.meta.env.VITE_TMDB_PROXY_URL}/m3u8-proxy.m3u8?url=${encodeURIComponent(streamLink)}`;
     }
@@ -52,7 +52,7 @@ export default function VideoPlayer({
           className="rounded-none size-full"
           title={title}
           src={streamLinkFinal}
-          volume={0.08}
+          volume={0.5}
           poster={poster}
         >
           <MediaProvider>

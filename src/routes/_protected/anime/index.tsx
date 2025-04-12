@@ -4,21 +4,21 @@ import MediaCard from "@/components/core/media/shared/MediaCard";
 import { useFetchAnimesByCategory } from "@/services/media/anime/queries/animeQueries";
 import {
   AnimeSortBy,
-  AnilistAnimeStatus
+  AnilistAnimeStatus,
 } from "@/utils/types/media/anime/animeAnilist";
 import { createFileRoute } from "@tanstack/react-router";
 import TrendingHeroCarousel from "../../../components/core/media/shared/carousel/TrendingHeroCarousel";
 import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/TrendingHeroCarouselItem";
 
 export const Route = createFileRoute("/_protected/anime/")({
-  component: () => <AnimeHomePage />
+  component: () => <AnimeHomePage />,
 });
 
 function AnimeHomePage() {
   const {
     data: trendingAnimes,
     isLoading: isTrendingAnimesLoading,
-    error: trendingAnimesError
+    error: trendingAnimesError,
   } = useFetchAnimesByCategory(
     17,
     AnimeSortBy.TRENDING_DESC,
@@ -27,13 +27,13 @@ function AnimeHomePage() {
   const {
     data: popularAnimes,
     isLoading: isPopularAnimesLoading,
-    error: popularAnimesError
+    error: popularAnimesError,
   } = useFetchAnimesByCategory(12, AnimeSortBy.POPULARITY_DESC);
 
   const {
     data: topRatedAnimes,
     isLoading: isTopRatedAnimesLoading,
-    error: topRatedAnimesError
+    error: topRatedAnimesError,
   } = useFetchAnimesByCategory(12, AnimeSortBy.SCORE_DESC);
 
   if (
@@ -77,8 +77,8 @@ function AnimeHomePage() {
                 toInfoPageLinkProps={{
                   to: "/anime/$animeId",
                   params: {
-                    animeId: anime.id
-                  }
+                    animeId: anime.id,
+                  },
                 }}
               />
             )}
@@ -91,8 +91,8 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: AnimeSortBy.TRENDING_DESC
-              }
+                sortBy: AnimeSortBy.TRENDING_DESC,
+              },
             }}
             carouselItems={trendingAnimes.results.slice(5)}
             renderCarouselItems={(trendingAnime, i) => {
@@ -102,12 +102,18 @@ function AnimeHomePage() {
                     image={trendingAnime.image || trendingAnime.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: trendingAnime.id }
+                      params: { animeId: trendingAnime.id },
+                      search: {
+                        title:
+                          trendingAnime.title.english ||
+                          trendingAnime.title.romaji,
+                        lang: trendingAnime.title.english ? "eng" : "jap",
+                      },
                     }}
                     subLabels={[
                       trendingAnime.type,
                       trendingAnime.releaseDate?.toString(),
-                      trendingAnime.status
+                      trendingAnime.status,
                     ]}
                     title={
                       trendingAnime.title.english ||
@@ -126,8 +132,8 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: AnimeSortBy.SCORE_DESC
-              }
+                sortBy: AnimeSortBy.SCORE_DESC,
+              },
             }}
             carouselItems={topRatedAnimes.results}
             renderCarouselItems={(topRatedAnime, i) => {
@@ -137,12 +143,18 @@ function AnimeHomePage() {
                     image={topRatedAnime.image || topRatedAnime.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: topRatedAnime.id }
+                      params: { animeId: topRatedAnime.id },
+                      search: {
+                        title:
+                          topRatedAnime.title.english ||
+                          topRatedAnime.title.romaji,
+                        lang: topRatedAnime.title.english ? "eng" : "jap",
+                      },
                     }}
                     subLabels={[
                       topRatedAnime.type,
                       topRatedAnime.releaseDate?.toString(),
-                      topRatedAnime.status
+                      topRatedAnime.status,
                     ]}
                     title={
                       topRatedAnime.title.english ||
@@ -161,8 +173,8 @@ function AnimeHomePage() {
             gotoLinkProps={{
               to: "/anime/catalog",
               search: {
-                sortBy: AnimeSortBy.POPULARITY_DESC
-              }
+                sortBy: AnimeSortBy.POPULARITY_DESC,
+              },
             }}
             carouselItems={popularAnimes.results}
             renderCarouselItems={(popularAnime, i) => {
@@ -172,12 +184,18 @@ function AnimeHomePage() {
                     image={popularAnime.image || popularAnime.cover}
                     linkProps={{
                       to: "/anime/$animeId",
-                      params: { animeId: popularAnime.id }
+                      params: { animeId: popularAnime.id },
+                      search: {
+                        title:
+                          popularAnime.title.english ||
+                          popularAnime.title.romaji,
+                        lang: popularAnime.title.english ? "eng" : "jap",
+                      },
                     }}
                     subLabels={[
                       popularAnime.type,
                       popularAnime.releaseDate?.toString(),
-                      popularAnime.status
+                      popularAnime.status,
                     ]}
                     title={
                       popularAnime.title.english ||

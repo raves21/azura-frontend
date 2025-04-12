@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
-import { Data } from "@/utils/types/media/anime/animeAnify";
 import { AnimeInfoAnizip } from "@/utils/types/media/anime/animeAnizip";
 import {
   AnimeSortBy,
@@ -10,15 +9,18 @@ import {
   AnimeSeason,
   AnimeFormat,
   AnimeInfoAnilist,
-  Episode,
-  EpisodeStreamLinks,
-  AnimeEpisodesData,
   AnimeGenre,
+  AnimeEpisodeStreamLinks,
 } from "@/utils/types/media/anime/animeAnilist";
 import {
   chunkEpisodes,
   getEpisodesToBeRendered,
 } from "../functions/animeFunctions";
+import {
+  AnimeInfoAniwatch,
+  AniwatchEpisode,
+} from "@/utils/types/media/anime/animeAniwatch";
+import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 
 // const frequentlyChanging = {
 //   gcTime: 180 * (60 * 1000), //3 hrs
@@ -117,66 +119,80 @@ export function useFilterAnime({
   });
 }
 
-export function useFetchAnimeInfo(animeId: string) {
+type UseFetchAnimeInfoArgs = {
+  animeId: string;
+  title: string;
+  titleLang: "eng" | "jap";
+};
+
+export function useFetchAnimeInfo({
+  animeId,
+  title,
+  titleLang,
+}: UseFetchAnimeInfoArgs) {
   return useQuery({
     queryKey: ["animeInfo", animeId],
     queryFn: async () => {
-      // const [anilistResponse, anifyResponse] = await axios.all([
-      //   axios
-      //     .get(`${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`)
-      //     .catch(() => null),
-      //   axios
-      //     .get(
-      //       `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[genres,bannerImage,coverImage,title,rating,trailer,description,id,totalEpisodes,year,status,format]`
-      //     )
-      //     .catch(() => null)
-      // ]);
+      const [anilistResponse, aniwatchResponse] = await axios.all([
+        axios
+          .get(`${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`)
+          .catch(() => null),
+        axios
+          .get(`${import.meta.env.VITE_ANIWATCH_MAPPER_URL}/info`, {
+            params: {
+              title,
+              type: titleLang,
+            },
+          })
+          .catch(() => null),
+      ]);
 
-      // if (!anilistResponse && !anifyResponse) {
-      //   throw new Error("error fetch anime info.");
-      // }
+      if (!anilistResponse && !aniwatchResponse) {
+        throw new Error("error fetch anime info.");
+      }
 
-      // const animeInfoAnilist = anilistResponse?.data as AnimeInfoAnilist;
-      // const animeInfoAnify = anifyResponse?.data as AnimeInfoAnify;
-      // return { animeInfoAnilist, animeInfoAnify };
-      const { data: anilistResponse } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`
-      );
-
-      return anilistResponse as AnimeInfoAnilist;
+      const animeInfoAnilist = anilistResponse?.data as AnimeInfoAnilist;
+      const animeInfoAniwatch = aniwatchResponse?.data
+        .data as AnimeInfoAniwatch;
+      return { animeInfoAnilist, animeInfoAniwatch };
     },
   });
 }
 
-export function useFetchAnimeEpisodes(animeId: string) {
+type UseFetchAnimeEpisodesArgs = {
+  animeId: string;
+  title: string;
+  titleLang: "eng" | "jap";
+};
+export function useFetchAnimeEpisodes({
+  animeId,
+  title,
+  titleLang,
+}: UseFetchAnimeEpisodesArgs) {
   return useQuery({
     queryKey: ["episodes", animeId],
     queryFn: async () => {
-      const [anifyEpsResponse, anilistEpsResponse, anizipResponse] =
-        await axios.all([
-          axios
-            .get(
-              `${import.meta.env.VITE_ANIFY_URL}/info/${animeId}?fields=[episodes]`
-            )
-            .catch(() => null),
-          axios
-            .get(`${import.meta.env.VITE_ANILIST_URL}/episodes/${animeId}`)
-            .catch(() => null),
-          axios
-            .get(
-              `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
-            )
-            .catch(() => null),
-        ]);
+      const [anizipResponse, aniwatchResponse] = await axios.all([
+        axios
+          .get(
+            `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
+          )
+          .catch(() => null),
+        axios.get(`${import.meta.env.VITE_ANIWATCH_MAPPER_URL}/episodes`, {
+          params: {
+            title,
+            type: titleLang,
+          },
+        }),
+      ]);
 
-      if (!anifyEpsResponse && !anilistEpsResponse) {
+      if (!aniwatchResponse) {
         throw new Error("therse was an error fetching episodes for this anime");
       }
 
-      const anifyEps = anifyEpsResponse?.data.episodes.data as Data[];
-      const anilistEps = anilistEpsResponse?.data as Episode[];
+      const aniwatchEps = aniwatchResponse.data.data as AniwatchEpisode[];
       const anizipEps = anizipResponse?.data as AnimeInfoAnizip;
-      return { anifyEps, anilistEps, anizipEps };
+      return { aniwatchEps, anizipEps };
     },
   });
 }
@@ -186,13 +202,19 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {
       const { data: episodeStreamLinks } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/watch/${episodeId}`
+        `http://localhost:3000/?url=https://ritesh-aniwatch-api-phi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}`
+        // {
+        //   params: {
+        //     animeEpisodeId: episodeId,
+        //   },
+        // }
       );
-      return episodeStreamLinks as EpisodeStreamLinks;
+      return episodeStreamLinks.data as AnimeEpisodeStreamLinks;
     },
   });
 }
 
+//todo aniwatch
 export function useEpisodeInfo(
   episodeId: string,
   chunkedEpisodes: EpisodeChunk[] | null | undefined
@@ -217,14 +239,13 @@ export function useEpisodeInfo(
 export function useChunkAnimeEpisodes(
   animeEpisodes: AnimeEpisodesData | undefined
 ) {
-  const anifyEpisodes = animeEpisodes?.anifyEps;
-  const anilistEpisodes = animeEpisodes?.anilistEps;
+  const aniwatchEpisodes = animeEpisodes?.aniwatchEps;
   const anizipEpisodes = animeEpisodes?.anizipEps;
   return useQuery({
     queryKey: ["chunkedEpisodes", animeEpisodes],
     queryFn: () => {
       return chunkEpisodes(
-        getEpisodesToBeRendered(anifyEpisodes, anilistEpisodes, anizipEpisodes),
+        getEpisodesToBeRendered(aniwatchEpisodes, anizipEpisodes),
         30
       );
     },

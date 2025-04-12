@@ -93,7 +93,6 @@ function WatchMoviePage() {
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
             <VideoPlayer
               mediaType="MOVIE"
-              id={movieId}
               subtitleTracks={mediaScraperData.tracks}
               poster={getTMDBImageURL(movieInfo.backdrop_path)}
               headers={mediaScraperData.headers}
