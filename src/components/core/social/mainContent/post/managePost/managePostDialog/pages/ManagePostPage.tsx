@@ -1,4 +1,4 @@
-import UserAvatar from "@/components/core/social/UserAvatar";
+import UserAvatar from "@/components/core/social/shared/UserAvatar";
 import {
   useCreatePost,
   useEditPost,

@@ -2,7 +2,7 @@ import { UserPreview } from "@/utils/types/social/social";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
-import ToggleFollowButton from "./mainContent/profile/profileDetails/ToggleFollowButton";
+import ToggleFollowButton from "../mainContent/profile/profileDetails/ToggleFollowButton";
 
 type UserListItemProps = UserPreview & {
   className?: string;

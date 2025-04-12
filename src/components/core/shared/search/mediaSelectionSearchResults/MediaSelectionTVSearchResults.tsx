@@ -1,41 +1,35 @@
 import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
-import {
-  useMoviesByCategory,
-  useSearchMovie,
-} from "@/services/media/movie/movieQueries";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import MovieSearchResultCard from "@/components/core/social/shared/mediaSelectionSearchDialog/media/MovieSearchResultCard";
+import { useSearchTV, useTVByCategory } from "@/services/media/tv/tvQueries";
 import {
   getTMDBImageURL,
   getTMDBRating,
   getTMDBReleaseYear,
-  openDialogOrDrawer,
+  toggleDialogOrDrawer,
 } from "@/services/media/sharedFunctions";
-import AddCollectionItemMediaPreviewDialog from "../../mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
+import AddCollectionItemMediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
+import TVSearchResultCard from "../mediaSearchResultCards/TVSearchResultCard";
 
 type Props = {
   query: string;
   type: "addCollectionItem" | "managePostMediaAttachment";
 };
 
-export default function MediaSelectionMovieSearchResults({
-  query,
-  type,
-}: Props) {
+export default function MediaSelectionTVSearchResults({ query, type }: Props) {
   //todo: use infinite scrolling
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,
     error: searchResultsError,
-  } = useSearchMovie(query, 1, query.length > 0);
+  } = useSearchTV(query, 1, query.length > 0);
   const {
-    data: trendingMovies,
-    isLoading: isTrendingMoviesLoading,
-    error: trendingMoviesError,
-  } = useMoviesByCategory({ category: "trending" });
+    data: trendingTV,
+    isLoading: isTrendingTVLoading,
+    error: trendingTVError,
+  } = useTVByCategory({ category: "trending" });
 
   const { isTabletUp } = useWindowBreakpoints();
 
@@ -48,11 +42,11 @@ export default function MediaSelectionMovieSearchResults({
       ])
     );
 
-  if (isSearchResultsLoading || isTrendingMoviesLoading) {
+  if (isSearchResultsLoading || isTrendingTVLoading) {
     return <SearchDialogResultsLoading className="bg-socialPrimary" />;
   }
 
-  if (searchResultsError || trendingMoviesError) {
+  if (searchResultsError || trendingTVError) {
     return (
       <div className="grid w-full py-4 text-lg text-center text-gray-400 bg-gray-800 rounded-b-lg place-items-center text-balance">
         There seems to be problems with search. Please try again later.
@@ -60,32 +54,31 @@ export default function MediaSelectionMovieSearchResults({
     );
   }
 
-  if (query.length === 0 && trendingMovies) {
+  if (query.length === 0 && trendingTV) {
     return (
       <ScrollArea
         className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {" "}
-          {trendingMovies.results.map((movie) => {
+          {trendingTV.results.map((tv) => {
             if (type === "addCollectionItem") {
               return (
-                <MovieSearchResultCard
-                  movie={movie}
+                <TVSearchResultCard
+                  tv={tv}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
-                            coverImage: getTMDBImageURL(movie.backdrop_path),
-                            description: movie.overview,
-                            id: movie.id.toString(),
-                            posterImage: getTMDBImageURL(movie.poster_path),
-                            rating: getTMDBRating(movie.vote_average),
+                            coverImage: getTMDBImageURL(tv.backdrop_path),
+                            description: tv.overview,
+                            id: tv.id.toString(),
+                            posterImage: getTMDBImageURL(tv.poster_path),
+                            rating: getTMDBRating(tv.vote_average),
                             status: null,
-                            title: movie.title,
-                            type: "MOVIE",
-                            year: getTMDBReleaseYear(movie.release_date),
+                            title: tv.name,
+                            type: "TV",
+                            year: getTMDBReleaseYear(tv.first_air_date),
                           }}
                         />
                       ),
@@ -97,20 +90,20 @@ export default function MediaSelectionMovieSearchResults({
               );
             }
             return (
-              <MovieSearchResultCard
-                movie={movie}
+              <TVSearchResultCard
+                tv={tv}
                 onClick={() => {
                   setCollectionAttachment(null);
                   setMediaAttachment({
-                    coverImage: getTMDBImageURL(movie.backdrop_path),
-                    description: movie.overview,
-                    id: movie.id.toString(),
-                    posterImage: getTMDBImageURL(movie.poster_path),
-                    rating: getTMDBRating(movie.vote_average),
+                    coverImage: getTMDBImageURL(tv.backdrop_path),
+                    description: tv.overview,
+                    id: tv.id.toString(),
+                    posterImage: getTMDBImageURL(tv.poster_path),
+                    rating: getTMDBRating(tv.vote_average),
                     status: null,
-                    title: movie.title,
-                    type: "MOVIE",
-                    year: getTMDBReleaseYear(movie.release_date),
+                    title: tv.name,
+                    type: "TV",
+                    year: getTMDBReleaseYear(tv.first_air_date),
                   });
                   setManagePostPage("managePost");
                 }}
@@ -128,25 +121,25 @@ export default function MediaSelectionMovieSearchResults({
         className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {searchResults.results.map((movie) => {
+          {searchResults.results.map((tv) => {
             if (type === "addCollectionItem") {
               return (
-                <MovieSearchResultCard
-                  movie={movie}
+                <TVSearchResultCard
+                  tv={tv}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
-                            coverImage: getTMDBImageURL(movie.backdrop_path),
-                            description: movie.overview,
-                            id: movie.id.toString(),
-                            posterImage: getTMDBImageURL(movie.poster_path),
-                            rating: getTMDBRating(movie.vote_average),
+                            coverImage: getTMDBImageURL(tv.backdrop_path),
+                            description: tv.overview,
+                            id: tv.id.toString(),
+                            posterImage: getTMDBImageURL(tv.poster_path),
+                            rating: getTMDBRating(tv.vote_average),
                             status: null,
-                            title: movie.title,
-                            type: "MOVIE",
-                            year: getTMDBReleaseYear(movie.release_date),
+                            title: tv.name,
+                            type: "TV",
+                            year: getTMDBReleaseYear(tv.first_air_date),
                           }}
                         />
                       ),
@@ -158,20 +151,20 @@ export default function MediaSelectionMovieSearchResults({
               );
             }
             return (
-              <MovieSearchResultCard
-                movie={movie}
+              <TVSearchResultCard
+                tv={tv}
                 onClick={() => {
                   setCollectionAttachment(null);
                   setMediaAttachment({
-                    coverImage: getTMDBImageURL(movie.backdrop_path),
-                    description: movie.overview,
-                    id: movie.id.toString(),
-                    posterImage: getTMDBImageURL(movie.poster_path),
-                    rating: getTMDBRating(movie.vote_average),
+                    coverImage: getTMDBImageURL(tv.backdrop_path),
+                    description: tv.overview,
+                    id: tv.id.toString(),
+                    posterImage: getTMDBImageURL(tv.poster_path),
+                    rating: getTMDBRating(tv.vote_average),
                     status: null,
-                    title: movie.title,
-                    type: "MOVIE",
-                    year: getTMDBReleaseYear(movie.release_date),
+                    title: tv.name,
+                    type: "TV",
+                    year: getTMDBReleaseYear(tv.first_air_date),
                   });
                   setManagePostPage("managePost");
                 }}

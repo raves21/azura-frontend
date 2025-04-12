@@ -2,9 +2,9 @@ import { useUserProfile } from "@/services/social/queries/socialQueries";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
-import UserAvatar from "../../UserAvatar";
+import UserAvatar from "../../shared/UserAvatar";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ViewProfileImageDialog from "../../ViewProfileImageDialog";
+import ViewProfileImageDialog from "../../shared/ViewProfileImageDialog";
 import ProfileBioRenderer from "../../mainContent/profile/profileDetails/ProfileBioRenderer";
 import ProfilePreviewSkeleton from "@/components/core/loadingSkeletons/social/ProfilePreviewSkeleton";
 
@@ -14,7 +14,7 @@ export default function ProfilePreview() {
   const {
     data: currentUserProfile,
     isLoading: isCurrentUserProfileLoading,
-    error: currentUserProfileError
+    error: currentUserProfileError,
   } = useUserProfile(currentUser?.handle, currentUser?.handle);
 
   if (!currentUser) return <Navigate to="/login" replace />;

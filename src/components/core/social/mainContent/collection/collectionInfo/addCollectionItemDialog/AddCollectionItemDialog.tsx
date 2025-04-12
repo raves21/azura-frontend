@@ -1,12 +1,12 @@
+import MediaSelectionAnimeSearchResults from "@/components/core/shared/search/mediaSelectionSearchResults/MediaSelectionAnimeSearchResults";
+import MediaSelectionMovieSearchResults from "@/components/core/shared/search/mediaSelectionSearchResults/MediaSelectionMovieSearchResults";
+import MediaSelectionTVSearchResults from "@/components/core/shared/search/mediaSelectionSearchResults/MediaSelectionTVSearchResults";
 import SearchOptions from "@/components/core/shared/search/SearchOptions";
 import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { X } from "lucide-react";
 import { useState } from "react";
-import MediaSelectionMovieSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionMovieSearchResults";
-import MediaSelectionTVSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionTVSearchResults";
-import MediaSelectionAnimeSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionAnimeSearchResults";
 
 const mediaTypes = ["Movie", "TV", "Anime"];
 

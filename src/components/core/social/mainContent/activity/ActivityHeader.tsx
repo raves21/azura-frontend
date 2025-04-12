@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Circle, Users, Globe, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
-import UserAvatar from "../../UserAvatar";
+import UserAvatar from "../../shared/UserAvatar";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import {
   LinkProps,

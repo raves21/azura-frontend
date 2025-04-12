@@ -1,5 +1,5 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ViewProfileImageDialog from "../../../ViewProfileImageDialog";
+import ViewProfileImageDialog from "../../../shared/ViewProfileImageDialog";
 
 type Props = {
   banner: string | null;

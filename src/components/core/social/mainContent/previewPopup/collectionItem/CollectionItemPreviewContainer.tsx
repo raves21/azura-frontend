@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { useShallow } from "zustand/react/shallow";
 import { X, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
@@ -9,6 +8,7 @@ import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmatio
 import { MutationKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
 import { cn } from "@/lib/utils";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -37,14 +37,9 @@ export default function CollectionItemPreviewContainer({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const actionButtonsContainerRef = useRef<HTMLDivElement | null>(null);
   const currentUser = useAuthStore((state) => state.currentUser);
-  const [toggleOpenDialog, toggleOpenDialogSecondary, toggleOpenDrawer] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.toggleOpenDialog,
-        state.toggleOpenDialogSecondary,
-        state.toggleOpenDrawer,
-      ])
-    );
+  const toggleOpenDialogSecondary = useGlobalStore(
+    (state) => state.toggleOpenDialog
+  );
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);
@@ -58,13 +53,11 @@ export default function CollectionItemPreviewContainer({
   }, []);
 
   function closePopup() {
-    if (isTabletUp) {
-      isSecondaryDialog
-        ? toggleOpenDialogSecondary(null)
-        : toggleOpenDialog(null);
-    } else {
-      toggleOpenDrawer(null);
-    }
+    toggleDialogOrDrawer({
+      content: null,
+      isTabletUp,
+      isSecondaryDialog,
+    });
   }
 
   if (!currentUser) return <Navigate to="/login" replace />;

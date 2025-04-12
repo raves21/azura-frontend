@@ -2,9 +2,9 @@ import { useState } from "react";
 import SearchOptions from "@/components/core/shared/search/SearchOptions";
 import { useDebounceInput } from "@/utils/hooks/useDebounceInput";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
-import MediaSelectionMovieSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionMovieSearchResults";
-import MediaSelectionTVSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionTVSearchResults";
-import MediaSelectionAnimeSearchResults from "@/components/core/social/shared/mediaSelectionSearchDialog/MediaSelectionAnimeSearchResults";
+import MediaSelectionAnimeSearchResults from "@/components/core/shared/search/mediaSelectionSearchResults/MediaSelectionAnimeSearchResults";
+import MediaSelectionMovieSearchResults from "@/components/core/shared/search/mediaSelectionSearchResults/MediaSelectionMovieSearchResults";
+import MediaSelectionTVSearchResults from "@/components/core/shared/search/mediaSelectionSearchResults/MediaSelectionTVSearchResults";
 
 const mediaTypes = ["Movie", "TV", "Anime"];
 
