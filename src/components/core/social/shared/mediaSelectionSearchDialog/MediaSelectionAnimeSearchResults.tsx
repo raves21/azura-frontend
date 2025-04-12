@@ -5,7 +5,7 @@ import {
   useFilterAnime,
 } from "@/services/media/anime/queries/animeQueries";
 import { AnimeSortBy } from "@/utils/types/media/anime/animeAnilist";
-import AnimeSearchResultCard from "@/components/core/social/shared/mediaSelectionSearchDialog/media/AnimeDialogResultCard";
+import AnimeSearchResultCard from "@/components/core/social/shared/mediaSelectionSearchDialog/media/AnimeSearchResultCard";
 import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 import AddCollectionItemMediaPreviewDialog from "../../mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
