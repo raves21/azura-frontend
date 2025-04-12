@@ -26,6 +26,7 @@ import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info
 import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
+import { getAnimeRatingInfoPage } from "@/services/media/sharedFunctions";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
@@ -143,8 +144,8 @@ function WatchEpisodePage() {
                 mediaType="ANIME"
                 poster={
                   episodeInfo.image ||
-                  animeInfoAnilist.cover ||
-                  animeInfoAniwatch.info.poster
+                  animeInfoAnilist?.cover ||
+                  animeInfoAniwatch?.info.poster
                 }
                 streamLink={episodeStreamLinks.sources[0].url}
                 headers={episodeStreamLinks.headers}
@@ -165,43 +166,42 @@ function WatchEpisodePage() {
             titleLang={lang}
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
-              animeInfoAnilist.cover ||
-              animeInfoAnilist.image ||
-              animeInfoAniwatch.info.poster
+              animeInfoAnilist?.cover ||
+              animeInfoAnilist?.image ||
+              animeInfoAniwatch?.info.poster
             }
             episodesQuery={episodesQuery}
             replace
-            type={animeInfoAnilist.type || animeInfoAniwatch.info.stats.type}
+            type={animeInfoAnilist?.type || animeInfoAniwatch?.info.stats.type}
             currentlyWatchingEpisodeNumber={episodeInfo.number}
           />
         </section>
         <WatchPageAnimeInfo
           title={title}
           cover={
-            animeInfoAnilist.cover ||
-            animeInfoAnilist.image ||
-            animeInfoAniwatch.info.poster
+            animeInfoAnilist?.cover ||
+            animeInfoAnilist?.image ||
+            animeInfoAniwatch?.info.poster
           }
-          image={animeInfoAnilist.image || animeInfoAniwatch.info.poster}
+          image={animeInfoAnilist?.image || animeInfoAniwatch?.info.poster}
           description={
-            animeInfoAnilist.description || animeInfoAniwatch.info.description
+            animeInfoAnilist?.description || animeInfoAniwatch?.info.description
           }
-          genres={animeInfoAnilist.genres}
-          status={animeInfoAnilist.status}
-          totalEpisodes={animeInfoAnilist.totalEpisodes}
-          type={animeInfoAnilist.type || animeInfoAniwatch.info.stats.type}
-          year={animeInfoAnilist.releaseDate}
-          rating={
-            (animeInfoAnilist.rating * 0.1).toFixed(1) ||
-            (animeInfoAniwatch.moreInfo.malscore
-              ? parseInt(animeInfoAniwatch.moreInfo.malscore).toFixed(1)
-              : null) ||
-            null
-          }
+          genres={animeInfoAnilist?.genres}
+          status={animeInfoAnilist?.status}
+          totalEpisodes={animeInfoAnilist?.totalEpisodes}
+          type={animeInfoAnilist?.type || animeInfoAniwatch?.info.stats.type}
+          year={animeInfoAnilist?.releaseDate}
+          rating={getAnimeRatingInfoPage(
+            animeInfoAniwatch?.moreInfo.malscore
+              ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
+              : undefined,
+            animeInfoAnilist?.rating
+          )}
         />
-        {animeInfoAnilist.recommendations && (
+        {animeInfoAnilist?.recommendations && (
           <CategoryCarousel
-            carouselItems={animeInfoAnilist.recommendations}
+            carouselItems={animeInfoAnilist?.recommendations}
             categoryName="Recommendations:"
             renderCarouselItems={(recommendation, i) => {
               return (

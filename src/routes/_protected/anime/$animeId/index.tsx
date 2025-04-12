@@ -13,6 +13,7 @@ import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/
 import z from "zod";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
+import { getAnimeRatingInfoPage } from "@/services/media/sharedFunctions";
 
 const searchParamsSchema = z.object({
   title: z.string(),
@@ -100,40 +101,39 @@ function AnimeInfoPage() {
           animeId={animeId}
           title={title}
           titleLang={lang}
-          cover={animeInfoAnilist.cover}
-          image={animeInfoAnilist.image || animeInfoAniwatch.info.poster}
+          cover={animeInfoAnilist?.cover || animeInfoAniwatch?.info.poster}
+          image={animeInfoAnilist?.image || animeInfoAniwatch?.info.poster}
           description={
-            animeInfoAnilist.description || animeInfoAniwatch.info.description
+            animeInfoAnilist?.description || animeInfoAniwatch?.info.description
           }
-          genres={animeInfoAnilist.genres || undefined}
-          status={animeInfoAnilist.status}
-          totalEpisodes={animeInfoAnilist.totalEpisodes}
-          type={animeInfoAnilist.type || animeInfoAniwatch.info.stats.type}
-          year={animeInfoAnilist.releaseDate}
-          rating={
-            (animeInfoAnilist.rating * 0.1).toFixed(1) ||
-            (animeInfoAniwatch.moreInfo.malscore
-              ? parseInt(animeInfoAniwatch.moreInfo.malscore).toFixed(1)
-              : null) ||
-            null
-          }
+          genres={animeInfoAnilist?.genres || undefined}
+          status={animeInfoAnilist?.status}
+          totalEpisodes={animeInfoAnilist?.totalEpisodes}
+          type={animeInfoAnilist?.type || animeInfoAniwatch?.info.stats.type}
+          year={animeInfoAnilist?.releaseDate}
+          rating={getAnimeRatingInfoPage(
+            animeInfoAniwatch?.moreInfo.malscore
+              ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
+              : undefined,
+            animeInfoAnilist?.rating
+          )}
         />
         <InfoPageAnimeEpisodes
           title={title}
           titleLang={lang}
           episodesQuery={episodesQuery}
           replace={false}
-          type={animeInfoAnilist.type}
+          type={animeInfoAnilist?.type}
           episodeImageFallback={
-            animeInfoAnilist.cover ||
-            animeInfoAnilist.image ||
-            animeInfoAniwatch.info.poster
+            animeInfoAnilist?.cover ||
+            animeInfoAnilist?.image ||
+            animeInfoAniwatch?.info.poster
           }
         />
-        {animeInfoAnilist.recommendations &&
-          animeInfoAnilist.recommendations.length !== 0 && (
+        {animeInfoAnilist?.recommendations &&
+          animeInfoAnilist?.recommendations.length !== 0 && (
             <CategoryCarousel
-              carouselItems={animeInfoAnilist.recommendations}
+              carouselItems={animeInfoAnilist?.recommendations}
               categoryName="Recommendations:"
               renderCarouselItems={(recommendation, i) => {
                 return (

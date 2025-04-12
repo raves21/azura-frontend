@@ -12,6 +12,21 @@ export function getTMDBReleaseYear(releaseDate: string) {
   return releaseDate ? releaseDate.split("-")[0] : "";
 }
 
+export function getAnimeRatingInfoPage(
+  aniwatchRating: number | undefined,
+  anilistRating: number | undefined
+) {
+  let rating: string | null;
+  if (anilistRating) {
+    rating = (anilistRating * 0.1).toFixed(1);
+  } else if (aniwatchRating) {
+    rating = aniwatchRating ? aniwatchRating.toFixed(1) : null;
+  } else {
+    rating = null;
+  }
+  return rating;
+}
+
 export function getAnimeRating(rating: number | null) {
   return rating ? rating.toFixed(1) : null;
 }
