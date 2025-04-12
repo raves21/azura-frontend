@@ -96,7 +96,7 @@ export default function Rating({
             ? `${mediaType === "anime" ? getAnimeRating(parseFloat(rating)) : getTMDBRating(parseFloat(rating))}`
             : "?"}
         </span>
-        {mediaType === "anime" ? "/5" : "/10"}
+        /10
       </p>
     </div>
   );
