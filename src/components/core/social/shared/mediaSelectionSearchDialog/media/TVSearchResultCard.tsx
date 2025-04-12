@@ -15,7 +15,7 @@ export default function TVSearchResultCard({ tv, onClick }: Props) {
   return (
     <button
       onClick={onClick}
-      className="flex w-full text-start gap-4 px-3 py-2 hover:bg-gray-900/70"
+      className="flex w-full text-start gap-4 px-3 py-2 hover:bg-socialPrimaryHover"
     >
       <div className="aspect-[3/4] h-min w-[90px] bg-gray-600 rounded-md">
         <img
