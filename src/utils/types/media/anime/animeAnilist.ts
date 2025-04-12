@@ -1,6 +1,3 @@
-import { AnimeInfoAnify, Data } from "./animeAnify";
-import { AnimeInfoAnizip } from "./animeAnizip";
-
 export type PaginatedAnimeResponse = {
   currentPage: number;
   hasNextPage: boolean;
@@ -50,7 +47,7 @@ export enum AnimeSeason {
   WINTER = "WINTER",
   SPRING = "SPRING",
   SUMMER = "SUMMER",
-  FALL = "FALL"
+  FALL = "FALL",
 }
 
 export enum AnimeGenre {
@@ -70,7 +67,7 @@ export enum AnimeGenre {
   SliceOfLife = "Slice of Life",
   Sports = "Sports",
   Supernatural = "Supernatural",
-  Thriller = "Thriller"
+  Thriller = "Thriller",
 }
 
 export type Title = {
@@ -93,7 +90,7 @@ export enum ArtworkType {
   ClearLogo = "clear_logo",
   Icon = "icon",
   Poster = "poster",
-  TopBanner = "top_banner"
+  TopBanner = "top_banner",
 }
 
 export enum Language {
@@ -106,7 +103,7 @@ export enum Language {
   Korean = "Korean",
   Portuguese = "Portuguese",
   Spanish = "Spanish",
-  Thai = "Thai"
+  Thai = "Thai",
 }
 
 export type EndDateClass = {
@@ -148,7 +145,7 @@ export enum AnilistAnimeStatus {
   RELEASING = "RELEASING",
   FINISHED = "FINISHED",
   CANCELLED = "CANCELLED",
-  NOT_YET_RELEASED = "NOT_YET_RELEASED"
+  NOT_YET_RELEASED = "NOT_YET_RELEASED",
 }
 
 export enum AnimeSortBy {
@@ -158,7 +155,7 @@ export enum AnimeSortBy {
   SCORE_DESC = "SCORE_DESC",
   TITLE = "TITLE_ROMAJI",
   TITLE_DESC = "TITLE_ROMAJI_DESC",
-  START_DATE_DESC = "START_DATE_DESC"
+  START_DATE_DESC = "START_DATE_DESC",
 }
 
 export enum AnimeFormat {
@@ -168,7 +165,7 @@ export enum AnimeFormat {
   ONA = "ONA",
   MOVIE = "MOVIE",
   SPECIAL = "SPECIAL",
-  MUSIC = "MUSIC"
+  MUSIC = "MUSIC",
 }
 
 export enum AnimeStatus {
@@ -180,19 +177,8 @@ export enum AnimeStatus {
   NOT_YET_RELEASED = "NOT_YET_RELEASED",
   CANCELLED = "CANCELLED",
   HIATUS = "HIATUS",
-  Cancelled = "Cancelled"
+  Cancelled = "Cancelled",
 }
-
-export type AnimeInfo = {
-  animeInfoAnilist: AnimeInfoAnilist;
-  animeInfoAnify: AnimeInfoAnify;
-};
-
-export type AnimeEpisodesData = {
-  anifyEps: Data[];
-  anilistEps: Episode[];
-  anizipEps: AnimeInfoAnizip;
-};
 
 export type Relation = {
   id: number;
@@ -210,16 +196,45 @@ export type Relation = {
   rating: number;
 };
 
-export type EpisodeStreamLinks = {
-  headers: {
-    Referrer: string;
-  };
+// export type EpisodeStreamLinks = {
+//   headers: {
+//     Referrer: string;
+//   };
+//   sources: Source[];
+//   download: string;
+// };
+
+// export type Source = {
+//   url: string;
+//   isM3U8: boolean;
+//   quality: string;
+// };
+
+export type AnimeEpisodeStreamLinks = {
+  headers: Headers;
+  tracks: Track[];
   sources: Source[];
-  download: string;
+  anilistID: number;
+  malID: number;
+};
+
+export type Headers = {
+  Referer: string;
 };
 
 export type Source = {
   url: string;
-  isM3U8: boolean;
-  quality: string;
+  type: string;
 };
+
+export type Track = {
+  file: string;
+  label?: string;
+  kind: Kind;
+  default?: boolean;
+};
+
+export enum Kind {
+  Captions = "captions",
+  Thumbnails = "thumbnails",
+}

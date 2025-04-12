@@ -1,6 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
-  AnimeEpisodesData,
   AnimeGenre,
   AnimeStatus,
 } from "@/utils/types/media/anime/animeAnilist";
@@ -23,19 +22,20 @@ import {
   animeCompletedStatus,
   animeOngoingStatus,
 } from "@/utils/variables/media/anime";
-import { getAnimeRating } from "@/services/media/sharedFunctions";
+import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 
 type Props = {
   image: string | undefined;
   cover: string | undefined;
   title: string;
+  titleLang: "eng" | "jap";
   description: string | undefined;
   totalEpisodes: number | undefined;
   year: number | undefined;
   type: string | undefined;
   status: string | undefined;
   genres: AnimeGenre[] | undefined;
-  rating: number | null | undefined;
+  rating: string | null | undefined;
   animeId: string;
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
 };
@@ -45,6 +45,7 @@ export default function AnimeInfoPageHero({
   cover,
   title,
   description,
+  titleLang,
   totalEpisodes,
   year,
   type,
@@ -68,7 +69,7 @@ export default function AnimeInfoPageHero({
           <Rating
             mediaType="anime"
             variant="infoPage"
-            rating={Number(getAnimeRating(rating ?? null))}
+            rating={rating}
             isMobile={false}
           />
           <InfoDetails isMobile={false}>
@@ -117,6 +118,8 @@ export default function AnimeInfoPageHero({
                     params: { animeId: animeId },
                     search: {
                       id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
+                      lang: titleLang,
+                      title,
                     },
                   });
               }}

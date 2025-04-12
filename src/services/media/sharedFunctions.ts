@@ -13,7 +13,7 @@ export function getTMDBReleaseYear(releaseDate: string) {
 }
 
 export function getAnimeRating(rating: number | null) {
-  return rating ? (rating * 0.1).toFixed(1) : null;
+  return rating ? rating.toFixed(1) : null;
 }
 
 export function getTMDBRating(rating: number | null) {

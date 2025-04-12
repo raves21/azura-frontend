@@ -12,6 +12,10 @@ export default function CatalogAnimeList({ animeList }: Props) {
           linkProps={{
             to: `/anime/$animeId`,
             params: { animeId: anime.id },
+            search: {
+              title: anime.title.english || anime.title.romaji,
+              lang: anime.title.english ? "eng" : "jap",
+            },
           }}
           subLabels={[anime.type, anime.releaseDate?.toString(), anime.status]}
           title={

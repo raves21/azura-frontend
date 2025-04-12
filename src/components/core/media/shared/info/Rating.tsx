@@ -15,7 +15,7 @@ type WatchPageVariant = {
 };
 
 type Props = {
-  rating: number | undefined | null;
+  rating: string | undefined | null;
   mediaType: "anime" | "tmdb";
   className?: string;
   starsClassName?: string;
@@ -39,7 +39,7 @@ export default function Rating({
 
   useEffect(() => {
     if (starsFillWidthRef.current && rating) {
-      setStarsFillWidthPercentage(rating * 10);
+      setStarsFillWidthPercentage(parseFloat(rating) * 10);
     }
   }, []);
 
@@ -93,7 +93,7 @@ export default function Rating({
       >
         <span className="text-mainAccent">
           {rating
-            ? `${mediaType === "anime" ? getAnimeRating(rating) : getTMDBRating(rating)}`
+            ? `${mediaType === "anime" ? getAnimeRating(parseFloat(rating)) : getTMDBRating(parseFloat(rating))}`
             : "?"}
         </span>
         {mediaType === "anime" ? "/5" : "/10"}

@@ -1,7 +1,4 @@
-import {
-  AnimeEpisodesData,
-  AnimeFormat,
-} from "@/utils/types/media/anime/animeAnilist";
+import { AnimeFormat } from "@/utils/types/media/anime/animeAnilist";
 import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
@@ -14,11 +11,14 @@ import EpisodesError from "../../shared/episode/EpisodesError";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
+import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 
 type Props = {
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
+  title: string;
+  titleLang: "eng" | "jap";
   episodeImageFallback: string | undefined;
   episodeListMaxHeight?: number;
   currentlyWatchingEpisodeNumber?: number;
@@ -27,6 +27,8 @@ type Props = {
 export default function WatchPageAnimeEpisodes({
   type,
   replace,
+  title,
+  titleLang,
   episodesQuery,
   episodeImageFallback,
   episodeListMaxHeight,
@@ -102,6 +104,8 @@ export default function WatchPageAnimeEpisodes({
                     },
                     search: {
                       id: episode.id.replace(/^\//, ""),
+                      title,
+                      lang: titleLang,
                     },
                   }}
                   episodeNumber={

@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/default/theme.css";
@@ -15,7 +15,6 @@ import {
   useEpisodeInfo,
 } from "@/services/media/anime/queries/animeQueries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-// import { AnimeGenre } from "@/utils/types/media/anime/animeAnilist";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
@@ -25,34 +24,48 @@ import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/me
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
-
-// const anilistGenres = Object.values(AnimeGenre).map((genre) =>
-//   genre.toString()
-// );
+import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
+  title: z.string(),
+  lang: z.enum(["eng", "jap"]),
 });
 
-type EpisodePageSearchSchema = z.infer<typeof episodePageSearchSchema>;
+type EpisodePageSearchSchema = z.infer<typeof episodePageSearchSchema> &
+  SearchSchemaValidationStatus;
 
 export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
   component: () => <WatchEpisodePage />,
   validateSearch: (search): EpisodePageSearchSchema => {
     const validated = episodePageSearchSchema.safeParse(search);
     if (validated.success) {
-      return validated.data;
+      return {
+        ...validated.data,
+        success: true,
+      };
     } else {
-      redirect({ to: "/anime" });
-      return { id: "" };
+      return {
+        title: "",
+        lang: "eng",
+        id: "",
+        success: false,
+      };
     }
   },
 });
 
 function WatchEpisodePage() {
   const navigate = useNavigate();
-  const { id } = Route.useSearch();
+  const { id, lang, title, success } = Route.useSearch();
   const { animeId } = Route.useParams();
+
+  useHandleSearchParamsValidationFailure({
+    isValidationFail: !success,
+    onValidationError: () => navigate({ to: "/anime" }),
+  });
+
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
     videoAndeEpisodeInfoContainerHeight,
@@ -61,26 +74,23 @@ function WatchEpisodePage() {
 
   const windowWidth = useWindowWidth();
 
-  //navigates back to info page if id (episode id) search param is not given
-  useEffect(() => {
-    if (!id) {
-      navigate({ to: "/anime/$animeId", params: { animeId: animeId } });
-    }
-  }, []);
-
   const {
     data: episodeStreamLinks,
     isLoading: isEpisodeStreamLinksLoading,
     error: episodeStreamLinksError,
   } = useFetchEpisodeStreamLinks(id);
 
-  const episodesQuery = useFetchAnimeEpisodes(animeId);
+  const episodesQuery = useFetchAnimeEpisodes({
+    animeId,
+    title,
+    titleLang: lang,
+  });
 
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
     error: animeInfoError,
-  } = useFetchAnimeInfo(animeId);
+  } = useFetchAnimeInfo({ animeId, title, titleLang: lang });
 
   const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
 
@@ -123,6 +133,7 @@ function WatchEpisodePage() {
   }
 
   if (animeInfo && episodesQuery.data && episodeInfo) {
+    const { animeInfoAnilist, animeInfoAniwatch } = animeInfo;
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -130,15 +141,13 @@ function WatchEpisodePage() {
             {episodeStreamLinks ? (
               <VideoPlayer
                 mediaType="ANIME"
-                poster={episodeInfo.image || animeInfo.cover}
-                streamLink={
-                  episodeStreamLinks.sources.find(
-                    (source) => source.quality === "backup"
-                  )?.url ??
-                  episodeStreamLinks.sources.find(
-                    (source) => source.quality === "default"
-                  )?.url
+                poster={
+                  episodeInfo.image ||
+                  animeInfoAnilist.cover ||
+                  animeInfoAniwatch.info.poster
                 }
+                streamLink={episodeStreamLinks.sources[0].url}
+                headers={episodeStreamLinks.headers}
                 title={episodeInfo.title}
               />
             ) : isEpisodeStreamLinksLoading ? (
@@ -152,29 +161,47 @@ function WatchEpisodePage() {
             />
           </div>
           <WatchPageAnimeEpisodes
+            title={title}
+            titleLang={lang}
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
-            episodeImageFallback={animeInfo.cover || animeInfo.image}
+            episodeImageFallback={
+              animeInfoAnilist.cover ||
+              animeInfoAnilist.image ||
+              animeInfoAniwatch.info.poster
+            }
             episodesQuery={episodesQuery}
             replace
-            type={animeInfo.type}
+            type={animeInfoAnilist.type || animeInfoAniwatch.info.stats.type}
             currentlyWatchingEpisodeNumber={episodeInfo.number}
           />
         </section>
         <WatchPageAnimeInfo
-          title={animeInfo.title.english || animeInfo.title.romaji}
-          cover={animeInfo.cover}
-          image={animeInfo.image}
-          description={animeInfo.description}
-          genres={animeInfo.genres}
-          status={animeInfo.status}
-          totalEpisodes={animeInfo.totalEpisodes}
-          type={animeInfo.type}
-          year={animeInfo.releaseDate}
-          rating={parseInt((animeInfo.rating * 0.1).toFixed(1))}
+          title={title}
+          cover={
+            animeInfoAnilist.cover ||
+            animeInfoAnilist.image ||
+            animeInfoAniwatch.info.poster
+          }
+          image={animeInfoAnilist.image || animeInfoAniwatch.info.poster}
+          description={
+            animeInfoAnilist.description || animeInfoAniwatch.info.description
+          }
+          genres={animeInfoAnilist.genres}
+          status={animeInfoAnilist.status}
+          totalEpisodes={animeInfoAnilist.totalEpisodes}
+          type={animeInfoAnilist.type || animeInfoAniwatch.info.stats.type}
+          year={animeInfoAnilist.releaseDate}
+          rating={
+            (animeInfoAnilist.rating * 0.1).toFixed(1) ||
+            (animeInfoAniwatch.moreInfo.malscore
+              ? parseInt(animeInfoAniwatch.moreInfo.malscore).toFixed(1)
+              : null) ||
+            null
+          }
         />
-        {animeInfo.recommendations && (
+        {animeInfoAnilist.recommendations && (
           <CategoryCarousel
-            carouselItems={animeInfo.recommendations}
+            carouselItems={animeInfoAnilist.recommendations}
             categoryName="Recommendations:"
             renderCarouselItems={(recommendation, i) => {
               return (
@@ -184,6 +211,12 @@ function WatchEpisodePage() {
                     linkProps={{
                       to: "/anime/$animeId",
                       params: { animeId: `${recommendation.id}` },
+                      search: {
+                        title:
+                          recommendation.title.english ||
+                          recommendation.title.romaji,
+                        lang: recommendation.title.english ? "eng" : "jap",
+                      },
                     }}
                     subLabels={[recommendation.type, recommendation.status]}
                     title={

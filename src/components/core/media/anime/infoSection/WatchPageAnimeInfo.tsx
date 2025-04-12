@@ -26,7 +26,7 @@ type Props = {
   type: string | undefined;
   status: string | undefined;
   genres: string[] | undefined;
-  rating: number | null | undefined;
+  rating: string | null | undefined;
 };
 
 export default function WatchPageAnimeInfo({
