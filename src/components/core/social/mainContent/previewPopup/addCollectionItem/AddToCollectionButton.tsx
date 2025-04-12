@@ -1,4 +1,5 @@
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 import {
   useMediaExistenceInCollection,
   useAddCollectionItem,
@@ -126,13 +127,13 @@ const AddToCollectionButton = forwardRef<HTMLButtonElement, Props>(
         }
       }
       if (addCollectionItemStatus === "success") {
-        if (isTabletUp) {
-          toggleOpenDialogSecondary(null);
-        } else {
-          toggleOpenDrawer(null);
-        }
+        toggleDialogOrDrawer({
+          content: null,
+          isTabletUp,
+          isSecondaryDialog: true,
+        });
       }
-    }, [addCollectionItemStatus]);
+    }, [addCollectionItemStatus, isTabletUp]);
 
     if (!currentUser) return <Navigate to="/login" replace />;
 

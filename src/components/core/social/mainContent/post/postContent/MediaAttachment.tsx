@@ -1,9 +1,8 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Media } from "@/utils/types/social/social";
 import { Cat, Circle, Clapperboard, Tv } from "lucide-react";
-import { useShallow } from "zustand/react/shallow";
 import MediaPreviewDialog from "../../previewPopup/media/MediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   media: Media;
@@ -14,27 +13,18 @@ export default function MediaAttachment({ media }: Props) {
   media.description = media.description?.replace("\\", "") || null;
   const attachmentBg = coverImage ?? posterImage ?? "/no-image-2.jpg";
   const attachmentPoster = posterImage ?? coverImage ?? "/no-image.png";
-
-  const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
-    useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
-  );
-
   const { isTabletUp } = useWindowBreakpoints();
-
-  function openMediaPreviewPopup(
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) {
-    e.stopPropagation();
-    if (isTabletUp) {
-      toggleOpenDialog(<MediaPreviewDialog media={media} />);
-    } else {
-      toggleOpenDrawer(<MediaPreviewDialog media={media} />);
-    }
-  }
 
   return (
     <div
-      onClick={openMediaPreviewPopup}
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleDialogOrDrawer({
+          content: <MediaPreviewDialog media={media} />,
+          isTabletUp,
+          isSecondaryDialog: false,
+        });
+      }}
       className="relative w-full overflow-hidden bg-gray-800 rounded-lg hover:cursor-pointer h-36 mobile-m:h-40 sm:h-44 md:h-48 xl:h-56"
     >
       <div className="absolute size-full">

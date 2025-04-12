@@ -10,7 +10,7 @@ import {
   getTMDBImageURL,
   getTMDBRating,
   getTMDBReleaseYear,
-  openDialogOrDrawer,
+  toggleDialogOrDrawer,
 } from "@/services/media/sharedFunctions";
 import AddCollectionItemMediaPreviewDialog from "../../mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
@@ -73,7 +73,7 @@ export default function MediaSelectionMovieSearchResults({
                 <MovieSearchResultCard
                   movie={movie}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
@@ -134,7 +134,7 @@ export default function MediaSelectionMovieSearchResults({
                 <MovieSearchResultCard
                   movie={movie}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{

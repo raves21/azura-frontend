@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { useShallow } from "zustand/react/shallow";
 import { X } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Navigate } from "@tanstack/react-router";
 import { Media } from "@/utils/types/social/social";
 import AddToCollectionButton from "./AddToCollectionButton";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   media: Media;
@@ -21,12 +20,6 @@ export default function AddCollectionItemMediaPreviewContainer({
   const [containerHeight, setContainerHeight] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const currentUser = useAuthStore((state) => state.currentUser);
-  const [toggleOpenDialogSecondary, toggleOpenDrawer] = useGlobalStore(
-    useShallow((state) => [
-      state.toggleOpenDialogSecondary,
-      state.toggleOpenDrawer,
-    ])
-  );
 
   useEffect(() => {
     if (containerRef.current) {
@@ -34,14 +27,6 @@ export default function AddCollectionItemMediaPreviewContainer({
       setContainerHeight(containerRef.current.getBoundingClientRect().height);
     }
   }, []);
-
-  function closePopup() {
-    if (isTabletUp) {
-      toggleOpenDialogSecondary(null);
-    } else {
-      toggleOpenDrawer(null);
-    }
-  }
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -51,7 +36,13 @@ export default function AddCollectionItemMediaPreviewContainer({
       className="text-gray-300 overflow-y-auto aspect-[5/4] flex flex-col relative h-[550px] rounded-lg bg-gray-950"
     >
       <button
-        onClick={closePopup}
+        onClick={() =>
+          toggleDialogOrDrawer({
+            content: null,
+            isTabletUp,
+            isSecondaryDialog: true,
+          })
+        }
         style={{
           marginLeft: !isTabletUp ? containerWidth - 40 : containerWidth - 10,
           marginTop: 12,

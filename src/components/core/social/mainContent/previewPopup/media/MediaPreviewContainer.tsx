@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { useShallow } from "zustand/react/shallow";
 import { X, SquareArrowOutUpRight } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Link, LinkProps, Navigate } from "@tanstack/react-router";
 import { MediaType } from "@/utils/types/shared";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -26,14 +25,6 @@ export default function MediaPreviewContainer({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewButtonRef = useRef<HTMLAnchorElement | null>(null);
   const currentUser = useAuthStore((state) => state.currentUser);
-  const [toggleOpenDialog, toggleOpenDialogSecondary, toggleOpenDrawer] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.toggleOpenDialog,
-        state.toggleOpenDialogSecondary,
-        state.toggleOpenDrawer,
-      ])
-    );
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);
@@ -45,13 +36,11 @@ export default function MediaPreviewContainer({
   }, []);
 
   function closePopup() {
-    if (isTabletUp) {
-      isSecondaryDialog
-        ? toggleOpenDialogSecondary(null)
-        : toggleOpenDialog(null);
-    } else {
-      toggleOpenDrawer(null);
-    }
+    toggleDialogOrDrawer({
+      content: null,
+      isTabletUp,
+      isSecondaryDialog,
+    });
   }
 
   let visitLinkProps: LinkProps;

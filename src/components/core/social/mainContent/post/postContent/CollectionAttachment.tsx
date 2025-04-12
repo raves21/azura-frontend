@@ -4,11 +4,10 @@ import { LibraryBig } from "lucide-react";
 import UserAvatar from "../../../UserAvatar";
 import { cn } from "@/lib/utils";
 import { EntityOwner } from "@/utils/types/social/shared";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { useShallow } from "zustand/react/shallow";
 import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   collection: TCollection;
@@ -33,24 +32,17 @@ export default function CollectionAttachment({ collection, owner }: Props) {
     attachmentBg = collection.photo;
   }
 
-  const [toggleOpenDialog, toggleOpenDrawer] = useGlobalStore(
-    useShallow((state) => [state.toggleOpenDialog, state.toggleOpenDrawer])
-  );
   const { isTabletUp } = useWindowBreakpoints();
-
-  function openCollectionPreviewPopup() {
-    if (isTabletUp) {
-      toggleOpenDialog(<CollectionPreviewDialog collection={collection} />);
-    } else {
-      toggleOpenDrawer(<CollectionPreviewDialog collection={collection} />);
-    }
-  }
 
   return (
     <div
       onClick={(e) => {
         e.stopPropagation();
-        openCollectionPreviewPopup();
+        toggleDialogOrDrawer({
+          content: <CollectionPreviewDialog collection={collection} />,
+          isTabletUp,
+          isSecondaryDialog: false,
+        });
       }}
       className="relative w-full overflow-hidden bg-gray-800 rounded-lg hover:cursor-pointer h-36 mobile-m:h-40 sm:h-44 md:h-48 xl:h-56"
     >

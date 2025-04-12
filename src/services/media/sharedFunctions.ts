@@ -60,17 +60,17 @@ export function useMediaScraper({
   });
 }
 
-type OpenDialogOrDrawerProps = {
+type OpenDialogOrDrawerArgs = {
   content: ReactNode;
   isTabletUp: boolean;
   isSecondaryDialog?: boolean;
 };
 
-export function openDialogOrDrawer({
+export function toggleDialogOrDrawer({
   content,
   isSecondaryDialog,
   isTabletUp,
-}: OpenDialogOrDrawerProps) {
+}: OpenDialogOrDrawerArgs) {
   const toggleOpenDrawer = useGlobalStore.getState().toggleOpenDrawer;
   const toggleOpenDialogSecondary =
     useGlobalStore.getState().toggleOpenDialogSecondary;

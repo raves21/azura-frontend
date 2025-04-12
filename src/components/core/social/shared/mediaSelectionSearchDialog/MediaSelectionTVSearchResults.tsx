@@ -6,7 +6,7 @@ import {
   getTMDBImageURL,
   getTMDBRating,
   getTMDBReleaseYear,
-  openDialogOrDrawer,
+  toggleDialogOrDrawer,
 } from "@/services/media/sharedFunctions";
 import AddCollectionItemMediaPreviewDialog from "../../mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
@@ -66,7 +66,7 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
                 <TVSearchResultCard
                   tv={tv}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
@@ -127,7 +127,7 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
                 <TVSearchResultCard
                   tv={tv}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{

@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { useShallow } from "zustand/react/shallow";
 import { X, SquareArrowOutUpRight } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Link, Navigate } from "@tanstack/react-router";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -22,31 +21,21 @@ export default function CollectionPreviewContainer({
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const currentUser = useAuthStore((state) => state.currentUser);
-  const [toggleOpenDialog, toggleOpenDialogSecondary, toggleOpenDrawer] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.toggleOpenDialog,
-        state.toggleOpenDialogSecondary,
-        state.toggleOpenDrawer,
-      ])
-    );
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);
     }
   }, []);
 
-  function closePopup() {
-    if (isTabletUp) {
-      isSecondaryDialog
-        ? toggleOpenDialogSecondary(null)
-        : toggleOpenDialog(null);
-    } else {
-      toggleOpenDrawer(null);
-    }
-  }
-
   if (!currentUser) return <Navigate to="/login" replace />;
+
+  function closePopup() {
+    toggleDialogOrDrawer({
+      content: null,
+      isTabletUp,
+      isSecondaryDialog,
+    });
+  }
 
   return (
     <div

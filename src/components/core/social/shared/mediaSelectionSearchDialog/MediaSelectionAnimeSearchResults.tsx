@@ -6,7 +6,7 @@ import {
 } from "@/services/media/anime/queries/animeQueries";
 import { AnimeSortBy } from "@/utils/types/media/anime/animeAnilist";
 import AnimeSearchResultCard from "@/components/core/social/shared/mediaSelectionSearchDialog/media/AnimeDialogResultCard";
-import { openDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 import AddCollectionItemMediaPreviewDialog from "../../mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
@@ -68,7 +68,7 @@ export default function MediaSelectionAnimeSearchResults({
                 <AnimeSearchResultCard
                   anime={anime}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
@@ -129,7 +129,7 @@ export default function MediaSelectionAnimeSearchResults({
                 <AnimeSearchResultCard
                   anime={anime}
                   onClick={() =>
-                    openDialogOrDrawer({
+                    toggleDialogOrDrawer({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
