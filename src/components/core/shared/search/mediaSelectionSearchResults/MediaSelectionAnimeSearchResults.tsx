@@ -1,7 +1,7 @@
 import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media/episode/SearchDialogResultsLoading";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import {
-  useFetchAnimesByCategory,
+  useAnimesByCategory,
   useFilterAnime,
 } from "@/services/media/anime/queries/animeQueries";
 import { AnimeSortBy } from "@/utils/types/media/anime/animeAnilist";
@@ -31,7 +31,7 @@ export default function MediaSelectionAnimeSearchResults({
     data: trendingAnime,
     isLoading: isTrendingAnimeLoading,
     error: trendingAnimeError,
-  } = useFetchAnimesByCategory(10, AnimeSortBy.TRENDING_DESC);
+  } = useAnimesByCategory(10, AnimeSortBy.TRENDING_DESC);
 
   const [setMediaAttachment, setManagePostPage, setCollectionAttachment] =
     useManagePostStore(

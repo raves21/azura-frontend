@@ -1,6 +1,6 @@
 import {
-  useFetchAnimeEpisodes,
-  useFetchAnimeInfo,
+  useAnimeEpisodes,
+  useAnimeInfo,
 } from "@/services/media/anime/queries/animeQueries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
@@ -51,7 +51,7 @@ function AnimeInfoPage() {
     onValidationError: () => navigate({ to: "/anime" }),
   });
 
-  const episodesQuery = useFetchAnimeEpisodes({
+  const episodesQuery = useAnimeEpisodes({
     animeId,
     title,
     titleLang: lang,
@@ -61,7 +61,7 @@ function AnimeInfoPage() {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
     error: animeInfoError,
-  } = useFetchAnimeInfo({ animeId, title, titleLang: lang });
+  } = useAnimeInfo({ animeId, title, titleLang: lang });
 
   useEffect(() => {
     window.scrollTo(0, 0);

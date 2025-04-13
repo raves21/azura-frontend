@@ -33,7 +33,7 @@ import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 //   staleTime: 240 * (60 * 1000), //4 hrs
 // };
 
-export function useFetchAnimesByCategory(
+export function useAnimesByCategory(
   perPage: number,
   category: AnimeSortBy,
   status?: AnilistAnimeStatus
@@ -126,7 +126,7 @@ type UseFetchAnimeInfoArgs = {
   titleLang: "eng" | "jap";
 };
 
-export function useFetchAnimeInfo({
+export function useAnimeInfo({
   animeId,
   title,
   titleLang,
@@ -165,7 +165,7 @@ type UseFetchAnimeEpisodesArgs = {
   title: string;
   titleLang: "eng" | "jap";
 };
-export function useFetchAnimeEpisodes({
+export function useAnimeEpisodes({
   animeId,
   title,
   titleLang,
@@ -198,7 +198,7 @@ export function useFetchAnimeEpisodes({
   });
 }
 
-export function useFetchEpisodeStreamLinks(episodeId: string) {
+export function useAnimeEpisodeStreamLinks(episodeId: string) {
   return useQuery({
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {

@@ -8,9 +8,9 @@ import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
 import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
-  useFetchEpisodeStreamLinks,
-  useFetchAnimeEpisodes,
-  useFetchAnimeInfo,
+  useAnimeEpisodeStreamLinks,
+  useAnimeEpisodes,
+  useAnimeInfo,
   useChunkAnimeEpisodes,
   useEpisodeInfo,
 } from "@/services/media/anime/queries/animeQueries";
@@ -83,9 +83,9 @@ function WatchEpisodePage() {
     data: episodeStreamLinks,
     isLoading: isEpisodeStreamLinksLoading,
     error: episodeStreamLinksError,
-  } = useFetchEpisodeStreamLinks(id);
+  } = useAnimeEpisodeStreamLinks(id);
 
-  const episodesQuery = useFetchAnimeEpisodes({
+  const episodesQuery = useAnimeEpisodes({
     animeId,
     title,
     titleLang: lang,
@@ -95,7 +95,7 @@ function WatchEpisodePage() {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
     error: animeInfoError,
-  } = useFetchAnimeInfo({ animeId, title, titleLang: lang });
+  } = useAnimeInfo({ animeId, title, titleLang: lang });
 
   const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
 

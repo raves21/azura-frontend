@@ -1,7 +1,7 @@
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
-import { useFetchAnimesByCategory } from "@/services/media/anime/queries/animeQueries";
+import { useAnimesByCategory } from "@/services/media/anime/queries/animeQueries";
 import {
   AnimeSortBy,
   AnilistAnimeStatus,
@@ -19,7 +19,7 @@ function AnimeHomePage() {
     data: trendingAnimes,
     isLoading: isTrendingAnimesLoading,
     error: trendingAnimesError,
-  } = useFetchAnimesByCategory(
+  } = useAnimesByCategory(
     17,
     AnimeSortBy.TRENDING_DESC,
     AnilistAnimeStatus.RELEASING
@@ -28,13 +28,13 @@ function AnimeHomePage() {
     data: popularAnimes,
     isLoading: isPopularAnimesLoading,
     error: popularAnimesError,
-  } = useFetchAnimesByCategory(12, AnimeSortBy.POPULARITY_DESC);
+  } = useAnimesByCategory(12, AnimeSortBy.POPULARITY_DESC);
 
   const {
     data: topRatedAnimes,
     isLoading: isTopRatedAnimesLoading,
     error: topRatedAnimesError,
-  } = useFetchAnimesByCategory(12, AnimeSortBy.SCORE_DESC);
+  } = useAnimesByCategory(12, AnimeSortBy.SCORE_DESC);
 
   if (
     isTrendingAnimesLoading ||
