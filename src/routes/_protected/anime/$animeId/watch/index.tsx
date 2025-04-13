@@ -24,9 +24,13 @@ import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/me
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
-import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
+import {
+  SearchSchemaValidationStatus,
+  Subtitle,
+} from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { getAnimeRatingInfoPage } from "@/services/media/sharedFunctions";
+import { Kind } from "@/utils/types/media/anime/animeAnilist";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
@@ -135,6 +139,17 @@ function WatchEpisodePage() {
 
   if (animeInfo && episodesQuery.data && episodeInfo) {
     const { animeInfoAnilist, animeInfoAniwatch } = animeInfo;
+
+    let subtitleTracks: Subtitle[] | undefined = undefined;
+    if (episodeStreamLinks) {
+      subtitleTracks = episodeStreamLinks.tracks
+        .filter((track) => track.kind === Kind.Captions)
+        .map((caption) => ({
+          lang: caption.label!,
+          url: caption.file,
+        }));
+    }
+
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -147,6 +162,7 @@ function WatchEpisodePage() {
                   animeInfoAnilist?.cover ||
                   animeInfoAniwatch?.info.poster
                 }
+                subtitleTracks={subtitleTracks}
                 streamLink={episodeStreamLinks.sources[0].url}
                 headers={episodeStreamLinks.headers}
                 title={episodeInfo.title}

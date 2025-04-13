@@ -125,8 +125,8 @@ function AnimeInfoPage() {
           replace={false}
           type={animeInfoAnilist?.type}
           episodeImageFallback={
-            animeInfoAnilist?.cover ||
             animeInfoAnilist?.image ||
+            animeInfoAnilist?.cover ||
             animeInfoAniwatch?.info.poster
           }
         />

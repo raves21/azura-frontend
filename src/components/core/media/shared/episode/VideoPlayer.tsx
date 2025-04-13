@@ -7,6 +7,7 @@ import {
 } from "@vidstack/react/player/layouts/default";
 import { cn } from "@/lib/utils";
 import { Subtitle } from "@/utils/types/media/shared";
+import { getRandomAniwatchProxyURL } from "@/services/media/anime/functions/animeFunctions";
 
 type VideoPlayerProps = {
   streamLink: string | undefined | null;
@@ -32,8 +33,7 @@ export default function VideoPlayer({
   if (streamLink) {
     let streamLinkFinal: string;
     if (mediaType === "ANIME") {
-      // streamLinkFinal = `${import.meta.env.VITE_ANIME_PROXY_URL}/proxy?url=${encodeURIComponent(btoa(streamLink))}&headers=${btoa(JSON.stringify(headers))}`;
-      streamLinkFinal = `http://localhost:5050/${btoa(`${streamLink}|${headers?.Referer}`)}.m3u8`;
+      streamLinkFinal = `${getRandomAniwatchProxyURL()}?url=${streamLink}`;
     } else {
       streamLinkFinal = `${import.meta.env.VITE_TMDB_PROXY_URL}/m3u8-proxy.m3u8?url=${encodeURIComponent(streamLink)}`;
     }
@@ -59,7 +59,7 @@ export default function VideoPlayer({
             <Poster className="vds-poster" />
             {subtitleTracks?.map((sub) => (
               <Track
-                default={sub.lang.startsWith("English")}
+                default={sub.lang.toLowerCase().startsWith("english")}
                 id={sub.url}
                 kind="subtitles"
                 src={sub.url}
@@ -84,9 +84,10 @@ export default function VideoPlayer({
     >
       <img
         src="/static-screen.gif"
-        className="font-medium rounded-lg size-full object-cover"
+        className="font-medium rounded-lg size-full object-cover z-10"
       />
-      <p className="text-lg font-semibold absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+      <div className="absolute inset-0 bg-black/30 z-20" />
+      <p className="text-xl font-semibold absolute -translate-x-1/2 z-30 -translate-y-1/2 left-1/2 top-1/2">
         Sorry this media is not available right now
       </p>
     </div>

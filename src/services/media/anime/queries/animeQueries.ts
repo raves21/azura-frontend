@@ -15,6 +15,7 @@ import {
 import {
   chunkEpisodes,
   getEpisodesToBeRendered,
+  getRandomAniwatchProxyURL,
 } from "../functions/animeFunctions";
 import {
   AnimeInfoAniwatch,
@@ -138,7 +139,7 @@ export function useFetchAnimeInfo({
           .get(`${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`)
           .catch(() => null),
         axios
-          .get(`${import.meta.env.VITE_ANIWATCH_MAPPER_URL}/info`, {
+          .get(`${import.meta.env.VITE_ANILIST_TO_ANIWATCH_URL}/info`, {
             params: {
               title,
               type: titleLang,
@@ -178,7 +179,7 @@ export function useFetchAnimeEpisodes({
             `${import.meta.env.VITE_ANIZIP_URL}/mappings?anilist_id=${animeId}`
           )
           .catch(() => null),
-        axios.get(`${import.meta.env.VITE_ANIWATCH_MAPPER_URL}/episodes`, {
+        axios.get(`${import.meta.env.VITE_ANILIST_TO_ANIWATCH_URL}/episodes`, {
           params: {
             title,
             type: titleLang,
@@ -202,12 +203,12 @@ export function useFetchEpisodeStreamLinks(episodeId: string) {
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {
       const { data: episodeStreamLinks } = await axios.get(
-        `http://localhost:3000/?url=https://ritesh-aniwatch-api-phi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}`
-        // {
-        //   params: {
-        //     animeEpisodeId: episodeId,
-        //   },
-        // }
+        `${getRandomAniwatchProxyURL()}`,
+        {
+          params: {
+            url: `https://ritesh-aniwatch-api-phi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}&server=hd-2`,
+          },
+        }
       );
       return episodeStreamLinks.data as AnimeEpisodeStreamLinks;
     },

@@ -46,3 +46,16 @@ export function getEpisodesToBeRendered(
     return null;
   }
 }
+
+export function getRandomAniwatchProxyURL(): string {
+  //💀💀 LOAD BALANCER HAHSQHAHAHHAHAHAH
+  const urls = [
+    `${import.meta.env.VITE_ANIWATCH_API_PROXY_1}`,
+    `${import.meta.env.VITE_ANIWATCH_API_PROXY_2}`,
+    `${import.meta.env.VITE_ANIWATCH_API_PROXY_3}`,
+    `${import.meta.env.VITE_ANIWATCH_API_PROXY_4}`,
+    `${import.meta.env.VITE_ANIWATCH_API_PROXY_5}`,
+  ];
+  const randomURL = urls[Math.floor(Math.random() * urls.length)];
+  return randomURL;
+}
