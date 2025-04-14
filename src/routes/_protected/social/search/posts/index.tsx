@@ -3,9 +3,10 @@ import Post from "@/components/core/social/mainContent/post/Post";
 import { useSearchPosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { z } from "zod";
 
 const postsSearchResultsPageSchema = z.object({
@@ -35,11 +36,20 @@ function PostsSearchResultsPage() {
   useCustomScrollRestoration();
   const { query, success } = Route.useSearch();
   const navigate = useNavigate();
+
   useHandleSearchParamsValidationFailure({
     isValidationFail: success === false || !query,
     onValidationError: () => navigate({ to: "/social" }),
     deps: [success, query],
   });
+
+  const setSocialSearchKeyword = useGlobalStore(
+    (state) => state.setSocialSearchKeyword
+  );
+
+  useEffect(() => {
+    setSocialSearchKeyword(query);
+  }, [query]);
 
   const {
     data: searchPostsResults,

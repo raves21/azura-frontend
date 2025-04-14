@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchPeople } from "@/services/social/queries/socialQueries";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
@@ -6,6 +6,8 @@ import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import UserListItem from "@/components/core/social/shared/UserListItem";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 
 const peopleSearchResultsPageSchema = z.object({
   query: z.string(),
@@ -20,7 +22,7 @@ export const Route = createFileRoute("/_protected/social/search/people/")({
   component: () => <PeopleSearchResultsPage />,
   validateSearch: (search): PeopleSearchResultsPageSchema => {
     const validated = peopleSearchResultsPageSchema.safeParse(search);
-    if (validated.success) {
+    if (validated.success && validated.data.query.trim()) {
       return {
         ...validated.data,
         success: true,
@@ -34,13 +36,22 @@ export const Route = createFileRoute("/_protected/social/search/people/")({
 });
 
 function PeopleSearchResultsPage() {
+  useCustomScrollRestoration();
   const { query, success } = Route.useSearch();
   const navigate = useNavigate();
 
   useHandleSearchParamsValidationFailure({
-    isValidationFail: !success || !query,
+    isValidationFail: !success,
     onValidationError: () => navigate({ to: "/social" }),
   });
+
+  const setSocialSearchKeyword = useGlobalStore(
+    (state) => state.setSocialSearchKeyword
+  );
+
+  useEffect(() => {
+    setSocialSearchKeyword(query);
+  }, [query]);
 
   const {
     data: searchPeopleResults,
