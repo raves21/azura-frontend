@@ -112,3 +112,22 @@ export type UserPreview = Omit<UserBasicInfo, "email"> & {
 export type PaginatedUserPreviewsResponse = PaginatedResponse & {
   data: UserPreview[];
 };
+
+export type NotificationType = "LIKE" | "COMMENT" | "FOLLOW";
+
+export type NotificationActor = EntityOwner;
+
+export type TNotification = {
+  id: string;
+  recipientId: string;
+  isRead: boolean;
+  postId: string | null;
+  type: NotificationType;
+  actorsPreview: NotificationActor[];
+  totalActors: number;
+  updatedAt: Date;
+};
+
+export type PaginatedNotificationsResponse = PaginatedResponse & {
+  data: TNotification[];
+};

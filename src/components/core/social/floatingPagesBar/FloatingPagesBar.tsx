@@ -32,7 +32,7 @@ export default function FloatingPagesBar() {
     {
       name: "Notifications",
       linkProps: {
-        to: "/social",
+        to: "/social/notifications",
       },
     },
   ];

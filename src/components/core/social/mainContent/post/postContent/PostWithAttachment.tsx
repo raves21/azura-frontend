@@ -37,10 +37,7 @@ export default function PostWithAttachment({
       {props.attachmentType === "media" ? (
         <MediaAttachment media={props.media} />
       ) : (
-        <CollectionAttachment
-          owner={props.owner}
-          collection={props.collection}
-        />
+        <CollectionAttachment collection={props.collection} />
       )}
     </div>
   );

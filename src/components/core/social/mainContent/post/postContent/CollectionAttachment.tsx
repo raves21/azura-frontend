@@ -3,7 +3,6 @@ import CollectionPhoto from "../../collection/CollectionPhoto";
 import { LibraryBig } from "lucide-react";
 import UserAvatar from "../../../shared/UserAvatar";
 import { cn } from "@/lib/utils";
-import { EntityOwner } from "@/utils/types/social/shared";
 import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
@@ -11,10 +10,9 @@ import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
 
 type Props = {
   collection: TCollection;
-  owner: EntityOwner;
 };
 
-export default function CollectionAttachment({ collection, owner }: Props) {
+export default function CollectionAttachment({ collection }: Props) {
   let attachmentBg: string | null | undefined;
 
   if (collection.previewMedias.length !== 0) {
@@ -76,7 +74,7 @@ export default function CollectionAttachment({ collection, owner }: Props) {
           </div>
           <div className="flex items-center gap-2 text-[10px] mobile-l:text-xs">
             <UserAvatar
-              src={owner.avatar || "/sample-user-pfp.png"}
+              src={collection.owner.avatar || "/sample-user-pfp.png"}
               imageClassName="size-4 md:size-4"
             />
             <p
@@ -84,7 +82,7 @@ export default function CollectionAttachment({ collection, owner }: Props) {
                 "font-medium mobile-m:text-xs sm:text-sm line-clamp-1"
               )}
             >
-              {owner.handle}
+              {collection.owner.username}
             </p>
           </div>
           <p className="text-2xs mobile-m:text-xs md:text-sm mobile-m:mt-1 line-clamp-2 text-socialTextSecondary sm:text-[14px]">

@@ -114,6 +114,7 @@ export default function EditProfilePage({
         <div className="relative w-full h-48 shrink-0">
           <div className="absolute size-full">
             <img
+              onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
               src={editProfileBanner ?? "/no-image-2.jpg"}
               alt="banner"
               className="object-cover size-full"
@@ -137,6 +138,7 @@ export default function EditProfilePage({
           </div>
           <div className="absolute -bottom-[38%] left-4 size-[120px] rounded-full  border-4 overflow-hidden box-content border-socialPrimary">
             <img
+              onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
               src={editProfileAvatar ?? "/no-image-2.jpg"}
               alt="avatar"
               className="object-cover size-full"
