@@ -61,6 +61,11 @@ const MEDIA_EXISTENCE_IN_COLLECTIONS_QUERY_KEY = (
   mediaType: MediaType
 ) => ["collections", "mediaExistenceInCollections", mediaId, mediaType];
 
+const MEDIA_EXISTENCE_IN_COLLECTION_QUERY_KEY = (
+  mediaId: string,
+  mediaType: MediaType
+) => ["mediaExistenceInCollection", mediaId, mediaType];
+
 const COLLECTION_ITEMS_QUERY_FILTER = (collectionId: string): QueryFilters => ({
   queryKey: ["collectionItems", collectionId],
 });
@@ -674,6 +679,7 @@ export function addCollectionItem_CollectionItemsCacheMutation({
     media,
   };
 
+  //add it to the cached data of useCollectionItems
   queryClient.setQueriesData<
     InfiniteData<PaginatedCollectionItemsResponse, number>
   >(COLLECTION_ITEMS_QUERY_FILTER(collectionId), (oldData) => {
@@ -714,6 +720,14 @@ export function addCollectionItem_CollectionItemsCacheMutation({
       };
     }
   });
+
+  //change the useMediaExistenceInCollection cache: set doesGivenMediaExist to true
+  queryClient.setQueryData<{ doesGivenMediaExist: boolean }>(
+    MEDIA_EXISTENCE_IN_COLLECTION_QUERY_KEY(media.id, media.type),
+    () => ({
+      doesGivenMediaExist: true,
+    })
+  );
 }
 
 export function editCollection_CollectionInfoCacheMutation(

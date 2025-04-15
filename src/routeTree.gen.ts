@@ -30,6 +30,7 @@ import { Route as ProtectedSocialUserHandleRouteImport } from './routes/_protect
 import { Route as ProtectedTvCatalogIndexImport } from './routes/_protected/tv/catalog/index'
 import { Route as ProtectedTvTvIdIndexImport } from './routes/_protected/tv/$tvId/index'
 import { Route as ProtectedSocialSearchIndexImport } from './routes/_protected/social/search/index'
+import { Route as ProtectedSocialNotificationsIndexImport } from './routes/_protected/social/notifications/index'
 import { Route as ProtectedSocialUserHandleIndexImport } from './routes/_protected/social/$userHandle/index'
 import { Route as ProtectedMovieCatalogIndexImport } from './routes/_protected/movie/catalog/index'
 import { Route as ProtectedMovieMovieIdIndexImport } from './routes/_protected/movie/$movieId/index'
@@ -153,6 +154,12 @@ const ProtectedSocialSearchIndexRoute = ProtectedSocialSearchIndexImport.update(
     getParentRoute: () => ProtectedSocialSearchRouteRoute,
   } as any,
 )
+
+const ProtectedSocialNotificationsIndexRoute =
+  ProtectedSocialNotificationsIndexImport.update({
+    path: '/notifications/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any)
 
 const ProtectedSocialUserHandleIndexRoute =
   ProtectedSocialUserHandleIndexImport.update({
@@ -449,6 +456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialUserHandleIndexImport
       parentRoute: typeof ProtectedSocialUserHandleRouteImport
     }
+    '/_protected/social/notifications/': {
+      id: '/_protected/social/notifications/'
+      path: '/notifications'
+      fullPath: '/social/notifications'
+      preLoaderRoute: typeof ProtectedSocialNotificationsIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
     '/_protected/social/search/': {
       id: '/_protected/social/search/'
       path: '/'
@@ -612,6 +626,7 @@ export const routeTree = rootRoute.addChildren({
           ProtectedSocialSearchPostsIndexRoute,
         }),
       ProtectedSocialIndexRoute,
+      ProtectedSocialNotificationsIndexRoute,
       ProtectedSocialUserHandlePostsIndexRoute,
       ProtectedSocialUserHandleCollectionsCollectionIdIndexRoute,
       ProtectedSocialUserHandlePostsPostIdIndexRoute,
@@ -692,6 +707,7 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/social/$userHandle",
         "/_protected/social/search",
         "/_protected/social/",
+        "/_protected/social/notifications/",
         "/_protected/social/$userHandle/posts/",
         "/_protected/social/$userHandle/collections/$collectionId/",
         "/_protected/social/$userHandle/posts/$postId/"
@@ -780,6 +796,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/$userHandle/": {
       "filePath": "_protected/social/$userHandle/index.tsx",
       "parent": "/_protected/social/$userHandle"
+    },
+    "/_protected/social/notifications/": {
+      "filePath": "_protected/social/notifications/index.tsx",
+      "parent": "/_protected/social"
     },
     "/_protected/social/search/": {
       "filePath": "_protected/social/search/index.tsx",

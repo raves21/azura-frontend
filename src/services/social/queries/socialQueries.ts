@@ -13,6 +13,7 @@ import {
   Trend,
   PaginatedUserPreviewsResponse,
   PaginatedCollectionItemsResponse,
+  PaginatedNotificationsResponse,
 } from "@/utils/types/social/social";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
@@ -586,10 +587,9 @@ export function useMediaExistenceInCollection({
         `/collections/${collectionId}/check-media-existence`,
         { params: { mediaId, type: mediaType } }
       );
-      return mediaExistenceInCollection.data as Omit<
-        MediaExistenceInCollection,
-        "id" | "name"
-      >;
+      return mediaExistenceInCollection.data as {
+        doesGivenMediaExist: boolean;
+      };
     },
   });
 }
@@ -603,12 +603,6 @@ type UseAddCollectionItemArgs = {
 export function useAddCollectionItem() {
   return useMutation({
     mutationFn: async ({ collectionId, media }: UseAddCollectionItemArgs) => {
-      //mutate the cache
-      addCollectionItem_CollectionItemsCacheMutation({
-        collectionId,
-        media,
-      });
-      //run the api call
       await api.post(`/collections/${collectionId}/collection-items`, {
         mediaId: media.id,
         type: media.type,
@@ -621,7 +615,11 @@ export function useAddCollectionItem() {
         status: media.status,
       });
     },
-    onSuccess: (_, { currentUserHandle, media }) => {
+    onSuccess: (_, { currentUserHandle, media, collectionId }) => {
+      addCollectionItem_CollectionItemsCacheMutation({
+        collectionId,
+        media,
+      });
       if (currentUserHandle) {
         queryClient.invalidateQueries({
           queryKey: [
@@ -810,6 +808,66 @@ export function useDeleteCollection({ collectionId }: UseDeleteCollectionArgs) {
       });
       deleteCollection_CollectionsCacheMutation(collectionId);
       history.pushState(null, "", `/social/${userHandle}/collections`);
+    },
+  });
+}
+
+export function useNotifications() {
+  return useInfiniteQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const { data: notifications } = await api.get("/notifications");
+
+      return notifications as PaginatedNotificationsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+type UseUpdateNotificationReadStatus = {
+  notificationId: string;
+  isRead: boolean;
+};
+
+export function useUpdateNotificationReadStatus() {
+  return useMutation({
+    mutationFn: async ({
+      isRead,
+      notificationId,
+    }: UseUpdateNotificationReadStatus) => {
+      await api.put(`/collections/${notificationId}`, {
+        isRead,
+      });
+    },
+    onSuccess: () => {
+      //todo change this to cache mutation
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+}
+
+export function useDeleteNotification() {
+  return useMutation({
+    mutationFn: async (collectionId: string) => {
+      await api.delete(`/collections/${collectionId}`);
+    },
+    onSuccess: () => {
+      //todo change this to cache mutation
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+}
+
+export function useDeleteAllNotifications() {
+  return useMutation({
+    mutationFn: async () => {
+      await api.delete(`/collections`);
+    },
+    onSuccess: () => {
+      //todo change this to cache mutation
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
   });
 }
