@@ -43,6 +43,8 @@ import { Route as ProtectedTvTvIdWatchIndexImport } from './routes/_protected/tv
 import { Route as ProtectedSocialSearchPostsIndexImport } from './routes/_protected/social/search/posts/index'
 import { Route as ProtectedSocialSearchPeopleIndexImport } from './routes/_protected/social/search/people/index'
 import { Route as ProtectedSocialUserHandlePostsIndexImport } from './routes/_protected/social/$userHandle_/posts/index'
+import { Route as ProtectedSocialUserHandleFollowingIndexImport } from './routes/_protected/social/$userHandle_/following/index'
+import { Route as ProtectedSocialUserHandleFollowersIndexImport } from './routes/_protected/social/$userHandle_/followers/index'
 import { Route as ProtectedSocialUserHandleCollectionsIndexImport } from './routes/_protected/social/$userHandle/collections/index'
 import { Route as ProtectedMovieCatalogSearchIndexImport } from './routes/_protected/movie/catalog/search/index'
 import { Route as ProtectedMovieMovieIdWatchIndexImport } from './routes/_protected/movie/$movieId/watch/index'
@@ -234,6 +236,18 @@ const ProtectedSocialSearchPeopleIndexRoute =
 const ProtectedSocialUserHandlePostsIndexRoute =
   ProtectedSocialUserHandlePostsIndexImport.update({
     path: '/$userHandle/posts/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any)
+
+const ProtectedSocialUserHandleFollowingIndexRoute =
+  ProtectedSocialUserHandleFollowingIndexImport.update({
+    path: '/$userHandle/following/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any)
+
+const ProtectedSocialUserHandleFollowersIndexRoute =
+  ProtectedSocialUserHandleFollowersIndexImport.update({
+    path: '/$userHandle/followers/',
     getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
@@ -533,6 +547,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialUserHandleCollectionsIndexImport
       parentRoute: typeof ProtectedSocialUserHandleRouteImport
     }
+    '/_protected/social/$userHandle/followers/': {
+      id: '/_protected/social/$userHandle/followers/'
+      path: '/$userHandle/followers'
+      fullPath: '/social/$userHandle/followers'
+      preLoaderRoute: typeof ProtectedSocialUserHandleFollowersIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
+    '/_protected/social/$userHandle/following/': {
+      id: '/_protected/social/$userHandle/following/'
+      path: '/$userHandle/following'
+      fullPath: '/social/$userHandle/following'
+      preLoaderRoute: typeof ProtectedSocialUserHandleFollowingIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
     '/_protected/social/$userHandle/posts/': {
       id: '/_protected/social/$userHandle/posts/'
       path: '/$userHandle/posts'
@@ -627,6 +655,8 @@ export const routeTree = rootRoute.addChildren({
         }),
       ProtectedSocialIndexRoute,
       ProtectedSocialNotificationsIndexRoute,
+      ProtectedSocialUserHandleFollowersIndexRoute,
+      ProtectedSocialUserHandleFollowingIndexRoute,
       ProtectedSocialUserHandlePostsIndexRoute,
       ProtectedSocialUserHandleCollectionsCollectionIdIndexRoute,
       ProtectedSocialUserHandlePostsPostIdIndexRoute,
@@ -708,6 +738,8 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/social/search",
         "/_protected/social/",
         "/_protected/social/notifications/",
+        "/_protected/social/$userHandle/followers/",
+        "/_protected/social/$userHandle/following/",
         "/_protected/social/$userHandle/posts/",
         "/_protected/social/$userHandle/collections/$collectionId/",
         "/_protected/social/$userHandle/posts/$postId/"
@@ -840,6 +872,14 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/$userHandle/collections/": {
       "filePath": "_protected/social/$userHandle/collections/index.tsx",
       "parent": "/_protected/social/$userHandle"
+    },
+    "/_protected/social/$userHandle/followers/": {
+      "filePath": "_protected/social/$userHandle_/followers/index.tsx",
+      "parent": "/_protected/social"
+    },
+    "/_protected/social/$userHandle/following/": {
+      "filePath": "_protected/social/$userHandle_/following/index.tsx",
+      "parent": "/_protected/social"
     },
     "/_protected/social/$userHandle/posts/": {
       "filePath": "_protected/social/$userHandle_/posts/index.tsx",

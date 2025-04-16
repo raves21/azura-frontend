@@ -131,3 +131,7 @@ export type TNotification = {
 export type PaginatedNotificationsResponse = PaginatedResponse & {
   data: TNotification[];
 };
+
+export type PaginatedFollowerFollowingResponse = PaginatedResponse & {
+  data: UserPreview[];
+};

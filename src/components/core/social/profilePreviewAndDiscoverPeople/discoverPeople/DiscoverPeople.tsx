@@ -64,7 +64,7 @@ export default function DiscoverPeople() {
                 <Fragment key={page.page}>
                   {page.data.map((userPreview) => (
                     <UserListItem
-                      type="discoverPeople"
+                      isDiscoverPeopleSection={true}
                       key={userPreview.id}
                       avatar={userPreview.avatar}
                       bio={userPreview.bio}
