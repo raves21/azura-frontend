@@ -69,7 +69,13 @@ export default function ProfileDetails({
       </p>
       <div className="flex gap-6 text-sm mobile-m:text-md sm:text-base">
         {totalFollowing !== 0 ? (
-          <Link>
+          <Link
+            to="/social/$userHandle/following"
+            params={{
+              userHandle: handle,
+            }}
+            className="hover:underline underline-offset-4 decoration-1"
+          >
             <span className="font-semibold">{totalFollowing}&nbsp;</span>
             <span className="text-socialTextSecondary">following</span>
           </Link>
@@ -80,7 +86,13 @@ export default function ProfileDetails({
           </p>
         )}
         {totalFollowers !== 0 ? (
-          <Link>
+          <Link
+            to="/social/$userHandle/followers"
+            params={{
+              userHandle: handle,
+            }}
+            className="hover:underline underline-offset-4 decoration-1"
+          >
             <span className="font-semibold">{totalFollowers}&nbsp;</span>
             <span className="text-socialTextSecondary">follower</span>
           </Link>

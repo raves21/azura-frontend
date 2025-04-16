@@ -6,7 +6,7 @@ import ToggleFollowButton from "../mainContent/profile/profileDetails/ToggleFoll
 
 type UserListItemProps = UserPreview & {
   className?: string;
-  type: "discoverPeople" | "searchPeople";
+  isDiscoverPeopleSection?: boolean;
 };
 
 export default function UserListItem({
@@ -17,7 +17,7 @@ export default function UserListItem({
   id,
   username,
   className,
-  type,
+  isDiscoverPeopleSection,
 }: UserListItemProps) {
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ export default function UserListItem({
       }
       className={cn(
         "hover:cursor-pointer flex flex-col w-full py-3 hover:bg-socialPrimaryHover gap-[10px]",
-        type === "searchPeople" ? "px-2" : "px-5",
+        isDiscoverPeopleSection ? "px-5" : "px-2 sm:px-5",
         className
       )}
     >
@@ -41,14 +41,14 @@ export default function UserListItem({
           src={avatar || "/no-image-2.jpg"}
           className={cn(
             "object-cover rounded-full",
-            type === "searchPeople" ? "size-12" : "size-10"
+            isDiscoverPeopleSection ? "size-10" : "size-12 md:size-14"
           )}
           onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
         />
         <div
           className={cn(
             "flex-grow space-y-1 text-start",
-            type === "searchPeople" ? "text-md pl-3" : "text-sm pl-2"
+            isDiscoverPeopleSection ? "text-sm pl-2" : "text-md pl-4"
           )}
         >
           <p className="font-semibold line-clamp-1">{username}</p>
@@ -70,7 +70,9 @@ export default function UserListItem({
         <p
           className={cn(
             "line-clamp-2",
-            type === "searchPeople" ? "text-md pl-[61px]" : "text-sm pl-[48px]"
+            isDiscoverPeopleSection
+              ? "text-sm pl-[48px]"
+              : "text-md pl-[65px] md:pl-[73px]"
           )}
         >
           {bio}

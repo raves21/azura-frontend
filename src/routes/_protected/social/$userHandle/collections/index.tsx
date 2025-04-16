@@ -1,4 +1,4 @@
-import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useUserCollections } from "@/services/social/queries/socialQueries";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
@@ -19,7 +19,7 @@ export const Route = createFileRoute(
 });
 
 function CollectionsPage() {
-  const { userHandle } = useParams({ from: "/_protected/social/$userHandle" });
+  const { userHandle } = Route.useParams();
   useCustomScrollRestoration(`userProfilePage-${userHandle}`);
   const currentUser = useAuthStore((state) => state.currentUser);
 

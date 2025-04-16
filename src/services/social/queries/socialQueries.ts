@@ -14,6 +14,7 @@ import {
   PaginatedUserPreviewsResponse,
   PaginatedCollectionItemsResponse,
   PaginatedNotificationsResponse,
+  PaginatedFollowerFollowingResponse,
 } from "@/utils/types/social/social";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
@@ -40,10 +41,7 @@ import {
 } from "../functions/cacheMutations";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
-import {
-  MediaExistenceInCollection,
-  PaginatedMediaExistenceInCollectionsResponse,
-} from "@/utils/types/media/shared";
+import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
 import { queryClient } from "@/utils/variables/queryClient";
 
 export function useForYouFeed() {
@@ -62,8 +60,8 @@ export function useForYouFeed() {
 }
 
 export function useUserProfile(
-  userHandle?: string,
-  currentUserHandle?: string
+  userHandle: string | undefined,
+  currentUserHandle: string | undefined
 ) {
   return useQuery({
     queryKey: ["userProfile", userHandle],
@@ -288,7 +286,7 @@ export function useDeletePost(postId: string | null) {
 
 export function useUserProfilePosts(
   userHandle: string,
-  currentUserHandle?: string
+  currentUserHandle: string | undefined
 ) {
   return useInfiniteQuery({
     queryKey: ["posts", "userProfilePosts", userHandle],
@@ -869,5 +867,68 @@ export function useDeleteAllNotifications() {
       //todo change this to cache mutation
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
+  });
+}
+
+type FollowingFollowerList = {
+  userHandle: string;
+  currentUserHandle: string | undefined;
+};
+
+export function useFollowingList({
+  currentUserHandle,
+  userHandle,
+}: FollowingFollowerList) {
+  return useInfiniteQuery({
+    queryKey: [
+      "followingList",
+      "userPreviewList",
+      userHandle,
+      currentUserHandle,
+    ],
+    queryFn: async () => {
+      let url: string;
+      if (userHandle === currentUserHandle) {
+        url = "/users/me/following";
+      } else {
+        url = `/users/${userHandle}/following`;
+      }
+
+      const { data: followingList } = await api.get(url);
+
+      return followingList as PaginatedFollowerFollowingResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+export function useFollowerList({
+  currentUserHandle,
+  userHandle,
+}: FollowingFollowerList) {
+  return useInfiniteQuery({
+    queryKey: [
+      "followerList",
+      "userPreviewList",
+      userHandle,
+      currentUserHandle,
+    ],
+    queryFn: async () => {
+      let url: string;
+      if (userHandle === currentUserHandle) {
+        url = "/users/me/followers";
+      } else {
+        url = `/users/${userHandle}/followers`;
+      }
+
+      const { data: followerList } = await api.get(url);
+
+      return followerList as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
