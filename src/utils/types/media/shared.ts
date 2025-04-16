@@ -65,7 +65,7 @@ export type URL = {
 };
 
 export type SearchSchemaValidationStatus = {
-  success: boolean;
+  success?: boolean;
 };
 
 export type MediaExistenceInCollection = {

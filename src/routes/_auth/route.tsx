@@ -1,7 +1,7 @@
 import StaticLoadingPage from "@/components/core/shared/StaticLoadingPage";
 import Waves from "@/components/core/shared/Waves";
 import { useRefreshJWT } from "@/services/auth/authQueries";
-import { LastMediaRouteVisited } from "@/utils/types/shared";
+import { MediaType } from "@/utils/types/shared";
 import {
   createFileRoute,
   Link,
@@ -26,17 +26,17 @@ function AuthLayout() {
     //get the value of the last media route visited from localStorage (either anime/tv/movie)
     const lastMediaRouteVisited = localStorage.getItem(
       "lastMediaRouteVisited"
-    ) as LastMediaRouteVisited | null;
+    ) as MediaType | null;
     let authenticatedGotoLink: LinkProps;
     if (lastMediaRouteVisited) {
       switch (lastMediaRouteVisited) {
-        case "anime":
+        case "ANIME":
           authenticatedGotoLink = { to: "/anime" };
           break;
-        case "movie":
+        case "MOVIE":
           authenticatedGotoLink = { to: "/movie" };
           break;
-        case "tv":
+        case "TV":
           authenticatedGotoLink = { to: "/tv" };
           break;
       }

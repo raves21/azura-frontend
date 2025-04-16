@@ -2,12 +2,12 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_protected/tv")({
-  component: () => <TVLayout />
+  component: () => <TVLayout />,
 });
 
 function TVLayout() {
   useEffect(() => {
-    localStorage.setItem("lastMediaRouteVisited", "tv");
+    localStorage.setItem("lastMediaRouteVisited", "TV");
   }, []);
   return <Outlet />;
 }

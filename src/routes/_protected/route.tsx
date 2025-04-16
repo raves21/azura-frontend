@@ -7,13 +7,14 @@ import {
   Outlet,
   useMatchRoute,
 } from "@tanstack/react-router";
-import MovieTopNavBar from "@/components/core/navBar/movie/MovieTopNavBar";
-import AnimeTopNavBar from "@/components/core/navBar/anime/AnimeTopNavBar";
+import MovieTopNavBar from "@/components/core/navBar/topNavBar/movie/MovieTopNavBar";
+import AnimeTopNavBar from "@/components/core/navBar/topNavBar/anime/AnimeTopNavBar";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
-import TVTopNavBar from "@/components/core/navBar/tv/TVTopNavBar";
+import TVTopNavBar from "@/components/core/navBar/topNavBar/tv/TVTopNavBar";
 import { ReactNode } from "react";
-import { LastMediaRouteVisited } from "@/utils/types/shared";
+import { MediaType } from "@/utils/types/shared";
+import BottomNavBar from "@/components/core/navBar/bottomNavBar/BottomNavBar";
 
 export const Route = createFileRoute("/_protected")({
   component: () => <Protected />,
@@ -27,25 +28,30 @@ function Protected() {
   //get the value of the last media route visited from localStorage (either anime/tv/movie)
   const lastMediaRouteVisited = localStorage.getItem(
     "lastMediaRouteVisited"
-  ) as LastMediaRouteVisited | null;
+  ) as MediaType | null;
 
   let topNavBar: ReactNode;
+  let bottomNavBarType: MediaType;
 
   if (lastMediaRouteVisited) {
     switch (lastMediaRouteVisited) {
-      case "anime":
+      case "ANIME":
         topNavBar = <AnimeTopNavBar />;
+        bottomNavBarType = "ANIME";
         break;
-      case "movie":
+      case "MOVIE":
         topNavBar = <MovieTopNavBar />;
+        bottomNavBarType = "MOVIE";
         break;
-      case "tv":
+      case "TV":
         topNavBar = <TVTopNavBar />;
+        bottomNavBarType = "TV";
         break;
     }
   } else {
-    localStorage.setItem("lastMediaRouteVisited", "movie");
+    localStorage.setItem("lastMediaRouteVisited", "MOVIE");
     topNavBar = <MovieTopNavBar />;
+    bottomNavBarType = "MOVIE";
   }
 
   if (isLoading) return <StaticLoadingPage />;
@@ -68,6 +74,7 @@ function Protected() {
           >
             <Outlet />
           </div>
+          <BottomNavBar type={bottomNavBarType} />
         </div>
       </PulseCheckJWT>
     );

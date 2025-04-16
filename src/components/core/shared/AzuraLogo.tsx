@@ -1,0 +1,41 @@
+import { cn } from "@/lib/utils";
+
+type Props = {
+  className?: string;
+};
+
+export default function AzuraLogo({ className }: Props) {
+  return (
+    <div className={cn("size-14", className)}>
+      <svg
+        className="azura-logo"
+        viewBox="0 0 334 292"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M188.754 171.492C188.754 184.291 178.476 194.667 165.797 194.667C153.119 194.667 142.841 184.291 142.841 171.492C142.841 158.693 153.119 148.317 165.797 148.317C178.476 148.317 188.754 158.693 188.754 171.492Z"
+          fill="#C026D3"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M334 292L167 0L0 292H334ZM303.006 276.808L166.49 38.1093L29.974 276.808H303.006Z"
+          fill="#C026D3"
+        />
+        <path
+          d="M166.307 218.356L313.868 280.155H18.7466L166.307 218.356Z"
+          fill="#C026D3"
+        />
+        <path
+          d="M305.849 280.375L167.689 37.0793L149.1 47.8365L287.26 291.132L305.849 280.375Z"
+          fill="#C026D3"
+        />
+        <path
+          d="M25.5073 280.375L163.667 37.0793L182.256 47.8365L44.0956 291.132L25.5073 280.375Z"
+          fill="#C026D3"
+        />
+      </svg>
+    </div>
+  );
+}
