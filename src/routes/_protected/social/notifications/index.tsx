@@ -81,7 +81,12 @@ function NotificationsPage() {
               </Fragment>
             ))
           )}
-          {isFetchingNextPage && <div ref={bottomPageRef} />}
+          <div ref={bottomPageRef}>
+            {isFetchingNextPage &&
+              Array.from({ length: 2 }).map((_, i) => (
+                <NotificationSkeleton key={i} />
+              ))}
+          </div>
         </div>
       </div>
     );
