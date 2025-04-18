@@ -39,12 +39,13 @@ export default function BottomNavBar({ type }: Props) {
       mediaRouteComponent = (
         <Link
           to="/anime"
-          className={cn("flex flex-col items-center gap-1", {
-            "fill-mainWhite font-medium": isAnimeRoute && !isCatalogRoute,
+          className={cn("flex flex-col items-center gap-1 flex-1", {
+            "stroke-mainAccent text-mainAccent font-medium":
+              isAnimeRoute && !isCatalogRoute,
           })}
         >
-          <Cat className="size-5" />
-          <p className="text-2xs">Anime</p>
+          <Cat className="size-5 md:size-6" />
+          <p>Anime</p>
         </Link>
       );
       mediaCatalogRoute = {
@@ -55,12 +56,13 @@ export default function BottomNavBar({ type }: Props) {
       mediaRouteComponent = (
         <Link
           to="/movie"
-          className={cn("flex flex-col items-center gap-1", {
-            "fill-mainWhite font-medium": isMovieRoute && !isCatalogRoute,
+          className={cn("flex flex-col items-center gap-1 flex-1", {
+            "stroke-mainAccent text-mainAccent font-medium":
+              isMovieRoute && !isCatalogRoute,
           })}
         >
-          <Clapperboard className="size-5" />
-          <p className="text-2xs">Movie</p>
+          <Clapperboard className="size-5 md:size-6" />
+          <p>Movie</p>
         </Link>
       );
       mediaCatalogRoute = {
@@ -71,12 +73,13 @@ export default function BottomNavBar({ type }: Props) {
       mediaRouteComponent = (
         <Link
           to="/tv"
-          className={cn("flex flex-col items-center gap-1", {
-            "fill-mainWhite font-medium": isTVRoute && !isCatalogRoute,
+          className={cn("flex flex-col items-center gap-1 flex-1", {
+            "stroke-mainAccent text-mainAccent font-medium":
+              isTVRoute && !isCatalogRoute,
           })}
         >
-          <Tv className="size-5" />
-          <p className="text-2xs">TV</p>
+          <Tv className="size-5 md:size-6" />
+          <p>TV</p>
         </Link>
       );
       mediaCatalogRoute = {
@@ -87,35 +90,35 @@ export default function BottomNavBar({ type }: Props) {
 
   if (!isDesktopSmallUp) {
     return (
-      <div className="w-dvw fixed bottom-0 font-montserrat z-[45] px-5 border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between">
+      <div className="w-dvw text-2xs fixed bottom-0 font-montserrat z-[45] border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between">
         {mediaRouteComponent}
         <Link
           {...mediaCatalogRoute}
-          className="flex flex-col items-center gap-1"
+          className="flex flex-col items-center gap-1 flex-1"
         >
           <LayoutGrid
-            className={cn("size-5 pl-px", {
-              "fill-mainWhite font-medium": isCatalogRoute,
+            className={cn("size-5 md:size-6 pl-px", {
+              "stroke-mainAccent font-medium": isCatalogRoute,
             })}
           />
-          <p className="text-2xs">Catalog</p>
+          <p className={cn({ "text-mainAccent": isCatalogRoute })}>Catalog</p>
         </Link>
-        <div className="size-5 bg-transparent" />
+        <div className="h-full w-12 mobile-m:w-16 mobile-l:w-20 md:w-28 bg-transparent" />
         <button className="absolute bottom-[22px] left-1/2 -translate-x-1/2 rotate-180">
           <AzuraLogo className="size-[58px]" />
         </button>
         <Link
           to="/social"
-          className={cn("flex flex-col items-center gap-1", {
-            "fill-mainWhite font-medium": isSocialRoute,
+          className={cn("flex flex-col items-center gap-1 flex-1", {
+            "stroke-mainAccent text-mainAccent font-medium": isSocialRoute,
           })}
         >
-          <UsersRound className="size-5" />
-          <p className="text-2xs">Social</p>
+          <UsersRound className="size-5 md:size-6" />
+          <p>Social</p>
         </Link>
-        <Link className="flex flex-col items-center gap-1">
-          <Settings className="size-5" />
-          <p className="text-2xs">Settings</p>
+        <Link className="flex flex-col items-center gap-1 flex-1">
+          <Settings className="size-5 md:size-6" />
+          <p>Settings</p>
         </Link>
       </div>
     );

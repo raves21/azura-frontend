@@ -77,7 +77,7 @@ function TVHomePage() {
           />
         </div>
       )}
-      <div className="w-full pt-8 pb-24 space-y-10">
+      <div className="w-full pt-8 pb-32 space-y-10">
         {trendingTV && (
           <CategoryCarousel
             carouselItems={trendingTV.results.slice(5, 17)}
