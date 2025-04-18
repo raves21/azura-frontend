@@ -2,12 +2,12 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_protected/anime")({
-  component: () => <AnimeLayout />
+  component: () => <AnimeLayout />,
 });
 
 function AnimeLayout() {
   useEffect(() => {
-    localStorage.setItem("lastMediaRouteVisited", "anime");
+    localStorage.setItem("lastMediaRouteVisited", "ANIME");
   }, []);
   return <Outlet />;
 }

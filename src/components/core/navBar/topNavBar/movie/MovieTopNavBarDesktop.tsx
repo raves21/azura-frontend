@@ -2,20 +2,20 @@ import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
-import SideMenuSheet from "../../sideMenuSheet/SideMenuSheet";
+import SideMenuSheet from "../../../sideMenuSheet/SideMenuSheet";
 import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 
 type Props = {
-  isAnimeRoute: boolean;
-  isAnimeCatalogRoute: boolean;
+  isMovieRoute: boolean;
+  isMovieCatalogRoute: boolean;
   isSocialRoute: boolean;
   searchDialogComponent: ReactNode;
 };
 
-export default function AnimeTopNavBarDesktop({
-  isAnimeRoute,
-  isAnimeCatalogRoute,
+export default function MovieTopNavBarDesktop({
+  isMovieRoute,
+  isMovieCatalogRoute,
   isSocialRoute,
   searchDialogComponent,
 }: Props) {
@@ -43,21 +43,21 @@ export default function AnimeTopNavBarDesktop({
         </button>
         <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
           <Link
-            to="/anime"
+            to="/movie"
             className={cn(
               "p-[6px]",
               {
-                "text-mainWhite": isAnimeRoute,
+                "text-mainWhite": isMovieRoute,
               },
-              { "text-gray-300": isAnimeCatalogRoute }
+              { "text-gray-300": isMovieCatalogRoute }
             )}
           >
-            Anime
+            Movie
           </Link>
           <Link
-            to="/anime/catalog"
+            to="/movie/catalog"
             className={cn("p-[6px]", {
-              "text-mainWhite": isAnimeCatalogRoute,
+              "text-mainWhite": isMovieCatalogRoute,
             })}
           >
             Catalog

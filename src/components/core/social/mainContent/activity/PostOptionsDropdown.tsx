@@ -53,6 +53,8 @@ export default function PostOptionsDropdown({ post }: Props) {
               <DeleteConfirmationDialog
                 mutationKey={["deletePost", post.id]}
                 deleteAction={() => deletePost(post.id)}
+                shouldNavigateBackOnSuccess={true}
+                onSuccessNavigationFallbackRoute={{ to: "/social" }}
                 nameOfResourceToDelete="post"
               />
             );

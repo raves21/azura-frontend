@@ -2,20 +2,20 @@ import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
-import SideMenuSheet from "../../sideMenuSheet/SideMenuSheet";
+import SideMenuSheet from "../../../sideMenuSheet/SideMenuSheet";
 import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 
 type Props = {
-  isMovieRoute: boolean;
-  isMovieCatalogRoute: boolean;
+  isTVRoute: boolean;
+  isTVCatalogRoute: boolean;
   isSocialRoute: boolean;
   searchDialogComponent: ReactNode;
 };
 
-export default function MovieTopNavBarDesktop({
-  isMovieRoute,
-  isMovieCatalogRoute,
+export default function TVTopNavBarDesktop({
+  isTVRoute,
+  isTVCatalogRoute,
   isSocialRoute,
   searchDialogComponent,
 }: Props) {
@@ -43,21 +43,21 @@ export default function MovieTopNavBarDesktop({
         </button>
         <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
           <Link
-            to="/movie"
+            to="/tv"
             className={cn(
               "p-[6px]",
               {
-                "text-mainWhite": isMovieRoute,
+                "text-mainWhite": isTVRoute,
               },
-              { "text-gray-300": isMovieCatalogRoute }
+              { "text-gray-300": isTVCatalogRoute }
             )}
           >
-            Movie
+            TV
           </Link>
           <Link
-            to="/movie/catalog"
+            to="/tv/catalog"
             className={cn("p-[6px]", {
-              "text-mainWhite": isMovieCatalogRoute,
+              "text-mainWhite": isTVCatalogRoute,
             })}
           >
             Catalog

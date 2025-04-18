@@ -1,6 +1,6 @@
-import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
+import SocialSearchDialog from "../../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
-import MovieSearchDialog from "../../media/movie/search/MovieSearchDialog";
+import MovieSearchDialog from "../../../media/movie/search/MovieSearchDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import MovieTopNavBarDesktop from "./MovieTopNavBarDesktop";
 import MovieTopNavBarMobile from "./MovieTopNavBarMobile";

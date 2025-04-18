@@ -81,7 +81,7 @@ function MovieHomePage() {
           />
         </div>
       )}
-      <div className="w-full pt-8 pb-24 space-y-10">
+      <div className="w-full pt-8 pb-32 space-y-10">
         {trendingMovies && (
           <CategoryCarousel
             carouselItems={trendingMovies.results.slice(5, 17)}

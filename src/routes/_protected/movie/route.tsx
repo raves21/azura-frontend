@@ -2,12 +2,12 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_protected/movie")({
-  component: () => <MovieLayout />
+  component: () => <MovieLayout />,
 });
 
 function MovieLayout() {
   useEffect(() => {
-    localStorage.setItem("lastMediaRouteVisited", "movie");
+    localStorage.setItem("lastMediaRouteVisited", "MOVIE");
   }, []);
 
   return <Outlet />;

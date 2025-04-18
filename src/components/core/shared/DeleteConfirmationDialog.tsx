@@ -6,10 +6,13 @@ import { useEffect } from "react";
 import ErrorDialog from "./ErrorDialog";
 import { MutationKey } from "@tanstack/react-query";
 import { useShallow } from "zustand/react/shallow";
+import { LinkProps, useRouter } from "@tanstack/react-router";
 
 type Props = {
   nameOfResourceToDelete: string;
   deleteAction: () => void;
+  shouldNavigateBackOnSuccess?: boolean;
+  onSuccessNavigationFallbackRoute?: LinkProps;
   mutationKey: MutationKey;
   isSecondaryDialog?: boolean;
   customHeader?: string;
@@ -23,14 +26,17 @@ export default function DeleteConfirmationDialog({
   customHeader,
   customMessage,
   isSecondaryDialog,
+  shouldNavigateBackOnSuccess,
+  onSuccessNavigationFallbackRoute,
 }: Props) {
-  console.log("MUTATINOEKY", mutationKey);
   const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
     useShallow((state) => [
       state.toggleOpenDialog,
       state.toggleOpenDialogSecondary,
     ])
   );
+
+  const router = useRouter();
 
   const deleteStatus = useMutationState({
     filters: { mutationKey },
@@ -51,6 +57,15 @@ export default function DeleteConfirmationDialog({
       if (isDeleteSuccess) {
         toggleOpenDialogSecondary(null);
         toggleOpenDialog(null);
+        if (shouldNavigateBackOnSuccess) {
+          if (router.state) {
+            router.history.go(-1);
+          } else {
+            onSuccessNavigationFallbackRoute
+              ? router.navigate(onSuccessNavigationFallbackRoute)
+              : router.navigate({ to: "/social" });
+          }
+        }
       }
       if (isDeleteError) {
         toggleOpenDialogSecondary(null);
@@ -69,6 +84,15 @@ export default function DeleteConfirmationDialog({
     } else {
       if (isDeleteSuccess) {
         toggleOpenDialog(null);
+        if (shouldNavigateBackOnSuccess) {
+          if (router.state) {
+            router.history.go(-1);
+          } else {
+            onSuccessNavigationFallbackRoute
+              ? router.navigate(onSuccessNavigationFallbackRoute)
+              : router.navigate({ to: "/social" });
+          }
+        }
       }
       if (isDeleteError) {
         toggleOpenDialog(null);

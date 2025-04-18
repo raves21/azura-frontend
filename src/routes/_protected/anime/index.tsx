@@ -89,7 +89,7 @@ function AnimeHomePage() {
           />
         </div>
       )}
-      <div className="w-full pt-8 pb-24 space-y-10">
+      <div className="w-full pt-8 pb-32 space-y-10">
         {trendingAnimes && (
           <CategoryCarousel
             gotoLinkProps={{

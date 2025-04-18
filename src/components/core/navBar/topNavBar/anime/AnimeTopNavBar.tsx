@@ -1,6 +1,6 @@
 import { useMatchRoute } from "@tanstack/react-router";
-import AnimeSearchDialog from "../../media/anime/search/AnimeSearchDialog";
-import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
+import AnimeSearchDialog from "../../../media/anime/search/AnimeSearchDialog";
+import SocialSearchDialog from "../../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
 import AnimeTopNavBarDesktop from "./AnimeTopNavBarDesktop";
 import AnimeTopNavBarMobile from "./AnimeTopNavBarMobile";

@@ -63,6 +63,7 @@ export default function UserDetailsForm() {
                     autoComplete="off"
                     placeholder="Username"
                     {...field}
+                    maxLength={30}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
                   />
                 </FormControl>
@@ -82,6 +83,7 @@ export default function UserDetailsForm() {
                     autoComplete="off"
                     placeholder="Handle"
                     {...field}
+                    maxLength={15}
                     className="pl-8 font-medium bg-gray-800 border-none text-mainWhite"
                   />
                 </FormControl>
