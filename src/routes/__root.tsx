@@ -3,6 +3,7 @@ import GlobalDialog from "@/components/global/GlobalDialog";
 import GlobalSheet from "@/components/global/GlobalSheet";
 import GlobalDrawer from "@/components/global/GlobalDrawer";
 import GlobalDialogSecondary from "@/components/global/GlobalDialogSecondary";
+import MediaPortal from "@/components/global/mediaPortal/MediaPortal";
 
 export const Route = createRootRoute({
   component: () => <RootRoute />,
@@ -11,6 +12,7 @@ export const Route = createRootRoute({
 function RootRoute() {
   return (
     <>
+      <MediaPortal />
       <GlobalDialog />
       <GlobalDialogSecondary />
       <GlobalSheet />

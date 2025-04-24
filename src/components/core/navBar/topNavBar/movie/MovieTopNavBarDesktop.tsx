@@ -1,10 +1,13 @@
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import SideMenuSheet from "../../../sideMenuSheet/SideMenuSheet";
 import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
+import AzuraLogo from "@/components/core/shared/AzuraLogo";
+import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
+import { toggleMediaPortal } from "@/services/media/sharedFunctions";
 
 type Props = {
   isMovieRoute: boolean;
@@ -23,8 +26,12 @@ export default function MovieTopNavBarDesktop({
     state.toggleOpenSheet,
     state.toggleOpenDialog,
   ]);
-  const navigate = useNavigate();
   const { isScrolledDown } = useScrolledState();
+
+  const isMediaPortalOpen = useMediaPortalStore(
+    (state) => state.isMediaPortalOpen
+  );
+
   return (
     <div
       className={cn(
@@ -62,48 +69,8 @@ export default function MovieTopNavBarDesktop({
           >
             Catalog
           </Link>
-          <button
-            onClick={() => {
-              toggleOpenDialog(
-                <div className="flex text-lg font-semibold aspect-video text-mainWhite w-[500px] bg-darkBg">
-                  <button
-                    onClick={() => {
-                      navigate({
-                        to: "/anime",
-                      });
-                      toggleOpenDialog(null);
-                    }}
-                    className="grid flex-1 bg-mainAccent place-items-center"
-                  >
-                    Anime
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate({
-                        to: "/movie",
-                      });
-                      toggleOpenDialog(null);
-                    }}
-                    className="grid flex-1 bg-cyan-600 place-items-center"
-                  >
-                    Movie
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate({
-                        to: "/tv",
-                      });
-                      toggleOpenDialog(null);
-                    }}
-                    className="grid flex-1 bg-lime-600 place-items-center"
-                  >
-                    TV
-                  </button>
-                </div>
-              );
-            }}
-          >
-            <img src="/azura-logo.svg" className="size-12" />
+          <button onClick={() => toggleMediaPortal(isMediaPortalOpen)}>
+            <AzuraLogo className="size-12" />
           </button>
           <Link
             to="/social"

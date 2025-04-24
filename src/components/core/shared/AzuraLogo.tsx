@@ -18,8 +18,8 @@ export default function AzuraLogo({ className }: Props) {
           fill="#C026D3"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M334 292L167 0L0 292H334ZM303.006 276.808L166.49 38.1093L29.974 276.808H303.006Z"
           fill="#C026D3"
         />

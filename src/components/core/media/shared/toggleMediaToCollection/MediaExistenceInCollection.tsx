@@ -64,7 +64,6 @@ export default function MediaExistenceInCollection({
   useDebounceOnClick({
     action: () => toggleMediaToCollection(),
     toggleState: doesGivenMediaExist,
-    skipFirstRender: true,
   });
 
   return (

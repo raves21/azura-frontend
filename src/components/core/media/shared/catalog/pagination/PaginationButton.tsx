@@ -5,7 +5,6 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   isSelected: boolean;
 };
 
-//TODO: make this a Link instead of a button
 const PaginationButton = forwardRef<HTMLButtonElement, Props>(
   ({ className, children, isSelected, ...props }, ref) => {
     return (
