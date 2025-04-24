@@ -17,6 +17,8 @@ import {
 import { ReactNode } from "react";
 import AzuraLogo from "../../shared/AzuraLogo";
 import { cn } from "@/lib/utils";
+import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
+import { toggleMediaPortal } from "@/services/media/sharedFunctions";
 
 type Props = {
   type: MediaType;
@@ -31,6 +33,9 @@ export default function BottomNavBar({ type }: Props) {
   const isTVRoute = matchRoute({ to: "/tv", fuzzy: true });
   const isCatalogRoute = location.pathname.includes("catalog");
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
+  const isMediaPortalOpen = useMediaPortalStore(
+    (state) => state.isMediaPortalOpen
+  );
 
   let mediaRouteComponent: ReactNode;
   let mediaCatalogRoute: LinkProps;
@@ -90,7 +95,12 @@ export default function BottomNavBar({ type }: Props) {
 
   if (!isDesktopSmallUp) {
     return (
-      <div className="w-dvw text-2xs fixed bottom-0 font-montserrat z-[45] border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between">
+      <div
+        className={cn(
+          "w-dvw text-2xs fixed bottom-0 font-montserrat z-[45] border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between",
+          { "z-[701]": isMediaPortalOpen }
+        )}
+      >
         {mediaRouteComponent}
         <Link
           {...mediaCatalogRoute}
@@ -104,7 +114,10 @@ export default function BottomNavBar({ type }: Props) {
           <p className={cn({ "text-mainAccent": isCatalogRoute })}>Catalog</p>
         </Link>
         <div className="h-full w-12 mobile-m:w-16 mobile-l:w-20 md:w-28 bg-transparent" />
-        <button className="absolute bottom-[22px] left-1/2 -translate-x-1/2 rotate-180">
+        <button
+          onClick={() => toggleMediaPortal(isMediaPortalOpen)}
+          className="fixed bottom-[22px] left-1/2 -translate-x-1/2 rotate-180"
+        >
           <AzuraLogo className="size-[58px]" />
         </button>
         <Link

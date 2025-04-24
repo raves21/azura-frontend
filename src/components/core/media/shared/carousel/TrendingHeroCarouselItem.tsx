@@ -56,7 +56,7 @@ export default function TrendingHeroCarouselItem({
                   <button className="hover:scale-[1.02] transition-transform duration-200 flex items-center gap-1 px-3 py-2 bg-black rounded-full sm:gap-2 mobile-l:px-4 sm:px-5">
                     <Bookmark size={20} />
                     <p className="text-sm font-medium sm:text-base">
-                      Add to List
+                      Collection
                     </p>
                   </button>
                 </div>

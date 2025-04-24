@@ -1,4 +1,5 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
 import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { useQuery } from "@tanstack/react-query";
 import { ReactNode } from "@tanstack/react-router";
@@ -97,5 +98,23 @@ export function toggleDialogOrDrawer({
       : toggleOpenDialog(content);
   } else {
     toggleOpenDrawer(content);
+  }
+}
+
+export function toggleMediaPortal(isMediaPortalOpen: boolean) {
+  const setMediaPortalAnimationStatus =
+    useMediaPortalStore.getState().setMediaPortalAnimationStatus;
+  const setIsMediaPortalOpen =
+    useMediaPortalStore.getState().setIsMediaPortalOpen;
+  if (isMediaPortalOpen) {
+    setMediaPortalAnimationStatus("exit");
+
+    //give delay when closing media portal since its animation takes 600ms to complete
+    setTimeout(() => {
+      setIsMediaPortalOpen(false);
+    }, 600);
+  } else {
+    setMediaPortalAnimationStatus("intro");
+    setIsMediaPortalOpen(true);
   }
 }

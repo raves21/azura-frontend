@@ -74,7 +74,6 @@ export default function ToggleFollowButton({
   useDebounceOnClick({
     action: () => toggleFollow(),
     toggleState: isFollow,
-    skipFirstRender: true,
   });
 
   if (!currentUser) return <Navigate to="/login" replace />;

@@ -57,7 +57,6 @@ export default function PostActions({
   useDebounceOnClick({
     action: () => toggleLike(),
     toggleState: isLikedByCurrentUser,
-    skipFirstRender: true,
   });
 
   return (
