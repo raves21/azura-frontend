@@ -57,13 +57,14 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
   if (query.length === 0 && trendingTV) {
     return (
       <ScrollArea
-        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary pb-6 mt-2 flex-1 md:flex-none md:h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {trendingTV.results.map((tv) => {
+          {trendingTV.results.map((tv, i) => {
             if (type === "addCollectionItem") {
               return (
                 <TVSearchResultCard
+                  key={tv.id || i}
                   tv={tv}
                   onClick={() =>
                     toggleDialogOrDrawer({
@@ -91,6 +92,7 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
             }
             return (
               <TVSearchResultCard
+                key={tv.id || i}
                 tv={tv}
                 onClick={() => {
                   setCollectionAttachment(null);
@@ -118,13 +120,14 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
   if (searchResults) {
     return (
       <ScrollArea
-        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary pb-6 mt-2 flex-1 md:flex-none md:h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {searchResults.results.map((tv) => {
+          {searchResults.results.map((tv, i) => {
             if (type === "addCollectionItem") {
               return (
                 <TVSearchResultCard
+                  key={tv.id || i}
                   tv={tv}
                   onClick={() =>
                     toggleDialogOrDrawer({
@@ -152,6 +155,7 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
             }
             return (
               <TVSearchResultCard
+                key={tv.id || i}
                 tv={tv}
                 onClick={() => {
                   setCollectionAttachment(null);

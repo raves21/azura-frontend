@@ -59,13 +59,14 @@ export default function MediaSelectionAnimeSearchResults({
   if (query.length === 0 && trendingAnime) {
     return (
       <ScrollArea
-        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary pb-6 mt-2 h-[calc(100dvh-183.6px)] md:h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {trendingAnime.results.map((anime) => {
+          {trendingAnime.results.map((anime, i) => {
             if (type === "addCollectionItem") {
               return (
                 <AnimeSearchResultCard
+                  key={anime.id || i}
                   anime={anime}
                   onClick={() =>
                     toggleDialogOrDrawer({
@@ -93,6 +94,7 @@ export default function MediaSelectionAnimeSearchResults({
             }
             return (
               <AnimeSearchResultCard
+                key={anime.id || i}
                 anime={anime}
                 onClick={() => {
                   setCollectionAttachment(null);
@@ -120,13 +122,14 @@ export default function MediaSelectionAnimeSearchResults({
   if (searchResults) {
     return (
       <ScrollArea
-        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary pb-6 mt-2 h-[calc(100dvh-183.6px)] md:h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {searchResults.results.map((anime) => {
+          {searchResults.results.map((anime, i) => {
             if (type === "addCollectionItem") {
               return (
                 <AnimeSearchResultCard
+                  key={anime.id || i}
                   anime={anime}
                   onClick={() =>
                     toggleDialogOrDrawer({
@@ -152,7 +155,13 @@ export default function MediaSelectionAnimeSearchResults({
                 />
               );
             }
-            return <AnimeSearchResultCard anime={anime} onClick={() => {}} />;
+            return (
+              <AnimeSearchResultCard
+                key={anime.id || i}
+                anime={anime}
+                onClick={() => {}}
+              />
+            );
           })}
         </ul>
       </ScrollArea>

@@ -14,7 +14,7 @@ export default function TVSearchDialog() {
   const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const { searchInputRef } = useFocusInput({});
+  const { inputRef: searchInputRef } = useFocusInput({});
 
   const tvSearchQuery = useSearchTV(
     debouncedSearch.trim(),

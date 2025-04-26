@@ -12,7 +12,7 @@ export default function TitleSkeleton({ variant }: Props) {
         "font-semibold line-clamp-2   bg-gray-800 self-start",
         { "text-lg sm:text-xl md:text-2xl": variant === "watchPage" },
         {
-          "px-8 text-2xl lg:text-3xl lg:px-0 lg:text-start text-center":
+          "px-8 text-2xl lg:text-3xl lg:px-0 lg:text-start self-center lg:self-start":
             variant === "infoPage",
         }
       )}

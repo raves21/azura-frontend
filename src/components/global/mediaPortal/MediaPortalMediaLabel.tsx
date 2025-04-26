@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useNavigateToMedia } from "@/utils/hooks/useNavigateToMedia";
 import { MediaType } from "@/utils/types/shared";
-import { Link, LinkProps } from "@tanstack/react-router";
+import { LinkProps } from "@tanstack/react-router";
 import { Cat, Clapperboard, Tv } from "lucide-react";
 
 type Props = {
@@ -61,8 +61,14 @@ export default function MediaPortalMediaLabel({ isMobile, type }: Props) {
             {label}
           </p>
         </div>
-        <Link
-          {...navigationLinkProps}
+        <button
+          onClick={() =>
+            handleNavigateToMedia({
+              from: "mediaPortal",
+              navigationLinkProps,
+              type,
+            })
+          }
           className={cn(
             "text-sm sm:text-md md:text-base font-medium px-3 sm:px-4 py-2 rounded-full w-min",
             {
@@ -73,7 +79,7 @@ export default function MediaPortalMediaLabel({ isMobile, type }: Props) {
           )}
         >
           Navigate
-        </Link>
+        </button>
       </div>
     );
   }

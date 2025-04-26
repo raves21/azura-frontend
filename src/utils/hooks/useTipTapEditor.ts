@@ -4,6 +4,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { useRef, useState, useEffect } from "react";
 import CharacterCount from "@tiptap/extension-character-count";
 import { EditorProps } from "@tiptap/pm/view";
+import { useWindowWidth } from "./useWindowWidth";
 
 export type UseTipTapEditorReturnType = {
   editor: Editor | null;
@@ -24,6 +25,7 @@ type Args = {
   noNewLine?: boolean;
   customExtensions?: AnyExtension[];
   focusOnMount: boolean;
+  changeEditorContentWidthBasedOnWindowWidth?: boolean;
 };
 
 export function useTipTapEditor({
@@ -32,9 +34,11 @@ export function useTipTapEditor({
   editorProps,
   customExtensions = [],
   focusOnMount,
+  changeEditorContentWidthBasedOnWindowWidth,
 }: Args): UseTipTapEditorReturnType {
   const [inputLength, setInputLength] = useState(0);
   const [inputText, setInputText] = useState<string | null>(null);
+  const windowWidth = useWindowWidth();
 
   const editor = useEditor({
     editorProps: { ...editorProps },
@@ -79,6 +83,17 @@ export function useTipTapEditor({
       );
     }
   }, [editor, focusOnMount]);
+
+  useEffect(() => {
+    if (
+      changeEditorContentWidthBasedOnWindowWidth &&
+      editorContentRef.current
+    ) {
+      setEditorContentInitialWidth(
+        editorContentRef.current.getBoundingClientRect().width
+      );
+    }
+  }, [changeEditorContentWidthBasedOnWindowWidth ? windowWidth : undefined]);
 
   function setEditorContent(text: string | null) {
     if (editor) {

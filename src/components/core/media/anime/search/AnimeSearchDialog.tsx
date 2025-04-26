@@ -14,7 +14,7 @@ export default function AnimeSearchDialog() {
   const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const { searchInputRef } = useFocusInput({});
+  const { inputRef: searchInputRef } = useFocusInput({});
 
   const animeSearchQuery = useSearchAnime(
     debouncedSearch.trim(),

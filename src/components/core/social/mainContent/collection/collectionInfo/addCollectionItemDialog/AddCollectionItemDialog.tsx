@@ -15,10 +15,12 @@ export default function AddCollectionItemDialog() {
   const [selectedMediaType, setSelectedMediaType] = useState(mediaTypes[0]);
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });
-  const { searchInputRef } = useFocusInput({ deps: [selectedMediaType] });
+  const { inputRef: searchInputRef } = useFocusInput({
+    deps: [selectedMediaType],
+  });
 
   return (
-    <div className="h-[500px] overflow-hidden bg-socialPrimary rounded-lg flex flex-col w-[550px] text-mainWhite">
+    <div className="h-dvh w-dvw md:h-[500px] overflow-hidden bg-socialPrimary rounded-lg flex flex-col md:w-[550px] text-mainWhite">
       <div className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
         <p className="text-lg font-semibold">Add Collection Item</p>
         <button

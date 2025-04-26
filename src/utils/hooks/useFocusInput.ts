@@ -5,15 +5,15 @@ type Args = {
 };
 
 export function useFocusInput({ deps = [] }: Args) {
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   }, [...deps]);
 
   return {
-    searchInputRef,
+    inputRef,
   };
 }

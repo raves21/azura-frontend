@@ -63,14 +63,15 @@ export default function MediaSelectionMovieSearchResults({
   if (query.length === 0 && trendingMovies) {
     return (
       <ScrollArea
-        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary pb-6 mt-2 flex-1 md:flex-none md:h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
           {" "}
-          {trendingMovies.results.map((movie) => {
+          {trendingMovies.results.map((movie, i) => {
             if (type === "addCollectionItem") {
               return (
                 <MovieSearchResultCard
+                  key={movie.id || i}
                   movie={movie}
                   onClick={() =>
                     toggleDialogOrDrawer({
@@ -98,6 +99,7 @@ export default function MediaSelectionMovieSearchResults({
             }
             return (
               <MovieSearchResultCard
+                key={movie.id || i}
                 movie={movie}
                 onClick={() => {
                   setCollectionAttachment(null);
@@ -125,13 +127,14 @@ export default function MediaSelectionMovieSearchResults({
   if (searchResults) {
     return (
       <ScrollArea
-        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary mt-2 h-[300px] overflow-y-auto`}
+        className={`w-full text-mainWhite rounded-b-lg bg-socialPrimary pb-6 mt-2 flex-1 md:flex-none md:h-[300px] overflow-y-auto`}
       >
         <ul className="flex flex-col">
-          {searchResults.results.map((movie) => {
+          {searchResults.results.map((movie, i) => {
             if (type === "addCollectionItem") {
               return (
                 <MovieSearchResultCard
+                  key={movie.id || i}
                   movie={movie}
                   onClick={() =>
                     toggleDialogOrDrawer({
@@ -159,6 +162,7 @@ export default function MediaSelectionMovieSearchResults({
             }
             return (
               <MovieSearchResultCard
+                key={movie.id || i}
                 movie={movie}
                 onClick={() => {
                   setCollectionAttachment(null);

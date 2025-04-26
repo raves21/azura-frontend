@@ -76,7 +76,10 @@ function NotificationsPage() {
             notifications.pages.map((page) => (
               <Fragment key={page.page}>
                 {page.data.map((notification) => (
-                  <Notification notification={notification} />
+                  <Notification
+                    key={notification.id}
+                    notification={notification}
+                  />
                 ))}
               </Fragment>
             ))

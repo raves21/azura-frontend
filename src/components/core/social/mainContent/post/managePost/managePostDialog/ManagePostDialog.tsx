@@ -120,7 +120,7 @@ export default function ManagePostDialog({
   }
 
   return (
-    <div className="h-[500px] overflow-hidden bg-socialPrimary rounded-lg flex flex-col w-[550px] text-mainWhite">
+    <div className="h-dvh md:h-[500px] overflow-hidden bg-socialPrimary rounded-lg flex flex-col w-dvw md:w-[550px] text-mainWhite">
       <div className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
         {managePostPage !== "managePost" && (
           <button

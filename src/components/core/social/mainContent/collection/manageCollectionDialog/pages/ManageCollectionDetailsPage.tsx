@@ -131,8 +131,8 @@ export default function ManageCollectionDetailsPage({
 
   return (
     <div className="flex flex-col px-4 size-full">
-      <div className="flex w-full gap-3 h-[70%] my-auto">
-        <div className="relative grid w-1/2 rounded-md size-auto aspect-square place-items-center">
+      <div className="flex flex-col items-center md:items-stretch md:flex-row w-full gap-8 md:gap-3 h-[70%] my-auto">
+        <div className="relative grid md:w-1/2 rounded-md size-52 md:size-auto aspect-square place-items-center">
           {props.type === "edit" && !collectionPhoto ? (
             props.collectionToEdit.photo ? (
               <CollectionPhoto
@@ -173,7 +173,7 @@ export default function ManageCollectionDetailsPage({
             )}
           </div>
         </div>
-        <div className="flex flex-col w-1/2 gap-3">
+        <div className="flex flex-col md:w-1/2 w-[70dvw] sm:w-[50dvw] gap-3">
           <input
             maxLength={30}
             placeholder="Add a name"
@@ -213,7 +213,7 @@ export default function ManageCollectionDetailsPage({
                 ? editorContentInitialHeight + 10
                 : "auto",
             }}
-            className="overflow-y-auto text-md flex-grow border-[0.5px] rounded-md border-socialTextSecondary px-3 py-3"
+            className="overflow-y-auto h-[200px] text-md flex-grow border-[0.5px] rounded-md border-socialTextSecondary px-3 py-3"
           />
         </div>
       </div>
