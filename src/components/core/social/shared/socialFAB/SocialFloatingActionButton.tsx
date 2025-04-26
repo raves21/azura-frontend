@@ -28,7 +28,7 @@ export default function SocialFloatingActionButton() {
       )}
       <div
         className={cn(
-          "fixed right-4 z-[99] bottom-24 text-mainWhite font-montserrat",
+          "fixed right-4 z-[99] bottom-24 text-mainWhite font-montserrat lg:hidden",
           {
             "bottom-[165px]": isPostInfoPage,
           },

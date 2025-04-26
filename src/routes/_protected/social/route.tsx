@@ -2,7 +2,6 @@ import FloatingPagesBar from "@/components/core/social/floatingPagesBar/Floating
 import FloatingCreateCommentBar from "@/components/core/social/mainContent/post/postInfo/postComments/FloatingCreateCommentBar";
 import FollowSuggestions from "@/components/core/social/profilePreviewAndDiscoverPeople/discoverPeople/DiscoverPeople";
 import ProfilePreview from "@/components/core/social/profilePreviewAndDiscoverPeople/profilePreview/ProfilePreview";
-import SocialFloatingActionButton from "@/components/core/social/shared/socialFAB/SocialFloatingActionButton";
 import Trending from "@/components/core/social/trending/Trending";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
@@ -17,7 +16,6 @@ function SocialPageLayout() {
 
   return (
     <main className="relative text-sm pb-10 flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
-      {!isDesktopSmallUp && <SocialFloatingActionButton />}
       {matchRoute({ to: "/social/$userHandle/posts/$postId" }) && (
         <FloatingCreateCommentBar />
       )}
