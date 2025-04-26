@@ -36,7 +36,7 @@ export default function ToggleMediaToCollectionDialog({ media }: Props) {
 
   if (isMediaExistenceInCollectionsFetching) {
     return (
-      <div className="aspect-square relative bg-socialPrimary w-[500px] text-mainWhite rounded-lg flex flex-col">
+      <div className="md:aspect-square relative bg-socialPrimary w-dvw h-dvh md:w-[500px] text-mainWhite rounded-lg flex flex-col">
         <div className="grid py-6 text-lg font-medium border-b-[0.5px] place-items-center border-socialTextSecondary">
           <p>Add to collection</p>
           <button
@@ -55,7 +55,7 @@ export default function ToggleMediaToCollectionDialog({ media }: Props) {
 
   if (mediaExistenceInCollectionsError) {
     return (
-      <div className="aspect-square relative bg-socialPrimary w-[500px] text-mainWhite rounded-lg flex flex-col">
+      <div className="md:aspect-square relative bg-socialPrimary w-dvw h-dvh md:w-[500px] text-mainWhite rounded-lg flex flex-col">
         <div className="grid py-6 font-semibold border-b-[0.5px] place-items-center border-socialTextSecondary">
           <p>Add to collection</p>
           <button
@@ -76,7 +76,7 @@ export default function ToggleMediaToCollectionDialog({ media }: Props) {
 
   if (mediaExistenceInCollections) {
     return (
-      <div className="aspect-square relative bg-socialPrimary w-[500px] overflow-hidden text-mainWhite rounded-lg flex flex-col">
+      <div className="md:aspect-square relative w-dvw h-dvh bg-socialPrimary md:w-[500px] overflow-hidden text-mainWhite rounded-lg flex flex-col">
         <div className="grid py-6 font-semibold border-b-[0.5px] place-items-center border-socialTextSecondary">
           <p>Add to collection</p>
           <button

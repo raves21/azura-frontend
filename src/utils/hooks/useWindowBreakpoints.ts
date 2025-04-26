@@ -9,7 +9,8 @@ export default function useWindowBreakpoints() {
   const isTabletSmallUp = windowWidth >= 640;
   const isTabletUp = windowWidth >= 768;
   const isDesktopSmallUp = windowWidth >= 1024;
-  const isDesktopUp = windowWidth >= 1440;
+  const isDesktopMediumUp = windowWidth >= 1280;
+  const isDesktopLargeUp = windowWidth >= 1440;
 
   return {
     isMobileSmallUp,
@@ -19,6 +20,7 @@ export default function useWindowBreakpoints() {
     isTabletSmallUp,
     isTabletUp,
     isDesktopSmallUp,
-    isDesktopUp,
+    isDesktopMediumUp,
+    isDesktopLargeUp,
   };
 }

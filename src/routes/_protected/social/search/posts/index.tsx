@@ -1,7 +1,9 @@
+import ActivitySkeleton from "@/components/core/loadingSkeletons/social/ActivitySkeleton";
 import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
 import Post from "@/components/core/social/mainContent/post/Post";
 import { useSearchPosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
+import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
@@ -55,7 +57,11 @@ function PostsSearchResultsPage() {
     data: searchPostsResults,
     isLoading: isSearchPostsLoading,
     error: searchPostsError,
+    isFetchingNextPage,
+    fetchNextPage,
   } = useSearchPosts(query, !!query && !!success);
+
+  const bottomPageRef = useFetchNextPageInView(fetchNextPage);
 
   if (isSearchPostsLoading) {
     return <PostsSkeleton loadingType="loadingAllPosts" />;
@@ -86,6 +92,11 @@ function PostsSearchResultsPage() {
               ))}
             </Fragment>
           ))}
+          <div ref={bottomPageRef}>
+            {isFetchingNextPage && (
+              <ActivitySkeleton type="post" withAttachment={false} />
+            )}
+          </div>
         </div>
       );
     }

@@ -32,7 +32,7 @@ export default function SelectPrivacyPage() {
   }, [selectionSelectedPrivacy]);
 
   return (
-    <div className="flex flex-col justify-between p-4 size-full">
+    <div className="flex flex-col justify-between p-1 sm:p-3 md:p-4 size-full">
       <div className="flex flex-col">
         <button
           onClick={() => setSelectionSelectedPrivacy("PUBLIC")}
@@ -113,7 +113,7 @@ export default function SelectPrivacyPage() {
           );
           setIsCheckboxChecked(true);
         }}
-        className={cn("flex items-center gap-3", {
+        className={cn("flex mt-auto mb-6 items-center gap-3 px-2", {
           "hover:cursor-pointer": !isCheckboxChecked,
         })}
       >

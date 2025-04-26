@@ -35,7 +35,7 @@ export default function SocialSearchDialog() {
     setSelectedSocialSearchOption("People");
   }, []);
 
-  const { searchInputRef } = useFocusInput({
+  const { inputRef: searchInputRef } = useFocusInput({
     deps: [selectedSocialSearchOption],
   });
 
@@ -64,7 +64,7 @@ export default function SocialSearchDialog() {
       });
     } else {
       navigate({
-        to: "/social/search/people",
+        to: "/social/search/posts",
         search: { query },
       });
     }

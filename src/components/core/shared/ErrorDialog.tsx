@@ -35,7 +35,7 @@ export default function ErrorDialog({
   }
 
   return (
-    <div className="min-w-[300px] max-w-[500px] text-center flex flex-col items-center justify-center gap-10 py-8 text-white bg-gray-800 rounded-lg">
+    <div className="w-[80dvw] mobile-l:w-[300px] sm:w-[320px] md:w-auto md:min-w-[300px] max-w-[500px] text-center flex flex-col items-center justify-center gap-10 py-8 text-white bg-gray-800 rounded-lg">
       <div className="flex flex-col items-center justify-center gap-8">
         <h1 className="text-2xl font-semibold text-mainAccent">
           <span className="text-white">Error</span> {statusCode}

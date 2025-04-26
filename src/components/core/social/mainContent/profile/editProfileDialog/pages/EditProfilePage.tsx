@@ -110,8 +110,8 @@ export default function EditProfilePage({
 
   return (
     <>
-      <div className="flex flex-col flex-grow gap-24 overflow-y-auto">
-        <div className="relative w-full h-48 shrink-0">
+      <div className="flex flex-col flex-grow gap-16 sm:gap-24 overflow-y-auto">
+        <div className="relative w-full h-28 sm:h-44 md:h-48 shrink-0">
           <div className="absolute size-full">
             <img
               onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
@@ -136,24 +136,24 @@ export default function EditProfilePage({
               )}
             </div>
           </div>
-          <div className="absolute -bottom-[38%] left-4 size-[120px] rounded-full  border-4 overflow-hidden box-content border-socialPrimary">
+          <div className="absolute -bottom-[38%] left-4 sm:size-24 size-20 lg:size-28 rounded-full  border-4 overflow-hidden box-content border-socialPrimary">
             <img
               onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
               src={editProfileAvatar ?? "/no-image-2.jpg"}
               alt="avatar"
               className="object-cover size-full"
             />
-            <div className="absolute flex gap-3 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+            <div className="absolute flex gap-1 sm:gap-3 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
               <button
                 onClick={() => setEditProfilePage("manageAvatarPage")}
-                className="transition-colors rounded-full hover:bg-gray-700/80 size-9 bg-socialPrimary/60 place-items-center"
+                className="transition-colors rounded-full hover:bg-gray-700/80 size-8 sm:size-9 bg-socialPrimary/60 place-items-center"
               >
                 <ImageUp className="size-[55%] stroke-[1.5px]" />
               </button>
               {editProfileAvatar && (
                 <button
                   onClick={() => setEditProfileAvatar(null)}
-                  className="transition-colors rounded-full hover:bg-gray-700/80 size-9 bg-socialPrimary/60 place-items-center"
+                  className="transition-colors rounded-full hover:bg-gray-700/80 size-8 sm:size-9 bg-socialPrimary/60 place-items-center"
                 >
                   <X className="size-[55%] stroke-[1.5px]" />
                 </button>
@@ -161,7 +161,7 @@ export default function EditProfilePage({
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-6 px-5 mb-8">
+        <div className="flex flex-col gap-6 px-3 sm:px-5 mb-8">
           <div className="flex flex-col w-full gap-2">
             <div className="flex justify-between">
               {!editProfileUsername ? (
@@ -203,7 +203,7 @@ export default function EditProfilePage({
       <button
         disabled={editProfileStatus === "pending" || !editProfileUsername}
         onClick={() => saveChanges(currentUser.handle)}
-        className="flex items-center justify-center gap-2 py-2 m-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl text-mainWhite"
+        className="flex items-center justify-center gap-2 py-2 m-3 md:m-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl text-mainWhite"
       >
         {editProfileStatus === "pending" ? (
           <>

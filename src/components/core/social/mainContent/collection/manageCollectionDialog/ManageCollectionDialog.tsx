@@ -60,8 +60,9 @@ export default function ManageCollectionDialog(props: Props) {
   );
 
   const tipTapEditor = useTipTapEditor({
-    focusOnMount: true,
+    focusOnMount: false,
     maxLength: 100,
+    changeEditorContentWidthBasedOnWindowWidth: true,
     placeholder: "Add an optional description",
     editorProps: {
       attributes: {
@@ -146,7 +147,7 @@ export default function ManageCollectionDialog(props: Props) {
   }
 
   return (
-    <div className="h-[480px] max-w-[600px] bg-socialPrimary rounded-lg flex flex-col aspect-[5/4] text-mainWhite">
+    <div className="h-dvh w-dvw md:h-[480px] md:max-w-[600px] bg-socialPrimary rounded-lg flex flex-col md:aspect-[5/4] text-mainWhite">
       <div className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
         {manageCollectionPage !== "manageCollectionDetails" && (
           <button

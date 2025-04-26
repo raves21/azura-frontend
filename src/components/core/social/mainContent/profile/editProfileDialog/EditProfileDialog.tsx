@@ -69,7 +69,7 @@ export default function EditProfileDialog({
   }
 
   return (
-    <main className="aspect-[1/1] bg-socialPrimary overflow-y-auto rounded-lg flex flex-col w-[620px] text-mainWhite">
+    <main className="md:aspect-[1/1] h-dvh md:h-auto bg-socialPrimary overflow-y-auto rounded-lg flex flex-col w-dvw md:w-[620px] text-mainWhite">
       <header className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
         {editProfilePage !== "editProfilePage" && (
           <button

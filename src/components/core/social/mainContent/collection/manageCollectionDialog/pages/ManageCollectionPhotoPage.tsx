@@ -61,8 +61,8 @@ export default function ManageCollectionPhotoPage() {
 
   return (
     <div className="flex flex-col px-4 size-full">
-      <div className="flex w-full gap-3 h-[70%] my-auto">
-        <div className="relative grid w-1/2 overflow-hidden rounded-md size-auto aspect-square place-items-center">
+      <div className="flex flex-col md:flex-row items-center md:items-stretch w-full md:gap-3 gap-10 h-[70%] my-auto">
+        <div className="relative grid md:w-1/2 rounded-md size-52 md:size-auto aspect-square place-items-center">
           {collectionPhoto && (
             <CollectionPhoto
               className="absolute size-full"
@@ -104,18 +104,17 @@ export default function ManageCollectionPhotoPage() {
             )}
           </div>
         </div>
-        <div className="flex flex-col w-1/2 gap-6">
+        <div className="flex flex-col md:w-1/2 w-[80dvw] gap-6">
           <p className="text-sm text-center text-socialTextSecondary">
             <span className="text-yellow-400">NOTE:</span> If the preview shows
             &quot;Error Image&quot;, that means the URL you provided was invalid
             or the image source prohibits hotlinking. If that happens, please
             try again with a different image URL.
           </p>
-          <div className="flex flex-col w-full gap-2">
-            <div className="flex justify-between">
-              <p className="font-medium">Image-Address/URL</p>
-              <p className="text-sm font-light text-socialTextSecondary"></p>
-            </div>
+          <div className="flex flex-col w-full gap-4 md:gap-2">
+            <p className="font-medium text-center md:text-start">
+              Image-Address/URL
+            </p>
             <input
               value={collectionPhotoURLInput || ""}
               placeholder="e.g: https://some-image-url.jpg"

@@ -91,7 +91,7 @@ function PeopleSearchResultsPage() {
       );
     } else {
       return (
-        <div className="flex flex-col w-full gap-3 pb-24 overflow-hidden rounded-lg bg-socialPrimary">
+        <div className="flex flex-col w-full gap-3 overflow-hidden rounded-lg bg-socialPrimary">
           {searchPeopleResults.pages.map((page) => (
             <Fragment key={page.page}>
               {page.data.map((userPreview) => (

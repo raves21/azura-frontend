@@ -45,8 +45,8 @@ export default function CollectionActions(props: Props) {
           disabled={props.disabled}
           className="flex items-center gap-2 group py-2 pr-3"
         >
-          <Forward className="size-4 mobile-l:size-5 transition-colors stroke-mainWhite group-hover:stroke-mainAccent group-disabled:stroke-gray-700" />
-          <p className="transition-colors text-xs mobile-l:text-sm sm:text-md text-mainWhite group-hover:text-mainAccent group-disabled:text-gray-700">
+          <Forward className="size-4 mobile-m:size-5 transition-colors stroke-mainWhite group-hover:stroke-mainAccent group-disabled:stroke-gray-700" />
+          <p className="transition-colors text-sm sm:text-md text-mainWhite group-hover:text-mainAccent group-disabled:text-gray-700">
             Share
           </p>
         </button>

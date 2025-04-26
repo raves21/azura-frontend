@@ -12,7 +12,9 @@ export default function SelectMediaAttachmentPage() {
   const [selectedMediaType, setSelectedMediaType] = useState(mediaTypes[0]);
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounceInput({ value: searchInput, delay: 400 });
-  const { searchInputRef } = useFocusInput({ deps: [selectedMediaType] });
+  const { inputRef: searchInputRef } = useFocusInput({
+    deps: [selectedMediaType],
+  });
 
   return (
     <div className="size-full flex flex-col">

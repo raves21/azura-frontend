@@ -106,6 +106,7 @@ export function toggleMediaPortal(isMediaPortalOpen: boolean) {
     useMediaPortalStore.getState().setMediaPortalAnimationStatus;
   const setIsMediaPortalOpen =
     useMediaPortalStore.getState().setIsMediaPortalOpen;
+
   if (isMediaPortalOpen) {
     setMediaPortalAnimationStatus("exit");
 
