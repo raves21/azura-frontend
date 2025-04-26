@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { House, User2, Bell, TrendingUp } from "lucide-react";
 import { ReactNode } from "react";
 import TrendingDrawer from "../../trending/TrendingDrawer";
+import { useShallow } from "zustand/react/shallow";
 
 type Props = {
   isActive: boolean;
@@ -24,7 +25,15 @@ type OptionClickOpenDialog = {
   dialogComponent: ReactNode;
 };
 
-type HandleOptionClickArgs = OptionClickNavigate | OptionClickOpenDialog;
+type OptionClickOpenDrawer = {
+  type: "openDrawer";
+  drawerComponent: ReactNode;
+};
+
+type HandleOptionClickArgs =
+  | OptionClickNavigate
+  | OptionClickOpenDialog
+  | OptionClickOpenDrawer;
 
 export default function SocialFloatingActionButtonOptions({
   isActive,
@@ -33,7 +42,9 @@ export default function SocialFloatingActionButtonOptions({
   setAnimationStatus,
 }: Props) {
   const navigate = useNavigate();
-  const toggleOpenDrawer = useGlobalStore((state) => state.toggleOpenDrawer);
+  const [toggleOpenDrawer, toggleOpenDialog] = useGlobalStore(
+    useShallow((state) => [state.toggleOpenDrawer, state.toggleOpenDialog])
+  );
   const currentUser = useAuthStore((state) => state.currentUser);
 
   function handleOptionClick({ ...args }: HandleOptionClickArgs) {
@@ -41,8 +52,10 @@ export default function SocialFloatingActionButtonOptions({
     setAnimationStatus("exit");
     if (args.type === "navigate") {
       navigate(args.navigateLinkProps);
+    } else if (args.type === "openDialog") {
+      toggleOpenDialog(args.dialogComponent);
     } else {
-      toggleOpenDrawer(args.dialogComponent);
+      toggleOpenDrawer(args.drawerComponent);
     }
   }
 
@@ -134,8 +147,8 @@ export default function SocialFloatingActionButtonOptions({
       <motion.button
         onClick={() =>
           handleOptionClick({
-            type: "openDialog",
-            dialogComponent: <TrendingDrawer />,
+            type: "openDrawer",
+            drawerComponent: <TrendingDrawer />,
           })
         }
         animate={{
