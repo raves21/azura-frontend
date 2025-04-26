@@ -8,13 +8,13 @@ export default function ManageBannerPage() {
     editProfileBanner,
     editProfileAvatar,
     setEditProfileBanner,
-    setEditProfilePage
+    setEditProfilePage,
   ] = useEditProfileStore(
     useShallow((state) => [
       state.editProfileBanner,
       state.editProfileAvatar,
       state.setEditProfileBanner,
-      state.setEditProfilePage
+      state.setEditProfilePage,
     ])
   );
 
@@ -56,7 +56,7 @@ export default function ManageBannerPage() {
   return (
     <>
       <div className="flex flex-col flex-grow gap-[93px] overflow-y-auto">
-        <div className="relative w-full h-48 shrink-0">
+        <div className="relative w-full h-28 sm:h-44 md:h-48 shrink-0">
           <div className="absolute size-full">
             {isImageLoading && (
               <div className="absolute flex items-center justify-center gap-2 -translate-x-1/2 -translate-y-1/2 border-b size-full top-1/2 left-1/2 border-mainAccent text-md">
@@ -78,7 +78,7 @@ export default function ManageBannerPage() {
               </div>
             )}
           </div>
-          <div className="absolute -bottom-[38%] left-4 size-[120px] rounded-full  border-4 overflow-hidden box-content border-socialPrimary">
+          <div className="absolute -bottom-[38%] left-4 sm:size-24 size-20 lg:size-28 rounded-full  border-4 overflow-hidden box-content border-socialPrimary">
             <img
               src={editProfileAvatar ?? "/no-image-2.jpg"}
               alt="avatar"

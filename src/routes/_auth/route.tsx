@@ -23,8 +23,8 @@ function AuthLayout() {
   }
 
   if (accessToken) {
-    //get the value of the last media route visited from localStorage (either anime/tv/movie)
-    const lastMediaRouteVisited = localStorage.getItem(
+    //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
+    const lastMediaRouteVisited = sessionStorage.getItem(
       "lastMediaRouteVisited"
     ) as MediaType | null;
     let authenticatedGotoLink: LinkProps;
@@ -40,7 +40,7 @@ function AuthLayout() {
           authenticatedGotoLink = { to: "/tv" };
           break;
       }
-      //if no lastMediaRouteVisited in localStorage, default to /movie
+      //if no lastMediaRouteVisited in sessionStorage, default to /movie
     } else {
       authenticatedGotoLink = { to: "/movie" };
     }

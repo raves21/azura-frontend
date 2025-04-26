@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_protected/tv")({
 
 function TVLayout() {
   useEffect(() => {
-    localStorage.setItem("lastMediaRouteVisited", "TV");
+    sessionStorage.setItem("lastMediaRouteVisited", "TV");
   }, []);
   return <Outlet />;
 }

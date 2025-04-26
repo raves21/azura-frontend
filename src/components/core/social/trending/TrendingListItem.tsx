@@ -1,14 +1,23 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link } from "@tanstack/react-router";
+import { useShallow } from "zustand/react/shallow";
 
 type Props = {
   trend: string;
   postCount: number;
+  fromDrawer?: boolean;
 };
 
-export default function TrendingListItem({ trend, postCount }: Props) {
-  const setSocialSearchKeyword = useGlobalStore(
-    (state) => state.setSocialSearchKeyword
+export default function TrendingListItem({
+  trend,
+  postCount,
+  fromDrawer,
+}: Props) {
+  const [setSocialSearchKeyword, toggleOpenDrawer] = useGlobalStore(
+    useShallow((state) => [
+      state.setSocialSearchKeyword,
+      state.toggleOpenDrawer,
+    ])
   );
 
   return (
@@ -17,7 +26,12 @@ export default function TrendingListItem({ trend, postCount }: Props) {
       search={{
         query: trend,
       }}
-      onClick={() => setSocialSearchKeyword(trend)}
+      onClick={() => {
+        setSocialSearchKeyword(trend);
+        if (fromDrawer) {
+          toggleOpenDrawer(null);
+        }
+      }}
       className="block w-full px-5 py-4 hover:bg-socialPrimaryHover"
     >
       <p className="font-medium line-clamp-1">{trend}</p>

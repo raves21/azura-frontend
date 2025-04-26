@@ -25,8 +25,8 @@ function Protected() {
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
   const matchRoute = useMatchRoute();
 
-  //get the value of the last media route visited from localStorage (either anime/tv/movie)
-  const lastMediaRouteVisited = localStorage.getItem(
+  //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
+  const lastMediaRouteVisited = sessionStorage.getItem(
     "lastMediaRouteVisited"
   ) as MediaType | null;
 
@@ -49,7 +49,7 @@ function Protected() {
         break;
     }
   } else {
-    localStorage.setItem("lastMediaRouteVisited", "MOVIE");
+    sessionStorage.setItem("lastMediaRouteVisited", "MOVIE");
     topNavBar = <MovieTopNavBar />;
     bottomNavBarType = "MOVIE";
   }
