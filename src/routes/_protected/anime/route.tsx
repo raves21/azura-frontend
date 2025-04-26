@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_protected/anime")({
 
 function AnimeLayout() {
   useEffect(() => {
-    localStorage.setItem("lastMediaRouteVisited", "ANIME");
+    sessionStorage.setItem("lastMediaRouteVisited", "ANIME");
   }, []);
   return <Outlet />;
 }

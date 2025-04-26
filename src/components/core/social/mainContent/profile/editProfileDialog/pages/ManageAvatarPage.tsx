@@ -9,13 +9,13 @@ export default function ManageAvatarPage() {
     editProfileBanner,
     editProfileAvatar,
     setEditProfileAvatar,
-    setEditProfilePage
+    setEditProfilePage,
   ] = useEditProfileStore(
     useShallow((state) => [
       state.editProfileBanner,
       state.editProfileAvatar,
       state.setEditProfileAvatar,
-      state.setEditProfilePage
+      state.setEditProfilePage,
     ])
   );
   const [avatarURLInputText, setAvatarURLInputText] =
@@ -56,7 +56,7 @@ export default function ManageAvatarPage() {
   return (
     <>
       <div className="flex flex-col flex-grow gap-[93px] overflow-y-auto">
-        <div className="relative w-full h-48 shrink-0">
+        <div className="relative w-full h-28 sm:h-44 md:h-48 shrink-0">
           <div className="absolute size-full">
             <img
               src={editProfileBanner ?? "/no-image-2.jpg"}
@@ -65,7 +65,7 @@ export default function ManageAvatarPage() {
           </div>
           <div
             className={cn(
-              "absolute -bottom-[38%] left-4 size-[120px] rounded-full overflow-hidden border-4 box-content",
+              "absolute -bottom-[38%] left-4 sm:size-24 size-20 lg:size-28 rounded-full  border-4 overflow-hidden box-content",
               !avatarURLInputText || isImageError || isImageLoading
                 ? "border-mainAccent"
                 : "border-socialPrimary"
@@ -86,7 +86,7 @@ export default function ManageAvatarPage() {
               />
             )}
             {(!avatarURLInputText || isImageError) && (
-              <div className="absolute grid -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 place-items-center size-full bg-socialPrimary">
+              <div className="absolute grid text-center text-sm sm:text-base -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 place-items-center size-full bg-socialPrimary">
                 {!avatarURLInputText ? "No Image" : "Error Image"}
               </div>
             )}

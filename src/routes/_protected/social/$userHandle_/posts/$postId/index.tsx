@@ -79,7 +79,7 @@ function PostInfoPage() {
 
   if (postInfo) {
     return (
-      <div className="flex flex-col w-full gap-2 mb-24 overflow-hidden text-base rounded-lg bg-socialPrimary">
+      <div className="flex flex-col w-full gap-2 mb-40 overflow-hidden text-base rounded-lg bg-socialPrimary">
         <div className="flex flex-col w-full gap-8 px-3 py-4 sm:p-5">
           <div className="flex items-center gap-4 mobile-l:gap-5">
             <BackButton

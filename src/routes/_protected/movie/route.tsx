@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_protected/movie")({
 
 function MovieLayout() {
   useEffect(() => {
-    localStorage.setItem("lastMediaRouteVisited", "MOVIE");
+    sessionStorage.setItem("lastMediaRouteVisited", "MOVIE");
   }, []);
 
   return <Outlet />;

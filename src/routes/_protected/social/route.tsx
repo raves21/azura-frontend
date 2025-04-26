@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_protected/social")({
 function SocialPageLayout() {
   const matchRoute = useMatchRoute();
   const { isDesktopMediumUp, isDesktopSmallUp } = useWindowBreakpoints();
+
   return (
     <main className="relative text-sm pb-10 flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
       {matchRoute({ to: "/social/$userHandle/posts/$postId" }) && (
@@ -29,9 +30,11 @@ function SocialPageLayout() {
       <div className="flex-1 hidden overflow-y-auto rounded-xl md:block lg:flex lg:flex-col lg:gap-4">
         {isDesktopSmallUp &&
           !isDesktopMediumUp &&
-          !matchRoute({ to: "/social/$userHandle", fuzzy: true }) && (
-            <ProfilePreview />
-          )}
+          !matchRoute({ to: "/social/$userHandle" }) &&
+          !matchRoute({
+            to: "/social/$userHandle/collections",
+            fuzzy: true,
+          }) && <ProfilePreview />}
         <Trending />
       </div>
     </main>
