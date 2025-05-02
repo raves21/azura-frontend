@@ -5,7 +5,7 @@ import {
   useFollowUser,
   useUnfollowUser,
 } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import {
   followUser_UserPreviewListCacheMutation,
@@ -30,7 +30,7 @@ export default function ToggleFollowButton({
   userId,
 }: Props) {
   const [isHovering, setIsHovering] = useState(false);
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const { mutateAsync: followUser } = useFollowUser();
   const { mutateAsync: unfollowUser } = useUnfollowUser();

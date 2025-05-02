@@ -1,11 +1,11 @@
 import CustomCheckBox from "@/components/core/shared/CustomCheckBox";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { toggleMediaExistenceInCollectionCacheMutation } from "@/services/social/functions/cacheMutations";
 import {
   useAddCollectionItem,
   useDeleteCollectionItem,
 } from "@/services/social/queries/socialQueries";
 import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { Media } from "@/utils/types/social/social";
 
 type Props = {
@@ -26,7 +26,7 @@ export default function MediaExistenceInCollection({
     collectionId,
     media,
   });
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   function handleToggleButton() {
     if (doesGivenMediaExist) {

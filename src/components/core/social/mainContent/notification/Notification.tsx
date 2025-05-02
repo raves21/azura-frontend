@@ -3,7 +3,7 @@ import { TNotification } from "@/utils/types/social/social";
 import NotificationText from "./NotificationText";
 import UserAvatar from "../../shared/UserAvatar";
 import { LinkProps, Navigate, useNavigate } from "@tanstack/react-router";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 
 type Props = {
   notification: TNotification;
@@ -11,7 +11,7 @@ type Props = {
 
 export default function Notification({ notification }: Props) {
   const navigate = useNavigate();
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   if (!currentUser) return <Navigate to="/login" replace />;
 

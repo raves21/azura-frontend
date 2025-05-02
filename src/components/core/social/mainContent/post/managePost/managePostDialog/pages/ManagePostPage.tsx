@@ -4,7 +4,7 @@ import {
   useEditPost,
 } from "@/services/social/queries/socialQueries";
 import { UseTipTapEditorReturnType } from "@/utils/hooks/useTipTapEditor";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";
@@ -49,7 +49,7 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
     editorContentInitialHeight,
     inputText,
   } = tipTapEditor;
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const [
     setManagePostPage,

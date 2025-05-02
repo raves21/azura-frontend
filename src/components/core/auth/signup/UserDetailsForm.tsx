@@ -11,11 +11,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useShallow } from "zustand/react/shallow";
 import { userDetailsFormSchema } from "@/utils/variables/formSchemas";
 import { UserDetailsFormData } from "@/utils/types/auth/forms";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export default function UserDetailsForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(

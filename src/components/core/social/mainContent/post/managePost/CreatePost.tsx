@@ -1,11 +1,11 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ManagePostDialog from "./managePostDialog/ManagePostDialog";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../../shared/UserAvatar";
 
 export default function CreatePost() {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   if (!currentUser) return <Navigate to="/login" replace />;
 

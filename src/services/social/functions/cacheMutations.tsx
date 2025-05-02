@@ -1,5 +1,4 @@
 import { queryClient } from "@/utils/variables/queryClient";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { EntityOwner } from "@/utils/types/social/shared";
 import {
   PaginatedCommentsResponse,
@@ -18,6 +17,7 @@ import {
 import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
+import { getCurrentUser } from "@/services/auth/sharedFunctions";
 
 const POSTS_QUERY_FILTER: QueryFilters = {
   predicate(query) {
@@ -183,7 +183,7 @@ export function postInfo_ReactionCacheMutation({
   queryClient.setQueryData<TPostInfo>(
     POST_INFO_QUERY_KEY(postId),
     (oldData) => {
-      const currentUser = useAuthStore.getState().currentUser;
+      const currentUser = getCurrentUser();
       if (!oldData || !currentUser) return undefined;
 
       if (type === "like") {

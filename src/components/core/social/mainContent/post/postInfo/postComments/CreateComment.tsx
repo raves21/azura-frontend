@@ -7,7 +7,7 @@ import { useCreatePostComment } from "@/services/social/queries/socialQueries";
 import { Navigate, useParams } from "@tanstack/react-router";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 
 type Props = {
   author: EntityOwner;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function CreateComment({ author, isFloatingCommentBar }: Props) {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const {
     editor,

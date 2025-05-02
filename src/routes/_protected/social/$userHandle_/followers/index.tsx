@@ -3,7 +3,7 @@ import BackButton from "@/components/core/shared/BackButton";
 import UserListItem from "@/components/core/social/shared/UserListItem";
 import { useFollowerList } from "@/services/social/queries/socialQueries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
@@ -15,7 +15,7 @@ export const Route = createFileRoute(
 
 function FollowersPage() {
   const { userHandle } = Route.useParams();
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const {
     data: followerList,

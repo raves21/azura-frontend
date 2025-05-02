@@ -5,7 +5,7 @@ import {
   useAddCollectionItem,
 } from "@/services/social/queries/socialQueries";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Media } from "@/utils/types/social/social";
 import { Navigate, useParams } from "@tanstack/react-router";
@@ -48,7 +48,7 @@ const AddToCollectionButton = forwardRef<HTMLButtonElement, Props>(
     );
     const { isTabletUp } = useWindowBreakpoints();
     const [buttonContent, setButtonContent] = useState<ReactNode | null>(null);
-    const currentUser = useAuthStore((state) => state.currentUser);
+    const {data: currentUser} = useCurrentUser()
 
     const alreadyExistsInCollection =
       mediaExistenceInCollection &&

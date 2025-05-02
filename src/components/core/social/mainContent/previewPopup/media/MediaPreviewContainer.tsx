@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
 import { X, SquareArrowOutUpRight } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Link, LinkProps, Navigate } from "@tanstack/react-router";
 import { MediaType } from "@/utils/types/shared";
 import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
@@ -24,7 +24,7 @@ export default function MediaPreviewContainer({
   const [viewButtonWidth, setViewButtonWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewButtonRef = useRef<HTMLAnchorElement | null>(null);
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);

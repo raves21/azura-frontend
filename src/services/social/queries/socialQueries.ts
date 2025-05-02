@@ -39,10 +39,13 @@ import {
   deleteCollection_CollectionsCacheMutation,
   createCollection_CollectionsCacheMutation,
 } from "../functions/cacheMutations";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
 import { queryClient } from "@/utils/variables/queryClient";
+import {
+  getCurrentUser,
+  setCurrentUser,
+} from "@/services/auth/sharedFunctions";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -104,8 +107,7 @@ export function useEditUserProfile() {
     },
     onSuccess: (_, variables) => {
       const { avatar, banner, bio, username, userHandle } = variables;
-      const currentUser = useAuthStore.getState().currentUser;
-      const setCurrentUser = useAuthStore.getState().setCurrentUser;
+      const currentUser = getCurrentUser();
 
       if (currentUser) {
         setCurrentUser({
@@ -246,7 +248,7 @@ export function useCreatePostComment() {
     onSuccess: async (result, variables) => {
       const { id } = result;
       const { postId, content } = variables;
-      const currentUser = useAuthStore.getState().currentUser;
+      const currentUser = getCurrentUser();
       if (currentUser) {
         const newComment: TPostComment = {
           author: currentUser,

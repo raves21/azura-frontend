@@ -10,7 +10,7 @@ import {
 import { useEffect } from "react";
 import PostInfoSkeleton from "@/components/core/loadingSkeletons/social/PostInfoSkeleton";
 import { usePostInfo } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/posts/$postId/"
@@ -21,7 +21,7 @@ export const Route = createFileRoute(
 function PostInfoPage() {
   const { postId, userHandle } = Route.useParams();
 
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const {
     data: postInfo,
     isLoading: isPostInfoLoading,

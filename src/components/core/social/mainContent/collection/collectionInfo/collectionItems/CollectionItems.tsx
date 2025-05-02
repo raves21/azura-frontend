@@ -4,7 +4,7 @@ import { Fragment } from "react/jsx-runtime";
 import MediaSkeleton from "@/components/core/loadingSkeletons/media/MediaSkeleton";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import CollectionItem from "./CollectionItem";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useParams } from "@tanstack/react-router";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function CollectionItems({ collectionId }: Props) {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const { userHandle } = useParams({
     from: "/_protected/social/$userHandle/collections/$collectionId/",
   });

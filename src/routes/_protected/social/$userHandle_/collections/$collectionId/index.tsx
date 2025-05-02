@@ -7,7 +7,7 @@ import CollectionItems from "@/components/core/social/mainContent/collection/col
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCollectionInfo } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Circle } from "lucide-react";
 
@@ -21,7 +21,7 @@ function CollectionInfoPage() {
   useCustomScrollRestoration();
 
   const { collectionId, userHandle } = Route.useParams();
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const {
     data: collectionInfo,

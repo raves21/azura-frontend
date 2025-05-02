@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, PropsWithChildren } from "react";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { X, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Link, LinkProps, Navigate, useParams } from "@tanstack/react-router";
 import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
 import { MutationKey } from "@tanstack/react-query";
@@ -36,7 +36,7 @@ export default function CollectionItemPreviewContainer({
     useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const actionButtonsContainerRef = useRef<HTMLDivElement | null>(null);
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const toggleOpenDialogSecondary = useGlobalStore(
     (state) => state.toggleOpenDialog
   );

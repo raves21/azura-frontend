@@ -1,9 +1,9 @@
 import CreateComment from "./CreateComment";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 
 export default function FloatingCreateCommentBar() {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   if (!currentUser) return <Navigate to="/login" replace />;
 
   return (

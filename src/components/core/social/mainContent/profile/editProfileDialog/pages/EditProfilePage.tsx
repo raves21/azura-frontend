@@ -1,6 +1,6 @@
 import { useEditUserProfile } from "@/services/social/queries/socialQueries";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";
@@ -22,7 +22,7 @@ export default function EditProfilePage({
   userName,
   bio,
 }: Props) {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
     editProfileUsername,

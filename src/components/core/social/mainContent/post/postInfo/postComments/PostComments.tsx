@@ -1,5 +1,5 @@
 import PostComment from "./PostComment";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate, useParams } from "@tanstack/react-router";
 import { usePostComments } from "@/services/social/queries/socialQueries";
 import PostCommentsSkeleton from "@/components/core/loadingSkeletons/social/PostCommentsSkeleton";
@@ -10,7 +10,7 @@ import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 
 export default function PostComments() {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const { postId } = useParams({
     from: "/_protected/social/$userHandle/posts/$postId/",

@@ -12,10 +12,10 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
 import { ChangePasswordFormData } from "@/utils/types/auth/forms";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useChangePassword } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 type Props = {
   afterChangePasswordSuccessAction: (values: ChangePasswordFormData) => void;
@@ -25,7 +25,7 @@ export default function ChangePasswordForm({
   afterChangePasswordSuccessAction,
 }: Props) {
   const navigate = useNavigate();
-  const { findAccountFoundUser } = useAuthStore();
+  const findAccountFoundUser = useAuthStore((state) => state.findAccountFoundUser);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const { mutateAsync: changePassword, isPending: isChangingPassword } =
     useChangePassword();

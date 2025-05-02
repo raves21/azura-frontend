@@ -1,6 +1,6 @@
-import PulseCheckJWT from "@/components/core/auth/shared/PulseCheckJWT";
+import PulseCheckAuth from "@/components/core/auth/shared/PulseCheckAuth";
 import StaticLoadingPage from "@/components/core/shared/StaticLoadingPage";
-import { useRefreshJWT } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import {
   createFileRoute,
   Navigate,
@@ -10,7 +10,6 @@ import {
 import MovieTopNavBar from "@/components/core/navBar/topNavBar/movie/MovieTopNavBar";
 import AnimeTopNavBar from "@/components/core/navBar/topNavBar/anime/AnimeTopNavBar";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import TVTopNavBar from "@/components/core/navBar/topNavBar/tv/TVTopNavBar";
 import { ReactNode } from "react";
 import { MediaType } from "@/utils/types/shared";
@@ -21,8 +20,12 @@ export const Route = createFileRoute("/_protected")({
 });
 
 function Protected() {
-  const { data, isLoading, error } = useRefreshJWT();
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const {
+    data: currentUser,
+    isPending: isCurrentUserPending,
+    error: currentUserError,
+  } = useCurrentUser();
+  // const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
   const matchRoute = useMatchRoute();
 
   //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
@@ -54,16 +57,12 @@ function Protected() {
     bottomNavBarType = "MOVIE";
   }
 
-  if (isLoading) return <StaticLoadingPage />;
-  if (error) {
-    setCurrentUser(null);
-    return <Navigate to="/login" />;
-  }
+  if (isCurrentUserPending) return <StaticLoadingPage />;
+  if (currentUserError) return <Navigate to="/login" replace />;
 
-  if (data) {
-    setCurrentUser(data.currentUserBasicInfo);
+  if (currentUser) {
     return (
-      <PulseCheckJWT>
+      <PulseCheckAuth>
         <div className="max-w-full w-dvw bg-darkBg text-mainWhite">
           {topNavBar}
           <div
@@ -76,7 +75,7 @@ function Protected() {
           </div>
           <BottomNavBar type={bottomNavBarType} />
         </div>
-      </PulseCheckJWT>
+      </PulseCheckAuth>
     );
   }
 }
