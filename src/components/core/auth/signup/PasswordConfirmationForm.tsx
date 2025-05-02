@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useShallow } from "zustand/react/shallow";
 import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
 import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
@@ -19,6 +18,7 @@ import { useSendOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export default function PasswordConfirmationForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(

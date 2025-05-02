@@ -3,7 +3,7 @@ import {
   useCreateCollection,
   useEditCollection,
 } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TCollection } from "@/utils/types/social/social";
 import { useEffect } from "react";
@@ -45,7 +45,7 @@ export default function ManageCollectionDetailsPage({
     editorContentInitialWidth,
     inputText: collectionDescription,
   } = tipTapEditor;
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const [toggleOpenDialogSecondary, toggleOpenDialog] = useGlobalStore(
     useShallow((state) => [
       state.toggleOpenDialogSecondary,

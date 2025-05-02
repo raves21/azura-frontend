@@ -6,16 +6,15 @@ export type UserBasicInfo = {
   avatar: string | null;
 };
 
-export type RefreshResponse = {
-  currentUserBasicInfo: UserBasicInfo;
-  accessToken: string;
-};
-
 type UserSession = {
+  id: string;
   userId: string;
-  sessionId: string;
-  deviceName: string;
-  createdAt: string;
+  browser: string | null;
+  os: string | null;
+  platform: string | null;
+  isCurrentSession: boolean;
+  expiresAt: Date;
+  createdAt: Date;
 };
 
 export type LoginResponseDetachedMode = {
@@ -32,7 +31,7 @@ export type LoginResponseRegular = {
   isDetachedMode: false;
   data: {
     user: UserBasicInfo;
-    accessToken: string;
+    session: Pick<UserSession, "browser" | "os" | "expiresAt" | "platform">;
   };
 };
 

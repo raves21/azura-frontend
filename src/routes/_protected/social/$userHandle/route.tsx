@@ -3,7 +3,7 @@ import ProfileDetails from "@/components/core/social/mainContent/profile/profile
 import ProfileImages from "@/components/core/social/mainContent/profile/profileImages/ProfileImages";
 import ProfileTabs from "@/components/core/social/mainContent/profile/profileTabs/ProfileTabs";
 import { useUserProfile } from "@/services/social/queries/socialQueries";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/$userHandle")({
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_protected/social/$userHandle")({
 
 function UserProfilePageLayout() {
   const { userHandle } = Route.useParams();
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const {
     data: userProfile,

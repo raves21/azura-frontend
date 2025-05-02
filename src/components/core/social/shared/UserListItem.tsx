@@ -1,7 +1,7 @@
 import { UserPreview } from "@/utils/types/social/social";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import ToggleFollowButton from "../mainContent/profile/profileDetails/ToggleFollowButton";
 
 type UserListItemProps = UserPreview & {
@@ -21,7 +21,7 @@ export default function UserListItem({
 }: UserListItemProps) {
   const navigate = useNavigate();
 
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   if (!currentUser) return <Navigate to="/login" replace />;
 

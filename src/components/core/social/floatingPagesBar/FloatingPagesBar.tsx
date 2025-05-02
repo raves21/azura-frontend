@@ -1,6 +1,6 @@
 import { LinkProps, Navigate } from "@tanstack/react-router";
 import FloatingPagesBarItem from "./FloatingPagesBarItem";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 
 type PageName = "Home" | "Profile" | "Notifications";
 
@@ -10,7 +10,7 @@ export type TFloatingPagesBarItem = {
 };
 
 export default function FloatingPagesBar() {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   if (!currentUser) return <Navigate to="/login" replace />;
 
   const floatingPagesBarItems: TFloatingPagesBarItem[] = [

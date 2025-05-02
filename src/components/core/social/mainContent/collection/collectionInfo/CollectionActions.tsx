@@ -3,7 +3,7 @@ import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TCollection } from "@/utils/types/social/social";
 import { Forward, Plus } from "lucide-react";
 import ManagePostDialog from "../../post/managePost/managePostDialog/ManagePostDialog";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate, useParams } from "@tanstack/react-router";
 import AddCollectionItemDialog from "./addCollectionItemDialog/AddCollectionItemDialog";
 
@@ -23,7 +23,7 @@ export default function CollectionActions(props: Props) {
   const setCollectionAttachment = useManagePostStore(
     (state) => state.setCollectionAttachment
   );
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const { userHandle } = useParams({
     from: "/_protected/social/$userHandle/collections/$collectionId/",
   });

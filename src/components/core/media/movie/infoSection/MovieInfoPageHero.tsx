@@ -56,7 +56,7 @@ export default function MovieInfoPageHero({
           <Rating
             mediaType="tmdb"
             variant="infoPage"
-            rating={voteAverage}
+            rating={voteAverage?.toString()}
             isMobile={false}
           />
           <InfoDetails isMobile={false}>
@@ -117,7 +117,7 @@ export default function MovieInfoPageHero({
                 mediaType="tmdb"
                 variant="infoPage"
                 isMobile
-                rating={voteAverage}
+                rating={voteAverage?.toString()}
               />
             </div>
           </InfoDetails>

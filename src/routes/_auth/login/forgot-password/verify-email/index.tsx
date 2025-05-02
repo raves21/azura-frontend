@@ -4,7 +4,6 @@ import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
-// import { useShallow } from "zustand/react/shallow";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/verify-email/"

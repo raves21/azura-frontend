@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import ChangePasswordForm from "../../../../../components/core/auth/login/forgotPassword/changePassword/ChangePasswordForm";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
@@ -6,6 +5,8 @@ import { useEffect } from "react";
 import { useLogin } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useShallow } from "zustand/react/shallow";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/change-password/"
@@ -14,7 +15,7 @@ export const Route = createFileRoute(
 });
 
 function ChangePasswordPage() {
-  const { forgotPasswordStep, findAccountFoundUser } = useAuthStore();
+  const [forgotPasswordStep, findAccountFoundUser] = useAuthStore(useShallow((state) => [state.forgotPasswordStep, state.findAccountFoundUser]));
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Circle, Users, Globe, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import UserAvatar from "../../shared/UserAvatar";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import {
   LinkProps,
   Navigate,
@@ -80,7 +80,7 @@ export default function ActivityHeader({
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   if (!currentUser) return <Navigate to="/login" replace />;
 
   return (

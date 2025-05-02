@@ -1,6 +1,6 @@
 import { useUserProfile } from "@/services/social/queries/socialQueries";
 import { Link } from "@tanstack/react-router";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../shared/UserAvatar";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
@@ -9,7 +9,7 @@ import ProfileBioRenderer from "../../mainContent/profile/profileDetails/Profile
 import ProfilePreviewSkeleton from "@/components/core/loadingSkeletons/social/ProfilePreviewSkeleton";
 
 export default function ProfilePreview() {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: currentUserProfile,

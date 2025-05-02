@@ -38,7 +38,7 @@ export default function WatchPageTVInfo({
         <section className="z-10 flex flex-col flex-1 gap-2 sm:gap-3">
           <Title title={title} variant="watchPage" />
           <div className="flex flex-col gap-2 mobile-m:gap-4">
-            <Rating mediaType="tmdb" variant="watchPage" rating={voteAverage} />
+            <Rating mediaType="tmdb" variant="watchPage" rating={voteAverage?.toString()} />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
               <InfoItem label="Year:" info={year?.toString()} />
               {runTime && <InfoItem label="Runtime:" info={`${runTime} min`} />}

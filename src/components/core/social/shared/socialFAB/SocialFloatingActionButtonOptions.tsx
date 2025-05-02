@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { LinkProps, Navigate, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -45,7 +45,7 @@ export default function SocialFloatingActionButtonOptions({
   const [toggleOpenDrawer, toggleOpenDialog] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDrawer, state.toggleOpenDialog])
   );
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   function handleOptionClick({ ...args }: HandleOptionClickArgs) {
     setIsActive(false);

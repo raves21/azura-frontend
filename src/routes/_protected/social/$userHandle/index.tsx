@@ -3,7 +3,7 @@ import Post from "@/components/core/social/mainContent/post/Post";
 import { useUserProfilePosts } from "@/services/social/queries/socialQueries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_protected/social/$userHandle/")({
 function UserProfilePage() {
   const { userHandle } = Route.useParams();
   useCustomScrollRestoration(`userProfilePage-${userHandle}`);
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const {
     data: userProfilePosts,

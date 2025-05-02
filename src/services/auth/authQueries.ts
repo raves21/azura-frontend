@@ -1,23 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { queryClient } from "@/utils/variables/queryClient";
-import {
-  LoginResponse,
-  RefreshResponse,
-  UserBasicInfo,
-} from "@/utils/types/auth/auth";
+import { LoginResponse, UserBasicInfo } from "@/utils/types/auth/auth";
+import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import Bowser from "bowser";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-
-export function useRefreshJWT() {
+export function useCurrentUser() {
   return useQuery({
-    queryKey: ["refreshJWT"],
+    queryKey: ["authenticatedUser"],
     queryFn: async () => {
-      const { data } = await axios.get(`${BASE_URL}/refresh`, {
-        withCredentials: true,
-      });
-      return data.data as RefreshResponse;
+      const { data } = await api.get("/users/me");
+      return data.data as UserBasicInfo;
     },
     retryOnMount: false,
   });
@@ -27,7 +20,7 @@ export function useOTC(email: string) {
   return useQuery({
     queryKey: ["otc", email],
     queryFn: async () => {
-      const response = await axios.post(`${BASE_URL}/otc/send`, { email });
+      const response = await api.post("/otc/send", { email });
       return {
         message: response.data.message,
         statusCode: response.status,
@@ -39,7 +32,7 @@ export function useOTC(email: string) {
 export function useSendOTC() {
   return useMutation({
     mutationFn: async (email: string) => {
-      const response = await axios.post(`${BASE_URL}/otc/send`, { email });
+      const response = await api.post("/otc/send", { email });
       return {
         message: response.data.message,
         statusCode: response.status,
@@ -59,7 +52,7 @@ type UseVerifyOTCArgs = { email: string; otc: string };
 export function useVerifyOTC() {
   return useMutation({
     mutationFn: async ({ email, otc }: UseVerifyOTCArgs) => {
-      await axios.get(`${BASE_URL}/otc/verify?email=${email}&otc=${otc}`);
+      await api.get("/otc/verify", { params: { email, otc } });
     },
   });
 }
@@ -77,7 +70,7 @@ export function useCreateAccount() {
       password: string;
       handle: string;
     }) => {
-      await axios.post(`${BASE_URL}/auth/signup`, {
+      await api.post("/auth/signup", {
         username,
         email,
         password,
@@ -96,11 +89,14 @@ export function useLogin() {
       email: string;
       password: string;
     }) => {
-      const { data } = await axios.post(
-        `${BASE_URL}/auth/login`,
-        { email, password },
-        { withCredentials: true }
-      );
+      const userAgentParser = Bowser.getParser(window.navigator.userAgent);
+      const { data } = await api.post("/auth/login", {
+        email,
+        password,
+        browser: userAgentParser.getBrowser().name,
+        os: userAgentParser.getOS().name,
+        platform: userAgentParser.getPlatform().type,
+      });
 
       return data as LoginResponse;
     },
@@ -110,12 +106,10 @@ export function useLogin() {
         useAuthStore.getState().setDetachedModeUserInfo(result);
         history.replaceState(null, "", "/detached-mode");
       } else {
-        const refreshJWTInitialData: RefreshResponse = {
-          accessToken: result.data.accessToken,
-          currentUserBasicInfo: result.data.user,
-        };
-        queryClient.setQueryData(["refreshJWT"], refreshJWTInitialData);
-        useAuthStore.getState().setCurrentUser(result.data.user);
+        queryClient.setQueryData<UserBasicInfo>(
+          ["authenticatedUser"],
+          result.data.user
+        );
         history.replaceState(null, "", "/movie");
       }
     },
@@ -125,8 +119,8 @@ export function useLogin() {
 export function useFindUserByEmail() {
   return useMutation({
     mutationFn: async ({ email }: { email: string }) => {
-      const { data } = await axios.get(
-        `${BASE_URL}/auth/forgot-password/find-user-by-email`,
+      const { data } = await api.get(
+        "/auth/forgot-password/find-user-by-email",
         {
           params: {
             email,
@@ -147,7 +141,7 @@ export function useChangePassword() {
       newPassword: string;
       userId: string;
     }) => {
-      await axios.post(`${BASE_URL}/auth/forgot-password/change-password`, {
+      await api.post("/auth/forgot-password/change-password", {
         userId,
         newPassword,
       });
@@ -158,9 +152,7 @@ export function useChangePassword() {
 export function useLogout() {
   return useMutation({
     mutationFn: async () => {
-      await axios.post(`${BASE_URL}/auth/logout`, null, {
-        withCredentials: true,
-      });
+      await api.post("/auth/logout", null);
     },
     onSuccess: () => {
       queryClient.clear();

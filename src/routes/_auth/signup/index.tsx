@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import UserDetailsForm from "../../../components/core/auth/signup/UserDetailsForm";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import PasswordConfirmationForm from "../../../components/core/auth/signup/PasswordConfirmationForm";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useEffect } from "react";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export const Route = createFileRoute("/_auth/signup/")({
   component: () => <SignUpPage />,

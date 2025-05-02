@@ -8,7 +8,7 @@ import { useShallow } from "zustand/react/shallow";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TPost } from "@/utils/types/social/social";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 import SelectMediaAttachmentPage from "./pages/SelectMediaAttachmentPage";
 import SelectCollectionAttachmentPage from "./pages/SelectCollectionAttachmentPage";
@@ -30,7 +30,7 @@ export default function ManagePostDialog({
   resetStateOnMount = true,
   ...props
 }: Props) {
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const {data: currentUser} = useCurrentUser()
 
   const [
     resetState,
