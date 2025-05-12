@@ -9,8 +9,8 @@ import {
   getTMDBImageURL,
   getTMDBRating,
   getTMDBReleaseYear,
-  toggleDialogOrDrawer,
 } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
 import AddCollectionItemMediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
@@ -78,15 +78,18 @@ export default function MediaSelectionMovieSearchResults({
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
-                            coverImage: getTMDBImageURL(movie.backdrop_path),
-                            description: movie.overview,
+                            coverImage:
+                              getTMDBImageURL(movie.backdrop_path) || null,
+                            description: movie.overview || null,
                             id: movie.id.toString(),
-                            posterImage: getTMDBImageURL(movie.poster_path),
-                            rating: getTMDBRating(movie.vote_average),
+                            posterImage:
+                              getTMDBImageURL(movie.poster_path) || null,
+                            rating: getTMDBRating(movie.vote_average) || null,
                             status: null,
-                            title: movie.title,
+                            title: movie.title || "",
                             type: "MOVIE",
-                            year: getTMDBReleaseYear(movie.release_date),
+                            year:
+                              getTMDBReleaseYear(movie.release_date) || null,
                           }}
                         />
                       ),

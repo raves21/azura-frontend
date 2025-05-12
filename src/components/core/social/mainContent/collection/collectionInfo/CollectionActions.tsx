@@ -23,7 +23,7 @@ export default function CollectionActions(props: Props) {
   const setCollectionAttachment = useManagePostStore(
     (state) => state.setCollectionAttachment
   );
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const { userHandle } = useParams({
     from: "/_protected/social/$userHandle/collections/$collectionId/",
   });

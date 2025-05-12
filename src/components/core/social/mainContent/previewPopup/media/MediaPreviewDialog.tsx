@@ -36,8 +36,12 @@ export default function MediaPreviewDialog({
           {title}
         </h1>
         <div className="flex flex-wrap items-center w-full gap-3 text-sm mobile-m:text-base">
-          <p>{year}</p>
-          <Circle className="size-1 stroke-none fill-gray-400" />
+          {year && (
+            <>
+              <p>{year}</p>
+              <Circle className="size-1 stroke-none fill-gray-400" />
+            </>
+          )}
           <div className="flex items-center gap-[5px]">
             {type === "ANIME" && <Cat className="size-4 stroke-mainAccent" />}
             {type === "MOVIE" && (
@@ -46,17 +50,21 @@ export default function MediaPreviewDialog({
             {type === "TV" && <Tv className="size-4 stroke-lime-500" />}
             <p>{type}</p>
           </div>
-          <Circle className="size-1 stroke-none fill-gray-400" />
-          <div className="flex items-center gap-1">
-            <Star className="size-[14px] stroke-none fill-yellow-500" />
-            <p>
-              {rating
-                ? type === "ANIME"
-                  ? getAnimeRating(parseInt(rating))
-                  : getTMDBRating(parseInt(rating))
-                : "N/A"}
-            </p>
-          </div>
+          {rating && (
+            <>
+              <Circle className="size-1 stroke-none fill-gray-400" />
+              <div className="flex items-center gap-1">
+                <Star className="size-[14px] stroke-none fill-yellow-500" />
+                <p>
+                  {rating
+                    ? type === "ANIME"
+                      ? getAnimeRating(parseInt(rating) * 0.1)
+                      : getTMDBRating(parseInt(rating))
+                    : "N/A"}
+                </p>
+              </div>
+            </>
+          )}
         </div>
         <Description
           description={description}

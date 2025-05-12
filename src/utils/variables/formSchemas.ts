@@ -44,8 +44,8 @@ export const userDetailsFormSchema = z.object({
     .min(1, {
       message: "This field is required.",
     })
-    .regex(/^[A-Za-z0-9._]+$/, {
-      message: "Letters, digits, period, or underscores only.",
+    .regex(/^[A-Za-z0-9_]+$/, {
+      message: "Letters, digits, or underscores only.",
     })
     .max(15, {
       message: "Maximum of 15 characters.",
@@ -103,3 +103,22 @@ export const changePasswordFormSchema = z
     message: "Passwords doesn't match.",
     path: ["confirmNewPassword"],
   });
+
+export const changeEmailFormSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "This field is required." })
+    .email({ message: "Email is badly formatted." }),
+});
+
+export const changeHandleFormSchema = z.object({
+  handle: z
+    .string()
+    .min(1, { message: "This field is required." })
+    .regex(/^[A-Za-z0-9_]+$/, {
+      message: "Letters, digits, or underscores only.",
+    })
+    .max(15, {
+      message: "Maximum of 15 characters.",
+    }),
+});

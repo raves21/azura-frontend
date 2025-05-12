@@ -1,0 +1,81 @@
+import { cn } from "@/lib/utils";
+import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
+import { UserSession } from "@/utils/types/auth/auth";
+import PasswordVerificationDialog from "../shared/PasswordVerificationDialog";
+import { useLogoutSession } from "@/services/auth/authQueries";
+import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
+import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
+import ErrorDialog from "../../shared/ErrorDialog";
+import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
+import { useShallow } from "zustand/react/shallow";
+
+type Props = {
+  session: UserSession;
+  className?: string;
+};
+
+export default function Session({ session, className }: Props) {
+  const { timeAgo: loggedInRelativeTime } = useFormatToRelativeTimeOnInterval(
+    session.createdAt
+  );
+
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+  const [uniqueMutationKey, setUniqueMutationKey] = useUniqueMutationKeyStore(
+    useShallow((state) => [state.uniqueMutationKey, state.setUniqueMutationKey])
+  );
+  const { mutateAsync: logoutSession } = useLogoutSession({
+    key: `logoutSession-${uniqueMutationKey}`,
+  });
+
+  return (
+    <tr className={cn("border-gray-700", className)}>
+      <td className="pl-0 pr-5 md:px-5 py-4 whitespace-nowrap">
+        {loggedInRelativeTime}
+      </td>
+      <td className="px-5 py-4">{session.browser}</td>
+      <td className="px-5 py-4">{session.os}</td>
+      <td className="px-5 py-4">{session.platform}</td>
+      <td className="pr-0 pl-5 md:px-5 py-4 text-center text-blue-500 font-semibold">
+        {session.isCurrentSession ? (
+          "You"
+        ) : (
+          <button
+            onClick={() =>
+              toggleOpenDialog(
+                <PasswordVerificationDialog
+                  afterSubmitSuccessAction={() => {
+                    replaceDialogContent({
+                      content: (
+                        <AsyncConfirmationDialog
+                          disableCloseOnPending={true}
+                          mutationKey={[`logoutSession-${uniqueMutationKey}`]}
+                          confirmAction={async () => {
+                            try {
+                              await logoutSession(session.id);
+                            } catch (error) {
+                              replaceDialogContent({
+                                content: <ErrorDialog error={error} />,
+                              });
+                            } finally {
+                              setUniqueMutationKey(crypto.randomUUID());
+                            }
+                          }}
+                          header="Confirm session logout"
+                          message="Are you sure you want to logout this session?"
+                        />
+                      ),
+                    });
+                  }}
+                />
+              )
+            }
+            className="px-3 py-1 bg-mainAccent hover:bg-fuchsia-700 rounded-lg font-normal text-mainWhite"
+          >
+            Logout
+          </button>
+        )}
+      </td>
+    </tr>
+  );
+}

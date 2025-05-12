@@ -1,17 +1,16 @@
-import SocialSearchDialog from "../../../social/searchDialog/SocialSearchDialog";
+import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
-import MovieSearchDialog from "../../../media/movie/search/MovieSearchDialog";
+import MovieSearchDialog from "../../media/movie/search/MovieSearchDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import MovieTopNavBarDesktop from "./MovieTopNavBarDesktop";
-import MovieTopNavBarMobile from "./MovieTopNavBarMobile";
 import { useMatchRoute } from "@tanstack/react-router";
+import MobileTopNavBar from "./shared/MobileTopNavBar";
+import DesktopTopNavBar from "./shared/DesktopTopNavBar";
 
 export default function MovieTopNavBar() {
   const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const isMovieRoute = matchRoute({ to: "/movie", fuzzy: true });
   const isMovieCatalogRoute = matchRoute({ to: "/movie/catalog", fuzzy: true });
-  const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
 
   let searchDialogComponent: ReactNode;
 
@@ -24,19 +23,14 @@ export default function MovieTopNavBar() {
   return (
     <header className="font-montserrat">
       {isDesktopSmallUp ? (
-        <MovieTopNavBarDesktop
+        <DesktopTopNavBar
+          type="MOVIE"
           isMovieCatalogRoute={!!isMovieCatalogRoute}
           isMovieRoute={!!isMovieRoute}
-          isSocialRoute={!!isSocialRoute}
           searchDialogComponent={searchDialogComponent}
         />
       ) : (
-        <MovieTopNavBarMobile
-          isMovieCatalogRoute={!!isMovieCatalogRoute}
-          isMovieRoute={!!isMovieRoute}
-          isSocialRoute={!!isSocialRoute}
-          searchDialogComponent={searchDialogComponent}
-        />
+        <MobileTopNavBar searchDialogComponent={searchDialogComponent} />
       )}
     </header>
   );

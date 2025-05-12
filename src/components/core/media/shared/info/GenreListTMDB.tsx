@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { TMDBGenre } from "@/utils/types/media/shared";
-import { Link } from "@tanstack/react-router";
+import { Link, LinkProps, useMatchRoute } from "@tanstack/react-router";
 
 type InfoPageProps = {
   variant: "infoPage";
@@ -19,6 +19,26 @@ type Props = {
 } & (InfoPageProps | WatchPageProps);
 
 export default function GenreListTMDB({ genres, ...props }: Props) {
+  const matchRoute = useMatchRoute();
+  const isMovieRoute = matchRoute({ to: "/movie", fuzzy: true });
+
+  function getGenreLinkProps(genreId: number): LinkProps {
+    if (isMovieRoute) {
+      return {
+        to: "/movie/catalog",
+        search: {
+          genres: [genreId],
+        },
+      };
+    }
+    return {
+      to: "/tv/catalog",
+      search: {
+        genres: [genreId],
+      },
+    };
+  }
+
   if (props.variant === "infoPage") {
     return (
       <div className={cn("flex gap-2", props.className)}>
@@ -32,10 +52,7 @@ export default function GenreListTMDB({ genres, ...props }: Props) {
           {genres.length !== 0
             ? genres.map((genre, i) => (
                 <Link
-                  to="/movie/catalog"
-                  search={{
-                    genres: [genre.id],
-                  }}
+                  {...getGenreLinkProps(genre.id)}
                   key={i}
                   className="hover:text-mainAccent"
                 >
@@ -59,10 +76,7 @@ export default function GenreListTMDB({ genres, ...props }: Props) {
         {genres.length !== 0 &&
           genres.map((genre) => (
             <Link
-              to="/movie/catalog"
-              search={{
-                genres: [genre.id],
-              }}
+              {...getGenreLinkProps(genre.id)}
               key={genre.id}
               className="px-3 py-2 transition-colors border rounded-full border-mainAccent/75 hover:text-mainAccent/75"
             >

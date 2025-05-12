@@ -1,17 +1,16 @@
-import SocialSearchDialog from "../../../social/searchDialog/SocialSearchDialog";
+import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import TVTopNavBarDesktop from "./TVTopNavBarDesktop";
-import TVTopNavBarMobile from "./TVTopNavBarMobile";
 import { useMatchRoute } from "@tanstack/react-router";
-import TVSearchDialog from "../../../media/tv/search/TVSearchDialog";
+import TVSearchDialog from "../../media/tv/search/TVSearchDialog";
+import MobileTopNavBar from "./shared/MobileTopNavBar";
+import DesktopTopNavBar from "./shared/DesktopTopNavBar";
 
 export default function TVTopNavBar() {
   const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const isTVRoute = matchRoute({ to: "/tv", fuzzy: true });
   const isTVCatalogRoute = matchRoute({ to: "/tv/catalog", fuzzy: true });
-  const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
 
   let searchDialogComponent: ReactNode;
 
@@ -24,19 +23,14 @@ export default function TVTopNavBar() {
   return (
     <header className="font-montserrat">
       {isDesktopSmallUp ? (
-        <TVTopNavBarDesktop
+        <DesktopTopNavBar
+          type="TV"
           isTVCatalogRoute={!!isTVCatalogRoute}
           isTVRoute={!!isTVRoute}
-          isSocialRoute={!!isSocialRoute}
           searchDialogComponent={searchDialogComponent}
         />
       ) : (
-        <TVTopNavBarMobile
-          isMovieCatalogRoute={!!isTVCatalogRoute}
-          isMovieRoute={!!isTVRoute}
-          isSocialRoute={!!isSocialRoute}
-          searchDialogComponent={searchDialogComponent}
-        />
+        <MobileTopNavBar searchDialogComponent={searchDialogComponent} />
       )}
     </header>
   );

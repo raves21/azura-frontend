@@ -5,7 +5,7 @@ import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 import { Media } from "@/utils/types/social/social";
 import AddToCollectionButton from "./AddToCollectionButton";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   media: Media;
@@ -19,7 +19,7 @@ export default function AddCollectionItemMediaPreviewContainer({
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   useEffect(() => {
     if (containerRef.current) {

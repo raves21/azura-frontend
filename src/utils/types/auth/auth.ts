@@ -6,15 +6,15 @@ export type UserBasicInfo = {
   avatar: string | null;
 };
 
-type UserSession = {
+export type UserSession = {
   id: string;
   userId: string;
   browser: string | null;
   os: string | null;
   platform: string | null;
   isCurrentSession: boolean;
-  expiresAt: Date;
-  createdAt: Date;
+  expiresAt: string;
+  createdAt: string;
 };
 
 export type LoginResponseDetachedMode = {

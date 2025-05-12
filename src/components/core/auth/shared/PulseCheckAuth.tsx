@@ -1,18 +1,17 @@
 import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import { PropsWithChildren, useEffect } from "react";
 
+const PULSE_INTERVAL = 15 * 60 * 1000; //15 minute interval
 export default function PulseCheckAuth({ children }: PropsWithChildren) {
   useEffect(() => {
-    const pulseInterval = 900_000; //15 minute interval
     const tokenPulse = setInterval(async () => {
-      console.log("pulse check token");
       await api.get("/check-token");
-    }, pulseInterval);
+    }, PULSE_INTERVAL);
 
     return () => {
       clearInterval(tokenPulse);
     };
   }, []);
 
-  return <>{children}</>;
+  return children;
 }

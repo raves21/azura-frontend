@@ -1,6 +1,5 @@
 import { Cat, Clapperboard, Tv } from "lucide-react";
 import LogoutButton from "./LogoutButton";
-import SettingsButton from "./SettingsButton";
 import SideMenuSheetButton from "./SideMenuSheetButton";
 import { useNavigateToMedia } from "@/utils/hooks/useNavigateToMedia";
 
@@ -51,7 +50,6 @@ export default function MenuSheet() {
         </SideMenuSheetButton>
       </div>
       <div className="w-full mt-auto">
-        <SettingsButton />
         <LogoutButton />
       </div>
     </div>

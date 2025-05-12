@@ -4,7 +4,7 @@ import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { Link, LinkProps, Navigate } from "@tanstack/react-router";
 import { MediaType } from "@/utils/types/shared";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -24,7 +24,7 @@ export default function MediaPreviewContainer({
   const [viewButtonWidth, setViewButtonWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewButtonRef = useRef<HTMLAnchorElement | null>(null);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);

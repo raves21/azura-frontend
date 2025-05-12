@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_protected/social/$userHandle/")({
 function UserProfilePage() {
   const { userHandle } = Route.useParams();
   useCustomScrollRestoration(`userProfilePage-${userHandle}`);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const {
     data: userProfilePosts,

@@ -3,7 +3,7 @@ import { Media } from "@/utils/types/social/social";
 import { Cat, Clapperboard, Tv, X } from "lucide-react";
 import MediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/media/MediaPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   media: Media;

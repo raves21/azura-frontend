@@ -1,48 +1,36 @@
 import { useLogout } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { LoaderCircle, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import SideMenuSheetButton from "./SideMenuSheetButton";
-import { useEffect } from "react";
-import ErrorDialog from "../shared/ErrorDialog";
+import AsyncConfirmationDialog from "../shared/confirmationDialog/AsyncConfirmationDialog";
+import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 
 export default function LogoutButton() {
-  const {
-    mutateAsync: logout,
-    status: logoutStatus,
-    error: logoutError,
-  } = useLogout();
+  const uniqueMutationKey = useUniqueMutationKeyStore(
+    (state) => state.uniqueMutationKey
+  );
+  const { mutateAsync: logout } = useLogout({
+    key: `logout-${uniqueMutationKey}`,
+  });
   const [toggleOpenSheet, toggleOpenDialog] = useGlobalStore(
     useShallow((state) => [state.toggleOpenSheet, state.toggleOpenDialog])
   );
-
-  useEffect(() => {
-    if (logoutStatus === "pending") {
-      toggleOpenDialog(
-        <div className="flex flex-col items-center justify-center gap-6 space-around text-2xl font-semibold rounded-lg w-[300px] text-mainAccent aspect-square bg-darkBg">
-          <LoaderCircle className="group-disabled:stroke-mainAccent/50 animate-spin size-16 stroke-mainAccent" />
-          <p>Logging out</p>
-        </div>
-      );
-    }
-
-    if (logoutStatus === "error") {
-      toggleOpenDialog(null);
-      setTimeout(() => {
-        toggleOpenDialog(<ErrorDialog error={logoutError} />);
-      }, 180);
-    }
-
-    if (logoutStatus === "success") {
-      toggleOpenDialog(null);
-    }
-  }, [logoutStatus, logoutError]);
 
   return (
     <SideMenuSheetButton
       onClick={async () => {
         toggleOpenSheet(null);
-        await logout();
+        toggleOpenDialog(
+          <AsyncConfirmationDialog
+            disableCloseOnPending={true}
+            mutationKey={[`logout-${uniqueMutationKey}`]}
+            confirmAction={async () => await logout()}
+            header="Confirm Logout"
+            message="Are you sure you want to logout?"
+            confirmButtonColorMainAccent={true}
+          />
+        );
       }}
     >
       <LogOut className="size-6 stroke-mainWhite" />

@@ -49,7 +49,7 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
     editorContentInitialHeight,
     inputText,
   } = tipTapEditor;
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const [
     setManagePostPage,

@@ -21,7 +21,7 @@ export const Route = createFileRoute(
 function PostInfoPage() {
   const { postId, userHandle } = Route.useParams();
 
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const {
     data: postInfo,
     isLoading: isPostInfoLoading,

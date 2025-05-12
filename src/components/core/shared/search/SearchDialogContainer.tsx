@@ -18,8 +18,9 @@ export default function SearchDialogContainer({ children }: PropsWithChildren) {
 
   const matchRoute = useMatchRoute();
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
+  const isAccountRoute = matchRoute({ to: "/account", fuzzy: true });
 
-  if (isSocialRoute) {
+  if (isSocialRoute || isAccountRoute) {
     return (
       <div className="w-dvw sm:px-8 md:max-w-[800px] px-2 flex flex-col">
         <SearchOptions

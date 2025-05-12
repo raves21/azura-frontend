@@ -12,7 +12,7 @@ import { Fragment, useEffect } from "react";
 import { z } from "zod";
 
 const postsSearchResultsPageSchema = z.object({
-  query: z.string(),
+  query: z.string().min(1),
 });
 
 type PostsSearchResultsPageSchema = z.infer<
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_protected/social/search/posts/")({
         success: true,
       };
     }
-    return { query: "", success: true };
+    return { query: "", success: false };
   },
 });
 
@@ -40,9 +40,8 @@ function PostsSearchResultsPage() {
   const navigate = useNavigate();
 
   useHandleSearchParamsValidationFailure({
-    isValidationFail: success === false || !query,
+    isValidationFail: !success,
     onValidationError: () => navigate({ to: "/social" }),
-    deps: [success, query],
   });
 
   const setSocialSearchKeyword = useGlobalStore(

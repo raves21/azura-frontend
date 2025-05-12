@@ -7,17 +7,17 @@ import { useCurrentUser } from "@/services/auth/authQueries";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected/social/$userHandle")({
-  component: () => <UserProfilePageLayout />
+  component: () => <UserProfilePageLayout />,
 });
 
 function UserProfilePageLayout() {
   const { userHandle } = Route.useParams();
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const {
     data: userProfile,
     isLoading: isUserProfileLoading,
-    error: userProfileError
+    error: userProfileError,
   } = useUserProfile(userHandle, currentUser?.handle);
 
   if (!currentUser) return <Navigate to="/login" replace />;

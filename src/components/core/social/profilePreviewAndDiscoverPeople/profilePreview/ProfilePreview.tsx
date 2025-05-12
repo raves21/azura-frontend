@@ -9,7 +9,7 @@ import ProfileBioRenderer from "../../mainContent/profile/profileDetails/Profile
 import ProfilePreviewSkeleton from "@/components/core/loadingSkeletons/social/ProfilePreviewSkeleton";
 
 export default function ProfilePreview() {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {
     data: currentUserProfile,

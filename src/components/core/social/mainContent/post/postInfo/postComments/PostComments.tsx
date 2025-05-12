@@ -10,7 +10,7 @@ import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 
 export default function PostComments() {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const { postId } = useParams({
     from: "/_protected/social/$userHandle/posts/$postId/",

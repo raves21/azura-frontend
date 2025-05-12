@@ -45,7 +45,7 @@ export default function ManageCollectionDetailsPage({
     editorContentInitialWidth,
     inputText: collectionDescription,
   } = tipTapEditor;
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const [toggleOpenDialogSecondary, toggleOpenDialog] = useGlobalStore(
     useShallow((state) => [
       state.toggleOpenDialogSecondary,

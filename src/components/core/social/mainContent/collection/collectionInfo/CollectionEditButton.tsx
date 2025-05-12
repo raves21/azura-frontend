@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDeleteCollection } from "@/services/social/queries/socialQueries";
 import { useParams } from "@tanstack/react-router";
-import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 
 type Props = {
   collection: TCollection;
@@ -53,10 +53,11 @@ export default function CollectionEditButton({ collection }: Props) {
         <DropdownMenuItem
           onClick={() =>
             toggleOpenDialog(
-              <DeleteConfirmationDialog
-                nameOfResourceToDelete="collection"
+              <AsyncConfirmationDialog
+                header="Delete this collection?"
+                message="This will delete this collection permanently. You cannot undo this action."
                 mutationKey={["deleteCollection", collectionId]}
-                deleteAction={() =>
+                confirmAction={() =>
                   deleteCollection({ collectionId, userHandle })
                 }
               />

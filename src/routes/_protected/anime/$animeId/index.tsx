@@ -47,7 +47,7 @@ function AnimeInfoPage() {
   const navigate = useNavigate();
 
   useHandleSearchParamsValidationFailure({
-    isValidationFail: !success || !title,
+    isValidationFail: !success,
     onValidationError: () => navigate({ to: "/anime" }),
   });
 

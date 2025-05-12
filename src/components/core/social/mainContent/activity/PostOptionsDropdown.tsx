@@ -8,8 +8,9 @@ import {
 import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
 import { useDeletePost } from "@/services/social/queries/socialQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import ManagePostDialog from "../post/managePost/managePostDialog/ManagePostDialog";
+import { useRouter } from "@tanstack/react-router";
 
 type Props = {
   post: TPost;
@@ -18,6 +19,8 @@ type Props = {
 export default function PostOptionsDropdown({ post }: Props) {
   const { mutateAsync: deletePost } = useDeletePost(post.id);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
+  const router = useRouter();
 
   return (
     <DropdownMenu>
@@ -50,12 +53,13 @@ export default function PostOptionsDropdown({ post }: Props) {
           onClick={(e) => {
             e.stopPropagation();
             toggleOpenDialog(
-              <DeleteConfirmationDialog
+              <AsyncConfirmationDialog
                 mutationKey={["deletePost", post.id]}
-                deleteAction={() => deletePost(post.id)}
-                shouldNavigateBackOnSuccess={true}
-                onSuccessNavigationFallbackRoute={{ to: "/social" }}
-                nameOfResourceToDelete="post"
+                confirmAction={() => deletePost(post.id)}
+                confirmActionName="Delete"
+                header="Delete this post?"
+                message="This will delete this post permanently. You cannot undo this action."
+                afterConfirmSuccessAction={() => router.history.go(-1)}
               />
             );
           }}

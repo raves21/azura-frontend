@@ -3,7 +3,7 @@ import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 
 export default function FloatingCreateCommentBar() {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   if (!currentUser) return <Navigate to="/login" replace />;
 
   return (

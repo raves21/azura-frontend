@@ -119,6 +119,10 @@ body {
   }
 }
 
+.scroll-container-small-thumb::-webkit-scrollbar {
+  height: 5px;
+}
+
 .loader {
   border-bottom-color: transparent;
   border-radius: 50%;

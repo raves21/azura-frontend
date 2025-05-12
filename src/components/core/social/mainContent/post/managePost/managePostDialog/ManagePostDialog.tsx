@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import ManagePostPage from "./pages/ManagePostPage";
 import SelectPrivacyPage from "./pages/SelectPrivacyPage";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import { EntityPrivacy } from "@/utils/types/social/shared";
@@ -12,6 +12,9 @@ import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 import SelectMediaAttachmentPage from "./pages/SelectMediaAttachmentPage";
 import SelectCollectionAttachmentPage from "./pages/SelectCollectionAttachmentPage";
+import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
+import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
+import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
 
 type EditPostProps = {
   type: "edit";
@@ -30,7 +33,7 @@ export default function ManagePostDialog({
   resetStateOnMount = true,
   ...props
 }: Props) {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const [
     resetState,
@@ -121,7 +124,7 @@ export default function ManagePostDialog({
 
   return (
     <div className="h-dvh md:h-[500px] overflow-hidden bg-socialPrimary rounded-lg flex flex-col w-dvw md:w-[550px] text-mainWhite">
-      <div className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
+      <GlobalDialogHeader>
         {managePostPage !== "managePost" && (
           <button
             onClick={() => setManagePostPage("managePost")}
@@ -130,18 +133,15 @@ export default function ManagePostDialog({
             <ArrowLeft className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
           </button>
         )}
-        <p className="text-lg font-semibold">
+        <GlobalDialogHeaderTitle>
           {props.type === "edit" ? "Edit post" : "New post"}
-        </p>
+        </GlobalDialogHeaderTitle>
         {managePostPage === "managePost" && (
-          <button
+          <GlobalDialogHeaderCloseButton
             onClick={() => toggleOpenDialog(null)}
-            className="group absolute top-1/2 -translate-y-1/2 right-4 rounded-full p-2 border-[0.5px] border-socialTextSecondary"
-          >
-            <X className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
-          </button>
+          />
         )}
-      </div>
+      </GlobalDialogHeader>
       {currentPage}
     </div>
   );

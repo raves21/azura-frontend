@@ -39,7 +39,7 @@ export default function FindAccountForm() {
   const { mutateAsync: findUserByEmail, isPending: isFindingUserByEmail } =
     useFindUserByEmail();
 
-  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC();
+  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC({});
 
   async function onSubmit(values: FindAccountFormData) {
     try {

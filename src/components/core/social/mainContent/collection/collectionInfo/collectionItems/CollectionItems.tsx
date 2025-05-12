@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function CollectionItems({ collectionId }: Props) {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const { userHandle } = useParams({
     from: "/_protected/social/$userHandle/collections/$collectionId/",
   });

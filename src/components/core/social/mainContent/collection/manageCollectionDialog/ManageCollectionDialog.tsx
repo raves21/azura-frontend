@@ -7,10 +7,13 @@ import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import ManageCollectionDetailsPage from "./pages/ManageCollectionDetailsPage";
 import SelectPrivacyPage from "./pages/SelectPrivacyPage";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import ManageCollectionPhotoPage from "./pages/ManageCollectionPhotoPage";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
+import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
+import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
 
 type EditCollectionProps = {
   type: "edit";
@@ -148,7 +151,7 @@ export default function ManageCollectionDialog(props: Props) {
 
   return (
     <div className="h-dvh w-dvw md:h-[480px] md:max-w-[600px] bg-socialPrimary rounded-lg flex flex-col md:aspect-[5/4] text-mainWhite">
-      <div className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
+      <GlobalDialogHeader>
         {manageCollectionPage !== "manageCollectionDetails" && (
           <button
             onClick={() => setManageCollectionPage("manageCollectionDetails")}
@@ -157,18 +160,13 @@ export default function ManageCollectionDialog(props: Props) {
             <ArrowLeft className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
           </button>
         )}
-        <p className="text-lg font-semibold">
+        <GlobalDialogHeaderTitle>
           {props.type === "edit" ? "Edit collection" : "New collection"}
-        </p>
+        </GlobalDialogHeaderTitle>
         {manageCollectionPage === "manageCollectionDetails" && (
-          <button
-            onClick={closeDialog}
-            className="group absolute top-1/2 -translate-y-1/2 right-4 rounded-full p-2 border-[0.5px] border-socialTextSecondary"
-          >
-            <X className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
-          </button>
+          <GlobalDialogHeaderCloseButton onClick={closeDialog} />
         )}
-      </div>
+      </GlobalDialogHeader>
       {currentPage}
     </div>
   );
