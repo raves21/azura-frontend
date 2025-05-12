@@ -30,8 +30,10 @@ function ChangePasswordInputPasswordPage() {
   if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <h1 className="text-4xl font-bold text-mainWhite">Change Password</h1>
+    <div className="flex flex-col items-center gap-8 w-full px-4 sm:px-0 sm:w-auto">
+      <h1 className="text-3xl mobile-l:text-4xl font-bold text-mainWhite text-center">
+        Change Password
+      </h1>
       <ChangePasswordForm
         type="accountSettingChangePassword"
         user={currentUser}
@@ -39,6 +41,7 @@ function ChangePasswordInputPasswordPage() {
           navigate({ to: "/account" });
           setChangePasswordStep(null);
         }}
+        cancelButtonLinkProps={{ to: "/account" }}
       />
     </div>
   );

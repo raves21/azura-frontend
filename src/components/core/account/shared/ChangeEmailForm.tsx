@@ -61,7 +61,7 @@ export default function ChangeEmailForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="text-mainWhite w-[370px] flex flex-col"
+        className="text-mainWhite w-full mobile-m:w-[300px] mobile-l:w-[370px] flex flex-col"
       >
         <div className="space-y-6">
           <FormField
