@@ -1,5 +1,5 @@
 import { TCollectionItem } from "@/utils/types/social/social";
-import Media from "@/components/core/shared/Media";
+import Media from "@/components/core/media/shared/Media";
 import CollectionItemPreviewDialog from "../../../previewPopup/collectionItem/CollectionItemPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useParams } from "@tanstack/react-router";
