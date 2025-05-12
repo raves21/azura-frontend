@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "@tanstack/react-router";
+import { LinkProps, useNavigate } from "@tanstack/react-router";
 import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
 import { ChangePasswordFormData } from "@/utils/types/auth/forms";
 import {
@@ -18,18 +18,22 @@ import {
 } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
-import { UserBasicInfo } from "@/utils/types/auth/auth";
+import { ForgotPasswordStep, UserBasicInfo } from "@/utils/types/auth/auth";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 
 type Props = {
   afterSubmitSuccessAction: (values: ChangePasswordFormData) => void;
   user: UserBasicInfo;
   type: "forgotPassword" | "accountSettingChangePassword";
+  cancelButtonLinkProps: LinkProps;
 };
 
 export default function ChangePasswordForm({
   user,
   afterSubmitSuccessAction,
   type,
+  cancelButtonLinkProps,
 }: Props) {
   const navigate = useNavigate();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
@@ -40,6 +44,13 @@ export default function ChangePasswordForm({
 
   const { mutateAsync: changePassword, isPending: isChangePasswordPending } =
     useChangePassword();
+
+  const setForgotPasswordStep = useAuthStore(
+    (state) => state.setForgotPasswordStep
+  );
+  const setChangePasswordStep = useAccountSettingStore(
+    (state) => state.setChangePasswordStep
+  );
 
   const form = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormSchema),
@@ -69,7 +80,7 @@ export default function ChangePasswordForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="text-mainWhite w-[370px] flex flex-col"
+        className="text-mainWhite w-full mobile-m:w-[300px] mobile-l:w-[370px] flex flex-col"
       >
         <div className="space-y-6">
           <FormField
@@ -115,7 +126,14 @@ export default function ChangePasswordForm({
           <button
             disabled={isForgotPassChangePassPending || isChangePasswordPending}
             type="button"
-            onClick={() => navigate({ to: "/login" })}
+            onClick={() => {
+              if (type === "accountSettingChangePassword") {
+                setChangePasswordStep("verifyEmail");
+              } else {
+                setForgotPasswordStep(ForgotPasswordStep.FIND_ACCOUNT);
+              }
+              navigate(cancelButtonLinkProps);
+            }}
             className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg disabled:bg-gray-900 disabled:border-fuchsia-800/80 disabled:hover:border-fuchsia-800/80 hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
           >
             Cancel

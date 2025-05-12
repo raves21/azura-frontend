@@ -124,7 +124,9 @@ export default function CodeVerificationForm({
 
   return (
     <div className="flex flex-col items-center gap-8">
-      <h1 className="text-4xl font-bold text-mainWhite">Email Verification</h1>
+      <h1 className="text-3xl mobile-l:text-4xl font-bold text-mainWhite">
+        Email Verification
+      </h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -146,27 +148,45 @@ export default function CodeVerificationForm({
                     pattern={REGEXP_ONLY_DIGITS}
                   >
                     <InputOTPGroup>
-                      <InputOTPSlot index={0} />
+                      <InputOTPSlot
+                        index={0}
+                        className="w-8 mobile-m:w-10 mobile-l:w-12 sm:w-14"
+                      />
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={1} />
+                      <InputOTPSlot
+                        index={1}
+                        className="w-8 mobile-m:w-10 mobile-l:w-12 sm:w-14"
+                      />
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={2} />
+                      <InputOTPSlot
+                        index={2}
+                        className="w-8 mobile-m:w-10 mobile-l:w-12 sm:w-14"
+                      />
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={3} />
+                      <InputOTPSlot
+                        index={3}
+                        className="w-8 mobile-m:w-10 mobile-l:w-12 sm:w-14"
+                      />
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={4} />
+                      <InputOTPSlot
+                        index={4}
+                        className="w-8 mobile-m:w-10 mobile-l:w-12 sm:w-14"
+                      />
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={5} />
+                      <InputOTPSlot
+                        index={5}
+                        className="w-8 mobile-m:w-10 mobile-l:w-12 sm:w-14"
+                      />
                     </InputOTPGroup>
                   </InputOTP>
                 </FormControl>

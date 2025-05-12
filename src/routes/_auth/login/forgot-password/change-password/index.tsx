@@ -60,6 +60,7 @@ function ChangePasswordPage() {
             toggleOpenDialog(<ErrorDialog error={error} />);
           }
         }}
+        cancelButtonLinkProps={{ to: "/login" }}
       />
     </>
   );

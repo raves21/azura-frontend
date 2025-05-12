@@ -78,7 +78,7 @@ export default function ChangeHandleForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="text-mainWhite w-[370px] flex flex-col"
+        className="text-mainWhite w-full mobile-m:w-[300px] mobile-l:w-[370px] flex flex-col"
       >
         <div className="space-y-6">
           <FormField
@@ -95,7 +95,7 @@ export default function ChangeHandleForm() {
                     placeholder="Handle"
                     {...field}
                     maxLength={15}
-                    className="pl-8 font-medium bg-gray-800 border-none text-mainWhite"
+                    className="pl-8 font-medium w-full bg-gray-800 border-none text-mainWhite"
                   />
                 </FormControl>
                 <p
