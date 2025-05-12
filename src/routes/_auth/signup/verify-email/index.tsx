@@ -50,12 +50,13 @@ function VerifyEmailPage() {
 
   return (
     <CodeVerificationForm
+      type="auth"
       email={signUpValues.email}
       backButtonAction={() => {
         router.history.back();
         setSignUpStep(SignUpStep.PASSWORD_CONFIRMATION);
       }}
-      afterVerificationSuccessAction={async () => {
+      afterSubmitSuccessAction={async () => {
         try {
           await createAccount({
             username: signUpValues.username,

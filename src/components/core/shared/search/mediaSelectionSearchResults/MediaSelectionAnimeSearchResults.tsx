@@ -5,7 +5,7 @@ import {
   useFilterAnime,
 } from "@/services/media/anime/queries/animeQueries";
 import { AnimeSortBy } from "@/utils/types/media/anime/animeAnilist";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
@@ -99,15 +99,15 @@ export default function MediaSelectionAnimeSearchResults({
                 onClick={() => {
                   setCollectionAttachment(null);
                   setMediaAttachment({
-                    coverImage: anime.cover,
-                    description: anime.description,
+                    coverImage: anime.cover || null,
+                    description: anime.description || null,
                     id: anime.id,
-                    posterImage: anime.image,
+                    posterImage: anime.image || null,
                     rating: anime.rating?.toString() || "N/A",
                     status: null,
-                    title: anime.title.english || anime.title.romaji,
+                    title: anime.title.english || anime.title.romaji || "",
                     type: "ANIME",
-                    year: anime.releaseDate.toString(),
+                    year: anime.releaseDate?.toString() || null,
                   });
                   setManagePostPage("managePost");
                 }}

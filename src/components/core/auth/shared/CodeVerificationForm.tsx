@@ -15,11 +15,10 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { useOTC, useVerifyOTC } from "@/services/auth/authQueries";
+import { useSendOTC, useVerifyOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "../../shared/ErrorDialog";
 import { Check } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { codeVerificationFormSchema } from "@/utils/variables/formSchemas";
 import { CodeVerificationFormData } from "@/utils/types/auth/forms";
@@ -28,29 +27,26 @@ import { AxiosError } from "axios";
 
 type Props = {
   backButtonAction: () => void;
-  afterVerificationSuccessAction: (values: CodeVerificationFormData) => void;
+  afterSubmitSuccessAction: (values: CodeVerificationFormData) => void;
   email: string;
+  type: "auth" | "accountSettings";
 };
 
 export default function CodeVerificationForm({
   backButtonAction,
-  afterVerificationSuccessAction,
+  afterSubmitSuccessAction,
   email,
+  type,
 }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const {
-    data: otc,
-    isFetching: isOTCLoading,
-    error: OTCError,
-  } = useOTC(email);
+    mutateAsync: sendOTC,
+    isPending: isSendingOTC,
+    error: sendOTCError,
+  } = useSendOTC({});
 
-  const {
-    mutateAsync: verifyOTC,
-    isPending: isVerifyingOTC,
-    error: OTCVerificationError,
-  } = useVerifyOTC();
+  const { mutateAsync: verifyOTC, isPending: isVerifyingOTC } = useVerifyOTC();
 
   const [verificationErrorMessage, setVerificationErrorMessage] = useState<
     string | null
@@ -70,28 +66,30 @@ export default function CodeVerificationForm({
     setVerificationErrorMessage(null);
   }, [formCode]);
 
-  //this is for setting the verification error message.
-  //this will only trigger when clicking the verify button, since
-  //a new verificationError (if any) from the useVerifyOTC will be produced.
+  //for handling resend OTC error
   useEffect(() => {
-    if (
-      OTCVerificationError &&
-      OTCVerificationError instanceof AxiosError &&
-      OTCVerificationError.response
-    ) {
-      if (OTCVerificationError.response.status === 400) {
-        setVerificationErrorMessage("The code you entered is incorrect.");
-      }
-      if (OTCVerificationError.response.status === 410) {
-        setVerificationErrorMessage("The code you entered is expired.");
-      }
+    if (sendOTCError) {
+      toggleOpenDialog(
+        <ErrorDialog
+          error={sendOTCError}
+          customMessage="There was an error in resending the code. Please try again later."
+          okButtonAction={() => {
+            if (type === "auth") {
+              navigate({ to: "/login" });
+            } else {
+              navigate({ to: "/account" });
+            }
+            toggleOpenDialog(null);
+          }}
+        />
+      );
     }
-  }, [OTCVerificationError]);
+  }, [sendOTCError]);
 
   async function onSubmit(values: CodeVerificationFormData) {
     try {
       await verifyOTC({ email, otc: values.code });
-      afterVerificationSuccessAction(values);
+      afterSubmitSuccessAction(values);
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         //I want to make 410 and 400 error as a formMessage error instead of
@@ -101,30 +99,27 @@ export default function CodeVerificationForm({
             <ErrorDialog
               error={error}
               okButtonAction={() => {
-                navigate({ to: "/login" });
+                if (type === "auth") {
+                  navigate({ to: "/login" });
+                } else {
+                  navigate({ to: "/account" });
+                }
                 toggleOpenDialog(null);
               }}
             />
           );
-          return;
+        } else {
+          if (error.response.status === 400) {
+            setVerificationErrorMessage("The code you entered is incorrect.");
+          }
+          if (error.response.status === 410) {
+            setVerificationErrorMessage("The code you entered is expired.");
+          }
         }
       } else {
         toggleOpenDialog(<ErrorDialog error={error} />);
       }
     }
-  }
-
-  if (OTCError) {
-    toggleOpenDialog(
-      <ErrorDialog
-        error={OTCError}
-        customMessage="There was an error in resending the code. Please try again later."
-        okButtonAction={() => {
-          navigate({ to: "/login" });
-          toggleOpenDialog(null);
-        }}
-      />
-    );
   }
 
   return (
@@ -175,7 +170,7 @@ export default function CodeVerificationForm({
                     </InputOTPGroup>
                   </InputOTP>
                 </FormControl>
-                {!isOTCLoading && !OTCError && (
+                {!isSendingOTC && !sendOTCError && (
                   <FormDescription className="text-base text-center text-gray-500">
                     {`Please enter the code sent to your email`}
                   </FormDescription>
@@ -183,30 +178,23 @@ export default function CodeVerificationForm({
               </FormItem>
             )}
           />
-          {!isOTCLoading && !OTCError && otc ? (
+          {!isSendingOTC && !sendOTCError ? (
             <div className="flex items-center justify-center gap-3">
               <Check className="size-4 stroke-green-500" />
               <p className="text-green-500">Code Sent!</p>
             </div>
-          ) : isOTCLoading ? (
+          ) : isSendingOTC ? (
             <div className="flex items-center justify-center gap-3">
               <div className="border loader size-4 border-mainWhite" />
               <p className="text-mainAccent">Resending Code</p>
             </div>
           ) : null}
-          {!isOTCLoading && !OTCError && otc && (
+          {!isSendingOTC && !sendOTCError && (
             <p className="text-center text-gray-500">
               Didn't get the code?{" "}
               <span
-                onClick={() => {
-                  queryClient.refetchQueries(
-                    {
-                      queryKey: ["otc", email],
-                    },
-                    {
-                      throwOnError: true,
-                    }
-                  );
+                onClick={async () => {
+                  await sendOTC(email);
                 }}
                 className="hover:underline text-mainAccent hover:cursor-pointer "
               >
@@ -223,7 +211,7 @@ export default function CodeVerificationForm({
               Back
             </button>
             <button
-              disabled={isOTCLoading || isVerifyingOTC}
+              disabled={isSendingOTC || isVerifyingOTC}
               type="submit"
               className="flex items-center justify-center w-1/2 gap-3 py-2 font-medium transition-colors border rounded-lg disabled:border-fuchsia-800 disabled:bg-fuchsia-800 bg-mainAccent hover:bg-fuchsia-700 border-mainAccent hover:border-fuchsia-700"
             >

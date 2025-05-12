@@ -32,7 +32,7 @@ export default function PasswordConfirmationForm() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   const navigate = useNavigate();
-  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC();
+  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC({});
 
   const form = useForm<PasswordConfirmationFormData>({
     resolver: zodResolver(passwordConfirmationFormSchema),

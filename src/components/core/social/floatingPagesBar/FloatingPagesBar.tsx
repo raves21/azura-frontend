@@ -10,7 +10,7 @@ export type TFloatingPagesBarItem = {
 };
 
 export default function FloatingPagesBar() {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   if (!currentUser) return <Navigate to="/login" replace />;
 
   const floatingPagesBarItems: TFloatingPagesBarItem[] = [

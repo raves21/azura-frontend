@@ -36,12 +36,13 @@ function VerifyEmailPage() {
 
   return (
     <CodeVerificationForm
+      type="auth"
       email={findAccountFoundUser ? findAccountFoundUser.email : ""}
       backButtonAction={() => {
         setForgotPasswordStep(ForgotPasswordStep.FIND_ACCOUNT);
         router.history.back();
       }}
-      afterVerificationSuccessAction={() => {
+      afterSubmitSuccessAction={() => {
         setForgotPasswordStep(ForgotPasswordStep.CHANGE_PASSWORD);
         router.navigate({
           to: "/login/forgot-password/change-password",

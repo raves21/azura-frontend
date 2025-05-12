@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   collection: TCollection;

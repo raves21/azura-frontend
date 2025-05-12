@@ -30,7 +30,7 @@ export default function ToggleFollowButton({
   userId,
 }: Props) {
   const [isHovering, setIsHovering] = useState(false);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const { mutateAsync: followUser } = useFollowUser();
   const { mutateAsync: unfollowUser } = useUnfollowUser();

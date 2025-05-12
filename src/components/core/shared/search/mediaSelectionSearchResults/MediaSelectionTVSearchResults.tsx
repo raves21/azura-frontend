@@ -5,8 +5,8 @@ import {
   getTMDBImageURL,
   getTMDBRating,
   getTMDBReleaseYear,
-  toggleDialogOrDrawer,
 } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
@@ -71,15 +71,17 @@ export default function MediaSelectionTVSearchResults({ query, type }: Props) {
                       content: (
                         <AddCollectionItemMediaPreviewDialog
                           media={{
-                            coverImage: getTMDBImageURL(tv.backdrop_path),
-                            description: tv.overview,
+                            coverImage:
+                              getTMDBImageURL(tv.backdrop_path) || null,
+                            description: tv.overview || null,
                             id: tv.id.toString(),
-                            posterImage: getTMDBImageURL(tv.poster_path),
-                            rating: getTMDBRating(tv.vote_average),
+                            posterImage:
+                              getTMDBImageURL(tv.poster_path) || null,
+                            rating: getTMDBRating(tv.vote_average) || null,
                             status: null,
-                            title: tv.name,
+                            title: tv.name || "",
                             type: "TV",
-                            year: getTMDBReleaseYear(tv.first_air_date),
+                            year: getTMDBReleaseYear(tv.first_air_date) || null,
                           }}
                         />
                       ),

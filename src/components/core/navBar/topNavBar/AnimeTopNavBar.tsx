@@ -1,17 +1,16 @@
 import { useMatchRoute } from "@tanstack/react-router";
-import AnimeSearchDialog from "../../../media/anime/search/AnimeSearchDialog";
-import SocialSearchDialog from "../../../social/searchDialog/SocialSearchDialog";
+import AnimeSearchDialog from "../../media/anime/search/AnimeSearchDialog";
+import SocialSearchDialog from "../../social/searchDialog/SocialSearchDialog";
 import { ReactNode } from "react";
-import AnimeTopNavBarDesktop from "./AnimeTopNavBarDesktop";
-import AnimeTopNavBarMobile from "./AnimeTopNavBarMobile";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
+import MobileTopNavBar from "./shared/MobileTopNavBar";
+import DesktopTopNavBar from "./shared/DesktopTopNavBar";
 
 export default function AnimeTopNavBar() {
   const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const isAnimeRoute = matchRoute({ to: "/anime", fuzzy: true });
   const isAnimeCatalogRoute = matchRoute({ to: "/anime/catalog", fuzzy: true });
-  const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
 
   let searchDialogComponent: ReactNode;
 
@@ -24,19 +23,14 @@ export default function AnimeTopNavBar() {
   return (
     <header className="font-montserrat">
       {isDesktopSmallUp ? (
-        <AnimeTopNavBarDesktop
+        <DesktopTopNavBar
+          type="ANIME"
           isAnimeCatalogRoute={!!isAnimeCatalogRoute}
           isAnimeRoute={!!isAnimeRoute}
-          isSocialRoute={!!isSocialRoute}
           searchDialogComponent={searchDialogComponent}
         />
       ) : (
-        <AnimeTopNavBarMobile
-          isAnimeCatalogRoute={!!isAnimeCatalogRoute}
-          isAnimeRoute={!!isAnimeRoute}
-          isSocialRoute={!!isSocialRoute}
-          searchDialogComponent={searchDialogComponent}
-        />
+        <MobileTopNavBar searchDialogComponent={searchDialogComponent} />
       )}
     </header>
   );

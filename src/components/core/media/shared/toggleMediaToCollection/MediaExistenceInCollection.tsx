@@ -26,7 +26,7 @@ export default function MediaExistenceInCollection({
     collectionId,
     media,
   });
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   function handleToggleButton() {
     if (doesGivenMediaExist) {

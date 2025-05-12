@@ -15,14 +15,13 @@ export const Route = createFileRoute("/_auth")({
 });
 
 function AuthLayout() {
-  const { data: currentUser, isPending: isCurrentUserPending } =
-    useCurrentUser();
+  const { data: authUser, isLoading: isAuthUserPending } = useCurrentUser();
 
-  if (isCurrentUserPending) {
+  if (isAuthUserPending) {
     return <StaticLoadingPage />;
   }
 
-  if (currentUser) {
+  if (authUser) {
     //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
     const lastMediaRouteVisited = sessionStorage.getItem(
       "lastMediaRouteVisited"
@@ -48,9 +47,9 @@ function AuthLayout() {
   }
 
   return (
-    <div className="relative grid min-h-screen text-mainWhite place-items-center bg-darkBg font-montserrat">
+    <div className="relative grid min-h-dvh text-mainWhite place-items-center bg-darkBg font-montserrat">
       <Waves />
-      {!isCurrentUserPending && (
+      {!isAuthUserPending && (
         <Link className="absolute top-2 left-2" to="/login">
           <img
             className="box-content p-4 w-36"

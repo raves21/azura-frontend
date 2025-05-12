@@ -1,5 +1,5 @@
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 import {
   useMediaExistenceInCollection,
   useAddCollectionItem,
@@ -48,7 +48,7 @@ const AddToCollectionButton = forwardRef<HTMLButtonElement, Props>(
     );
     const { isTabletUp } = useWindowBreakpoints();
     const [buttonContent, setButtonContent] = useState<ReactNode | null>(null);
-    const {data: currentUser} = useCurrentUser()
+    const { data: currentUser } = useCurrentUser();
 
     const alreadyExistsInCollection =
       mediaExistenceInCollection &&

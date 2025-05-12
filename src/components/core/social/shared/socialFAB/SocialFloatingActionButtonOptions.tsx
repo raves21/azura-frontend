@@ -45,7 +45,7 @@ export default function SocialFloatingActionButtonOptions({
   const [toggleOpenDrawer, toggleOpenDialog] = useGlobalStore(
     useShallow((state) => [state.toggleOpenDrawer, state.toggleOpenDialog])
   );
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   function handleOptionClick({ ...args }: HandleOptionClickArgs) {
     setIsActive(false);

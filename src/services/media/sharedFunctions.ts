@@ -1,8 +1,6 @@
-import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
 import { MediaScraperResponse } from "@/utils/types/media/shared";
 import { useQuery } from "@tanstack/react-query";
-import { ReactNode } from "@tanstack/react-router";
 import axios from "axios";
 
 export function getTMDBImageURL(imagePath: string) {
@@ -74,31 +72,6 @@ export function useMediaScraper({
     },
     enabled: !!enabled,
   });
-}
-
-type OpenDialogOrDrawerArgs = {
-  content: ReactNode;
-  isTabletUp: boolean;
-  isSecondaryDialog?: boolean;
-};
-
-export function toggleDialogOrDrawer({
-  content,
-  isSecondaryDialog,
-  isTabletUp,
-}: OpenDialogOrDrawerArgs) {
-  const toggleOpenDrawer = useGlobalStore.getState().toggleOpenDrawer;
-  const toggleOpenDialogSecondary =
-    useGlobalStore.getState().toggleOpenDialogSecondary;
-  const toggleOpenDialog = useGlobalStore.getState().toggleOpenDialog;
-
-  if (isTabletUp) {
-    isSecondaryDialog
-      ? toggleOpenDialogSecondary(content)
-      : toggleOpenDialog(content);
-  } else {
-    toggleOpenDrawer(content);
-  }
 }
 
 export function toggleMediaPortal(isMediaPortalOpen: boolean) {

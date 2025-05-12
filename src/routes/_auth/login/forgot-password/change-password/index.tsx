@@ -1,12 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import ChangePasswordForm from "../../../../../components/core/auth/login/forgotPassword/changePassword/ChangePasswordForm";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
 import { useLogin } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useShallow } from "zustand/react/shallow";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/change-password/"
@@ -15,7 +15,12 @@ export const Route = createFileRoute(
 });
 
 function ChangePasswordPage() {
-  const [forgotPasswordStep, findAccountFoundUser] = useAuthStore(useShallow((state) => [state.forgotPasswordStep, state.findAccountFoundUser]));
+  const [forgotPasswordStep, findAccountFoundUser] = useAuthStore(
+    useShallow((state) => [
+      state.forgotPasswordStep,
+      state.findAccountFoundUser,
+    ])
+  );
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const navigate = useNavigate();
@@ -34,13 +39,18 @@ function ChangePasswordPage() {
     );
   }
 
+  if (!findAccountFoundUser) return <Navigate to="/login" replace />;
+
   return (
     <>
-      <h1 className="text-4xl font-bold text-mainWhite">Change Password</h1>
+      <h1 className="text-4xl font-bold text-mainWhite self-center">
+        Change Password
+      </h1>
       <ChangePasswordForm
-        afterChangePasswordSuccessAction={async (values) => {
+        type="forgotPassword"
+        user={findAccountFoundUser}
+        afterSubmitSuccessAction={async (values) => {
           try {
-            if (!findAccountFoundUser) throw new Error("User not found.");
             //todo: show dialog choice before logging in, if user wants to logout other sessions or not
             await login({
               email: findAccountFoundUser.email.trim(),

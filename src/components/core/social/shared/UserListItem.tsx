@@ -21,7 +21,7 @@ export default function UserListItem({
 }: UserListItemProps) {
   const navigate = useNavigate();
 
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   if (!currentUser) return <Navigate to="/login" replace />;
 

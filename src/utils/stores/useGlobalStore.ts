@@ -4,6 +4,7 @@ import { SocialSearchOption } from "../types/social/shared";
 
 type Values = {
   isDialogOpen: boolean;
+  isDialogClickableOutside: boolean;
   isDialogSecondaryOpen: boolean;
   isSheetOpen: boolean;
   isDrawerOpen: boolean;
@@ -17,6 +18,7 @@ type Values = {
 
 type Actions = {
   toggleOpenDialog: (dialogContent: ReactNode | null) => void;
+  setIsDialogClickableOutside: (isDialogClickableOutside: boolean) => void;
   toggleOpenDialogSecondary: (dialogSecondaryContent: ReactNode | null) => void;
   toggleOpenSheet: (sheetContent: ReactNode | null) => void;
   toggleOpenDrawer: (drawerContent: ReactNode | null) => void;
@@ -30,6 +32,7 @@ type Store = Values & Actions;
 
 const defaultValues: Values = {
   isDialogOpen: false,
+  isDialogClickableOutside: true,
   isDialogSecondaryOpen: false,
   isSheetOpen: false,
   isDrawerOpen: false,
@@ -43,6 +46,8 @@ const defaultValues: Values = {
 
 export const useGlobalStore = create<Store>((set) => ({
   ...defaultValues,
+  setIsDialogClickableOutside: (isDialogClickableOutside: boolean) =>
+    set({ isDialogClickableOutside }),
   toggleOpenDialog: (dialogContent: ReactNode | null) => {
     if (dialogContent) {
       set({

@@ -3,7 +3,7 @@ import { X, SquareArrowOutUpRight } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { Link, Navigate } from "@tanstack/react-router";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -20,7 +20,7 @@ export default function CollectionPreviewContainer({
   const { isTabletUp } = useWindowBreakpoints();
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);

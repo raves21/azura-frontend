@@ -1,9 +1,9 @@
-import { formatToRelativeTime } from "@/services/social/functions/socialFunctions";
 import { TNotification } from "@/utils/types/social/social";
 import NotificationText from "./NotificationText";
 import UserAvatar from "../../shared/UserAvatar";
 import { LinkProps, Navigate, useNavigate } from "@tanstack/react-router";
 import { useCurrentUser } from "@/services/auth/authQueries";
+import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 
 type Props = {
   notification: TNotification;
@@ -11,7 +11,11 @@ type Props = {
 
 export default function Notification({ notification }: Props) {
   const navigate = useNavigate();
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
+
+  const { timeAgo: updatedAtRelativeTime } = useFormatToRelativeTimeOnInterval(
+    notification.updatedAt.toString()
+  );
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -47,7 +51,7 @@ export default function Notification({ notification }: Props) {
           <NotificationText notification={notification} />
         </p>
         <p className="text-xs mobile-m:text-sm md:text-base text-socialTextSecondary">
-          {formatToRelativeTime(notification.updatedAt.toString())}
+          {updatedAtRelativeTime}
         </p>
       </div>
     </button>

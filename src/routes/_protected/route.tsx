@@ -1,19 +1,19 @@
 import PulseCheckAuth from "@/components/core/auth/shared/PulseCheckAuth";
 import StaticLoadingPage from "@/components/core/shared/StaticLoadingPage";
-import { useCurrentUser } from "@/services/auth/authQueries";
 import {
   createFileRoute,
   Navigate,
   Outlet,
   useMatchRoute,
 } from "@tanstack/react-router";
-import MovieTopNavBar from "@/components/core/navBar/topNavBar/movie/MovieTopNavBar";
-import AnimeTopNavBar from "@/components/core/navBar/topNavBar/anime/AnimeTopNavBar";
 import { cn } from "@/lib/utils";
-import TVTopNavBar from "@/components/core/navBar/topNavBar/tv/TVTopNavBar";
 import { ReactNode } from "react";
 import { MediaType } from "@/utils/types/shared";
 import BottomNavBar from "@/components/core/navBar/bottomNavBar/BottomNavBar";
+import AnimeTopNavBar from "@/components/core/navBar/topNavBar/AnimeTopNavBar";
+import MovieTopNavBar from "@/components/core/navBar/topNavBar/MovieTopNavBar";
+import TVTopNavBar from "@/components/core/navBar/topNavBar/TVTopNavBar";
+import { useCurrentUser } from "@/services/auth/authQueries";
 
 export const Route = createFileRoute("/_protected")({
   component: () => <Protected />,
@@ -25,9 +25,8 @@ function Protected() {
     isPending: isCurrentUserPending,
     error: currentUserError,
   } = useCurrentUser();
-  // const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
-  const matchRoute = useMatchRoute();
 
+  const matchRoute = useMatchRoute();
   //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
   const lastMediaRouteVisited = sessionStorage.getItem(
     "lastMediaRouteVisited"

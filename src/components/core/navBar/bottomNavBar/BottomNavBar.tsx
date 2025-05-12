@@ -1,4 +1,3 @@
-import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { MediaType } from "@/utils/types/shared";
 import {
   Link,
@@ -25,7 +24,6 @@ type Props = {
 };
 
 export default function BottomNavBar({ type }: Props) {
-  const { isDesktopSmallUp } = useWindowBreakpoints();
   const matchRoute = useMatchRoute();
   const location = useLocation();
   const isMovieRoute = matchRoute({ to: "/movie", fuzzy: true });
@@ -33,6 +31,7 @@ export default function BottomNavBar({ type }: Props) {
   const isTVRoute = matchRoute({ to: "/tv", fuzzy: true });
   const isCatalogRoute = location.pathname.includes("catalog");
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
+  const isAccountRoute = matchRoute({ to: "/account", fuzzy: true });
   const isMediaPortalOpen = useMediaPortalStore(
     (state) => state.isMediaPortalOpen
   );
@@ -93,48 +92,50 @@ export default function BottomNavBar({ type }: Props) {
       break;
   }
 
-  if (!isDesktopSmallUp) {
-    return (
-      <div
-        className={cn(
-          "w-dvw text-2xs fixed bottom-0 font-montserrat z-[45] border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between",
-          { "z-[701]": isMediaPortalOpen }
-        )}
+  return (
+    <div
+      className={cn(
+        "lg:hidden w-dvw text-2xs fixed bottom-0 font-montserrat z-[45] border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between",
+        { "z-[701]": isMediaPortalOpen }
+      )}
+    >
+      {mediaRouteComponent}
+      <Link
+        {...mediaCatalogRoute}
+        className="flex flex-col items-center gap-1 flex-1"
       >
-        {mediaRouteComponent}
-        <Link
-          {...mediaCatalogRoute}
-          className="flex flex-col items-center gap-1 flex-1"
-        >
-          <LayoutGrid
-            className={cn("size-5 md:size-6 pl-px", {
-              "stroke-mainAccent font-medium": isCatalogRoute,
-            })}
-          />
-          <p className={cn({ "text-mainAccent": isCatalogRoute })}>Catalog</p>
-        </Link>
-        <div className="h-full w-12 mobile-m:w-16 mobile-l:w-20 md:w-28 bg-transparent" />
-        <button
-          onClick={() => toggleMediaPortal(isMediaPortalOpen)}
-          className="fixed bottom-[22px] left-1/2 -translate-x-1/2 rotate-180"
-        >
-          <AzuraLogo className="size-[58px]" />
-        </button>
-        <Link
-          to="/social"
-          className={cn("flex flex-col items-center gap-1 flex-1", {
-            "stroke-mainAccent text-mainAccent font-medium": isSocialRoute,
+        <LayoutGrid
+          className={cn("size-5 md:size-6 pl-px", {
+            "stroke-mainAccent font-medium": isCatalogRoute,
           })}
-        >
-          <UsersRound className="size-5 md:size-6" />
-          <p>Social</p>
-        </Link>
-        <Link className="flex flex-col items-center gap-1 flex-1">
-          <Settings className="size-5 md:size-6" />
-          <p>Settings</p>
-        </Link>
-      </div>
-    );
-  }
-  return null;
+        />
+        <p className={cn({ "text-mainAccent": isCatalogRoute })}>Catalog</p>
+      </Link>
+      <div className="h-full w-12 mobile-m:w-16 mobile-l:w-20 md:w-28 bg-transparent" />
+      <button
+        onClick={() => toggleMediaPortal(isMediaPortalOpen)}
+        className="fixed bottom-[22px] left-1/2 -translate-x-1/2 rotate-180"
+      >
+        <AzuraLogo className="size-[58px]" />
+      </button>
+      <Link
+        to="/social"
+        className={cn("flex flex-col items-center gap-1 flex-1", {
+          "stroke-mainAccent text-mainAccent font-medium": isSocialRoute,
+        })}
+      >
+        <UsersRound className="size-5 md:size-6" />
+        <p>Social</p>
+      </Link>
+      <Link
+        to="/account"
+        className={cn("flex flex-col items-center gap-1 flex-1", {
+          "stroke-mainAccent text-mainAccent font-medium": isAccountRoute,
+        })}
+      >
+        <Settings className="size-5 md:size-6" />
+        <p>Account</p>
+      </Link>
+    </div>
+  );
 }

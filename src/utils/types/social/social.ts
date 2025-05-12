@@ -90,7 +90,7 @@ export type TPostComment = {
 export type UserProfile = UserBasicInfo & {
   banner: string | null;
   bio: string | null;
-  createdAt: Date;
+  createdAt: string;
   totalFollowers: number;
   totalFollowing: number;
   followsYou: boolean;

@@ -1,20 +1,22 @@
 import { cn } from "@/lib/utils";
+import { useCurrentUser } from "@/services/auth/authQueries";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { Link } from "@tanstack/react-router";
+import { Navigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { ReactNode } from "react";
 
 type Props = {
-  isMovieRoute: boolean;
-  isMovieCatalogRoute: boolean;
-  isSocialRoute: boolean;
   searchDialogComponent: ReactNode;
 };
 
-export default function TVTopNavBarMobile({ searchDialogComponent }: Props) {
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+export default function MobileTopNavBar({ searchDialogComponent }: Props) {
   const { isScrolledDown } = useScrolledState();
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
+  const { data: currentUser } = useCurrentUser();
+
+  if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
     <div
@@ -24,12 +26,10 @@ export default function TVTopNavBarMobile({ searchDialogComponent }: Props) {
       )}
     >
       <div className="flex items-center gap-4 mobile-m:gap-6">
-        <Link to="/tv" className="p-1">
-          <img
-            src="/azura-logo-with-label.svg"
-            className="w-24 mobile-m:w-28"
-          />
-        </Link>
+        <img
+          src="/azura-logo-with-label.svg"
+          className="w-24 mobile-m:w-28 m-1"
+        />
       </div>
       <div className="flex items-center gap-4">
         <button
@@ -42,7 +42,8 @@ export default function TVTopNavBarMobile({ searchDialogComponent }: Props) {
           <div className="p-[2px] rounded-full bg-mainAccent box-content">
             <div className="box-content overflow-hidden border-2 rounded-full size-6 border-darkBg">
               <img
-                src="/sample-user-pfp.png"
+                src={currentUser.avatar ?? "/no-image-2.jpg"}
+                onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
                 className="object-cover size-full"
               />
             </div>

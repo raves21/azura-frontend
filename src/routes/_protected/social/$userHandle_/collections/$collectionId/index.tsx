@@ -1,5 +1,5 @@
-import BackButton from "@/components/core/shared/BackButton";
 import CollectionPhotoSkeleton from "@/components/core/loadingSkeletons/social/CollectionPhotoSkeleton";
+import BackButton from "@/components/core/shared/BackButton";
 import CollectionActions from "@/components/core/social/mainContent/collection/collectionInfo/CollectionActions";
 import CollectionEditButton from "@/components/core/social/mainContent/collection/collectionInfo/CollectionEditButton";
 import CollectionInfo from "@/components/core/social/mainContent/collection/collectionInfo/CollectionInfo";
@@ -21,7 +21,7 @@ function CollectionInfoPage() {
   useCustomScrollRestoration();
 
   const { collectionId, userHandle } = Route.useParams();
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const {
     data: collectionInfo,

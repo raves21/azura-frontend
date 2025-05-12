@@ -15,7 +15,7 @@ export const Route = createFileRoute(
 
 function FollowingPage() {
   const { userHandle } = Route.useParams();
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const {
     data: followingList,

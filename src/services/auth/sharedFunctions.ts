@@ -2,12 +2,14 @@ import { UserBasicInfo } from "@/utils/types/auth/auth";
 import { queryClient } from "@/utils/variables/queryClient";
 
 export function getCurrentUser() {
-  const currentUser = queryClient.getQueryData<UserBasicInfo>([
+  return queryClient.getQueryData<UserBasicInfo | undefined | null>([
     "authenticatedUser",
   ]);
-  return currentUser;
 }
 
-export function setCurrentUser(newValue: UserBasicInfo) {
-  queryClient.setQueryData<UserBasicInfo>(["authenticatedUser"], newValue);
+export function setCurrentUser(newValue: UserBasicInfo | null | undefined) {
+  queryClient.setQueryData<UserBasicInfo | undefined | null>(
+    ["authenticatedUser"],
+    newValue
+  );
 }

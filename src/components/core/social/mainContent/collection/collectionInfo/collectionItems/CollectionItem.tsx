@@ -4,7 +4,7 @@ import CollectionItemPreviewDialog from "../../../previewPopup/collectionItem/Co
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useParams } from "@tanstack/react-router";
 import { useDeleteCollectionItem } from "@/services/social/queries/socialQueries";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   collectionItem: TCollectionItem;

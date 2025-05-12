@@ -22,7 +22,7 @@ export default function EditProfilePage({
   userName,
   bio,
 }: Props) {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [
     editProfileUsername,

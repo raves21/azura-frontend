@@ -13,7 +13,6 @@ type Values = {
   forgotPasswordStep: ForgotPasswordStep | null;
   findAccountFoundUser: UserBasicInfo | null;
   detachedModeUserInfo: LoginResponseDetachedMode | null;
-  // currentUser: UserBasicInfo | null;
 };
 
 type Actions = {
@@ -26,7 +25,6 @@ type Actions = {
   setDetachedModeUserInfo: (
     detachedModeUserInfo: LoginResponseDetachedMode | null
   ) => void;
-  // setCurrentUser: (currentUser: UserBasicInfo | null) => void;
 };
 
 type Store = Values & Actions;
@@ -42,7 +40,6 @@ const defaultValues: Values = {
   forgotPasswordStep: ForgotPasswordStep.FIND_ACCOUNT,
   findAccountFoundUser: null,
   detachedModeUserInfo: null,
-  // currentUser: null,
 };
 
 export const useAuthStore = create<Store>((set) => ({
@@ -56,5 +53,4 @@ export const useAuthStore = create<Store>((set) => ({
   setDetachedModeUserInfo: (
     detachedModeUserInfo: LoginResponseDetachedMode | null
   ) => set({ detachedModeUserInfo }),
-  // setCurrentUser: (currentUser: UserBasicInfo | null) => set({ currentUser }),
 }));

@@ -1,11 +1,14 @@
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { ReactNode } from "@tanstack/react-router";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import EditProfilePage from "./pages/EditProfilePage";
 import ManageBannerPage from "./pages/ManageBannerPage";
 import { useShallow } from "zustand/react/shallow";
 import ManageAvatarPage from "./pages/ManageAvatarPage";
+import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
+import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
+import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
 
 type Props = {
   avatar: string | null;
@@ -70,7 +73,7 @@ export default function EditProfileDialog({
 
   return (
     <main className="md:aspect-[1/1] h-dvh md:h-auto bg-socialPrimary overflow-y-auto rounded-lg flex flex-col w-dvw md:w-[620px] text-mainWhite">
-      <header className="relative w-full py-4 border-b-[0.5px] grid place-items-center border-socialTextSecondary/40">
+      <GlobalDialogHeader>
         {editProfilePage !== "editProfilePage" && (
           <button
             onClick={() => setEditProfilePage("editProfilePage")}
@@ -79,16 +82,11 @@ export default function EditProfileDialog({
             <ArrowLeft className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
           </button>
         )}
-        <p className="text-lg font-semibold">{headerTitle}</p>
+        <GlobalDialogHeaderTitle>{headerTitle}</GlobalDialogHeaderTitle>
         {editProfilePage === "editProfilePage" && (
-          <button
-            onClick={handleCloseDialog}
-            className="group absolute top-1/2 -translate-y-1/2 right-4 rounded-full p-2 border-[0.5px] border-socialTextSecondary"
-          >
-            <X className="transition-colors size-5 stroke-mainWhite group-hover:stroke-mainAccent" />
-          </button>
+          <GlobalDialogHeaderCloseButton onClick={handleCloseDialog} />
         )}
-      </header>
+      </GlobalDialogHeader>
       {currentPage}
     </main>
   );

@@ -1,4 +1,6 @@
 import {
+  changeEmailFormSchema,
+  changeHandleFormSchema,
   changePasswordFormSchema,
   codeVerificationFormSchema,
   findAccountFormSchema,
@@ -18,3 +20,5 @@ export type ChangePasswordFormData = z.infer<typeof changePasswordFormSchema>;
 export type CodeVerificationFormData = z.infer<
   typeof codeVerificationFormSchema
 >;
+export type ChangeEmailFormData = z.infer<typeof changeEmailFormSchema>;
+export type ChangeHandleFormData = z.infer<typeof changeHandleFormSchema>;

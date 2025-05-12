@@ -4,11 +4,11 @@ import { X, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { Link, LinkProps, Navigate, useParams } from "@tanstack/react-router";
-import DeleteConfirmationDialog from "@/components/core/shared/DeleteConfirmationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { MutationKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
 import { cn } from "@/lib/utils";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -36,7 +36,7 @@ export default function CollectionItemPreviewContainer({
     useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const actionButtonsContainerRef = useRef<HTMLDivElement | null>(null);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const toggleOpenDialogSecondary = useGlobalStore(
     (state) => state.toggleOpenDialog
   );
@@ -130,13 +130,12 @@ export default function CollectionItemPreviewContainer({
           <button
             onClick={() =>
               toggleOpenDialogSecondary(
-                <DeleteConfirmationDialog
+                <AsyncConfirmationDialog
                   isSecondaryDialog={true}
-                  deleteAction={deleteAction}
+                  confirmAction={deleteAction}
                   mutationKey={mutationKey}
-                  nameOfResourceToDelete="item"
-                  customHeader="Remove from collection?"
-                  customMessage="This will remove this item from this collection. This action cannot be undone."
+                  header="Remove from collection?"
+                  message="This will remove this item from this collection. This action cannot be undone."
                 />
               )
             }

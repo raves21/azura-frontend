@@ -5,7 +5,7 @@ import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../../shared/UserAvatar";
 
 export default function CreatePost() {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   if (!currentUser) return <Navigate to="/login" replace />;
 

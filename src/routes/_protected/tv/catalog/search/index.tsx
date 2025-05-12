@@ -39,8 +39,8 @@ function TVSearchPage() {
   const navigate = useNavigate();
 
   useHandleSearchParamsValidationFailure({
-    isValidationFail: !success || !query,
-    onValidationError: () => navigate({ to: "/tv" }),
+    isValidationFail: !success,
+    onValidationError: () => navigate({ to: "/tv/catalog" }),
   });
 
   const {

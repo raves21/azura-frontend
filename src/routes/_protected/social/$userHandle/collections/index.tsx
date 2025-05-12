@@ -1,6 +1,4 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useUserCollections } from "@/services/social/queries/socialQueries";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import UserCollectionsSkeleton from "@/components/core/loadingSkeletons/social/UserCollectionsSkeleton";
 import Collection from "@/components/core/social/mainContent/collection/Collection";
@@ -11,6 +9,8 @@ import { ChevronRight, Plus } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ManageCollectionDialog from "@/components/core/social/mainContent/collection/manageCollectionDialog/ManageCollectionDialog";
+import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
+import { useUserCollections } from "@/services/social/queries/socialQueries";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/collections/"
@@ -21,7 +21,7 @@ export const Route = createFileRoute(
 function CollectionsPage() {
   const { userHandle } = Route.useParams();
   useCustomScrollRestoration(`userProfilePage-${userHandle}`);
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const {
     data: userCollections,

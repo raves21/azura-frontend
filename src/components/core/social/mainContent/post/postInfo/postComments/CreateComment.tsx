@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function CreateComment({ author, isFloatingCommentBar }: Props) {
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
 
   const {
     editor,

@@ -5,7 +5,7 @@ import { LibraryBig, X } from "lucide-react";
 import CollectionPhoto from "@/components/core/social/mainContent/collection/CollectionPhoto";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { toggleDialogOrDrawer } from "@/services/media/sharedFunctions";
+import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {
   collection: TCollection;

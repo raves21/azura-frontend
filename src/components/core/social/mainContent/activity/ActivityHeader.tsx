@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Circle, Users, Globe, Lock } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserAvatar from "../../shared/UserAvatar";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-router";
 import { TPost, TPostComment } from "@/utils/types/social/social";
 import PostOptionsDropdown from "./PostOptionsDropdown";
-import { formatToRelativeTime } from "@/services/social/functions/socialFunctions";
+import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 
 type PostProps = {
   type: "post";
@@ -27,9 +27,6 @@ type Props = {
   className?: string;
   linkProps: LinkProps;
 } & (PostProps | CommentProps);
-
-//2 mins
-const FORMAT_TO_RELATIVE_TIME_INTERVAL = 120_000;
 
 export default function ActivityHeader({
   className,
@@ -56,31 +53,12 @@ export default function ActivityHeader({
     to: "/social/$userHandle/posts/$postId",
   });
 
-  const [relativeTimeCreated, setRelativeTimeCreated] = useState<string>(
-    formatToRelativeTime(createdAt)
-  );
-
-  //for changing the formatted relative time of the post's/comment's createdAt every 2 minutes
-  useEffect(() => {
-    const formattedToRelativeTime = formatToRelativeTime(createdAt);
-    let interval: NodeJS.Timeout | undefined = undefined;
-
-    //only do so if the relativeTime was seconds/minutes ago
-    if (
-      formattedToRelativeTime.includes("second") ||
-      formattedToRelativeTime.includes("minute")
-    ) {
-      interval = setInterval(() => {
-        setRelativeTimeCreated(formatToRelativeTime(createdAt));
-      }, FORMAT_TO_RELATIVE_TIME_INTERVAL);
-    }
-
-    return () => clearInterval(interval);
-  }, []);
+  const { timeAgo: createdAtRelativeTime } =
+    useFormatToRelativeTimeOnInterval(createdAt);
 
   const [isPrivacyHovered, setIsPrivacyHovered] = useState(false);
 
-  const {data: currentUser} = useCurrentUser()
+  const { data: currentUser } = useCurrentUser();
   if (!currentUser) return <Navigate to="/login" replace />;
 
   return (
@@ -166,7 +144,7 @@ export default function ActivityHeader({
               <Circle className="stroke-none fill-socialTextSecondary size-1" />
             </>
           )}
-          <p className="text-gray-500">{relativeTimeCreated}</p>
+          <p className="text-gray-500">{createdAtRelativeTime}</p>
         </div>
       </div>
       {props.type === "post" && props.post.owner.id === currentUser.id && (
