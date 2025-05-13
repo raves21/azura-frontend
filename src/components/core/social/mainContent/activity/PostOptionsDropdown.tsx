@@ -10,7 +10,7 @@ import { useDeletePost } from "@/services/social/queries/socialQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import ManagePostDialog from "../post/managePost/managePostDialog/ManagePostDialog";
-import { useRouter } from "@tanstack/react-router";
+import { useMatchRoute, useRouter } from "@tanstack/react-router";
 
 type Props = {
   post: TPost;
@@ -19,6 +19,11 @@ type Props = {
 export default function PostOptionsDropdown({ post }: Props) {
   const { mutateAsync: deletePost } = useDeletePost(post.id);
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
+  const matchRoute = useMatchRoute();
+  const isPostInfoPage = matchRoute({
+    to: "/social/$userHandle/posts/$postId",
+  });
 
   const router = useRouter();
 
@@ -59,7 +64,11 @@ export default function PostOptionsDropdown({ post }: Props) {
                 confirmActionName="Delete"
                 header="Delete this post?"
                 message="This will delete this post permanently. You cannot undo this action."
-                afterConfirmSuccessAction={() => router.history.go(-1)}
+                afterConfirmSuccessAction={() => {
+                  if (isPostInfoPage) {
+                    router.history.back();
+                  }
+                }}
               />
             );
           }}

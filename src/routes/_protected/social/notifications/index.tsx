@@ -29,7 +29,7 @@ function NotificationsPage() {
       <div className="bg-socialPrimary w-full flex flex-col gap-5 rounded-lg">
         <div className="flex items-center gap-6 p-3 text-base font-semibold mobile-l:text-lg sm:p-5 sm:text-xl">
           <button
-            onClick={() => router.history.go(-1)}
+            onClick={() => router.history.back()}
             className="relative self-start w-min group"
           >
             <ArrowLeft className="transition-colors size-6 mobile-l:size-7 stroke-mainWhite group-hover:stroke-mainAccent" />

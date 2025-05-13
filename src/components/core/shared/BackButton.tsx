@@ -18,7 +18,7 @@ export default function BackButton({
 
   return (
     <button
-      onClick={() => (linkProps ? navigate(linkProps) : router.history.go(-1))}
+      onClick={() => (linkProps ? navigate(linkProps) : router.history.back())}
       className={cn("relative w-min group", className)}
     >
       <ArrowLeft

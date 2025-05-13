@@ -772,9 +772,10 @@ export function useCollectionItems({
 }: UseCollectionItemsArgs) {
   return useInfiniteQuery({
     queryKey: ["collectionItems", collectionId],
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       const { data: collectionItems } = await api.get(
-        `/collections/${collectionId}/collection-items`
+        `/collections/${collectionId}/collection-items`,
+        { params: { page: pageParam } }
       );
       return collectionItems as PaginatedCollectionItemsResponse;
     },
@@ -815,8 +816,10 @@ export function useDeleteCollection({ collectionId }: UseDeleteCollectionArgs) {
 export function useNotifications() {
   return useInfiniteQuery({
     queryKey: ["notifications"],
-    queryFn: async () => {
-      const { data: notifications } = await api.get("/notifications");
+    queryFn: async ({ pageParam }) => {
+      const { data: notifications } = await api.get("/notifications", {
+        params: pageParam,
+      });
 
       return notifications as PaginatedNotificationsResponse;
     },
@@ -888,7 +891,7 @@ export function useFollowingList({
       userHandle,
       currentUserHandle,
     ],
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
         url = "/users/me/following";
@@ -896,7 +899,9 @@ export function useFollowingList({
         url = `/users/${userHandle}/following`;
       }
 
-      const { data: followingList } = await api.get(url);
+      const { data: followingList } = await api.get(url, {
+        params: { page: pageParam },
+      });
 
       return followingList as PaginatedFollowerFollowingResponse;
     },
@@ -917,7 +922,7 @@ export function useFollowerList({
       userHandle,
       currentUserHandle,
     ],
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
         url = "/users/me/followers";
@@ -925,7 +930,9 @@ export function useFollowerList({
         url = `/users/${userHandle}/followers`;
       }
 
-      const { data: followerList } = await api.get(url);
+      const { data: followerList } = await api.get(url, {
+        params: { page: pageParam },
+      });
 
       return followerList as PaginatedUserPreviewsResponse;
     },
