@@ -40,7 +40,6 @@ export default function ChangePasswordSetting() {
         onClick={() =>
           toggleOpenDialog(
             <AsyncConfirmationDialog
-              disableCloseOnPending={true}
               mutationKey={[
                 `accountSettingChangePassword-${uniqueMutationKey}`,
               ]}

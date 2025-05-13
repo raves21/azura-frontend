@@ -7,6 +7,7 @@ import { useCreateAccount, useLogin } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { LoaderCircle } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/signup/verify-email/")({
   component: () => <VerifyEmailPage />,
@@ -36,15 +37,23 @@ function VerifyEmailPage() {
 
   if (isCreatingAccount) {
     return (
-      <h1 className="text-3xl font-bold text-mainAccent">
-        Creating account...
-      </h1>
+      <div className="flex items-center justify-center gap-5 w-full flex-wrap">
+        <h1 className="text-2xl mobile-m:text-3xl font-bold text-mainAccent text-center w-fit">
+          Creating account
+        </h1>
+        <LoaderCircle className="animate-spin size-8 mobile-m:size-10 stroke-mainAccent" />
+      </div>
     );
   }
 
   if (isLoggingIn) {
     return (
-      <h1 className="text-3xl font-bold text-mainAccent">Logging in...</h1>
+      <div className="flex items-center justify-center gap-5 w-full flex-wrap">
+        <h1 className="text-2xl mobile-m:text-3xl font-bold text-mainAccent text-center w-fit">
+          Logging in
+        </h1>
+        <LoaderCircle className="animate-spin size-8 mobile-m:size-10 stroke-mainAccent" />
+      </div>
     );
   }
 

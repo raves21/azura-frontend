@@ -43,7 +43,6 @@ export default function ChangeEmailForm() {
   async function onSubmit(values: ChangeEmailFormData) {
     toggleOpenDialog(
       <AsyncConfirmationDialog
-        disableCloseOnPending={true}
         confirmAction={async () => await sendOTC(values.email)}
         afterConfirmSuccessAction={() => {
           setNewEmail(values.email);

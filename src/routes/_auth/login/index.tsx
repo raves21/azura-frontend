@@ -32,7 +32,9 @@ function LoginPage() {
 
   return (
     <>
-      <h1 className="text-4xl font-bold text-mainWhite">Login</h1>
+      <h1 className="text-3xl mobile-l:text-4xl font-bold text-mainWhite">
+        Login
+      </h1>
       <LoginForm />
     </>
   );

@@ -25,7 +25,6 @@ export default function DeleteAccountButton() {
               replaceDialogContent({
                 content: (
                   <AsyncConfirmationDialog
-                    disableCloseOnPending={true}
                     mutationKey={[`deleteAccount-${uniqueMutationKey}`]}
                     confirmAction={async () => {
                       try {

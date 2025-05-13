@@ -18,7 +18,9 @@ function SignUpPage() {
 
   return (
     <>
-      <h1 className="text-4xl font-bold text-mainWhite">Create an account</h1>
+      <h1 className="text-3xl mobile-l:text-4xl text-center font-bold text-mainWhite">
+        Create an account
+      </h1>
       {signUpStep === SignUpStep.USER_DETAILS ? (
         <UserDetailsForm />
       ) : signUpStep === SignUpStep.PASSWORD_CONFIRMATION ? (

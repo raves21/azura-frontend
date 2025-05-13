@@ -9,6 +9,7 @@ import { UserBasicInfo } from "@/utils/types/auth/auth";
 import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { LoaderCircle } from "lucide-react";
 
 export const Route = createFileRoute(
   "/_protected/account/_change-details/change-email/verify-email/"
@@ -43,9 +44,12 @@ function ChangeEmailVerifyEmailPage() {
 
   if (isChangingEmail) {
     return (
-      <h1 className="text-3xl text-center font-bold text-mainAccent">
-        Changing your email...
-      </h1>
+      <div className="flex items-center justify-center gap-5 w-full flex-wrap">
+        <h1 className="text-2xl mobile-m:text-3xl font-bold text-mainAccent text-center w-fit">
+          Changing your email...
+        </h1>
+        <LoaderCircle className="animate-spin size-8 mobile-m:size-10 stroke-mainAccent" />
+      </div>
     );
   }
 

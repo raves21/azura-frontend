@@ -5,6 +5,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { ReactNode } from "react";
+import CurrentUserAvatar from "./CurrentUserAvatar";
 
 type Props = {
   searchDialogComponent: ReactNode;
@@ -38,17 +39,7 @@ export default function MobileTopNavBar({ searchDialogComponent }: Props) {
         >
           <Search className="size-6" />
         </button>
-        <button className="p-[2px]">
-          <div className="p-[2px] rounded-full bg-mainAccent box-content">
-            <div className="box-content overflow-hidden border-2 rounded-full size-6 border-darkBg">
-              <img
-                src={currentUser.avatar ?? "/no-image-2.jpg"}
-                onError={(e) => (e.currentTarget.src = "/no-image-2.jpg")}
-                className="object-cover size-full"
-              />
-            </div>
-          </div>
-        </button>
+        <CurrentUserAvatar />
       </div>
     </div>
   );
