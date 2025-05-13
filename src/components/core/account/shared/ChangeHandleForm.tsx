@@ -52,7 +52,6 @@ export default function ChangeHandleForm() {
       await verifyHandle(values.handle);
       toggleOpenDialog(
         <AsyncConfirmationDialog
-          disableCloseOnPending={true}
           confirmAction={async () => await changeHandle(values.handle)}
           header="Change Social handle"
           message={`Are you sure you want to change your social handle to ${values.handle}?`}

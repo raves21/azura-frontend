@@ -48,7 +48,6 @@ export default function Session({ session, className }: Props) {
                     replaceDialogContent({
                       content: (
                         <AsyncConfirmationDialog
-                          disableCloseOnPending={true}
                           mutationKey={[`logoutSession-${uniqueMutationKey}`]}
                           confirmAction={async () => {
                             try {

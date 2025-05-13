@@ -52,12 +52,12 @@ function AuthLayout() {
       {!isAuthUserPending && (
         <Link className="absolute top-2 left-2" to="/login">
           <img
-            className="box-content p-4 w-36"
+            className="box-content p-4 w-28 sm:w-36"
             src="/azura-logo-with-label.svg"
           />
         </Link>
       )}
-      <div className="z-10 flex flex-col items-center gap-8">
+      <div className="z-10 flex flex-col items-center gap-8 px-4 mobile-l:px-0">
         <Outlet />
       </div>
     </div>

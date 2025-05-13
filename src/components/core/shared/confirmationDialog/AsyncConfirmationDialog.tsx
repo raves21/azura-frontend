@@ -26,7 +26,7 @@ type Props = {
 export default function AsyncConfirmationDialog({
   confirmActionName,
   confirmAction,
-  disableCloseOnPending = false,
+  disableCloseOnPending = true,
   mutationKey,
   header,
   message,

@@ -9,9 +9,11 @@ export const Route = createFileRoute(
 
 function FindAccountPage() {
   return (
-    <div className="flex flex-col items-center gap-6">
-      <h1 className="text-4xl font-bold text-mainWhite">Find your acccount</h1>
-      <p className="text-gray-500">
+    <div className="flex flex-col items-center gap-6 w-full ">
+      <h1 className="text-3xl mobile-l:text-4xl text-center font-bold text-mainWhite">
+        Find your acccount
+      </h1>
+      <p className="text-gray-500 text-sm sm:text-base text-center">
         Please enter your email to search for your account.
       </p>
       <FindAccountForm />

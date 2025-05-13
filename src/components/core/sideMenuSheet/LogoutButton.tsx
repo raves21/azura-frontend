@@ -23,7 +23,6 @@ export default function LogoutButton() {
         toggleOpenSheet(null);
         toggleOpenDialog(
           <AsyncConfirmationDialog
-            disableCloseOnPending={true}
             mutationKey={[`logout-${uniqueMutationKey}`]}
             confirmAction={async () => await logout()}
             header="Confirm Logout"
