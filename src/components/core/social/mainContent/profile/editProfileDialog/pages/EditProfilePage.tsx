@@ -1,13 +1,15 @@
 import { useEditUserProfile } from "@/services/social/queries/socialQueries";
-import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";
-import { EditorContent } from "@tiptap/react";
 import { ImageUp, LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { Textarea } from "@headlessui/react";
+import { isEqual } from "radash";
+import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 type Props = {
   avatar: string | null;
@@ -45,26 +47,9 @@ export default function EditProfilePage({
       state.setEditProfileAvatar,
       state.setEditProfileBanner,
       state.setEditProfilePage,
+      state.setEditProfileBio,
     ])
   );
-
-  const {
-    editor: bioEditor,
-    editorContentRef: bioEditorRef,
-    inputLength: bioInputLength,
-    inputText: bioInput,
-    setEditorContent: setBioInput,
-    editorContentInitialHeight: bioEditorInitialHeight,
-  } = useTipTapEditor({
-    focusOnMount: false,
-    placeholder: "eg. Artist, dog-lover, Azura #1 fan",
-    maxLength: 150,
-    editorProps: {
-      attributes: {
-        class: "h-32",
-      },
-    },
-  });
 
   const { mutateAsync: editProfile, status: editProfileStatus } =
     useEditUserProfile();
@@ -74,10 +59,7 @@ export default function EditProfilePage({
   // if the user hasnt made any changes yet (the global/zustand states contains the changes the user made)
   useEffect(() => {
     if (bio && !editProfileBio) {
-      setBioInput(bio);
-    }
-    if (editProfileBio) {
-      setBioInput(editProfileBio);
+      setEditProfileBio(bio);
     }
     if (userName && !editProfileUsername) {
       setEditProfileUsername(userName);
@@ -86,24 +68,42 @@ export default function EditProfilePage({
     if (banner && !editProfileBanner) setEditProfileBanner(banner);
   }, []);
 
-  // for setting editProfileBio based on bioInput
-  useEffect(() => {
-    if (bioInput === "") {
-      setEditProfileBio(null);
-    } else {
-      setEditProfileBio(bioInput);
-    }
-  }, [bioInput]);
+  const originalUserProfile = {
+    avatar,
+    banner,
+    userName,
+    bio,
+  };
+  const updatedUserProfile = {
+    avatar: editProfileAvatar,
+    banner: editProfileBanner,
+    userName: editProfileUsername,
+    bio: editProfileBio,
+  };
+
+  const isEditProfileNoChanges = isEqual(
+    originalUserProfile,
+    updatedUserProfile
+  );
 
   async function saveChanges(userHandle: string) {
-    await editProfile({
-      userHandle: userHandle,
-      avatar: editProfileAvatar,
-      banner: editProfileBanner,
-      bio: editProfileBio,
-      username: editProfileUsername,
-    });
-    toggleOpenDialog(null);
+    if (isEditProfileNoChanges) {
+      toggleOpenDialog(null);
+      return;
+    }
+
+    try {
+      await editProfile({
+        userHandle: userHandle,
+        avatar: editProfileAvatar,
+        banner: editProfileBanner,
+        bio: editProfileBio || null,
+        username: editProfileUsername,
+      });
+      toggleOpenDialog(null);
+    } catch (error) {
+      replaceDialogContent({ content: <ErrorDialog error={error} /> });
+    }
   }
 
   if (!currentUser) return <Navigate to="/login" replace />;
@@ -186,16 +186,14 @@ export default function EditProfilePage({
             <div className="flex justify-between">
               <p className="font-medium">Bio</p>
               <p className="text-sm font-light text-socialTextSecondary">
-                {bioInputLength}/{150}
+                {editProfileBio?.length || 0}/{150}
               </p>
             </div>
-            <EditorContent
-              editor={bioEditor}
-              ref={bioEditorRef}
-              style={{
-                maxHeight: bioEditorInitialHeight || "auto",
-              }}
-              className="rounded-md border-[0.5px] border-socialTextSecondary box-content px-3 overflow-y-auto py-3"
+            <Textarea
+              value={editProfileBio || undefined}
+              onChange={(e) => setEditProfileBio(e.currentTarget.value.trim())}
+              placeholder="eg. Artist, dog-lover, Azura #1 fan"
+              className="w-full focus:outline-none h-[165px] rounded-md bg-transparent border-[0.5px] p-3 border-socialTextSecondary"
             />
           </div>
         </div>

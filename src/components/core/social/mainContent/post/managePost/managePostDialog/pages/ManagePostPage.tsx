@@ -3,12 +3,10 @@ import {
   useCreatePost,
   useEditPost,
 } from "@/services/social/queries/socialQueries";
-import { UseTipTapEditorReturnType } from "@/utils/hooks/useTipTapEditor";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";
-import { EditorContent } from "@tiptap/react";
 import {
   Globe,
   ChevronDown,
@@ -25,9 +23,17 @@ import { useShallow } from "zustand/react/shallow";
 import { TPost } from "@/utils/types/social/social";
 import { isEqual } from "radash";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Textarea,
+} from "@headlessui/react";
 import CollectionAttachmentPreview from "../postAttachment/collectionAttachment/CollectionAttachmentPreview";
 import MediaAttachmentPreview from "../postAttachment/mediaAttachment/MediaAttachmentPreview";
+import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
+import { UserBasicInfo } from "@/utils/types/auth/auth";
 
 type EditPostProps = {
   type: "edit";
@@ -38,17 +44,9 @@ type CreatePostProps = {
   type: "create";
 };
 
-type Props = {
-  tipTapEditor: UseTipTapEditorReturnType;
-} & (EditPostProps | CreatePostProps);
+type Props = EditPostProps | CreatePostProps;
 
-export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
-  const {
-    editor: editor,
-    editorContentRef,
-    editorContentInitialHeight,
-    inputText,
-  } = tipTapEditor;
+export default function ManagePostPage({ ...props }: Props) {
   const { data: currentUser } = useCurrentUser();
 
   const [
@@ -56,12 +54,14 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
     selectedPrivacy,
     mediaAttachment,
     collectionAttachment,
+    content,
   ] = useManagePostStore(
     useShallow((state) => [
       state.setManagePostPage,
       state.selectedPrivacy,
       state.mediaAttachment,
       state.collectionAttachment,
+      state.content,
     ])
   );
   const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
@@ -111,13 +111,42 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
   if (props.type === "edit") {
     editedPost = {
       ...props.postToEdit,
-      content: inputText?.trim() ?? null,
+      content: content ?? null,
       collection: collectionAttachment,
       media: mediaAttachment,
       privacy: selectedPrivacy,
     };
     originalPost = props.postToEdit;
     editPostNoChanges = isEqual(editedPost, originalPost);
+  }
+
+  async function post(currentUser: UserBasicInfo) {
+    try {
+      await createPost({
+        owner: currentUser,
+        collectionId: collectionAttachment?.id ?? null,
+        content,
+        media: mediaAttachment,
+        privacy: selectedPrivacy,
+        currentUserHandle: currentUser.handle,
+      });
+      toggleOpenDialog(null);
+    } catch (error) {
+      replaceDialogContent({ content: <ErrorDialog error={error} /> });
+    }
+  }
+
+  async function saveChanges() {
+    if (editPostNoChanges) {
+      toggleOpenDialog(null);
+      return;
+    }
+    try {
+      await editPost(editedPost);
+      toggleOpenDialog(null);
+    } catch (error) {
+      replaceDialogContent({ content: <ErrorDialog error={error} /> });
+    }
   }
 
   return (
@@ -151,14 +180,7 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
           </button>
         </div>
       </div>
-      <EditorContent
-        ref={editorContentRef}
-        editor={editor}
-        style={{
-          maxHeight: editorContentInitialHeight || "auto",
-        }}
-        className="relative flex-grow w-full h-full overflow-y-auto text-lg"
-      />
+      <Textarea className="flex-grow w-full text-lg bg-transparent border-none focus:outline-none" />
       <div className="flex items-center justify-between w-full">
         {mediaAttachment ? (
           <MediaAttachmentPreview media={mediaAttachment} />
@@ -203,19 +225,9 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
       </div>
       {props.type === "create" ? (
         <button
-          onClick={async () => {
-            await createPost({
-              owner: currentUser,
-              collectionId: collectionAttachment?.id ?? null,
-              content: inputText,
-              media: mediaAttachment,
-              privacy: selectedPrivacy,
-              currentUserHandle: currentUser.handle,
-            });
-            toggleOpenDialog(null);
-          }}
+          onClick={() => post(currentUser)}
           disabled={
-            (!inputText && !collectionAttachment && !mediaAttachment) ||
+            (!content && !collectionAttachment && !mediaAttachment) ||
             createPostStatus === "pending"
           }
           className="grid py-2 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
@@ -224,14 +236,9 @@ export default function ManagePostPage({ tipTapEditor, ...props }: Props) {
         </button>
       ) : (
         <button
-          onClick={async () => {
-            if (!editPostNoChanges) {
-              await editPost(editedPost);
-            }
-            toggleOpenDialog(null);
-          }}
+          onClick={saveChanges}
           disabled={
-            (!inputText && !collectionAttachment && !mediaAttachment) ||
+            (!content && !collectionAttachment && !mediaAttachment) ||
             editPostStatus === "pending"
           }
           className="grid py-2 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"

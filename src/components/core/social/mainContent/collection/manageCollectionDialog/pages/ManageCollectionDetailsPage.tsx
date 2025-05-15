@@ -12,10 +12,9 @@ import { useManageCollectionStore } from "@/utils/stores/useManageCollectionStor
 import { useShallow } from "zustand/react/shallow";
 import { isEqual } from "radash";
 import CollectionPhoto from "../../CollectionPhoto";
-import { UseTipTapEditorReturnType } from "@/utils/hooks/useTipTapEditor";
-import { EditorContent } from "@tiptap/react";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { Textarea } from "@headlessui/react";
 
 type EditPostProps = {
   type: "edit";
@@ -27,24 +26,15 @@ type CreatePostProps = {
 };
 
 type Props = {
-  tipTapEditor: UseTipTapEditorReturnType;
   closeDialog: () => void;
   isSecondaryDialog: boolean;
 } & (EditPostProps | CreatePostProps);
 
 export default function ManageCollectionDetailsPage({
-  tipTapEditor,
   closeDialog,
   isSecondaryDialog,
   ...props
 }: Props) {
-  const {
-    editor,
-    editorContentRef,
-    editorContentInitialHeight,
-    editorContentInitialWidth,
-    inputText: collectionDescription,
-  } = tipTapEditor;
   const { data: currentUser } = useCurrentUser();
   const [toggleOpenDialogSecondary, toggleOpenDialog] = useGlobalStore(
     useShallow((state) => [
@@ -55,18 +45,22 @@ export default function ManageCollectionDetailsPage({
   const [
     collectionName,
     collectionPhoto,
+    collectionDescription,
     setCollectionName,
     setCollectionPhoto,
     selectedPrivacy,
     setManageCollectionPage,
+    setCollectionDescription,
   ] = useManageCollectionStore(
     useShallow((state) => [
       state.collectionName,
       state.collectionPhoto,
+      state.collectionDescription,
       state.setCollectionName,
       state.setCollectionPhoto,
       state.selectedPrivacy,
       state.setManageCollectionPage,
+      state.setCollectionDescription,
     ])
   );
 
@@ -180,7 +174,7 @@ export default function ManageCollectionDetailsPage({
             value={collectionName ?? ""}
             onChange={(e) => setCollectionName(e.currentTarget.value)}
             type="text"
-            className="rounded-md border-[0.5px] text-md w-full border-socialTextSecondary px-3 py-3 focus:outline-none bg-socialPrimary"
+            className="rounded-md border-[0.5px] text-md w-full border-socialTextSecondary p-3 focus:outline-none bg-socialPrimary"
           />
           <button
             onClick={() => setManageCollectionPage("selectPrivacy")}
@@ -202,18 +196,13 @@ export default function ManageCollectionDetailsPage({
             </p>
             <ChevronDown className="size-4 stroke-mainWhite" />
           </button>
-          <EditorContent
-            ref={editorContentRef}
-            editor={editor}
-            style={{
-              maxWidth: editorContentInitialWidth
-                ? editorContentInitialWidth + 13
-                : "auto",
-              maxHeight: editorContentInitialHeight
-                ? editorContentInitialHeight + 10
-                : "auto",
-            }}
-            className="overflow-y-auto h-[200px] text-md flex-grow border-[0.5px] rounded-md border-socialTextSecondary px-3 py-3"
+          <Textarea
+            value={collectionDescription || undefined}
+            onChange={(e) =>
+              setCollectionDescription(e.currentTarget.value.trim())
+            }
+            placeholder="Add an optional description"
+            className="flex-grow w-full bg-transparent border-[0.5px] border-socialTextSecondary p-3 focus:outline-none rounded-md"
           />
         </div>
       </div>
