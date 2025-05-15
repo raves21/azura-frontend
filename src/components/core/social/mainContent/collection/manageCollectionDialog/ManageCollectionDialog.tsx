@@ -8,7 +8,6 @@ import { useShallow } from "zustand/react/shallow";
 import ManageCollectionDetailsPage from "./pages/ManageCollectionDetailsPage";
 import SelectPrivacyPage from "./pages/SelectPrivacyPage";
 import { ArrowLeft } from "lucide-react";
-import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import ManageCollectionPhotoPage from "./pages/ManageCollectionPhotoPage";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
@@ -33,6 +32,7 @@ export default function ManageCollectionDialog(props: Props) {
     setSelectedPrivacy,
     setCollectionName,
     setCollectionPhoto,
+    setCollectionDescription,
     setCollectionPreviewPosters,
     resetManageCollectionStoreState,
   ] = useManageCollectionStore(
@@ -42,6 +42,7 @@ export default function ManageCollectionDialog(props: Props) {
       state.setSelectedPrivacy,
       state.setCollectionName,
       state.setCollectionPhoto,
+      state.setCollectionDescription,
       state.setCollectionPreviewPosters,
       state.resetState,
     ])
@@ -61,18 +62,6 @@ export default function ManageCollectionDialog(props: Props) {
       state.toggleOpenDialogSecondary,
     ])
   );
-
-  const tipTapEditor = useTipTapEditor({
-    focusOnMount: false,
-    maxLength: 100,
-    changeEditorContentWidthBasedOnWindowWidth: true,
-    placeholder: "Add an optional description",
-    editorProps: {
-      attributes: {
-        class: "flex-grow h-full w-full",
-      },
-    },
-  });
 
   //initialize default values
   useEffect(() => {
@@ -97,7 +86,7 @@ export default function ManageCollectionDialog(props: Props) {
       const { description, name, photo, privacy, previewMedias } =
         props.collectionToEdit;
       if (description) {
-        tipTapEditor.setEditorContent(description);
+        setCollectionDescription(description);
       }
       if (photo) {
         setCollectionPhoto(photo);
@@ -123,7 +112,6 @@ export default function ManageCollectionDialog(props: Props) {
       currentPage = (
         <ManageCollectionDetailsPage
           type="edit"
-          tipTapEditor={tipTapEditor}
           collectionToEdit={props.collectionToEdit}
           isSecondaryDialog={
             !!isCollectionInfoRoute || !!isUserProfileCollectionsRoute
@@ -135,7 +123,6 @@ export default function ManageCollectionDialog(props: Props) {
       currentPage = (
         <ManageCollectionDetailsPage
           type="create"
-          tipTapEditor={tipTapEditor}
           isSecondaryDialog={
             !!isCollectionInfoRoute || !!isUserProfileCollectionsRoute
           }

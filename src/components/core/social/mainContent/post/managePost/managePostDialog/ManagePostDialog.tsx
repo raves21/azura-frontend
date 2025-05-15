@@ -7,7 +7,6 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TPost } from "@/utils/types/social/social";
-import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
 import SelectMediaAttachmentPage from "./pages/SelectMediaAttachmentPage";
@@ -38,6 +37,7 @@ export default function ManagePostDialog({
   const [
     resetState,
     managePostPage,
+    setContent,
     setManagePostPage,
     setSelectedPrivacy,
     setCollectionAttachment,
@@ -46,6 +46,7 @@ export default function ManagePostDialog({
     useShallow((state) => [
       state.resetState,
       state.managePostPage,
+      state.setContent,
       state.setManagePostPage,
       state.setSelectedPrivacy,
       state.setCollectionAttachment,
@@ -53,17 +54,6 @@ export default function ManagePostDialog({
     ])
   );
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-
-  const tipTapEditor = useTipTapEditor({
-    focusOnMount: true,
-    maxLength: 500,
-    placeholder: `What's the vibe today, ${currentUser?.username.split(" ").slice(0, 2).join(" ")}?`,
-    editorProps: {
-      attributes: {
-        class: "flex-grow h-full",
-      },
-    },
-  });
 
   useEffect(() => {
     //always set to initial page on mount
@@ -88,9 +78,7 @@ export default function ManagePostDialog({
       }
     } else {
       const { content, privacy, collection, media } = props.postToEdit;
-      if (tipTapEditor && tipTapEditor.editor) {
-        tipTapEditor.setEditorContent(content);
-      }
+      setContent(content);
       setCollectionAttachment(collection);
       setMediaAttachment(media);
       setSelectedPrivacy(privacy);
@@ -103,16 +91,10 @@ export default function ManagePostDialog({
   if (managePostPage === "managePost") {
     if (props.type === "edit") {
       currentPage = (
-        <ManagePostPage
-          tipTapEditor={tipTapEditor}
-          type="edit"
-          postToEdit={props.postToEdit}
-        />
+        <ManagePostPage type="edit" postToEdit={props.postToEdit} />
       );
     } else {
-      currentPage = (
-        <ManagePostPage tipTapEditor={tipTapEditor} type="create" />
-      );
+      currentPage = <ManagePostPage type="create" />;
     }
   } else if (managePostPage === "selectPrivacy") {
     currentPage = <SelectPrivacyPage />;
