@@ -9,7 +9,7 @@ import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
 import { useDeletePost } from "@/services/social/queries/socialQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
-import ManagePostDialog from "../post/managePost/managePostDialog/ManagePostDialog";
+import ManagePostDialog from "./managePost/managePostDialog/ManagePostDialog";
 import { useMatchRoute, useRouter } from "@tanstack/react-router";
 
 type Props = {

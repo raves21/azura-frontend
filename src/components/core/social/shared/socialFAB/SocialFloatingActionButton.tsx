@@ -23,14 +23,14 @@ export default function SocialFloatingActionButton() {
             setIsActive(false);
             setAnimationStatus("exit");
           }}
-          className="fixed h-dvh w-dvw z-[1000]"
+          className="fixed h-dvh w-dvw z-[1000] bg-black/40"
         />
       )}
       <div
         className={cn(
           "fixed right-4 z-[99] bottom-24 text-mainWhite font-montserrat lg:hidden",
           {
-            "bottom-[165px]": isPostInfoPage,
+            "bottom-[180px]": isPostInfoPage,
           },
           { "z-[1100]": isActive }
         )}

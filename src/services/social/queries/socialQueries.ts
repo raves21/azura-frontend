@@ -38,6 +38,8 @@ import {
   editCollection_CollectionInfoCacheMutation,
   deleteCollection_CollectionsCacheMutation,
   createCollection_CollectionsCacheMutation,
+  deleteComment_CommentsCacheMutation,
+  editComment_CommentsCacheMutation,
 } from "../functions/cacheMutations";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
@@ -818,9 +820,10 @@ export function useNotifications() {
     queryKey: ["notifications"],
     queryFn: async ({ pageParam }) => {
       const { data: notifications } = await api.get("/notifications", {
-        params: pageParam,
+        params: {
+          page: pageParam,
+        },
       });
-
       return notifications as PaginatedNotificationsResponse;
     },
     initialPageParam: 1,
@@ -939,5 +942,38 @@ export function useFollowerList({
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+  });
+}
+
+type DeleteUpdatePostCommentArgs = {
+  postId: string;
+  commentId: string;
+};
+
+export function useDeletePostComment(commentId: string) {
+  return useMutation({
+    mutationKey: ["deleteComment", commentId],
+    mutationFn: async ({ commentId, postId }: DeleteUpdatePostCommentArgs) => {
+      await api.delete(`/posts/${postId}/comments/${commentId}`);
+    },
+    onSuccess: (_, { postId, commentId }) => {
+      deleteComment_CommentsCacheMutation({ commentId, postId });
+    },
+  });
+}
+
+export function useEditPostComment(commentId: string) {
+  return useMutation({
+    mutationKey: ["editComment", commentId],
+    mutationFn: async ({
+      commentId,
+      postId,
+      content,
+    }: DeleteUpdatePostCommentArgs & { content: string }) => {
+      await api.put(`/posts/${postId}/comments/${commentId}`, { content });
+    },
+    onSuccess: (_, { commentId, content, postId }) => {
+      editComment_CommentsCacheMutation({ commentId, content, postId });
+    },
   });
 }
