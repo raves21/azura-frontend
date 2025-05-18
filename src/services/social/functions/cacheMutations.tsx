@@ -802,3 +802,61 @@ export function deleteCollection_CollectionsCacheMutation(
     };
   });
 }
+
+type UpdateDeleteCommentCacheMutationArgs = {
+  postId: string;
+  commentId: string;
+};
+
+export function deleteComment_CommentsCacheMutation({
+  commentId,
+  postId,
+}: UpdateDeleteCommentCacheMutationArgs) {
+  queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, number>>(
+    { queryKey: POST_COMMENTS_QUERY_KEY(postId) },
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.filter((comment) => comment.id !== commentId),
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages,
+      };
+    }
+  );
+}
+
+export function editComment_CommentsCacheMutation({
+  commentId,
+  postId,
+  content,
+}: UpdateDeleteCommentCacheMutationArgs & { content: string }) {
+  queryClient.setQueriesData<InfiniteData<PaginatedCommentsResponse, number>>(
+    { queryKey: POST_COMMENTS_QUERY_KEY(postId) },
+    (oldData) => {
+      if (!oldData) return undefined;
+
+      const newPages = oldData.pages.map((page) => ({
+        ...page,
+        data: page.data.map((comment) => {
+          if (comment.id === commentId) {
+            return {
+              ...comment,
+              content,
+            };
+          }
+          return comment;
+        }),
+      }));
+
+      return {
+        pageParams: oldData.pageParams,
+        pages: newPages,
+      };
+    }
+  );
+}

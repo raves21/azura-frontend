@@ -46,7 +46,7 @@ export default function PostComments() {
 
   if (commentsError) {
     renderedResult = (
-      <div className="w-full h-[200px] text-center font-medium text-lg grid place-items-center">
+      <div className="w-full h-[200px] text-center font-medium text-socialTextSecondary text-base px-6 sm:text-lg grid place-items-center">
         An error occured while fetching the comments.
       </div>
     );

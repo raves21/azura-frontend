@@ -10,8 +10,9 @@ import {
   Link,
 } from "@tanstack/react-router";
 import { TPost, TPostComment } from "@/utils/types/social/social";
-import PostOptionsDropdown from "./PostOptionsDropdown";
+import PostOptionsDropdown from "../post/PostOptionsDropdown";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
+import PostCommentOptionsDropdown from "../post/postInfo/postComments/PostCommentOptionsDropdown";
 
 type PostProps = {
   type: "post";
@@ -150,6 +151,10 @@ export default function ActivityHeader({
       {props.type === "post" && props.post.owner.id === currentUser.id && (
         <PostOptionsDropdown post={props.post} />
       )}
+      {props.type === "comment" &&
+        props.comment.author.id === currentUser.id && (
+          <PostCommentOptionsDropdown comment={props.comment} />
+        )}
     </div>
   );
 }

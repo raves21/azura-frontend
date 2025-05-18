@@ -1,5 +1,5 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { Link, ReactNode, useNavigate } from "@tanstack/react-router";
+import { Link, ReactNode } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 
 export default function ActivityContentRenderer({
@@ -7,13 +7,12 @@ export default function ActivityContentRenderer({
 }: {
   content: string;
 }) {
-  const navigate = useNavigate();
   const setSocialSearchKeyword = useGlobalStore(
     (state) => state.setSocialSearchKeyword
   );
   const tokens = content.split(/(\s+)/);
   const hashtagRegex = /#\w+/g;
-  const mentionRegex = /mention/g;
+  // const mentionRegex = /@/g;
   const newlineRegex = /\n/g;
 
   return (
@@ -37,25 +36,25 @@ export default function ActivityContentRenderer({
             </Link>
           );
         }
-        if (mentionRegex.test(token)) {
-          return (
-            <button
-              key={`mention-${index}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate({
-                  to: "/social/$userHandle",
-                  params: {
-                    userHandle: "geromepenalosa",
-                  },
-                });
-              }}
-              className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"
-            >
-              @geromepenalosa
-            </button>
-          );
-        }
+        // if (mentionRegex.test(token)) {
+        //   return (
+        //     <button
+        //       key={`mention-${index}`}
+        //       onClick={(e) => {
+        //         e.stopPropagation();
+        //         navigate({
+        //           to: "/social/$userHandle",
+        //           params: {
+        //             userHandle: "geromepenalosa",
+        //           },
+        //         });
+        //       }}
+        //       className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"
+        //     >
+        //       @geromepenalosa
+        //     </button>
+        //   );
+        // }
         if (newlineRegex.test(token)) {
           const toBeRendered: ReactNode[] = [];
           token.split("").map((char) => {
