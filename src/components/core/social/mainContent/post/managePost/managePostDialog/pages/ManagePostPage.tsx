@@ -34,6 +34,7 @@ import CollectionAttachmentPreview from "../postAttachment/collectionAttachment/
 import MediaAttachmentPreview from "../postAttachment/mediaAttachment/MediaAttachmentPreview";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { UserBasicInfo } from "@/utils/types/auth/auth";
+import { useFocusInput } from "@/utils/hooks/useFocusInput";
 
 type EditPostProps = {
   type: "edit";
@@ -64,6 +65,9 @@ export default function ManagePostPage({ ...props }: Props) {
       state.content,
     ])
   );
+
+  const { inputRef } = useFocusInput({});
+
   const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
     useShallow((state) => [
       state.toggleOpenDialog,
@@ -180,7 +184,11 @@ export default function ManagePostPage({ ...props }: Props) {
           </button>
         </div>
       </div>
-      <Textarea className="flex-grow w-full text-lg bg-transparent border-none focus:outline-none" />
+      <Textarea
+        ref={inputRef}
+        placeholder={`What's the vibe today, ${currentUser?.username.split(" ").slice(0, 1).join(" ")}?`}
+        className="flex-grow resize-none w-full text-lg bg-transparent border-none focus:outline-none"
+      />
       <div className="flex items-center justify-between w-full">
         {mediaAttachment ? (
           <MediaAttachmentPreview media={mediaAttachment} />
