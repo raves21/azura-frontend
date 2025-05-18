@@ -15,6 +15,7 @@ import { Link } from "@tanstack/react-router";
 import { loginFormSchema } from "@/utils/variables/formSchemas";
 import { LoginFormData } from "@/utils/types/auth/forms";
 import { useLogin } from "@/services/auth/authQueries";
+import { PasswordInput } from "@/components/ui/password-input";
 
 export default function LoginForm() {
   const form = useForm<LoginFormData>({
@@ -73,7 +74,7 @@ export default function LoginForm() {
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     autoComplete="off"
                     placeholder="Password"
                     {...field}

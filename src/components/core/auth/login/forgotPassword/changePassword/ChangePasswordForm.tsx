@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { LinkProps, useNavigate } from "@tanstack/react-router";
 import { changePasswordFormSchema } from "@/utils/variables/formSchemas";
 import { ChangePasswordFormData } from "@/utils/types/auth/forms";
@@ -21,6 +20,7 @@ import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { ForgotPasswordStep, UserBasicInfo } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
+import { PasswordInput } from "@/components/ui/password-input";
 
 type Props = {
   afterSubmitSuccessAction: (values: ChangePasswordFormData) => void;
@@ -92,7 +92,7 @@ export default function ChangePasswordForm({
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     autoComplete="off"
                     placeholder="New Password"
                     {...field}
@@ -111,7 +111,7 @@ export default function ChangePasswordForm({
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     autoComplete="off"
                     placeholder="Confirm new Password"
                     {...field}

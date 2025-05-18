@@ -6,6 +6,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "../../shared/ErrorDialog";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
+import { PasswordInput } from "@/components/ui/password-input";
 
 type Props = {
   afterSubmitSuccessAction: () => void;
@@ -49,10 +50,9 @@ export default function PasswordVerificationDialog({
       >
         <div className="flex flex-col flex-grow gap-3 mt-7">
           <p className="font-medium">Enter Password</p>
-          <input
+          <PasswordInput
             disabled={isVerifyingPassword}
             onChange={(e) => setPasswordInputText(e.target.value)}
-            type="text"
             className="rounded-lg pl-3 py-[10px] bg-gray-700 focus:border-mainWhite"
             placeholder="*************"
           />

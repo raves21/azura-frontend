@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
@@ -19,6 +18,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { PasswordInput } from "@/components/ui/password-input";
 
 export default function PasswordConfirmationForm() {
   const [setSignUpStep, setSignUpValues, signUpValues] = useAuthStore(
@@ -85,7 +85,7 @@ export default function PasswordConfirmationForm() {
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     autoComplete="off"
                     placeholder="*************"
                     {...field}
@@ -105,7 +105,7 @@ export default function PasswordConfirmationForm() {
                   <FormMessage />
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     autoComplete="off"
                     placeholder="*************"
                     {...field}
