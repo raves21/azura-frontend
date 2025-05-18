@@ -1,12 +1,11 @@
 import { MutationKey, useMutationState } from "@tanstack/react-query";
-import { DependencyList, useEffect } from "react";
+import { useEffect } from "react";
 
 type Props = {
   mutationKey: MutationKey;
   onSuccess?: () => void;
   onPending?: () => void;
   onError?: (error: Error) => void;
-  deps?: DependencyList;
 };
 
 export function useHandleMutationState({
@@ -14,7 +13,6 @@ export function useHandleMutationState({
   onError,
   onPending,
   onSuccess,
-  deps = [],
 }: Props) {
   const mutationStatus = useMutationState({
     filters: { mutationKey },
@@ -43,5 +41,5 @@ export function useHandleMutationState({
     }
   }, [isPending, isSuccess, isError, mutationError]);
 
-  return { isPending, isSuccess, isError, ...deps };
+  return { isPending, isSuccess, isError };
 }

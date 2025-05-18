@@ -13,7 +13,6 @@ import { isEqual } from "radash";
 import CollectionPhoto from "../../CollectionPhoto";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
-import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { Textarea } from "@headlessui/react";
 
 type EditPostProps = {
@@ -76,15 +75,10 @@ export default function ManageCollectionDetailsPage({
       });
       closeDialog();
     } catch (error) {
-      replaceDialogContent({
-        content: (
-          <ErrorDialog
-            error={new Error("An error occured.")}
-            okButtonAction={() => toggleOpenDialogSecondary(null)}
-          />
-        ),
-        isSecondaryDialog: true,
-      });
+      <ErrorDialog
+        error={new Error("An error occured.")}
+        okButtonAction={() => toggleOpenDialogSecondary(null)}
+      />;
     }
   }
 
@@ -95,15 +89,12 @@ export default function ManageCollectionDetailsPage({
       }
       closeDialog();
     } catch (error) {
-      replaceDialogContent({
-        content: (
-          <ErrorDialog
-            error={new Error("An error occured.")}
-            okButtonAction={() => toggleOpenDialogSecondary(null)}
-          />
-        ),
-        isSecondaryDialog: true,
-      });
+      toggleOpenDialogSecondary(
+        <ErrorDialog
+          error={error}
+          okButtonAction={() => toggleOpenDialogSecondary(null)}
+        />
+      );
     }
   }
 
@@ -200,9 +191,7 @@ export default function ManageCollectionDetailsPage({
           </button>
           <Textarea
             value={collectionDescription || undefined}
-            onChange={(e) =>
-              setCollectionDescription(e.currentTarget.value.trim())
-            }
+            onChange={(e) => setCollectionDescription(e.currentTarget.value)}
             placeholder="Add an optional description"
             className="flex-grow w-full bg-transparent border-[0.5px] border-socialTextSecondary p-3 focus:outline-none rounded-md"
           />

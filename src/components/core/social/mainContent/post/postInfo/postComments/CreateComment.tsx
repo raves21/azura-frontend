@@ -33,7 +33,7 @@ export default function CreateComment({ author, isFloatingCommentBar }: Props) {
   const isSendingComment = createCommentStatus === "pending";
 
   async function handleCreateComment(inputText: string) {
-    await createComment({ content: inputText, postId });
+    await createComment({ content: inputText.trim(), postId });
     setCommentText("");
   }
 
@@ -56,6 +56,8 @@ export default function CreateComment({ author, isFloatingCommentBar }: Props) {
       <div className="relative flex items-end w-full mr-10 mobile-m:mr-0">
         <div className="w-full">
           <AutosizeTextarea
+            value={commentText}
+            onChange={(e) => setCommentText(e.currentTarget.value)}
             placeholder="Write a comment...."
             maxHeight={200}
             maxLength={200}

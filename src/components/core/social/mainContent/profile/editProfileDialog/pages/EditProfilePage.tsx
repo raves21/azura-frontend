@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { Textarea } from "@headlessui/react";
 import { isEqual } from "radash";
-import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 type Props = {
@@ -25,7 +24,12 @@ export default function EditProfilePage({
   bio,
 }: Props) {
   const { data: currentUser } = useCurrentUser();
-  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+  const [toggleOpenDialog, toggleOpenDialogSecondary] = useGlobalStore(
+    useShallow((state) => [
+      state.toggleOpenDialog,
+      state.toggleOpenDialogSecondary,
+    ])
+  );
   const [
     editProfileUsername,
     editProfileBio,
@@ -97,12 +101,17 @@ export default function EditProfilePage({
         userHandle: userHandle,
         avatar: editProfileAvatar,
         banner: editProfileBanner,
-        bio: editProfileBio || null,
+        bio: editProfileBio?.trim() || null,
         username: editProfileUsername,
       });
       toggleOpenDialog(null);
     } catch (error) {
-      replaceDialogContent({ content: <ErrorDialog error={error} /> });
+      toggleOpenDialogSecondary(
+        <ErrorDialog
+          error={error}
+          okButtonAction={() => toggleOpenDialogSecondary(null)}
+        />
+      );
     }
   }
 
@@ -191,7 +200,7 @@ export default function EditProfilePage({
             </div>
             <Textarea
               value={editProfileBio || undefined}
-              onChange={(e) => setEditProfileBio(e.currentTarget.value.trim())}
+              onChange={(e) => setEditProfileBio(e.currentTarget.value)}
               placeholder="eg. Artist, dog-lover, Azura #1 fan"
               className="w-full focus:outline-none h-[165px] rounded-md bg-transparent border-[0.5px] p-3 border-socialTextSecondary"
             />

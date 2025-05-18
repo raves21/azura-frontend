@@ -18,7 +18,6 @@ import {
   LibraryBig,
   ChevronUp,
 } from "lucide-react";
-import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { TPost } from "@/utils/types/social/social";
 import { isEqual } from "radash";
@@ -56,6 +55,7 @@ export default function ManagePostPage({ ...props }: Props) {
     mediaAttachment,
     collectionAttachment,
     content,
+    setContent,
   ] = useManagePostStore(
     useShallow((state) => [
       state.setManagePostPage,
@@ -63,6 +63,7 @@ export default function ManagePostPage({ ...props }: Props) {
       state.mediaAttachment,
       state.collectionAttachment,
       state.content,
+      state.setContent,
     ])
   );
 
@@ -75,36 +76,8 @@ export default function ManagePostPage({ ...props }: Props) {
     ])
   );
 
-  const {
-    mutateAsync: createPost,
-    status: createPostStatus,
-    error: createPostError,
-  } = useCreatePost();
-  const {
-    mutateAsync: editPost,
-    status: editPostStatus,
-    error: editPostError,
-  } = useEditPost();
-
-  useEffect(() => {
-    if (createPostError) {
-      toggleOpenDialogSecondary(
-        <ErrorDialog
-          error={createPostError}
-          okButtonAction={() => toggleOpenDialogSecondary(null)}
-        />
-      );
-    }
-
-    if (editPostError) {
-      toggleOpenDialogSecondary(
-        <ErrorDialog
-          error={editPostError}
-          okButtonAction={() => toggleOpenDialogSecondary(null)}
-        />
-      );
-    }
-  }, [createPostError, editPostError]);
+  const { mutateAsync: createPost, status: createPostStatus } = useCreatePost();
+  const { mutateAsync: editPost, status: editPostStatus } = useEditPost();
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -129,14 +102,22 @@ export default function ManagePostPage({ ...props }: Props) {
       await createPost({
         owner: currentUser,
         collectionId: collectionAttachment?.id ?? null,
-        content,
+        content: content?.trim() || null,
         media: mediaAttachment,
         privacy: selectedPrivacy,
         currentUserHandle: currentUser.handle,
       });
       toggleOpenDialog(null);
     } catch (error) {
-      replaceDialogContent({ content: <ErrorDialog error={error} /> });
+      replaceDialogContent({
+        content: (
+          <ErrorDialog
+            error={error}
+            okButtonAction={() => toggleOpenDialogSecondary(null)}
+          />
+        ),
+        isSecondaryDialog: true,
+      });
     }
   }
 
@@ -146,10 +127,21 @@ export default function ManagePostPage({ ...props }: Props) {
       return;
     }
     try {
-      await editPost(editedPost);
+      await editPost({
+        ...editedPost,
+        content: content?.trim() || null,
+      });
       toggleOpenDialog(null);
     } catch (error) {
-      replaceDialogContent({ content: <ErrorDialog error={error} /> });
+      replaceDialogContent({
+        content: (
+          <ErrorDialog
+            error={error}
+            okButtonAction={() => toggleOpenDialogSecondary(null)}
+          />
+        ),
+        isSecondaryDialog: true,
+      });
     }
   }
 
@@ -185,6 +177,11 @@ export default function ManagePostPage({ ...props }: Props) {
         </div>
       </div>
       <Textarea
+        value={content || undefined}
+        onChange={(e) => setContent(e.currentTarget.value)}
+        disabled={
+          createPostStatus === "pending" || editPostStatus === "pending"
+        }
         ref={inputRef}
         placeholder={`What's the vibe today, ${currentUser?.username.split(" ").slice(0, 1).join(" ")}?`}
         className="flex-grow resize-none w-full text-lg bg-transparent border-none focus:outline-none"
