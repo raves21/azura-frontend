@@ -6,7 +6,6 @@ import {
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TCollection } from "@/utils/types/social/social";
-import { useEffect } from "react";
 import { Navigate } from "@tanstack/react-router";
 import { useManageCollectionStore } from "@/utils/stores/useManageCollectionStore";
 import { useShallow } from "zustand/react/shallow";
@@ -14,6 +13,7 @@ import { isEqual } from "radash";
 import CollectionPhoto from "../../CollectionPhoto";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { Textarea } from "@headlessui/react";
 
 type EditPostProps = {
@@ -36,11 +36,8 @@ export default function ManageCollectionDetailsPage({
   ...props
 }: Props) {
   const { data: currentUser } = useCurrentUser();
-  const [toggleOpenDialogSecondary, toggleOpenDialog] = useGlobalStore(
-    useShallow((state) => [
-      state.toggleOpenDialogSecondary,
-      state.toggleOpenDialog,
-    ])
+  const toggleOpenDialogSecondary = useGlobalStore(
+    (state) => state.toggleOpenDialogSecondary
   );
   const [
     collectionName,
@@ -64,46 +61,51 @@ export default function ManageCollectionDetailsPage({
     ])
   );
 
-  const {
-    mutateAsync: createCollection,
-    status: createCollectionStatus,
-    error: createCollectionError,
-  } = useCreateCollection();
-  const {
-    mutateAsync: editCollection,
-    status: editCollectionStatus,
-    error: editCollectionError,
-  } = useEditCollection();
+  const { mutateAsync: createCollection, status: createCollectionStatus } =
+    useCreateCollection();
+  const { mutateAsync: editCollection, status: editCollectionStatus } =
+    useEditCollection();
 
-  useEffect(() => {
-    if (createCollectionError || editCollectionError) {
-      if (isSecondaryDialog) {
-        toggleOpenDialogSecondary(null);
-        setTimeout(() => {
-          toggleOpenDialogSecondary(
-            <ErrorDialog
-              error={
-                new Error("An error occured while creating this collection.")
-              }
-              okButtonAction={() => toggleOpenDialogSecondary(null)}
-            />
-          );
-        }, 180);
-      } else {
-        toggleOpenDialog(null);
-        setTimeout(() => {
-          toggleOpenDialog(
-            <ErrorDialog
-              error={
-                new Error("An error occured while creating this collection.")
-              }
-              okButtonAction={() => toggleOpenDialog(null)}
-            />
-          );
-        }, 180);
-      }
+  async function comment() {
+    try {
+      await createCollection({
+        description: collectionDescription,
+        name: collectionName || "",
+        privacy: selectedPrivacy,
+        photo: collectionPhoto,
+      });
+      closeDialog();
+    } catch (error) {
+      replaceDialogContent({
+        content: (
+          <ErrorDialog
+            error={new Error("An error occured.")}
+            okButtonAction={() => toggleOpenDialogSecondary(null)}
+          />
+        ),
+        isSecondaryDialog: true,
+      });
     }
-  }, [createCollectionError, editCollectionError]);
+  }
+
+  async function saveChanges() {
+    try {
+      if (!editCollectionNoChanges) {
+        await editCollection(editedCollection);
+      }
+      closeDialog();
+    } catch (error) {
+      replaceDialogContent({
+        content: (
+          <ErrorDialog
+            error={new Error("An error occured.")}
+            okButtonAction={() => toggleOpenDialogSecondary(null)}
+          />
+        ),
+        isSecondaryDialog: true,
+      });
+    }
+  }
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -208,15 +210,7 @@ export default function ManageCollectionDetailsPage({
       </div>
       {props.type === "create" ? (
         <button
-          onClick={async () => {
-            await createCollection({
-              description: collectionDescription,
-              name: collectionName || "",
-              privacy: selectedPrivacy,
-              photo: collectionPhoto,
-            });
-            closeDialog();
-          }}
+          onClick={comment}
           disabled={!collectionName || createCollectionStatus === "pending"}
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >
@@ -224,12 +218,7 @@ export default function ManageCollectionDetailsPage({
         </button>
       ) : (
         <button
-          onClick={async () => {
-            if (!editCollectionNoChanges) {
-              await editCollection(editedCollection);
-            }
-            closeDialog();
-          }}
+          onClick={saveChanges}
           disabled={
             !collectionName ||
             editCollectionStatus === "pending" ||

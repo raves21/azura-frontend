@@ -1,6 +1,4 @@
-import { useTipTapEditor } from "@/utils/hooks/useTipTapEditor";
 import { Circle, LoaderCircle, SendHorizonal, Smile } from "lucide-react";
-import { EditorContent } from "@tiptap/react";
 import UserAvatar from "@/components/core/social/shared/UserAvatar";
 import { EntityOwner } from "@/utils/types/social/shared";
 import { useCreatePostComment } from "@/services/social/queries/socialQueries";
@@ -8,6 +6,8 @@ import { Navigate, useParams } from "@tanstack/react-router";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/services/auth/authQueries";
+import { useState } from "react";
+import { AutosizeTextarea } from "@/components/ui/autosize-text-area";
 
 type Props = {
   author: EntityOwner;
@@ -17,24 +17,13 @@ type Props = {
 export default function CreateComment({ author, isFloatingCommentBar }: Props) {
   const { data: currentUser } = useCurrentUser();
 
-  const {
-    editor,
-    editorContentInitialWidth,
-    editorContentInitialHeight,
-    editorContentRef,
-    inputText,
-    clearEditorContent,
-  } = useTipTapEditor({
-    focusOnMount: false,
-    placeholder: "Write a comment...",
-    maxLength: 200,
-  });
-
   const { postId } = useParams({
     from: "/_protected/social/$userHandle/posts/$postId/",
   });
 
   const { isMobileMediumUp } = useWindowBreakpoints();
+
+  const [commentText, setCommentText] = useState("");
 
   const { mutateAsync: createComment, status: createCommentStatus } =
     useCreatePostComment();
@@ -45,14 +34,11 @@ export default function CreateComment({ author, isFloatingCommentBar }: Props) {
 
   async function handleCreateComment(inputText: string) {
     await createComment({ content: inputText, postId });
-    clearEditorContent();
+    setCommentText("");
   }
 
   return (
     <div
-      style={{
-        minHeight: editorContentInitialHeight || "auto",
-      }}
       className={cn("relative flex items-start gap-2 px-3 mobile-m:px-5", {
         "px-1 mobile-m:px-2": isFloatingCommentBar,
       })}
@@ -69,14 +55,11 @@ export default function CreateComment({ author, isFloatingCommentBar }: Props) {
       />
       <div className="relative flex items-end w-full mr-10 mobile-m:mr-0">
         <div className="w-full">
-          <EditorContent
-            style={{
-              maxWidth: editorContentInitialWidth || "auto",
-              width: isSendingComment ? editorContentInitialWidth - 40 : "auto",
-            }}
-            ref={editorContentRef}
-            editor={editor}
-            className="min-w-full py-2 pl-4 pr-8 overflow-y-auto text-sm border hide-scrollbar md:pr-12 mobile-l:text-base rounded-2xl max-h-52 border-socialTextSecondary/50 lg:border-socialTextSecondary/80"
+          <AutosizeTextarea
+            placeholder="Write a comment...."
+            maxHeight={200}
+            maxLength={200}
+            className="min-w-full py-2 pl-4 pr-8 text-sm border md:pr-12 mobile-l:text-base rounded-2xl bg-transparent border-socialTextSecondary/50 lg:border-socialTextSecondary/80"
           />
           <button className="absolute top-2 right-3 group">
             <Smile className="size-6 stroke-socialTextSecondary group-hover:stroke-gray-400" />
@@ -85,8 +68,8 @@ export default function CreateComment({ author, isFloatingCommentBar }: Props) {
       </div>
       {isMobileMediumUp ? (
         <button
-          onClick={async () => await handleCreateComment(inputText!)}
-          disabled={!inputText || isSendingComment}
+          onClick={async () => await handleCreateComment(commentText!)}
+          disabled={!commentText || isSendingComment}
           className="px-4 py-2 flex items-center gap-2 disabled:bg-mainAccent/50 transition-colors group disabled:text-gray-400 mt-[2px] text-sm font-medium rounded-full bg-mainAccent"
         >
           <p>Send</p>
@@ -96,8 +79,8 @@ export default function CreateComment({ author, isFloatingCommentBar }: Props) {
         </button>
       ) : (
         <button
-          onClick={async () => await handleCreateComment(inputText!)}
-          disabled={!inputText || isSendingComment}
+          onClick={async () => await handleCreateComment(commentText!)}
+          disabled={!commentText || isSendingComment}
           className="absolute grid right-2 group place-items-center top-1"
         >
           {isSendingComment ? (
