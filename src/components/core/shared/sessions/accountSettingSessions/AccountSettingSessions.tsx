@@ -1,8 +1,8 @@
 import { useSessions } from "@/services/auth/authQueries";
-import Session from "./Session";
-import SessionSkeleton from "../../loadingSkeletons/auth/SessionSkeleton";
+import AccountSettingSession from "./AccountSettingSession";
+import SessionSkeleton from "@/components/core/loadingSkeletons/auth/SessionSkeleton";
 
-export default function Sessions() {
+export default function AccountSettingSessions() {
   const {
     data: sessions,
     isPending: isSessionsPending,
@@ -40,7 +40,7 @@ export default function Sessions() {
         <table className="w-full text-left rounded-md mt-5 mb-3 sm:mb-0">
           <tbody>
             {sessionsCurrentSessionFirst.map((session, i) => (
-              <Session
+              <AccountSettingSession
                 session={session}
                 key={session.id}
                 className={

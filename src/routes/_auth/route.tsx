@@ -57,7 +57,7 @@ function AuthLayout() {
           />
         </Link>
       )}
-      <div className="z-10 flex flex-col items-center gap-8 px-4 mobile-l:px-0">
+      <div className="z-10 flex flex-col items-center gap-8 w-full">
         <Outlet />
       </div>
     </div>

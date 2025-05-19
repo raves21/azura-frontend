@@ -5,7 +5,7 @@ import ChangeEmailSetting from "@/components/core/account/profile/ChangeEmailSet
 import ChangeHandleSetting from "@/components/core/account/profile/ChangeHandleSetting";
 import ChangePasswordSetting from "@/components/core/account/profile/ChangePasswordSetting";
 import ChangeProfileSettings from "@/components/core/account/profile/ChangeProfileSettings";
-import Sessions from "@/components/core/account/sessions/Sessions";
+import AccountSettingSessions from "@/components/core/shared/sessions/accountSettingSessions/AccountSettingSessions";
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { Rows3, Trash, User2 } from "lucide-react";
@@ -106,7 +106,7 @@ function SettingsPage() {
           className="sm:pt-24 pt-20"
         >
           <AccountSettingSelectionItem title="Your active sessions">
-            <Sessions />
+            <AccountSettingSessions />
           </AccountSettingSelectionItem>
         </AccountSettingSelection>
         <AccountSettingSelection

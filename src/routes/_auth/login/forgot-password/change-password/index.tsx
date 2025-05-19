@@ -7,6 +7,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useShallow } from "zustand/react/shallow";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { LoaderCircle } from "lucide-react";
 
 export const Route = createFileRoute(
   "/_auth/login/forgot-password/change-password/"
@@ -35,7 +36,12 @@ function ChangePasswordPage() {
 
   if (isLoggingIn) {
     return (
-      <h1 className="text-3xl font-bold text-mainAccent">Logging in...</h1>
+      <div className="flex items-center justify-center gap-5 w-full flex-wrap">
+        <h1 className="text-2xl mobile-m:text-3xl font-bold text-mainAccent text-center w-fit">
+          Logging in
+        </h1>
+        <LoaderCircle className="animate-spin size-8 mobile-m:size-10 stroke-mainAccent" />
+      </div>
     );
   }
 

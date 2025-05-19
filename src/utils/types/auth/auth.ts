@@ -6,6 +6,8 @@ export type UserBasicInfo = {
   avatar: string | null;
 };
 
+export type UserBasicInfoWithPassword = UserBasicInfo & { password: string };
+
 export type UserSession = {
   id: string;
   userId: string;
@@ -21,7 +23,7 @@ export type LoginResponseDetachedMode = {
   message: string;
   isDetachedMode: true;
   data: {
-    user: UserBasicInfo;
+    user: UserBasicInfoWithPassword;
     sessions: UserSession[];
   };
 };
