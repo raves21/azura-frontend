@@ -93,14 +93,23 @@ export function useLogin() {
 
       return data as LoginResponse;
     },
-    onSuccess: (result) => {
+    onSuccess: (result, { password }) => {
       queryClient.clear();
       if (result.isDetachedMode) {
-        useAuthStore.getState().setDetachedModeUserInfo(result);
+        useAuthStore.getState().setDetachedModeUserInfo({
+          ...result,
+          data: {
+            ...result.data,
+            user: {
+              ...result.data.user,
+              password,
+            },
+          },
+        });
         history.replaceState(null, "", "/detached-mode");
       } else {
         setCurrentUser(result.data.user);
-        history.replaceState(null, "", "/movie");
+        history.replaceState(null, "", "/anime");
       }
     },
   });
@@ -212,7 +221,7 @@ export function useVerifyHandle() {
   });
 }
 
-export function useLogoutSession({ key }: { key: string }) {
+export function useAccountSettingLogoutSession({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (sessionId: string) => {
@@ -226,6 +235,15 @@ export function useLogoutSession({ key }: { key: string }) {
           return oldData.filter((userSession) => userSession.id !== sessionId);
         }
       );
+    },
+  });
+}
+
+export function useDetachedModeLogoutSession({ key }: { key: string }) {
+  return useMutation({
+    mutationKey: [key],
+    mutationFn: async (sessionId: string) => {
+      await api.post(`/auth/detached/${sessionId}/logout`);
     },
   });
 }

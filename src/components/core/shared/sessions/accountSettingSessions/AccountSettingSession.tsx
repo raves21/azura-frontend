@@ -1,21 +1,21 @@
+import PasswordVerificationDialog from "@/components/core/account/shared/PasswordVerificationDialog";
 import { cn } from "@/lib/utils";
+import { useAccountSettingLogoutSession } from "@/services/auth/authQueries";
+import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { UserSession } from "@/utils/types/auth/auth";
-import PasswordVerificationDialog from "../shared/PasswordVerificationDialog";
-import { useLogoutSession } from "@/services/auth/authQueries";
-import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
-import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
-import ErrorDialog from "../../shared/ErrorDialog";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
+import { UserSession } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
+import AsyncConfirmationDialog from "../../confirmationDialog/AsyncConfirmationDialog";
+import ErrorDialog from "../../ErrorDialog";
 
 type Props = {
   session: UserSession;
   className?: string;
 };
 
-export default function Session({ session, className }: Props) {
+export default function AccountSettingSession({ session, className }: Props) {
   const { timeAgo: loggedInRelativeTime } = useFormatToRelativeTimeOnInterval(
     session.createdAt
   );
@@ -24,7 +24,7 @@ export default function Session({ session, className }: Props) {
   const [uniqueMutationKey, setUniqueMutationKey] = useUniqueMutationKeyStore(
     useShallow((state) => [state.uniqueMutationKey, state.setUniqueMutationKey])
   );
-  const { mutateAsync: logoutSession } = useLogoutSession({
+  const { mutateAsync: logoutSession } = useAccountSettingLogoutSession({
     key: `logoutSession-${uniqueMutationKey}`,
   });
 

@@ -25,9 +25,9 @@ export default function CreatePost() {
         onClick={() => toggleOpenDialog(<ManagePostDialog type="create" />)}
         className="flex-grow py-2 mobile-m:text-base px-3 md:p-3 rounded-lg bg-gray-800 hover:bg-[#323b4a] text-start"
       >
-        <p>
+        <p className="line-clamp-2">
           What's the vibe today,&nbsp;
-          <span>{currentUser.username.split(" ").splice(0, 2).join(" ")}?</span>
+          <span>{currentUser.username.split(" ").slice(0, 1).join(" ")}?</span>
         </p>
       </button>
     </div>
