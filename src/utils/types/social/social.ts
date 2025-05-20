@@ -22,6 +22,15 @@ export type PaginatedCollectionItemsResponse = PaginatedResponse & {
   data: TCollectionItem[];
 };
 
+export type PaginatedPostLikesResponse = PaginatedResponse & {
+  data: TPostLike[];
+};
+
+export type TPostLike = {
+  postId: string;
+  user: UserPreview;
+};
+
 export type TPost = {
   id: string;
   content: string | null;

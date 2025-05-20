@@ -15,6 +15,7 @@ import {
   PaginatedCollectionItemsResponse,
   PaginatedNotificationsResponse,
   PaginatedFollowerFollowingResponse,
+  PaginatedPostLikesResponse,
 } from "@/utils/types/social/social";
 import { EntityOwner, EntityPrivacy } from "@/utils/types/social/shared";
 import {
@@ -975,5 +976,18 @@ export function useEditPostComment(commentId: string) {
     onSuccess: (_, { commentId, content, postId }) => {
       editComment_CommentsCacheMutation({ commentId, content, postId });
     },
+  });
+}
+
+export function usePostLikes(postId: string) {
+  return useInfiniteQuery({
+    queryKey: ["postLikes", postId, "userPreviewList"],
+    queryFn: async () => {
+      const { data: postLikes } = await api.get(`/posts/${postId}/likes`);
+      return postLikes as PaginatedPostLikesResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
   });
 }
