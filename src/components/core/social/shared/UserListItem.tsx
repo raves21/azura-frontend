@@ -3,6 +3,8 @@ import { Navigate, useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import ToggleFollowButton from "../mainContent/profile/profileDetails/ToggleFollowButton";
+import ProfileBioRenderer from "../mainContent/profile/profileDetails/ProfileBioRenderer";
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 
 type UserListItemProps = UserPreview & {
   className?: string;
@@ -25,11 +27,14 @@ export default function UserListItem({
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
   return (
     <div
-      onClick={() =>
-        navigate({ to: "/social/$userHandle", params: { userHandle: handle } })
-      }
+      onClick={() => {
+        navigate({ to: "/social/$userHandle", params: { userHandle: handle } });
+        toggleOpenDialog(null);
+      }}
       className={cn(
         "hover:cursor-pointer flex flex-col w-full py-3 hover:bg-socialPrimaryHover gap-[10px]",
         isDiscoverPeopleSection ? "px-5" : "px-2 sm:px-5",
@@ -66,7 +71,7 @@ export default function UserListItem({
           />
         )}
       </div>
-      {bio && (
+      {bio ? (
         <p
           className={cn(
             "line-clamp-2",
@@ -75,8 +80,10 @@ export default function UserListItem({
               : "text-md pl-[65px] md:pl-[73px]"
           )}
         >
-          {bio}
+          <ProfileBioRenderer content={bio} />
         </p>
+      ) : (
+        <em>No bio</em>
       )}
     </div>
   );

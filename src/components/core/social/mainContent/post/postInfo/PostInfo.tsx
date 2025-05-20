@@ -1,6 +1,6 @@
 import { TPostInfo } from "@/utils/types/social/social";
 import PostActions from "../PostActions";
-import PostLikers from "./PostLikers";
+import PostLikersPreview from "./postLikers/PostLikersPreview";
 import PostWithAttachment from "../postContent/PostWithAttachment";
 import ActivityHeader from "../../activity/ActivityHeader";
 import { useParams } from "@tanstack/react-router";
@@ -53,7 +53,7 @@ export default function PostInfo({ post }: Props) {
       </div>
       <div className="flex flex-col gap-2 mt-1 mobile-m:mt-2">
         {post.postFirstLikers && (
-          <PostLikers
+          <PostLikersPreview
             postFirstLikers={post.postFirstLikers}
             totalLikes={post.totalLikes}
           />

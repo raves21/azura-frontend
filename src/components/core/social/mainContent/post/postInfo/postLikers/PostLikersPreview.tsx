@@ -1,13 +1,28 @@
+import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { EntityOwner } from "@/utils/types/social/shared";
+import PostLikersDialog from "./PostLikersDialog";
+import { useParams } from "@tanstack/react-router";
 
 type Props = {
   postFirstLikers: Omit<EntityOwner, "handle">[];
   totalLikes: number;
 };
 
-export default function PostLikers({ postFirstLikers, totalLikes }: Props) {
+export default function PostLikersPreview({
+  postFirstLikers,
+  totalLikes,
+}: Props) {
+  const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
+
+  const { postId } = useParams({
+    from: "/_protected/social/$userHandle/posts/$postId/",
+  });
+
   return (
-    <button className="flex items-center w-full gap-2 mobile-m:gap-3 group">
+    <button
+      onClick={() => toggleOpenDialog(<PostLikersDialog postId={postId} />)}
+      className="flex items-center w-full gap-2 mobile-m:gap-3 group"
+    >
       <img
         src={postFirstLikers[0].avatar || "/no-image-2.jpg"}
         className="object-cover rounded-full size-[18px] mobile-m:size-5"
