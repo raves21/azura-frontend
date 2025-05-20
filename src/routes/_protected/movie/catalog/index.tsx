@@ -1,3 +1,4 @@
+import CatalogPageSkeleton from "@/components/core/loadingSkeletons/media/catalog/CatalogPageSkeleton";
 import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
 import MovieAppliedFilters from "@/components/core/media/movie/filter/MovieAppliedFilters";
 import MovieFiltersDialog from "@/components/core/media/movie/filter/MovieFiltersDialog";
@@ -66,14 +67,7 @@ function MovieCatalogPage() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   if (isCatalogMovieListLoading || isMovieGenresLoading) {
-    return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          Loading&nbsp;
-          <span className="font-semibold text-cyan-500">Catalog Page</span>
-        </p>
-      </div>
-    );
+    return <CatalogPageSkeleton />;
   }
 
   if (catalogMovieListError || movieGenresError) {

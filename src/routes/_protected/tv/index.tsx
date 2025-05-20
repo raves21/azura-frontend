@@ -1,3 +1,5 @@
+import CategoryCarouselSkeleton from "@/components/core/loadingSkeletons/media/carousel/CategoryCarouselSkeleton";
+import TrendingHeroCarouselSkeleton from "@/components/core/loadingSkeletons/media/carousel/TrendingHeroCarouselSkeleton";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import TrendingHeroCarousel from "@/components/core/media/shared/carousel/TrendingHeroCarousel";
@@ -34,11 +36,11 @@ function TVHomePage() {
 
   if (isTrendingTVLoading || isPopularTVLoading || isTopRatedTVLoading) {
     return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          Loading&nbsp;
-          <span className="font-semibold text-mainAccent">Azura TV</span>
-        </p>
+      <div className="flex flex-col items-center w-full">
+        <TrendingHeroCarouselSkeleton />
+        <div className="w-full pt-8 pb-32 space-y-10">
+          <CategoryCarouselSkeleton />
+        </div>
       </div>
     );
   }

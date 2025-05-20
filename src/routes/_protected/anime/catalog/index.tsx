@@ -16,6 +16,7 @@ import AnimeFiltersDialog from "../../../../components/core/media/anime/filter/A
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
+import CatalogPageSkeleton from "@/components/core/loadingSkeletons/media/catalog/CatalogPageSkeleton";
 
 const filterPageSearchSchema = z.object({
   page: z.number().optional(),
@@ -73,14 +74,7 @@ function AnimeCatalogPage() {
   });
 
   if (isFilteredAnimesLoading) {
-    return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          Loading&nbsp;
-          <span className="font-semibold text-cyan-500">Catalog Page</span>
-        </p>
-      </div>
-    );
+    return <CatalogPageSkeleton />;
   }
 
   if (filteredAnimeError) {

@@ -1,3 +1,4 @@
+import CatalogPageSkeleton from "@/components/core/loadingSkeletons/media/catalog/CatalogPageSkeleton";
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters";
@@ -58,14 +59,7 @@ function TVCatalogPage() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   if (isCatalogTVListLoading || isTVGenresLoading) {
-    return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          Loading&nbsp;
-          <span className="font-semibold text-cyan-500">Catalog Page</span>
-        </p>
-      </div>
-    );
+    return <CatalogPageSkeleton />;
   }
 
   if (catalogTVListError || tvGenresError) {

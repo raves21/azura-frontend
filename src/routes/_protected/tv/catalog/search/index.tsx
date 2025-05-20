@@ -1,3 +1,4 @@
+import CatalogPageSkeleton from "@/components/core/loadingSkeletons/media/catalog/CatalogPageSkeleton";
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
@@ -50,14 +51,7 @@ function TVSearchPage() {
   } = useSearchTV(query, page || 1, true);
 
   if (tvSearchResultsLoading) {
-    return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          Loading&nbsp;
-          <span className="font-semibold text-cyan-500">Search Page</span>
-        </p>
-      </div>
-    );
+    return <CatalogPageSkeleton />;
   }
 
   if (tvSearchResultsError) {

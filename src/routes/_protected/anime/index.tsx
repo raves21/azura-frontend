@@ -9,6 +9,8 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import TrendingHeroCarousel from "../../../components/core/media/shared/carousel/TrendingHeroCarousel";
 import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/TrendingHeroCarouselItem";
+import CategoryCarouselSkeleton from "@/components/core/loadingSkeletons/media/carousel/CategoryCarouselSkeleton";
+import TrendingHeroCarouselSkeleton from "@/components/core/loadingSkeletons/media/carousel/TrendingHeroCarouselSkeleton";
 
 export const Route = createFileRoute("/_protected/anime/")({
   component: () => <AnimeHomePage />,
@@ -42,16 +44,16 @@ function AnimeHomePage() {
     isTopRatedAnimesLoading
   ) {
     return (
-      <div className="grid text-2xl text-white bg-darkBg h-dvh place-items-center">
-        <p>
-          Loading&nbsp;
-          <span className="font-semibold text-mainAccent">Azura Anime</span>
-        </p>
+      <div className="flex flex-col items-center w-full">
+        <TrendingHeroCarouselSkeleton />
+        <div className="w-full pt-8 pb-32 space-y-10">
+          <CategoryCarouselSkeleton />
+        </div>
       </div>
     );
   }
 
-  if (trendingAnimesError && popularAnimesError && topRatedAnimesError) {
+  if (trendingAnimesError || (popularAnimesError && topRatedAnimesError)) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this page.</p>

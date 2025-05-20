@@ -6,16 +6,15 @@ import { useCurrentUser } from "@/services/auth/authQueries";
 import { Link, LinkProps, Navigate, useParams } from "@tanstack/react-router";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { MutationKey } from "@tanstack/react-query";
-import { MediaType } from "@/utils/types/shared";
 import { cn } from "@/lib/utils";
 import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
+import { Media } from "@/utils/types/social/social";
 
 type Props = {
   isSecondaryDialog?: boolean;
   deleteAction: () => void;
   mutationKey: MutationKey;
-  mediaId: string;
-  mediaType: MediaType;
+  media: Media;
 } & PropsWithChildren;
 
 export default function CollectionItemPreviewContainer({
@@ -23,13 +22,13 @@ export default function CollectionItemPreviewContainer({
   isSecondaryDialog,
   deleteAction,
   mutationKey,
-  mediaId,
-  mediaType,
+  media,
 }: Props) {
   const { isTabletUp } = useWindowBreakpoints();
   const { userHandle } = useParams({
     from: "/_protected/social/$userHandle/collections/$collectionId/",
   });
+  const { id: mediaId, type: mediaType } = media;
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
   const [actionButtonsContainerWidth, setActionButtonsContainerWidth] =
@@ -69,6 +68,10 @@ export default function CollectionItemPreviewContainer({
         to: "/anime/$animeId",
         params: {
           animeId: mediaId,
+        },
+        search: {
+          title: media.title,
+          lang: "eng",
         },
       };
       break;

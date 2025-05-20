@@ -30,8 +30,7 @@ export default function CollectionItemPreviewDialog({
 
   return (
     <CollectionItemPreviewContainer
-      mediaId={media.id}
-      mediaType={media.type}
+      media={media}
       deleteAction={deleteAction}
       mutationKey={mutationKey}
       isSecondaryDialog={isSecondaryDialog}
