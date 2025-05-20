@@ -71,7 +71,8 @@ export default function UserListItem({
           />
         )}
       </div>
-      {bio ? (
+
+      {bio && (
         <p
           className={cn(
             "line-clamp-2",
@@ -82,8 +83,6 @@ export default function UserListItem({
         >
           <ProfileBioRenderer content={bio} />
         </p>
-      ) : (
-        <em>No bio</em>
       )}
     </div>
   );

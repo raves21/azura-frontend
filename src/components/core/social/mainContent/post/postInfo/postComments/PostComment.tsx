@@ -19,7 +19,7 @@ export default function PostComment({ comment }: Props) {
             },
           }}
         />
-        <p className="w-full mt-1 text-sm text-gray-300 mobile-m:text-md">
+        <p className="w-full mt-1 text-sm text-gray-300 mobile-m:text-md sm:pl-14">
           {comment.content}
         </p>
       </div>
