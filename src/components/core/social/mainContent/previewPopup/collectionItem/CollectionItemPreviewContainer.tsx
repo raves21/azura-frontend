@@ -7,8 +7,12 @@ import { Link, LinkProps, Navigate, useParams } from "@tanstack/react-router";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { MutationKey } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
-import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
+import {
+  closeAllPopups,
+  toggleDialogOrDrawer,
+} from "@/utils/functions/sharedFunctions";
 import { Media } from "@/utils/types/social/social";
+import { useShallow } from "zustand/react/shallow";
 
 type Props = {
   isSecondaryDialog?: boolean;
@@ -36,9 +40,17 @@ export default function CollectionItemPreviewContainer({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const actionButtonsContainerRef = useRef<HTMLDivElement | null>(null);
   const { data: currentUser } = useCurrentUser();
-  const toggleOpenDialogSecondary = useGlobalStore(
-    (state) => state.toggleOpenDialog
-  );
+  const [toggleOpenDrawer, toggleOpenDialog, toggleOpenDialogSecondary] =
+    useGlobalStore(
+      useShallow((state) => [
+        state.toggleOpenDrawer,
+        state.toggleOpenDialog,
+        state.toggleOpenDialogSecondary,
+      ])
+    );
+
+  const { isTabletSmallUp } = useWindowBreakpoints();
+
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.getBoundingClientRect().width);
@@ -131,17 +143,30 @@ export default function CollectionItemPreviewContainer({
             <p className="text-mainWhite transition-colors">View</p>
           </Link>
           <button
-            onClick={() =>
-              toggleOpenDialogSecondary(
-                <AsyncConfirmationDialog
-                  isSecondaryDialog={true}
-                  confirmAction={deleteAction}
-                  mutationKey={mutationKey}
-                  header="Remove from collection?"
-                  message="This will remove this item from this collection. This action cannot be undone."
-                />
-              )
-            }
+            onClick={() => {
+              if (isTabletSmallUp) {
+                toggleOpenDialogSecondary(
+                  <AsyncConfirmationDialog
+                    isSecondaryDialog={true}
+                    confirmAction={deleteAction}
+                    mutationKey={mutationKey}
+                    header="Remove from collection?"
+                    message="This will remove this item from this collection. This action cannot be undone."
+                  />
+                );
+              } else {
+                toggleOpenDrawer(null);
+                toggleOpenDialog(
+                  <AsyncConfirmationDialog
+                    confirmAction={deleteAction}
+                    mutationKey={mutationKey}
+                    header="Remove from collection?"
+                    afterConfirmSuccessAction={() => closeAllPopups()}
+                    message="This will remove this item from this collection. This action cannot be undone."
+                  />
+                );
+              }
+            }}
             className="flex items-center gap-2 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 text-md"
           >
             <Trash2 className="stroke-mainWhite size-4" />
