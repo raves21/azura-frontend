@@ -36,7 +36,7 @@ function DetachedMode() {
   }
 
   if (detachedModeUserInfo) {
-    const { sessions, user: userInfo } = detachedModeUserInfo.data;
+    const { sessions, user } = detachedModeUserInfo.data;
 
     return (
       <div className="w-full flex flex-col gap-8">
@@ -54,7 +54,7 @@ function DetachedMode() {
             <tbody>
               {sessions.map((session, i) => (
                 <DetachedModeSession
-                  userInfo={userInfo}
+                  userInfo={user}
                   setIsLoggingIn={setIsLoggingIn}
                   session={session}
                   key={session.id}

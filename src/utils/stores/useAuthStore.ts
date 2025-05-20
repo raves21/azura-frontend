@@ -25,6 +25,7 @@ type Actions = {
   setDetachedModeUserInfo: (
     detachedModeUserInfo: LoginResponseDetachedMode | null
   ) => void;
+  resetState: () => void;
 };
 
 type Store = Values & Actions;
@@ -53,4 +54,5 @@ export const useAuthStore = create<Store>((set) => ({
   setDetachedModeUserInfo: (
     detachedModeUserInfo: LoginResponseDetachedMode | null
   ) => set({ detachedModeUserInfo }),
+  resetState: () => set({ ...defaultValues }),
 }));

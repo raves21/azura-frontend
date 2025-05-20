@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import LoginForm from "../../../components/core/auth/login/LoginForm";
 import { useEffect } from "react";
-import { useShallow } from "zustand/react/shallow";
-import { SignUpStep } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 
 export const Route = createFileRoute("/_auth/login/")({
@@ -10,24 +8,10 @@ export const Route = createFileRoute("/_auth/login/")({
 });
 
 function LoginPage() {
-  const [setSignUpValues, setSignUpStep, setDetachedModeUserInfo] =
-    useAuthStore(
-      useShallow((state) => [
-        state.setSignUpValues,
-        state.setSignUpStep,
-        state.setDetachedModeUserInfo,
-      ])
-    );
+  const resetState = useAuthStore((state) => state.resetState);
 
   useEffect(() => {
-    setSignUpValues({
-      email: "",
-      handle: "",
-      password: "",
-      username: "",
-    });
-    setSignUpStep(SignUpStep.USER_DETAILS);
-    setDetachedModeUserInfo(null);
+    resetState();
   }, []);
 
   return (

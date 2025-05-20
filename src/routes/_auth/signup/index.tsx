@@ -4,13 +4,16 @@ import { SignUpStep } from "@/utils/types/auth/auth";
 import PasswordConfirmationForm from "../../../components/core/auth/signup/PasswordConfirmationForm";
 import { useEffect } from "react";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import { useShallow } from "zustand/react/shallow";
 
 export const Route = createFileRoute("/_auth/signup/")({
   component: () => <SignUpPage />,
 });
 
 function SignUpPage() {
-  const { signUpStep, setSignUpStep } = useAuthStore();
+  const [signUpStep, setSignUpStep] = useAuthStore(
+    useShallow((state) => [state.signUpStep, state.setSignUpStep])
+  );
 
   useEffect(() => {
     setSignUpStep(SignUpStep.USER_DETAILS);

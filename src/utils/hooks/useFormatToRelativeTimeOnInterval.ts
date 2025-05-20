@@ -1,15 +1,15 @@
 import { formatToRelativeTime } from "@/services/social/functions/socialFunctions";
 import { useState, useEffect } from "react";
 
-//2 mins
-const FORMAT_TO_RELATIVE_TIME_INTERVAL = 120_000;
+//5 mins
+const FORMAT_TO_RELATIVE_TIME_INTERVAL = 300_000;
 
 export function useFormatToRelativeTimeOnInterval(dateTime: string) {
   const [timeAgo, setTimeAgo] = useState<string>(
     formatToRelativeTime(dateTime)
   );
 
-  //format to relative time every 2 mins
+  //format to relative time every 5 mins
   useEffect(() => {
     const formattedToRelativeTime = formatToRelativeTime(dateTime);
     let interval: NodeJS.Timeout | undefined = undefined;
