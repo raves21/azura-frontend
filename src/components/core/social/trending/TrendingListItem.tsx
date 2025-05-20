@@ -35,7 +35,9 @@ export default function TrendingListItem({
       className="block w-full px-5 py-4 hover:bg-socialPrimaryHover"
     >
       <p className="font-medium line-clamp-1">{trend}</p>
-      <p className="text-sm text-gray-500">{postCount} posts</p>
+      <p className="text-sm text-gray-500">
+        {postCount} {postCount === 1 ? "post" : "posts"}
+      </p>
     </Link>
   );
 }

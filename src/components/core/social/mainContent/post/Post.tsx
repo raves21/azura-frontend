@@ -23,7 +23,6 @@ export default function Post({ fromState, post }: Props) {
 
   let postContent: ReactNode;
   if (post.collection) {
-    console.log("cole");
     postContent = (
       <PostWithAttachment
         owner={post.owner}
@@ -33,7 +32,6 @@ export default function Post({ fromState, post }: Props) {
       />
     );
   } else if (post.media) {
-    console.log("MEDI");
     postContent = (
       <PostWithAttachment
         attachmentType="media"
