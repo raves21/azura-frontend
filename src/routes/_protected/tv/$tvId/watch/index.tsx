@@ -1,7 +1,7 @@
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
+import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPageTVEpisodes";
 import {
@@ -23,11 +23,17 @@ import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episod
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
-import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
+import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
+import { ServerName } from "@/utils/types/media/shared";
+import EmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/EmbedVideoPlayer";
+import { queryClient } from "@/utils/variables/queryClient";
+import { tmdbApi } from "@/utils/variables/axiosInstances/tmdbAxiosInstance";
+import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
   tvSeason: z.number(),
+  server: z.nativeEnum(ServerName).catch(ServerName.azuraMain),
 });
 
 type WatchTVEpisodePageSchema = z.infer<typeof watchTVEpisodePageSchema>;
@@ -40,13 +46,13 @@ export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
       return v.data;
     } else {
       //if search params validation fails, provide defaults (season 1, episode 1).
-      return { tvEp: 1, tvSeason: 1 };
+      return { tvEp: 1, tvSeason: 1, server: ServerName.azuraMain };
     }
   },
 });
 
 function WatchTVEpisodePage() {
-  const { tvEp, tvSeason } = Route.useSearch();
+  const { tvEp, tvSeason, server } = Route.useSearch();
   const { tvId } = Route.useParams();
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
   const [
@@ -55,6 +61,7 @@ function WatchTVEpisodePage() {
   ] = useState(0);
   const [hasMainSeasons, setHasMainSeasons] = useState(false);
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);
+  const [selectedSeason, setSelectedSeason] = useState(tvSeason);
   const windowWidth = useWindowWidth();
 
   const {
@@ -78,7 +85,7 @@ function WatchTVEpisodePage() {
 
   const tvSeasonEpisodesQuery = useTVSeasonEpisodes({
     tvId,
-    seasonNum: tvSeason,
+    seasonNum: selectedSeason,
     enabled: !!tvInfo && hasMainSeasons,
   });
 
@@ -87,6 +94,27 @@ function WatchTVEpisodePage() {
     isLoading: isTVSeasonEpisodesLoading,
     error: tvSeasonEpisodesError,
   } = tvSeasonEpisodesQuery;
+
+  //prefetch the other seasons' episodes
+  useEffect(() => {
+    async function prefetchSeasons() {
+      if (totalSeasons) {
+        for (let season = 1; season <= totalSeasons; season++) {
+          if (season === tvSeason) continue;
+          await queryClient.prefetchQuery({
+            queryKey: ["tvSeasonEpisodes", tvId, season],
+            queryFn: async () => {
+              const { data: tvSeasonEpisodes } = await tmdbApi.get(
+                `/tv/${tvId}/season/${season}`
+              );
+              return tvSeasonEpisodes.episodes as TMDBTVEpisode[];
+            },
+          });
+        }
+      }
+    }
+    prefetchSeasons();
+  }, [totalSeasons]);
 
   const {
     data: tvRecommendations,
@@ -115,7 +143,7 @@ function WatchTVEpisodePage() {
         videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height
       );
     }
-  }, [mediaScraperData, tvInfo, windowWidth]);
+  }, [mediaScraperData, tvInfo, windowWidth, tvSeasonEpisodes]);
 
   if (
     isMediaScraperLoading &&
@@ -157,7 +185,15 @@ function WatchTVEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {mediaScraperData ? (
+            {server === ServerName.embed1 || server === ServerName.embed2 ? (
+              <EmbedVideoPlayer
+                server={server}
+                tmdbId={tvId}
+                tvEp={tvEp}
+                tvSeason={tvSeason}
+                type="tv"
+              />
+            ) : mediaScraperData && server === ServerName.azuraMain ? (
               <VideoPlayer
                 mediaType="TV"
                 poster={getTMDBImageURL(currentEpisode.still_path)}
@@ -173,6 +209,7 @@ function WatchTVEpisodePage() {
             ) : (
               <VideoPlayerError />
             )}
+
             <EpisodeTitleAndNumber
               episodeNumber={`Episode ${tvEp}`}
               episodeTitle={currentEpisode?.name || undefined}
@@ -183,6 +220,8 @@ function WatchTVEpisodePage() {
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             totalSeasons={totalSeasons}
             episodes={tvSeasonEpisodes}
+            selectedSeason={selectedSeason}
+            setSelectedSeason={setSelectedSeason}
           />
         </section>
         <WatchPageTVInfo

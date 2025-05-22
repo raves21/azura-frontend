@@ -8,11 +8,9 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { MediaScraperResponse } from "@/utils/types/media/shared";
-import { TMDBGenre } from "@/utils/types/media/shared";
+import { ServerName, TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
-import { UseQueryResult } from "@tanstack/react-query";
 
 type Props = {
   image: string;
@@ -25,7 +23,6 @@ type Props = {
   genres: TMDBGenre[];
   voteAverage: number | null;
   movieId: string;
-  mediaScraperQuery: UseQueryResult<MediaScraperResponse, Error>;
 };
 
 export default function MovieInfoPageHero({
@@ -39,12 +36,8 @@ export default function MovieInfoPageHero({
   genres,
   voteAverage,
   movieId,
-  mediaScraperQuery,
 }: Props) {
   const navigate = useNavigate();
-
-  const { isLoading: isMediaScraperLoading, error: mediaScraperError } =
-    mediaScraperQuery;
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -75,12 +68,16 @@ export default function MovieInfoPageHero({
           <YearAndStatus year={parseInt(year)} status={status} />
           <div className="flex gap-5 my-3">
             <PlayNowButton
-              isDisabled={!!mediaScraperError}
-              isLoading={isMediaScraperLoading}
+              isLoading={false}
+              isDisabled={false}
               onClick={() => {
                 navigate({
                   to: "/movie/$movieId/watch",
                   params: { movieId },
+                  search: {
+                    //todo: set default server in localstorage
+                    server: ServerName.azuraMain,
+                  },
                 });
               }}
             />

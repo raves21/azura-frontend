@@ -8,7 +8,7 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { TMDBGenre } from "@/utils/types/media/shared";
+import { ServerName, TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
@@ -98,6 +98,8 @@ export default function TVInfoPageHero({
                   search: {
                     tvEp: 1,
                     tvSeason: 1,
+                    //todo: set default in localstorage
+                    server: ServerName.azuraMain,
                   },
                 });
               }}

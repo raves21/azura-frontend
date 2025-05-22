@@ -39,7 +39,7 @@ export default function ToggleMediaToCollectionDialog({ media }: Props) {
 
   if (isMediaExistenceInCollectionsFetching) {
     return (
-      <div className="md:aspect-square relative bg-socialPrimary w-dvw h-dvh md:w-[500px] text-mainWhite rounded-lg flex flex-col">
+      <div className="md:aspect-square relative w-dvw h-dvh md:h-[500px] bg-socialPrimary md:w-[500px] overflow-hidden text-mainWhite rounded-lg flex flex-col">
         <GlobalDialogHeader>
           <GlobalDialogHeaderTitle>Add to collection</GlobalDialogHeaderTitle>
           <GlobalDialogHeaderCloseButton
@@ -55,7 +55,7 @@ export default function ToggleMediaToCollectionDialog({ media }: Props) {
 
   if (mediaExistenceInCollectionsError) {
     return (
-      <div className="md:aspect-square relative bg-socialPrimary w-dvw h-dvh md:w-[500px] text-mainWhite rounded-lg flex flex-col">
+      <div className="md:aspect-square relative w-dvw h-dvh md:h-[500px] bg-socialPrimary md:w-[500px] overflow-hidden text-mainWhite rounded-lg flex flex-col">
         <GlobalDialogHeader>
           <GlobalDialogHeaderTitle>Add to collection</GlobalDialogHeaderTitle>
           <GlobalDialogHeaderCloseButton

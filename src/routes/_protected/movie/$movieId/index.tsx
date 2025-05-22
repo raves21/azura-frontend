@@ -1,24 +1,23 @@
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
-import MovieEpisode from "@/components/core/media/movie/episodeList/MovieEpisode";
+import MovieEpisodeInfoPage from "@/components/core/media/movie/episodeList/MovieEpisodeInfoPage";
 import MovieInfoPageHero from "@/components/core/media/movie/infoSection/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
-  useMovieRecommendations
+  useMovieRecommendations,
 } from "@/services/media/movie/movieQueries";
-import { useMediaScraper } from "@/services/media/sharedFunctions";
 import {
   getTMDBImageURL,
-  getTMDBReleaseYear
+  getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_protected/movie/$movieId/")({
-  component: () => <MovieInfoPage />
+  component: () => <MovieInfoPage />,
 });
 
 function MovieInfoPage() {
@@ -27,20 +26,14 @@ function MovieInfoPage() {
   const {
     data: movieInfo,
     isLoading: isMovieInfoLoading,
-    error: movieInfoError
+    error: movieInfoError,
   } = useMovieInfo(movieId);
 
   const {
     data: movieRecommendations,
     isLoading: isMovieRecommendationsLoading,
-    error: movieRecommendationsError
+    error: movieRecommendationsError,
   } = useMovieRecommendations(movieId);
-
-  const mediaScraperQuery = useMediaScraper({
-    type: "MOVIE",
-    enabled: !!movieInfo,
-    mediaId: movieId
-  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,7 +62,6 @@ function MovieInfoPage() {
       <main className="w-full pb-32">
         <MovieInfoPageHero
           movieId={movieId}
-          mediaScraperQuery={mediaScraperQuery}
           cover={getTMDBImageURL(movieInfo.backdrop_path)}
           description={movieInfo.overview}
           genres={movieInfo.genres}
@@ -80,10 +72,8 @@ function MovieInfoPage() {
           title={movieInfo.title}
           voteAverage={movieInfo.vote_average}
         />
-        <MovieEpisode
-          mediaScraperQuery={mediaScraperQuery}
+        <MovieEpisodeInfoPage
           moviePoster={getTMDBImageURL(movieInfo.poster_path)}
-          variant="infoPage"
         />
         {movieRecommendations.results.length !== 0 && (
           <CategoryCarousel
@@ -97,11 +87,11 @@ function MovieInfoPage() {
                     linkProps={{
                       to: "/movie/$movieId",
                       params: {
-                        movieId: `${recommendation.id}`
-                      }
+                        movieId: `${recommendation.id}`,
+                      },
                     }}
                     subLabels={[
-                      getTMDBReleaseYear(recommendation.release_date)
+                      getTMDBReleaseYear(recommendation.release_date),
                     ]}
                     title={recommendation.title}
                   />

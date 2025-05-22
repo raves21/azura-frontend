@@ -6,6 +6,7 @@ import Title from "@/components/core/media/shared/info/Title";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
+import { useParams } from "@tanstack/react-router";
 
 type Props = {
   cover: string;
@@ -30,15 +31,39 @@ export default function WatchPageMovieInfo({
   genres,
   voteAverage,
 }: Props) {
+  const { movieId } = useParams({ from: "/_protected/movie/$movieId/watch/" });
+
   return (
     <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
       <InfoSectionBackgroundImage image={cover ?? image} variant="watchPage" />
       <div className="z-10 flex gap-3 sm:gap-5 md:gap-8 lg:gap-12 size-full">
-        <InfoSectionPoster image={image} variant="watchPage" />
+        <InfoSectionPoster
+          linkProps={{
+            to: "/movie/$movieId",
+            params: {
+              movieId,
+            },
+          }}
+          image={image}
+          variant="watchPage"
+        />
         <section className="z-10 flex flex-col flex-1 gap-2 sm:gap-3">
-          <Title title={title} variant="watchPage" />
+          <Title
+            linkProps={{
+              to: "/movie/$movieId",
+              params: {
+                movieId,
+              },
+            }}
+            title={title}
+            variant="watchPage"
+          />
           <div className="flex flex-col gap-2 mobile-m:gap-4">
-            <Rating mediaType="tmdb" variant="watchPage" rating={voteAverage?.toString()} />
+            <Rating
+              mediaType="tmdb"
+              variant="watchPage"
+              rating={voteAverage?.toString()}
+            />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
               <InfoItem label="Year:" info={year?.toString()} />
               <InfoItem label="Runtime:" info={`${runTime} min`} />

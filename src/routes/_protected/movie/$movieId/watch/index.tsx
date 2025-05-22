@@ -1,9 +1,8 @@
-import MovieEpisode from "@/components/core/media/movie/episodeList/MovieEpisode";
 import WatchPageMovieInfo from "@/components/core/media/movie/infoSection/WatchPageMovieInfo";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
+import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
@@ -15,19 +14,36 @@ import {
   getTMDBReleaseYear,
 } from "@/services/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
+import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
+import EmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/EmbedVideoPlayer";
+import { ServerName } from "@/utils/types/media/shared";
+import { z } from "zod";
+import MovieEpisodeWatchPage from "@/components/core/media/movie/episodeList/MovieEpisodeWatchPage";
+
+const watchMoviePageSchema = z.object({
+  server: z.nativeEnum(ServerName).catch(ServerName.azuraMain),
+});
+
+type WatchMoviePageSchema = z.infer<typeof watchMoviePageSchema>;
 
 export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
   component: () => <WatchMoviePage />,
+  validateSearch: (search): WatchMoviePageSchema => {
+    const validated = watchMoviePageSchema.safeParse(search);
+    if (validated.success) {
+      return validated.data;
+    }
+    return { server: ServerName.azuraMain };
+  },
 });
 
 function WatchMoviePage() {
   const { movieId } = Route.useParams();
-  const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
+  const { server } = Route.useSearch();
 
   const {
     data: movieInfo,
@@ -54,14 +70,13 @@ function WatchMoviePage() {
   } = mediaScraperQuery;
 
   if (
-    isMediaScraperLoading ||
-    isMovieInfoLoading ||
-    isMovieRecommendationsLoading
+    isMediaScraperLoading &&
+    (isMovieInfoLoading || isMovieRecommendationsLoading)
   ) {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
-          <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
+          <div className="w-full h-fit">
             <VideoPlayerSkeleton />
             <EpisodeTitleAndNumberSkeleton />
           </div>
@@ -71,13 +86,7 @@ function WatchMoviePage() {
       </main>
     );
   }
-  if (
-    mediaScraperError ||
-    movieInfoError ||
-    movieRecommendationsError ||
-    //if media is not available, response is: {"message": "Sorry, the media isn't available ATM"}
-    mediaScraperData?.message
-  ) {
+  if (mediaScraperError && (movieInfoError || movieRecommendationsError)) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this movie.</p>
@@ -86,30 +95,36 @@ function WatchMoviePage() {
     );
   }
 
-  if (mediaScraperData && movieInfo && !mediaScraperData.message) {
+  if (movieInfo) {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
-          <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            <VideoPlayer
-              mediaType="MOVIE"
-              subtitleTracks={mediaScraperData.tracks}
-              poster={getTMDBImageURL(movieInfo.backdrop_path)}
-              headers={mediaScraperData.headers}
-              streamLink={
-                mediaScraperData.url ? mediaScraperData.url[0].link : undefined
-              }
-              title={movieInfo.title}
-            />
+          <div className="w-full h-fit">
+            {server === ServerName.embed1 || server === ServerName.embed2 ? (
+              <EmbedVideoPlayer server={server} tmdbId={movieId} type="movie" />
+            ) : mediaScraperData && server === ServerName.azuraMain ? (
+              <VideoPlayer
+                mediaType="MOVIE"
+                poster={getTMDBImageURL(movieInfo.backdrop_path)}
+                streamLink={
+                  mediaScraperData.url ? mediaScraperData.url[0].link : null
+                }
+                subtitleTracks={mediaScraperData.tracks}
+                headers={mediaScraperData.headers}
+                title={movieInfo.title}
+              />
+            ) : isMediaScraperLoading ? (
+              <VideoPlayerSkeleton />
+            ) : (
+              <VideoPlayerError />
+            )}
             <EpisodeTitleAndNumber
               episodeNumber={movieInfo.title}
               episodeTitle={getTMDBReleaseYear(movieInfo.release_date)}
             />
           </div>
-          <MovieEpisode
-            mediaScraperQuery={mediaScraperQuery}
+          <MovieEpisodeWatchPage
             moviePoster={getTMDBImageURL(movieInfo.poster_path)}
-            variant="watchPage"
           />
         </section>
         <WatchPageMovieInfo

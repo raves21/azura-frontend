@@ -27,6 +27,7 @@ type Props = {
   status: string | undefined;
   genres: string[] | undefined;
   rating: string | null | undefined;
+  titleLang: "eng" | "jap";
 };
 
 export default function WatchPageAnimeInfo({
@@ -40,6 +41,7 @@ export default function WatchPageAnimeInfo({
   status,
   genres,
   rating,
+  titleLang,
 }: Props) {
   return (
     <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
@@ -47,7 +49,17 @@ export default function WatchPageAnimeInfo({
       <div className="z-10 flex gap-3 sm:gap-5 md:gap-8 lg:gap-12 size-full">
         <InfoSectionPoster image={image} variant="watchPage" />
         <section className="z-10 flex flex-col flex-1 gap-2 sm:gap-3">
-          <Title title={title || ""} variant="watchPage" />
+          <Title
+            linkProps={{
+              to: "/anime/$animeId",
+              search: {
+                title,
+                lang: titleLang,
+              },
+            }}
+            title={title || ""}
+            variant="watchPage"
+          />
           <div className="flex flex-col gap-2 mobile-m:gap-4">
             <Rating mediaType="anime" variant="watchPage" rating={rating} />
             <div className="flex flex-col gap-2 text-xs sm:text-base mobile-m:gap-3 md:gap-4 lg:gap-8 lg:items-center lg:flex-row">
