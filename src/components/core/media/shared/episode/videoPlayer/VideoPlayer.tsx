@@ -86,8 +86,8 @@ export default function VideoPlayer({
         src="/static-screen.gif"
         className="font-medium rounded-lg size-full object-cover z-10"
       />
-      <div className="absolute inset-0 bg-black/30 z-20" />
-      <p className="text-xl font-semibold absolute -translate-x-1/2 z-30 -translate-y-1/2 left-1/2 top-1/2">
+      <div className="absolute inset-0 bg-black/60 z-20" />
+      <p className="text-base mobile-m:text-lg sm:text-2xl md:text-3xl xl:text-4xl font-semibold absolute -translate-x-1/2 z-30 -translate-y-1/2 left-1/2 top-1/2">
         Sorry this media is not available right now
       </p>
     </div>

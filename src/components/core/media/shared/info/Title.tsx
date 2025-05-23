@@ -1,13 +1,16 @@
 import { cn } from "@/lib/utils";
+import { Link, LinkProps } from "@tanstack/react-router";
 
 type Props = {
   title: string;
   variant: "infoPage" | "watchPage";
+  linkProps?: LinkProps;
 };
 
-export default function Title({ title, variant }: Props) {
+export default function Title({ title, variant, linkProps }: Props) {
   return (
-    <p
+    <Link
+      {...linkProps}
       className={cn(
         "font-semibold line-clamp-2",
         { "text-lg sm:text-xl md:text-2xl": variant === "watchPage" },
@@ -18,6 +21,6 @@ export default function Title({ title, variant }: Props) {
       )}
     >
       {title}
-    </p>
+    </Link>
   );
 }

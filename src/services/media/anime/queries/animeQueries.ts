@@ -206,7 +206,7 @@ export function useAnimeEpisodeStreamLinks(episodeId: string) {
         `${getRandomAniwatchProxyURL()}`,
         {
           params: {
-            url: `https://ritesh-aniwatch-api-phi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}&server=hd-2`,
+            url: `${import.meta.env.VITE_ANIWATCH_API_URL}/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}&server=hd-2`,
           },
         }
       );
@@ -215,7 +215,6 @@ export function useAnimeEpisodeStreamLinks(episodeId: string) {
   });
 }
 
-//todo aniwatch
 export function useEpisodeInfo(
   episodeId: string,
   chunkedEpisodes: EpisodeChunk[] | null | undefined

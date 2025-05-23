@@ -5,7 +5,7 @@ import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import VideoPlayer from "@/components/core/media/shared/episode/VideoPlayer";
+import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
   useAnimeEpisodeStreamLinks,
@@ -23,7 +23,7 @@ import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episod
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
-import VideoPlayerError from "@/components/core/media/shared/episode/VideoPlayerError";
+import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
 import {
   SearchSchemaValidationStatus,
   Subtitle,
@@ -199,6 +199,7 @@ function WatchEpisodePage() {
             animeInfoAnilist?.image ||
             animeInfoAniwatch?.info.poster
           }
+          titleLang={lang}
           image={animeInfoAnilist?.image || animeInfoAniwatch?.info.poster}
           description={
             animeInfoAnilist?.description || animeInfoAniwatch?.info.description

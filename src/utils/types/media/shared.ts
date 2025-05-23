@@ -77,3 +77,25 @@ export type MediaExistenceInCollection = {
 export type PaginatedMediaExistenceInCollectionsResponse = PaginatedResponse & {
   data: MediaExistenceInCollection[];
 };
+
+export enum ServerName {
+  azuraMain = "Azura Main",
+  embed1 = "Embed 1",
+  embed2 = "Embed 2",
+}
+
+export type VideoProvider = {
+  name: ServerName;
+  isEmbed: boolean;
+  embedLink: string | null;
+};
+
+export type MovieArgs = {
+  type: "movie";
+};
+
+export type TVArgs = {
+  type: "tv";
+  seasonNum: number;
+  episodeNum: number;
+};
