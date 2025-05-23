@@ -28,16 +28,16 @@ export default function EmbedVideoPlayer({ tmdbId, server, ...props }: Props) {
   switch (server) {
     case ServerName.embed1:
       if (props.type === "movie") {
-        src = `https://vidsrc.cc/v2/embed/movie/${tmdbId}?autoPlay=false`;
+        src = `${import.meta.env.VITE_EMBED1_URL}/v2/embed/movie/${tmdbId}?autoPlay=false`;
       } else {
-        src = `https://vidsrc.cc/v2/embed/tv/${tmdbId}/${props.tvSeason}/${props.tvEp}?autoPlay=false`;
+        src = `${import.meta.env.VITE_EMBED1_URL}/v2/embed/tv/${tmdbId}/${props.tvSeason}/${props.tvEp}?autoPlay=false`;
       }
       break;
     case ServerName.embed2:
       if (props.type === "movie") {
-        src = `https://vidsrc.xyz/embed/movie?tmdb=${tmdbId}`;
+        src = `${import.meta.env.VITE_EMBED2_URL}/embed/movie?tmdb=${tmdbId}`;
       } else {
-        src = `https://vidsrc.xyz/embed/tv?tmdb=${tmdbId}&season=${props.tvSeason}&episode=${props.tvEp}`;
+        src = `${import.meta.env.VITE_EMBED2_URL}/embed/tv?tmdb=${tmdbId}&season=${props.tvSeason}&episode=${props.tvEp}`;
       }
       break;
   }
