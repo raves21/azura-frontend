@@ -18,6 +18,8 @@ import { useShallow } from "zustand/react/shallow";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
+import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 
 export default function FindAccountForm() {
   const navigate = useNavigate();
@@ -39,17 +41,34 @@ export default function FindAccountForm() {
   const { mutateAsync: findUserByEmail, isPending: isFindingUserByEmail } =
     useFindUserByEmail();
 
-  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC({});
+  const uniqueMutationKey = useUniqueMutationKeyStore(
+    (state) => state.uniqueMutationKey
+  );
+
+  const { mutateAsync: sendOTC, isPending: isSendingOTC } = useSendOTC({
+    key: `findAccountSendOTC-${uniqueMutationKey}`,
+  });
 
   async function onSubmit(values: FindAccountFormData) {
     try {
       const foundUser = await findUserByEmail({ email: values.email.trim() });
-      await sendOTC(foundUser.email);
-      setFindAccountFoundUser(foundUser);
-      setForgotPasswordStep(ForgotPasswordStep.VERIFY_EMAIL);
-      navigate({
-        to: "/login/forgot-password/verify-email",
-      });
+      toggleOpenDialog(
+        <AsyncConfirmationDialog
+          header="Account found."
+          message={`Account with email "${foundUser.email}" found. Do you want to proceed on changing this account's password?`}
+          confirmAction={() => sendOTC(foundUser.email)}
+          mutationKey={[`findAccountSendOTC-${uniqueMutationKey}`]}
+          confirmActionName="Proceed"
+          confirmButtonColorMainAccent={true}
+          afterConfirmSuccessAction={() => {
+            setFindAccountFoundUser(foundUser);
+            setForgotPasswordStep(ForgotPasswordStep.VERIFY_EMAIL);
+            navigate({
+              to: "/login/forgot-password/verify-email",
+            });
+          }}
+        />
+      );
     } catch (error) {
       toggleOpenDialog(<ErrorDialog error={error} />);
     }
