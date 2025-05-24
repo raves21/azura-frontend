@@ -2,6 +2,7 @@ import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
 import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
 import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
+import { useToast } from "@/components/ui/use-toast";
 import { useEditPostComment } from "@/services/social/queries/socialQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TPostComment } from "@/utils/types/social/social";
@@ -27,6 +28,8 @@ export default function EditPostCommentDialog({ comment }: Props) {
   const { mutateAsync: editComment, isPending: isEditingComment } =
     useEditPostComment(comment.id);
 
+  const { toast } = useToast();
+
   async function onSubmit(updatedComment: string) {
     try {
       if (comment.content !== updatedComment) {
@@ -35,6 +38,7 @@ export default function EditPostCommentDialog({ comment }: Props) {
           postId: comment.postId,
           content: updatedComment.trim(),
         });
+        toast({ description: "Successfully edited comment." });
       }
       toggleOpenDialog(null);
     } catch (error) {

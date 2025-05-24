@@ -12,6 +12,7 @@ import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog
 import EditPostCommentDialog from "./EditPostCommentDialog";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { Navigate } from "@tanstack/react-router";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   comment: TPostComment;
@@ -19,6 +20,8 @@ type Props = {
 
 export default function PostCommentOptionsDropdown({ comment }: Props) {
   const { mutateAsync: deleteComment } = useDeletePostComment(comment.id);
+
+  const { toast } = useToast();
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
@@ -62,6 +65,9 @@ export default function PostCommentOptionsDropdown({ comment }: Props) {
                     commentId: comment.id,
                     postId: comment.postId,
                   })
+                }
+                afterConfirmSuccessAction={() =>
+                  toast({ description: "Successfully deleted comment." })
                 }
                 confirmActionName="Delete"
                 header="Delete this comment?"
