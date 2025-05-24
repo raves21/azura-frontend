@@ -2,6 +2,7 @@ import { useDiscoverPeople } from "@/services/social/queries/socialQueries";
 import UserListItem from "../../shared/UserListItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Fragment } from "react/jsx-runtime";
+import { Link } from "@tanstack/react-router";
 
 export default function DiscoverPeople() {
   const {
@@ -62,7 +63,7 @@ export default function DiscoverPeople() {
             <div className="space-y-2">
               {discoverPeople.pages.map((page) => (
                 <Fragment key={page.page}>
-                  {page.data.map((userPreview) => (
+                  {page.data.slice(0, 5).map((userPreview) => (
                     <UserListItem
                       isDiscoverPeopleSection={true}
                       key={userPreview.id}
@@ -79,9 +80,12 @@ export default function DiscoverPeople() {
                 </Fragment>
               ))}
             </div>
-            <button className="w-full py-4 text-blue-500 rounded-bl-lg rounded-br-lg hover:bg-socialPrimaryHover">
+            <Link
+              to="/social/discover-people"
+              className="text-center w-full py-4 text-blue-500 rounded-bl-lg rounded-br-lg hover:bg-socialPrimaryHover"
+            >
               Show More
-            </button>
+            </Link>
           </>
         )}
       </div>
