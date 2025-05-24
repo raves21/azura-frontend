@@ -11,6 +11,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import ManagePostDialog from "./managePost/managePostDialog/ManagePostDialog";
 import { useMatchRoute, useRouter } from "@tanstack/react-router";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   post: TPost;
@@ -24,6 +25,7 @@ export default function PostOptionsDropdown({ post }: Props) {
   const isPostInfoPage = matchRoute({
     to: "/social/$userHandle/posts/$postId",
   });
+  const { toast } = useToast();
 
   const router = useRouter();
 
@@ -65,6 +67,7 @@ export default function PostOptionsDropdown({ post }: Props) {
                 header="Delete this post?"
                 message="This will delete this post permanently. You cannot undo this action."
                 afterConfirmSuccessAction={() => {
+                  toast({ description: "Successfully deleted post." });
                   if (isPostInfoPage) {
                     router.history.back();
                   }

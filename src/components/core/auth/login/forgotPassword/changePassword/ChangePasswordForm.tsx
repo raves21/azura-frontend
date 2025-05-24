@@ -21,6 +21,7 @@ import { ForgotPasswordStep, UserBasicInfo } from "@/utils/types/auth/auth";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   afterSubmitSuccessAction: (values: ChangePasswordFormData) => void;
@@ -60,6 +61,8 @@ export default function ChangePasswordForm({
     },
   });
 
+  const { toast } = useToast();
+
   async function onSubmit(values: ChangePasswordFormData) {
     try {
       if (type === "forgotPassword") {
@@ -69,6 +72,7 @@ export default function ChangePasswordForm({
         });
       } else {
         await changePassword({ newPassword: values.newPassword });
+        toast({ description: "Successfully changed password." });
       }
       afterSubmitSuccessAction(values);
     } catch (error) {

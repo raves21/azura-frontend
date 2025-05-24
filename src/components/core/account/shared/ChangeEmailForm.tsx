@@ -18,6 +18,7 @@ import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfir
 import { useSendOTC } from "@/services/auth/authQueries";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { useShallow } from "zustand/react/shallow";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ChangeEmailForm() {
   const navigate = useNavigate();
@@ -40,6 +41,8 @@ export default function ChangeEmailForm() {
     },
   });
 
+  const { toast } = useToast();
+
   async function onSubmit(values: ChangeEmailFormData) {
     toggleOpenDialog(
       <AsyncConfirmationDialog
@@ -47,6 +50,7 @@ export default function ChangeEmailForm() {
         afterConfirmSuccessAction={() => {
           setNewEmail(values.email);
           setChangeEmailStep("verifyEmail");
+          toast({ description: "Successfully changed email." });
           navigate({ to: "/account/change-email/verify-email" });
         }}
         header="Confirm Email change"

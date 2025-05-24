@@ -23,7 +23,7 @@ export default function SocialFloatingActionButton() {
             setIsActive(false);
             setAnimationStatus("exit");
           }}
-          className="fixed h-dvh w-dvw z-[1000] bg-black/40"
+          className="fixed h-dvh w-dvw z-[1000] bg-black/60"
         />
       )}
       <div

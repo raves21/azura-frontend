@@ -23,6 +23,7 @@ import {
 import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
 import { cn } from "@/lib/utils";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ChangeHandleForm() {
   const navigate = useNavigate();
@@ -47,6 +48,8 @@ export default function ChangeHandleForm() {
     },
   });
 
+  const { toast } = useToast();
+
   async function onSubmit(values: ChangeHandleFormData) {
     try {
       await verifyHandle(values.handle);
@@ -64,6 +67,7 @@ export default function ChangeHandleForm() {
               ...currentUser,
               handle: values.handle,
             });
+            toast({ description: "Successfully changed handle." });
             navigate({ to: "/account", replace: true });
           }}
         />

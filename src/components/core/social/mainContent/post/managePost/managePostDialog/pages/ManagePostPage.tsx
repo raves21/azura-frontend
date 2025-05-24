@@ -34,6 +34,7 @@ import MediaAttachmentPreview from "../postAttachment/mediaAttachment/MediaAttac
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { UserBasicInfo } from "@/utils/types/auth/auth";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
+import { useToast } from "@/components/ui/use-toast";
 
 type EditPostProps = {
   type: "edit";
@@ -78,6 +79,7 @@ export default function ManagePostPage({ ...props }: Props) {
 
   const { mutateAsync: createPost, status: createPostStatus } = useCreatePost();
   const { mutateAsync: editPost, status: editPostStatus } = useEditPost();
+  const { toast } = useToast();
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
@@ -107,6 +109,9 @@ export default function ManagePostPage({ ...props }: Props) {
         privacy: selectedPrivacy,
         currentUserHandle: currentUser.handle,
       });
+      toast({
+        description: "Successfully created post.",
+      });
       toggleOpenDialog(null);
     } catch (error) {
       replaceDialogContent({
@@ -130,6 +135,9 @@ export default function ManagePostPage({ ...props }: Props) {
       await editPost({
         ...editedPost,
         content: content?.trim() || null,
+      });
+      toast({
+        description: "Successfully edited post.",
       });
       toggleOpenDialog(null);
     } catch (error) {
@@ -177,7 +185,7 @@ export default function ManagePostPage({ ...props }: Props) {
         </div>
       </div>
       <Textarea
-        value={content || undefined}
+        value={content || ""}
         onChange={(e) => setContent(e.currentTarget.value)}
         disabled={
           createPostStatus === "pending" || editPostStatus === "pending"

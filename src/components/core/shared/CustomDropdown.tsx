@@ -14,6 +14,7 @@ type Props<T> = {
   menuItemClassName?: string;
   dropdownTriggerClassName?: string;
   showMenuContentBorder?: boolean;
+  fitMenuContent?: boolean;
 };
 
 export default function CustomDropdown<T>({
@@ -26,6 +27,7 @@ export default function CustomDropdown<T>({
   menuItemClassName,
   menuContentMaxHeight,
   showMenuContentBorder,
+  fitMenuContent = false,
 }: Props<T>) {
   const dropdownMenuListRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -81,6 +83,7 @@ export default function CustomDropdown<T>({
         }}
         className={cn(
           "absolute z-40 overflow-x-hidden top-[50px] right-0 rounded-lg bg-black overflow-y-auto",
+          { "w-full": !fitMenuContent },
           { "hide-scrollbar": dropdownMenuListHeight! < menuContentMaxHeight },
           { "border border-gray-400": isOpen && showMenuContentBorder },
           menuContentClassName

@@ -5,6 +5,7 @@ import GlobalDrawer from "@/components/global/GlobalDrawer";
 import GlobalDialogSecondary from "@/components/global/GlobalDialogSecondary";
 import MediaPortal from "@/components/global/mediaPortal/MediaPortal";
 import SocialFloatingActionButton from "@/components/core/social/shared/socialFAB/SocialFloatingActionButton";
+import { Toaster } from "@/components/ui/toaster";
 
 export const Route = createRootRoute({
   component: () => <RootRoute />,
@@ -17,6 +18,7 @@ function RootRoute() {
   return (
     <>
       {isSocialRoute && <SocialFloatingActionButton />}
+      <Toaster />
       <MediaPortal />
       <GlobalDialog />
       <GlobalDialogSecondary />

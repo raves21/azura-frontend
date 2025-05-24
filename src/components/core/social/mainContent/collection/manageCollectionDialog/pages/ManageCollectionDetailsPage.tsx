@@ -14,6 +14,7 @@ import CollectionPhoto from "../../CollectionPhoto";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";
 import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
 import { Textarea } from "@headlessui/react";
+import { useToast } from "@/components/ui/use-toast";
 
 type EditPostProps = {
   type: "edit";
@@ -60,12 +61,14 @@ export default function ManageCollectionDetailsPage({
     ])
   );
 
+  const { toast } = useToast();
+
   const { mutateAsync: createCollection, status: createCollectionStatus } =
     useCreateCollection();
   const { mutateAsync: editCollection, status: editCollectionStatus } =
     useEditCollection();
 
-  async function comment() {
+  async function create() {
     try {
       await createCollection({
         description: collectionDescription,
@@ -73,6 +76,7 @@ export default function ManageCollectionDetailsPage({
         privacy: selectedPrivacy,
         photo: collectionPhoto,
       });
+      toast({ description: "Successfully created collection." });
       closeDialog();
     } catch (error) {
       <ErrorDialog
@@ -86,6 +90,7 @@ export default function ManageCollectionDetailsPage({
     try {
       if (!editCollectionNoChanges) {
         await editCollection(editedCollection);
+        toast({ description: "Successfully edited collection." });
       }
       closeDialog();
     } catch (error) {
@@ -118,7 +123,7 @@ export default function ManageCollectionDetailsPage({
 
   return (
     <div className="flex flex-col px-4 size-full">
-      <div className="flex flex-col items-center md:items-stretch md:flex-row w-full gap-8 md:gap-3 h-[70%] my-auto">
+      <div className="overflow-y-auto flex flex-col items-center md:items-stretch md:flex-row w-full gap-8 md:gap-3 h-[70%] my-auto">
         <div className="relative grid md:w-1/2 rounded-md size-52 md:size-auto aspect-square place-items-center">
           {props.type === "edit" && !collectionPhoto ? (
             props.collectionToEdit.photo ? (
@@ -190,16 +195,16 @@ export default function ManageCollectionDetailsPage({
             <ChevronDown className="size-4 stroke-mainWhite" />
           </button>
           <Textarea
-            value={collectionDescription || undefined}
+            value={collectionDescription || ""}
             onChange={(e) => setCollectionDescription(e.currentTarget.value)}
             placeholder="Add an optional description"
-            className="flex-grow w-full bg-transparent border-[0.5px] border-socialTextSecondary p-3 focus:outline-none rounded-md"
+            className="h-[160px] resize-none md:h-auto md:flex-grow w-full bg-transparent border-[0.5px] border-socialTextSecondary p-3 focus:outline-none rounded-md"
           />
         </div>
       </div>
       {props.type === "create" ? (
         <button
-          onClick={comment}
+          onClick={create}
           disabled={!collectionName || createCollectionStatus === "pending"}
           className="grid py-2 mb-4 font-semibold transition-colors disabled:bg-gray-700 disabled:text-socialTextSecondary bg-mainAccent rounded-xl place-items-center text-mainWhite"
         >

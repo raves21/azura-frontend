@@ -46,6 +46,7 @@ export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
       return v.data;
     } else {
       //if search params validation fails, provide defaults (season 1, episode 1).
+      //todo: default server
       return { tvEp: 1, tvSeason: 1, server: ServerName.azuraMain };
     }
   },
@@ -143,7 +144,7 @@ function WatchTVEpisodePage() {
         videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height
       );
     }
-  }, [mediaScraperData, tvInfo, windowWidth, tvSeasonEpisodes]);
+  }, [mediaScraperData, tvInfo, windowWidth, tvSeasonEpisodesQuery]);
 
   if (
     isMediaScraperLoading &&

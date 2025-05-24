@@ -9,6 +9,7 @@ import { UserSession } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
 import AsyncConfirmationDialog from "../../confirmationDialog/AsyncConfirmationDialog";
 import ErrorDialog from "../../ErrorDialog";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   session: UserSession;
@@ -27,6 +28,7 @@ export default function AccountSettingSession({ session, className }: Props) {
   const { mutateAsync: logoutSession } = useAccountSettingLogoutSession({
     key: `logoutSession-${uniqueMutationKey}`,
   });
+  const { toast } = useToast();
 
   return (
     <tr className={cn("border-gray-700", className)}>
@@ -52,6 +54,9 @@ export default function AccountSettingSession({ session, className }: Props) {
                           confirmAction={async () => {
                             try {
                               await logoutSession(session.id);
+                              toast({
+                                description: "Successfully logged out session.",
+                              });
                             } catch (error) {
                               replaceDialogContent({
                                 content: <ErrorDialog error={error} />,

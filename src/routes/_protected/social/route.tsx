@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_protected/social")({
 
 function SocialPageLayout() {
   const matchRoute = useMatchRoute();
-  const { isDesktopMediumUp, isDesktopSmallUp } = useWindowBreakpoints();
+  const { isDesktopMediumUp, isTabletUp } = useWindowBreakpoints();
 
   return (
     <main className="relative text-sm pb-10 flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
@@ -27,8 +27,8 @@ function SocialPageLayout() {
       <div className="w-full md:w-[68%] xl:w-[50%]">
         <Outlet />
       </div>
-      <div className="flex-1 hidden overflow-y-auto rounded-xl md:block lg:flex lg:flex-col lg:gap-4">
-        {isDesktopSmallUp &&
+      <div className="flex-1 hidden overflow-y-auto rounded-xl md:flex md:flex-col md:gap-4">
+        {isTabletUp &&
           !isDesktopMediumUp &&
           !matchRoute({ to: "/social/$userHandle" }) &&
           !matchRoute({

@@ -18,6 +18,7 @@ import {
   useState,
 } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   media: Media;
@@ -49,6 +50,8 @@ const AddToCollectionButton = forwardRef<HTMLButtonElement, Props>(
     const { isTabletUp } = useWindowBreakpoints();
     const [buttonContent, setButtonContent] = useState<ReactNode | null>(null);
     const { data: currentUser } = useCurrentUser();
+
+    const { toast } = useToast();
 
     const alreadyExistsInCollection =
       mediaExistenceInCollection &&

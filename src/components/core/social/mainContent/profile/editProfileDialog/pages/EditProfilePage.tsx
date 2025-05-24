@@ -9,6 +9,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Textarea } from "@headlessui/react";
 import { isEqual } from "radash";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   avatar: string | null;
@@ -54,6 +55,8 @@ export default function EditProfilePage({
       state.setEditProfileBio,
     ])
   );
+
+  const { toast } = useToast();
 
   const { mutateAsync: editProfile, status: editProfileStatus } =
     useEditUserProfile();
@@ -104,6 +107,7 @@ export default function EditProfilePage({
         bio: editProfileBio?.trim() || null,
         username: editProfileUsername,
       });
+      toast({ description: "Successfully updated profile." });
       toggleOpenDialog(null);
     } catch (error) {
       toggleOpenDialogSecondary(
@@ -199,10 +203,10 @@ export default function EditProfilePage({
               </p>
             </div>
             <Textarea
-              value={editProfileBio || undefined}
+              value={editProfileBio || ""}
               onChange={(e) => setEditProfileBio(e.currentTarget.value)}
               placeholder="eg. Artist, dog-lover, Azura #1 fan"
-              className="w-full focus:outline-none h-[165px] rounded-md bg-transparent border-[0.5px] p-3 border-socialTextSecondary"
+              className="w-full focus:outline-none h-[165px] resize-none rounded-md bg-transparent border-[0.5px] p-3 border-socialTextSecondary"
             />
           </div>
         </div>

@@ -22,7 +22,11 @@ export default function CreatePost() {
         imageClassName="md:size-11"
       />
       <button
-        onClick={() => toggleOpenDialog(<ManagePostDialog type="create" />)}
+        onClick={() =>
+          toggleOpenDialog(
+            <ManagePostDialog type="create" resetStateOnMount={true} />
+          )
+        }
         className="flex-grow py-2 mobile-m:text-base px-3 md:p-3 rounded-lg bg-gray-800 hover:bg-[#323b4a] text-start"
       >
         <p className="line-clamp-2">
