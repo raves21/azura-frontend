@@ -31,7 +31,7 @@ export default function CollectionAttachmentPreview({ collection }: Props) {
           isSecondaryDialog: true,
         })
       }
-      className="relative hover:cursor-pointer hover:border-mainAccent transition-colors duration-300 text-start rounded-lg w-[55%] flex gap-3 p-3 border-[0.5px] border-socialTextSecondary"
+      className="relative hover:border-mainAccent text-start rounded-lg w-[80%] mobile-l:w-[70%] sm:w-[55%] flex items-center gap-3 p-3 border-[0.5px] border-socialTextSecondary"
     >
       <div className="rounded-md bg-blue-500 px-2 py-1 flex items-center gap-1 absolute -top-[14px] -right-4">
         <LibraryBig className="stroke-mainWhite size-3" />

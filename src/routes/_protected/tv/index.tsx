@@ -63,6 +63,17 @@ function TVHomePage() {
             renderCarouselItems={(tv, i) => (
               <TrendingHeroCarouselItem
                 key={i}
+                media={{
+                  id: tv.id.toString(),
+                  type: "TV",
+                  coverImage: getTMDBImageURL(tv.backdrop_path),
+                  description: tv.overview || null,
+                  posterImage: getTMDBImageURL(tv.poster_path),
+                  rating: tv.vote_average?.toString() ?? null,
+                  status: null,
+                  title: tv.name,
+                  year: getTMDBReleaseYear(tv.first_air_date),
+                }}
                 backgroundImage={getTMDBImageURL(tv.backdrop_path)}
                 posterImage={getTMDBImageURL(tv.poster_path)}
                 description={tv.overview}

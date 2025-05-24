@@ -7,11 +7,13 @@ import { Media } from "@/utils/types/social/social";
 type Props = {
   media: Media;
   className?: string;
+  labelClassName?: string;
 };
 
 export default function ToggleMediaToCollectionButton({
   className,
   media,
+  labelClassName,
 }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
@@ -26,7 +28,9 @@ export default function ToggleMediaToCollectionButton({
       )}
     >
       <Bookmark size={20} />
-      <p className="hidden font-medium mobile-m:block">Collections</p>
+      <p className={cn("hidden font-medium mobile-m:block", labelClassName)}>
+        Collections
+      </p>
     </button>
   );
 }

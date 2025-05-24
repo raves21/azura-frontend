@@ -1,6 +1,8 @@
 import { LinkProps, useNavigate } from "@tanstack/react-router";
-import { Bookmark, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { CarouselItem } from "@/components/ui/custom-carousel";
+import ToggleMediaToCollectionButton from "../toggleMediaToCollection/ToggleMediaToCollectionButton";
+import { Media } from "@/utils/types/social/social";
 
 type Props = {
   posterImage: string;
@@ -9,6 +11,7 @@ type Props = {
   description: string;
   trendingRank: number;
   toInfoPageLinkProps: LinkProps;
+  media: Media;
 };
 
 export default function TrendingHeroCarouselItem({
@@ -18,6 +21,7 @@ export default function TrendingHeroCarouselItem({
   description,
   toInfoPageLinkProps,
   trendingRank,
+  media,
 }: Props) {
   const navigate = useNavigate();
 
@@ -53,12 +57,11 @@ export default function TrendingHeroCarouselItem({
                     <Play size={20} />
                     <p className="text-sm font-medium sm:text-base">Play Now</p>
                   </button>
-                  <button className="hover:scale-[1.02] transition-transform duration-200 flex items-center gap-1 px-3 py-2 bg-black rounded-full sm:gap-2 mobile-l:px-4 sm:px-5">
-                    <Bookmark size={20} />
-                    <p className="text-sm font-medium sm:text-base">
-                      Collection
-                    </p>
-                  </button>
+                  <ToggleMediaToCollectionButton
+                    media={media}
+                    className="flex items-center gap-1 px-3 py-2 transition-transform duration-200 rounded-full sm:gap-2 mobile-l:px-4 sm:px-5 bg-black hover:scale-[1.02]"
+                    labelClassName="text-sm font-medium sm:text-base block"
+                  />
                 </div>
               </div>
             </div>

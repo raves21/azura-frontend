@@ -71,6 +71,20 @@ function AnimeHomePage() {
             renderCarouselItems={(anime, i) => (
               <TrendingHeroCarouselItem
                 key={i}
+                media={{
+                  id: anime.id,
+                  type: "ANIME",
+                  coverImage: anime.cover ?? null,
+                  description: anime.description ?? null,
+                  posterImage: anime.image ?? null,
+                  rating: anime.rating?.toString() ?? null,
+                  status: status ?? null,
+                  title:
+                    anime.title.english ||
+                    anime.title.native ||
+                    anime.title.romaji,
+                  year: anime.releaseDate?.toString() ?? null,
+                }}
                 backgroundImage={anime.cover}
                 posterImage={anime.image}
                 description={anime.description}

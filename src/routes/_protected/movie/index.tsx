@@ -67,6 +67,17 @@ function MovieHomePage() {
             renderCarouselItems={(movie, i) => (
               <TrendingHeroCarouselItem
                 key={i}
+                media={{
+                  id: movie.id.toString(),
+                  type: "MOVIE",
+                  coverImage: getTMDBImageURL(movie.backdrop_path),
+                  description: movie.overview || null,
+                  posterImage: getTMDBImageURL(movie.poster_path),
+                  rating: movie.vote_average.toString() || null,
+                  status: null,
+                  title: movie.title || "",
+                  year: getTMDBReleaseYear(movie.release_date),
+                }}
                 backgroundImage={getTMDBImageURL(movie.backdrop_path)}
                 posterImage={getTMDBImageURL(movie.poster_path)}
                 description={movie.overview}

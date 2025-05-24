@@ -11,7 +11,6 @@ import {
   Globe,
   ChevronDown,
   Paperclip,
-  Smile,
   Users,
   Lock,
   Film,
@@ -35,6 +34,7 @@ import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { UserBasicInfo } from "@/utils/types/auth/auth";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import { useToast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
 
 type EditPostProps = {
   type: "edit";
@@ -67,6 +67,12 @@ export default function ManagePostPage({ ...props }: Props) {
       state.setContent,
     ])
   );
+
+  useEffect(() => {
+    if (props.type === "create") {
+      setContent(null);
+    }
+  }, []);
 
   const { inputRef } = useFocusInput({});
 
@@ -235,7 +241,6 @@ export default function ManagePostPage({ ...props }: Props) {
             </MenuItems>
           </Menu>
         )}
-        <Smile className="box-content self-start p-2 transition-colors stroke-socialTextSecondary size-7 hover:cursor-pointer hover:stroke-mainAccent" />
       </div>
       {props.type === "create" ? (
         <button
