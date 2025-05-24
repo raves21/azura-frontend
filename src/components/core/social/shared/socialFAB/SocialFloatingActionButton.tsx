@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useMatchRoute } from "@tanstack/react-router";
 import { Navigation2, X } from "lucide-react";
 import { useState } from "react";
-import SocialFloatingActionButtonOptions from "./SocialFloatingActionButtonOptions";
+import SocialFabOptions from "./SocialFabOptions";
 
 export default function SocialFloatingActionButton() {
   const matchRoute = useMatchRoute();
@@ -50,7 +50,7 @@ export default function SocialFloatingActionButton() {
             <Navigation2 className="stroke-mainWhite size-5" />
           )}
         </button>
-        <SocialFloatingActionButtonOptions
+        <SocialFabOptions
           isActive={isActive}
           setIsActive={setIsActive}
           animationStatus={animationStatus}

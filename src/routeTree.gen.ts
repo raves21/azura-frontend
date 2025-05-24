@@ -35,6 +35,7 @@ import { Route as ProtectedTvCatalogIndexImport } from './routes/_protected/tv/c
 import { Route as ProtectedTvTvIdIndexImport } from './routes/_protected/tv/$tvId/index'
 import { Route as ProtectedSocialSearchIndexImport } from './routes/_protected/social/search/index'
 import { Route as ProtectedSocialNotificationsIndexImport } from './routes/_protected/social/notifications/index'
+import { Route as ProtectedSocialDiscoverPeopleIndexImport } from './routes/_protected/social/discover-people/index'
 import { Route as ProtectedSocialUserHandleIndexImport } from './routes/_protected/social/$userHandle/index'
 import { Route as ProtectedMovieCatalogIndexImport } from './routes/_protected/movie/catalog/index'
 import { Route as ProtectedMovieMovieIdIndexImport } from './routes/_protected/movie/$movieId/index'
@@ -190,6 +191,12 @@ const ProtectedSocialSearchIndexRoute = ProtectedSocialSearchIndexImport.update(
 const ProtectedSocialNotificationsIndexRoute =
   ProtectedSocialNotificationsIndexImport.update({
     path: '/notifications/',
+    getParentRoute: () => ProtectedSocialRouteRoute,
+  } as any)
+
+const ProtectedSocialDiscoverPeopleIndexRoute =
+  ProtectedSocialDiscoverPeopleIndexImport.update({
+    path: '/discover-people/',
     getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
@@ -557,6 +564,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSocialUserHandleIndexImport
       parentRoute: typeof ProtectedSocialUserHandleRouteImport
     }
+    '/_protected/social/discover-people/': {
+      id: '/_protected/social/discover-people/'
+      path: '/discover-people'
+      fullPath: '/social/discover-people'
+      preLoaderRoute: typeof ProtectedSocialDiscoverPeopleIndexImport
+      parentRoute: typeof ProtectedSocialRouteImport
+    }
     '/_protected/social/notifications/': {
       id: '/_protected/social/notifications/'
       path: '/notifications'
@@ -783,6 +797,7 @@ export const routeTree = rootRoute.addChildren({
           ProtectedSocialSearchPostsIndexRoute,
         }),
       ProtectedSocialIndexRoute,
+      ProtectedSocialDiscoverPeopleIndexRoute,
       ProtectedSocialNotificationsIndexRoute,
       ProtectedSocialUserHandleFollowersIndexRoute,
       ProtectedSocialUserHandleFollowingIndexRoute,
@@ -879,6 +894,7 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/social/$userHandle",
         "/_protected/social/search",
         "/_protected/social/",
+        "/_protected/social/discover-people/",
         "/_protected/social/notifications/",
         "/_protected/social/$userHandle/followers/",
         "/_protected/social/$userHandle/following/",
@@ -994,6 +1010,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/social/$userHandle/": {
       "filePath": "_protected/social/$userHandle/index.tsx",
       "parent": "/_protected/social/$userHandle"
+    },
+    "/_protected/social/discover-people/": {
+      "filePath": "_protected/social/discover-people/index.tsx",
+      "parent": "/_protected/social"
     },
     "/_protected/social/notifications/": {
       "filePath": "_protected/social/notifications/index.tsx",
