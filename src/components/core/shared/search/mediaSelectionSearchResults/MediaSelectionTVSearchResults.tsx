@@ -19,7 +19,6 @@ type Props = {
 };
 
 export default function MediaSelectionTVSearchResults({ query, type }: Props) {
-  //todo: use infinite scrolling
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,

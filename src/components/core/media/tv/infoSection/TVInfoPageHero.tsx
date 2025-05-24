@@ -52,6 +52,10 @@ export default function TVInfoPageHero({
     }
   }, [tvSeasonEpisodes]);
 
+  const defaultTVMovieServer = localStorage.getItem(
+    "defaultTVMovieServer"
+  ) as ServerName;
+
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
       <InfoSectionBackgroundImage image={cover ?? image} variant="infoPage" />
@@ -94,8 +98,7 @@ export default function TVInfoPageHero({
                   search: {
                     tvEp: 1,
                     tvSeason: 1,
-                    //todo: set default in localstorage
-                    server: ServerName.azuraMain,
+                    server: defaultTVMovieServer || ServerName.embed1,
                   },
                 });
               }}

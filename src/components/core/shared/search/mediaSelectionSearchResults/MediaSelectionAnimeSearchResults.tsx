@@ -21,7 +21,6 @@ export default function MediaSelectionAnimeSearchResults({
   query,
   type,
 }: Props) {
-  //todo: use infinite scrolling
   const {
     data: searchResults,
     isLoading: isSearchResultsLoading,

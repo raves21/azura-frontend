@@ -37,7 +37,10 @@ export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
     if (validated.success) {
       return validated.data;
     }
-    return { server: ServerName.azuraMain };
+    const defaultTVMovieServer = localStorage.getItem(
+      "defaultTVMovieServer"
+    ) as ServerName;
+    return { server: defaultTVMovieServer || ServerName.embed1 };
   },
 });
 

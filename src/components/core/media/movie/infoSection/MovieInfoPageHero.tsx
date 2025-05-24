@@ -40,6 +40,10 @@ export default function MovieInfoPageHero({
 }: Props) {
   const navigate = useNavigate();
 
+  const defaultTVMovieServer = localStorage.getItem(
+    "defaultTVMovieServer"
+  ) as ServerName;
+
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
       <InfoSectionBackgroundImage image={cover ?? image} variant="infoPage" />
@@ -76,8 +80,7 @@ export default function MovieInfoPageHero({
                   to: "/movie/$movieId/watch",
                   params: { movieId },
                   search: {
-                    //todo: set default server in localstorage
-                    server: ServerName.azuraMain,
+                    server: defaultTVMovieServer || ServerName.embed1,
                   },
                 });
               }}

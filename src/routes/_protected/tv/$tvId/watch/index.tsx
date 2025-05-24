@@ -45,9 +45,15 @@ export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
     if (v.success) {
       return v.data;
     } else {
+      const defaultTVMovieServer = localStorage.getItem(
+        "defaultTVMovieServer"
+      ) as ServerName;
       //if search params validation fails, provide defaults (season 1, episode 1).
-      //todo: default server
-      return { tvEp: 1, tvSeason: 1, server: ServerName.azuraMain };
+      return {
+        tvEp: 1,
+        tvSeason: 1,
+        server: defaultTVMovieServer || ServerName.embed1,
+      };
     }
   },
 });
