@@ -2,9 +2,9 @@ import { TPostInfo } from "@/utils/types/social/social";
 import PostActions from "../PostActions";
 import PostLikersPreview from "./postLikers/PostLikersPreview";
 import PostWithAttachment from "../postContent/PostWithAttachment";
-import ActivityHeader from "../../activity/ActivityHeader";
 import { useParams } from "@tanstack/react-router";
 import ActivityContentRenderer from "../../activity/ActivityContentRenderer";
+import PostHeader from "../PostHeader";
 
 type Props = {
   post: TPostInfo;
@@ -18,8 +18,7 @@ export default function PostInfo({ post }: Props) {
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex w-full gap-4">
-        <ActivityHeader
-          type="post"
+        <PostHeader
           post={post}
           linkProps={{
             to: "/social/$userHandle",

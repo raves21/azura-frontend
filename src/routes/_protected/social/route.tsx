@@ -3,6 +3,7 @@ import FloatingCreateCommentBar from "@/components/core/social/mainContent/post/
 import FollowSuggestions from "@/components/core/social/profilePreviewAndDiscoverPeople/discoverPeople/DiscoverPeople";
 import ProfilePreview from "@/components/core/social/profilePreviewAndDiscoverPeople/profilePreview/ProfilePreview";
 import Trending from "@/components/core/social/trending/Trending";
+import { cn } from "@/lib/utils";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 
@@ -12,7 +13,8 @@ export const Route = createFileRoute("/_protected/social")({
 
 function SocialPageLayout() {
   const matchRoute = useMatchRoute();
-  const { isDesktopMediumUp, isTabletUp } = useWindowBreakpoints();
+  const { isDesktopMediumUp, isTabletUp, isDesktopSmallUp } =
+    useWindowBreakpoints();
 
   return (
     <main className="relative text-sm pb-10 flex justify-center gap-3 pt-[75px] sm:pt-[105px] text-mainWhite">
@@ -27,7 +29,12 @@ function SocialPageLayout() {
       <div className="w-full md:w-[68%] xl:w-[50%]">
         <Outlet />
       </div>
-      <div className="flex-1 hidden overflow-y-auto rounded-xl md:flex md:flex-col md:gap-4">
+      <div
+        className={cn(
+          "flex-1 hidden overflow-y-auto rounded-xl md:flex md:flex-col md:gap-4",
+          { "mb-[300px]": isTabletUp && !isDesktopSmallUp }
+        )}
+      >
         {isTabletUp &&
           !isDesktopMediumUp &&
           !matchRoute({ to: "/social/$userHandle" }) &&

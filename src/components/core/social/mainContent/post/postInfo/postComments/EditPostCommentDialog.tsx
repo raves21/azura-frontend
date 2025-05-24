@@ -65,6 +65,7 @@ export default function EditPostCommentDialog({ comment }: Props) {
         className="flex-grow flex flex-col p-4"
       >
         <Textarea
+          maxLength={150}
           value={editCommentText}
           disabled={isEditingComment}
           onChange={(e) => setEditCommentText(e.target.value)}

@@ -45,13 +45,13 @@ export default function ActivityContentRenderer({
         //         navigate({
         //           to: "/social/$userHandle",
         //           params: {
-        //             userHandle: "geromepenalosa",
+        //             userHandle: "johndoe",
         //           },
         //         });
         //       }}
         //       className="text-blue-500 hover:underline underline-offset-2 decoration-blue-500"
         //     >
-        //       @geromepenalosa
+        //       @johndoe
         //     </button>
         //   );
         // }

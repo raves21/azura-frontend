@@ -1,53 +1,25 @@
 import { cn } from "@/lib/utils";
-import { Circle, Users, Globe, Lock } from "lucide-react";
-import { useState } from "react";
+import { Users, Globe, Circle, Lock } from "lucide-react";
 import UserAvatar from "../../shared/UserAvatar";
-import { useCurrentUser } from "@/services/auth/authQueries";
-import {
-  LinkProps,
-  Navigate,
-  useMatchRoute,
-  Link,
-} from "@tanstack/react-router";
-import { TPost, TPostComment } from "@/utils/types/social/social";
-import PostOptionsDropdown from "../post/PostOptionsDropdown";
+import PostOptionsDropdown from "./PostOptionsDropdown";
+import { LinkProps, Navigate, useMatchRoute } from "@tanstack/react-router";
+import { TPost } from "@/utils/types/social/social";
+import { Link } from "@tanstack/react-router";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
-import PostCommentOptionsDropdown from "../post/postInfo/postComments/PostCommentOptionsDropdown";
-
-type PostProps = {
-  type: "post";
-  post: TPost;
-};
-
-type CommentProps = {
-  type: "comment";
-  comment: TPostComment;
-};
+import { useState } from "react";
+import { useCurrentUser } from "@/services/auth/authQueries";
 
 type Props = {
   className?: string;
   linkProps: LinkProps;
-} & (PostProps | CommentProps);
+  post: TPost;
+};
 
-export default function ActivityHeader({
-  className,
-  linkProps,
-  ...props
-}: Props) {
-  const avatar =
-    props.type === "post"
-      ? props.post.owner.avatar
-      : props.comment.author.avatar;
-  const username =
-    props.type === "post"
-      ? props.post.owner.username
-      : props.comment.author.username;
-  const handle =
-    props.type === "post"
-      ? props.post.owner.handle
-      : props.comment.author.handle;
-  const createdAt =
-    props.type === "post" ? props.post.createdAt : props.comment.createdAt;
+export default function PostHeader({ className, post, linkProps }: Props) {
+  const avatar = post.owner.avatar;
+  const username = post.owner.username;
+  const handle = post.owner.handle;
+  const createdAt = post.createdAt;
 
   const matchRoute = useMatchRoute();
   const isPostInfoPage = matchRoute({
@@ -89,14 +61,14 @@ export default function ActivityHeader({
           <p className="text-gray-500">@{handle}</p>
         </div>
         <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1 sm:mt-0">
-          {isPostInfoPage && props.type === "post" && (
+          {isPostInfoPage && (
             <>
               <div
                 onMouseEnter={() => setIsPrivacyHovered(true)}
                 onMouseLeave={() => setIsPrivacyHovered(false)}
                 className="relative"
               >
-                {props.post.privacy === "FRIENDS_ONLY" && (
+                {post.privacy === "FRIENDS_ONLY" && (
                   <>
                     <Users className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
@@ -111,7 +83,7 @@ export default function ActivityHeader({
                     </p>
                   </>
                 )}
-                {props.post.privacy === "ONLY_ME" && (
+                {post.privacy === "ONLY_ME" && (
                   <>
                     <Lock className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
@@ -126,7 +98,7 @@ export default function ActivityHeader({
                     </p>
                   </>
                 )}
-                {props.post.privacy === "PUBLIC" && (
+                {post.privacy === "PUBLIC" && (
                   <>
                     <Globe className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
                     <p
@@ -148,13 +120,7 @@ export default function ActivityHeader({
           <p className="text-gray-500">{createdAtRelativeTime}</p>
         </div>
       </div>
-      {props.type === "post" && props.post.owner.id === currentUser.id && (
-        <PostOptionsDropdown post={props.post} />
-      )}
-      {props.type === "comment" &&
-        props.comment.author.id === currentUser.id && (
-          <PostCommentOptionsDropdown comment={props.comment} />
-        )}
+      {post.owner.id === currentUser.id && <PostOptionsDropdown post={post} />}
     </div>
   );
 }

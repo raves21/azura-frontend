@@ -203,6 +203,7 @@ export default function EditProfilePage({
               </p>
             </div>
             <Textarea
+              maxLength={150}
               value={editProfileBio || ""}
               onChange={(e) => setEditProfileBio(e.currentTarget.value)}
               placeholder="eg. Artist, dog-lover, Azura #1 fan"

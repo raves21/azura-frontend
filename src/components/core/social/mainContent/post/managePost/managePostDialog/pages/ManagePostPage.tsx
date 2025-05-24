@@ -185,6 +185,7 @@ export default function ManagePostPage({ ...props }: Props) {
         </div>
       </div>
       <Textarea
+        maxLength={600}
         value={content || ""}
         onChange={(e) => setContent(e.currentTarget.value)}
         disabled={

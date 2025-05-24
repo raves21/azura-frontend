@@ -1,5 +1,5 @@
 import { TPostComment } from "@/utils/types/social/social";
-import ActivityHeader from "../../../activity/ActivityHeader";
+import PostCommentHeader from "./PostCommentHeader";
 
 type Props = {
   comment: TPostComment;
@@ -9,8 +9,7 @@ export default function PostComment({ comment }: Props) {
   return (
     <div className="flex w-full gap-2 text-sm mobile-m:text-base md:gap-4 px-3 mobile-l:p-5 rounded-none py-5">
       <div className="flex flex-col flex-grow gap-3">
-        <ActivityHeader
-          type="comment"
+        <PostCommentHeader
           comment={comment}
           linkProps={{
             to: "/social/$userHandle",

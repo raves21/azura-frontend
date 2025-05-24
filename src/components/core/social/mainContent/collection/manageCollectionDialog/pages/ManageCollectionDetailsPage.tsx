@@ -195,6 +195,7 @@ export default function ManageCollectionDetailsPage({
             <ChevronDown className="size-4 stroke-mainWhite" />
           </button>
           <Textarea
+            maxLength={200}
             value={collectionDescription || ""}
             onChange={(e) => setCollectionDescription(e.currentTarget.value)}
             placeholder="Add an optional description"
