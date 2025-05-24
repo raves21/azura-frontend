@@ -11,6 +11,7 @@ import InfoItem from "@/components/core/media/shared/info/InfoItem";
 import { ServerName, TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
+import ShareMediaButton from "../../shared/info/ShareMediaButton";
 
 type Props = {
   image: string;
@@ -66,7 +67,7 @@ export default function MovieInfoPageHero({
             />
           </InfoDetails>
           <YearAndStatus year={parseInt(year)} status={status} />
-          <div className="flex gap-5 my-3">
+          <div className="flex gap-5 my-3 flex-wrap justify-center">
             <PlayNowButton
               isLoading={false}
               isDisabled={false}
@@ -82,6 +83,19 @@ export default function MovieInfoPageHero({
               }}
             />
             <ToggleMediaToCollectionButton
+              media={{
+                id: movieId,
+                type: "MOVIE",
+                coverImage: cover,
+                description,
+                posterImage: image,
+                rating: voteAverage?.toString() ?? null,
+                status,
+                title,
+                year,
+              }}
+            />
+            <ShareMediaButton
               media={{
                 id: movieId,
                 type: "MOVIE",

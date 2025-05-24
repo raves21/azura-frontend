@@ -13,6 +13,7 @@ import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import { useEffect, useState } from "react";
+import ShareMediaButton from "../../shared/info/ShareMediaButton";
 
 type Props = {
   image: string;
@@ -80,13 +81,8 @@ export default function TVInfoPageHero({
             />
           </InfoDetails>
           <YearAndStatus year={parseInt(year)} status={status} />
-          <div className="flex gap-5 my-3">
+          <div className="flex gap-5 my-3 justify-center flex-wrap">
             <PlayNowButton
-              //The loading state of the entire page depends if the
-              //episodes are still fetching. They are not separate from each
-              //other like movie and anime. So its okay to explicitly give
-              //isLoading a value of false because this button will only
-              //render if either the tvinfo has episodes or not
               isLoading={false}
               isDisabled={!hasEpisodes}
               onClick={() => {
@@ -105,6 +101,19 @@ export default function TVInfoPageHero({
               }}
             />
             <ToggleMediaToCollectionButton
+              media={{
+                id: tvId,
+                type: "TV",
+                coverImage: cover,
+                description,
+                posterImage: image,
+                rating: voteAverage?.toString() ?? null,
+                status,
+                title,
+                year,
+              }}
+            />
+            <ShareMediaButton
               media={{
                 id: tvId,
                 type: "TV",

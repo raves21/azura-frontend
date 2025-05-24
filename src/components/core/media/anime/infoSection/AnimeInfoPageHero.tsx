@@ -23,6 +23,7 @@ import {
   animeOngoingStatus,
 } from "@/utils/variables/media/anime";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import ShareMediaButton from "../../shared/info/ShareMediaButton";
 
 type Props = {
   image: string | undefined;
@@ -107,7 +108,7 @@ export default function AnimeInfoPageHero({
             />
           </InfoDetails>
           <YearAndStatus year={year} status={status} />
-          <div className="flex gap-5 my-3">
+          <div className="flex gap-5 my-3 flex-wrap justify-center">
             <PlayNowButton
               isDisabled={episodesQuery.isError || !chunkedEpisodes}
               isLoading={episodesQuery.isLoading || isChunkEpisodesLoading}
@@ -125,6 +126,19 @@ export default function AnimeInfoPageHero({
               }}
             />
             <ToggleMediaToCollectionButton
+              media={{
+                id: animeId,
+                type: "ANIME",
+                coverImage: cover ?? null,
+                description: description ?? null,
+                posterImage: image ?? null,
+                rating: rating?.toString() ?? null,
+                status: status ?? null,
+                title: title,
+                year: year?.toString() ?? null,
+              }}
+            />
+            <ShareMediaButton
               media={{
                 id: animeId,
                 type: "ANIME",
