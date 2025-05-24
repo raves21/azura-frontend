@@ -37,7 +37,12 @@ export default function PostWithAttachment({
       {props.attachmentType === "media" ? (
         <MediaAttachment media={props.media} />
       ) : (
-        <CollectionAttachment collection={props.collection} />
+        <CollectionAttachment
+          collection={props.collection}
+          isCollectionAttachmentViewable={
+            !!props.isCollectionAttachmentViewable
+          }
+        />
       )}
     </div>
   );

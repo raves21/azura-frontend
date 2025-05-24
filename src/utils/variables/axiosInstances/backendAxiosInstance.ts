@@ -1,6 +1,7 @@
 import axios from "axios";
 import { setCurrentUser } from "@/services/auth/sharedFunctions";
 import { closeAllPopups } from "@/utils/functions/sharedFunctions";
+import { queryClient } from "../queryClient";
 
 let abortController = new AbortController();
 
@@ -20,9 +21,9 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       abortController.abort();
       abortController = new AbortController();
-
-      closeAllPopups();
       setCurrentUser(null);
+      queryClient.clear();
+      closeAllPopups();
       history.replaceState(null, "", "/login");
     }
     return Promise.reject(error);

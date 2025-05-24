@@ -27,6 +27,7 @@ export default function Post({ fromState, post }: Props) {
       <PostWithAttachment
         owner={post.owner}
         attachmentType="collection"
+        isCollectionAttachmentViewable={post.isCollectionAttachmentViewable}
         collection={post.collection}
         content={post.content}
       />

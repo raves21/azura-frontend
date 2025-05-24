@@ -42,6 +42,7 @@ export type TPost = {
   media: Media | null;
   collection: TCollection | null;
   createdAt: string;
+  isCollectionAttachmentViewable?: boolean;
 };
 
 export type TPostInfo = TPost & {
@@ -83,7 +84,10 @@ export type PostWithMediaAttachment = Pick<TPost, "content"> & {
   media: Media;
 };
 
-export type PostWithCollectionAttachment = Pick<TPost, "content"> & {
+export type PostWithCollectionAttachment = Pick<
+  TPost,
+  "content" | "isCollectionAttachmentViewable"
+> & {
   attachmentType: "collection";
   collection: TCollection;
   owner: EntityOwner;

@@ -34,6 +34,7 @@ export default function PostInfo({ post }: Props) {
           <PostWithAttachment
             owner={post.owner}
             attachmentType="collection"
+            isCollectionAttachmentViewable={post.isCollectionAttachmentViewable}
             collection={post.collection}
             content={post.content}
             contentClassName="text-sm mobile-m:text-md"

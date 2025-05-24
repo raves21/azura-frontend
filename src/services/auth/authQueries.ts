@@ -152,7 +152,7 @@ export function useChangePassword() {
     mutationFn: async ({
       newPassword,
     }: Pick<UseChangePasswordArgs, "newPassword">) => {
-      await api.put("/settings/password", {
+      await api.put("/account/password", {
         password: newPassword,
       });
     },
@@ -187,7 +187,7 @@ export function useSessions() {
 export function useVerifyPassword() {
   return useMutation({
     mutationFn: async (password: string) => {
-      await api.post("/settings/verify-password", { password });
+      await api.post("/account/verify-password", { password });
     },
   });
 }
@@ -195,7 +195,7 @@ export function useVerifyPassword() {
 export function useChangeEmail() {
   return useMutation({
     mutationFn: async (email: string) => {
-      await api.put("/settings/email", { email });
+      await api.put("/account/email", { email });
     },
   });
 }
@@ -204,7 +204,7 @@ export function useChangeHandle({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (handle: string) => {
-      await api.put("/settings/handle", { handle });
+      await api.put("/account/handle", { handle });
     },
   });
 }
@@ -252,7 +252,7 @@ export function useDeleteAccount({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async () => {
-      await api.post("/settings/delete-account");
+      await api.post("/account/delete-account");
     },
     onSuccess: () => {
       setCurrentUser(null);
