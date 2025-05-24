@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_protected/account/_change-details")({
+export const Route = createFileRoute("/_protected/settings/_change-details")({
   component: () => <ChangeAccountDetailsLayout />,
 });
 

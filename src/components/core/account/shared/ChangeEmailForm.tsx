@@ -51,7 +51,7 @@ export default function ChangeEmailForm() {
           setNewEmail(values.email);
           setChangeEmailStep("verifyEmail");
           toast({ description: "Successfully changed email." });
-          navigate({ to: "/account/change-email/verify-email" });
+          navigate({ to: "/settings/change-email/verify-email" });
         }}
         header="Confirm Email change"
         message={`Are you sure you want to change your email to ${values.email}? A code will be sent to this email for verification.`}
@@ -92,7 +92,7 @@ export default function ChangeEmailForm() {
             type="button"
             onClick={() => {
               setChangeEmailStep(null);
-              navigate({ to: "/account", replace: true });
+              navigate({ to: "/settings", replace: true });
             }}
             className="grid w-1/2 h-full py-2 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg disabled:bg-gray-900 disabled:border-fuchsia-800/80 disabled:hover:border-fuchsia-800/80 hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
           >

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 export const Route = createFileRoute(
-  "/_protected/account/_change-details/change-password/verify-email/"
+  "/_protected/settings/_change-details/change-password/verify-email/"
 )({
   component: () => <AccountChangePasswordVerifyEmailPage />,
 });
@@ -23,7 +23,7 @@ function AccountChangePasswordVerifyEmailPage() {
 
   useEffect(() => {
     if (changePasswordStep !== "verifyEmail") {
-      navigate({ to: "/account" });
+      navigate({ to: "/settings" });
     }
   }, []);
 
@@ -34,11 +34,11 @@ function AccountChangePasswordVerifyEmailPage() {
       type="accountSettings"
       afterSubmitSuccessAction={() => {
         setChangePasswordStep("changePassword");
-        navigate({ to: "/account/change-password/input-password" });
+        navigate({ to: "/settings/change-password/input-password" });
       }}
       backButtonAction={() => {
         setChangePasswordStep(null);
-        navigate({ to: "/account" });
+        navigate({ to: "/settings" });
       }}
       email={currentUser.email}
     />

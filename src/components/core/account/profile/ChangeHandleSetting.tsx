@@ -26,7 +26,7 @@ export default function ChangeHandleSetting() {
             <PasswordVerificationDialog
               afterSubmitSuccessAction={() => {
                 setChangeHandleStep("changeHandle");
-                navigate({ to: "/account/change-handle" });
+                navigate({ to: "/settings/change-handle" });
               }}
             />
           )

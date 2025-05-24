@@ -77,7 +77,7 @@ export default function CodeVerificationForm({
             if (type === "auth") {
               navigate({ to: "/login" });
             } else {
-              navigate({ to: "/account" });
+              navigate({ to: "/settings" });
             }
             toggleOpenDialog(null);
           }}
@@ -102,7 +102,7 @@ export default function CodeVerificationForm({
                 if (type === "auth") {
                   navigate({ to: "/login" });
                 } else {
-                  navigate({ to: "/account" });
+                  navigate({ to: "/settings" });
                 }
                 toggleOpenDialog(null);
               }}

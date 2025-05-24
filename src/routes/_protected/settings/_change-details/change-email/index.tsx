@@ -1,32 +1,32 @@
-import ChangeHandleForm from "@/components/core/account/shared/ChangeHandleForm";
+import ChangeEmailForm from "@/components/core/account/shared/ChangeEmailForm";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute(
-  "/_protected/account/_change-details/change-handle/"
+  "/_protected/settings/_change-details/change-email/"
 )({
-  component: () => <ChangeHandlePage />,
+  component: () => <AccountChangeEmailPage />,
 });
 
-function ChangeHandlePage() {
-  const changeHandleStep = useAccountSettingStore(
-    (state) => state.changeHandleStep
+function AccountChangeEmailPage() {
+  const changeEmailStep = useAccountSettingStore(
+    (state) => state.changeEmailStep
   );
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (changeHandleStep !== "changeHandle") {
-      navigate({ to: "/account" });
+    if (changeEmailStep !== "inputEmail") {
+      navigate({ to: "/settings" });
     }
   }, []);
 
   return (
     <div className="flex flex-col items-center gap-8 w-full px-4 sm:px-0 sm:w-auto">
       <h1 className="text-3xl mobile-l:text-4xl font-bold text-mainWhite">
-        Change Handle
+        Change Email
       </h1>
-      <ChangeHandleForm />
+      <ChangeEmailForm />
     </div>
   );
 }

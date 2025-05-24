@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 export const Route = createFileRoute(
-  "/_protected/account/_change-details/change-password/input-password/"
+  "/_protected/settings/_change-details/change-password/input-password/"
 )({
   component: () => <ChangePasswordInputPasswordPage />,
 });
@@ -23,7 +23,7 @@ function ChangePasswordInputPasswordPage() {
 
   useEffect(() => {
     if (changePasswordStep !== "changePassword") {
-      navigate({ to: "/account" });
+      navigate({ to: "/settings" });
     }
   }, []);
 
@@ -38,10 +38,10 @@ function ChangePasswordInputPasswordPage() {
         type="accountSettingChangePassword"
         user={currentUser}
         afterSubmitSuccessAction={async () => {
-          navigate({ to: "/account" });
+          navigate({ to: "/settings" });
           setChangePasswordStep(null);
         }}
-        cancelButtonLinkProps={{ to: "/account" }}
+        cancelButtonLinkProps={{ to: "/settings" }}
       />
     </div>
   );

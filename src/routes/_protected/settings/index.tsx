@@ -8,10 +8,10 @@ import ChangeProfileSettings from "@/components/core/account/profile/ChangeProfi
 import AccountSettingSessions from "@/components/core/shared/sessions/accountSettingSessions/AccountSettingSessions";
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
-import { Rows3, Trash, User2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { User2, Rows3, Trash } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 
-export const Route = createFileRoute("/_protected/account/")({
+export const Route = createFileRoute("/_protected/settings/")({
   component: () => <SettingsPage />,
 });
 

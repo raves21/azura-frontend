@@ -26,7 +26,7 @@ export default function ChangeEmailSetting() {
             <PasswordVerificationDialog
               afterSubmitSuccessAction={() => {
                 setChangeEmailStep("inputEmail");
-                navigate({ to: "/account/change-email" });
+                navigate({ to: "/settings/change-email" });
               }}
             />
           )

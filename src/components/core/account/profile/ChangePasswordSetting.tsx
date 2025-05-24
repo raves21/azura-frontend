@@ -48,7 +48,7 @@ export default function ChangePasswordSetting() {
               message="Are you sure you want to change your password? This will send an OTC to your email for verification."
               afterConfirmSuccessAction={() => {
                 setChangePasswordStep("verifyEmail");
-                navigate({ to: "/account/change-password/verify-email" });
+                navigate({ to: "/settings/change-password/verify-email" });
               }}
             />
           )

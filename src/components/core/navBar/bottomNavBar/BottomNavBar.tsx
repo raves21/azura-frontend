@@ -31,7 +31,7 @@ export default function BottomNavBar({ type }: Props) {
   const isTVRoute = matchRoute({ to: "/tv", fuzzy: true });
   const isCatalogRoute = location.pathname.includes("catalog");
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
-  const isAccountRoute = matchRoute({ to: "/account", fuzzy: true });
+  const isAccountRoute = matchRoute({ to: "/settings", fuzzy: true });
   const isMediaPortalOpen = useMediaPortalStore(
     (state) => state.isMediaPortalOpen
   );
@@ -128,13 +128,13 @@ export default function BottomNavBar({ type }: Props) {
         <p>Social</p>
       </Link>
       <Link
-        to="/account"
+        to="/settings"
         className={cn("flex flex-col items-center gap-1 flex-1", {
           "stroke-mainAccent text-mainAccent font-medium": isAccountRoute,
         })}
       >
         <Settings className="size-5 md:size-6" />
-        <p>Account</p>
+        <p>Settings</p>
       </Link>
     </div>
   );

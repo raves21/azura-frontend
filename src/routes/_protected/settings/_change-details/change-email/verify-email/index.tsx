@@ -12,7 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 import { LoaderCircle } from "lucide-react";
 
 export const Route = createFileRoute(
-  "/_protected/account/_change-details/change-email/verify-email/"
+  "/_protected/settings/_change-details/change-email/verify-email/"
 )({
   component: () => <ChangeEmailVerifyEmailPage />,
 });
@@ -34,13 +34,13 @@ function ChangeEmailVerifyEmailPage() {
 
   useEffect(() => {
     if (changeEmailStep !== "verifyEmail" || !newEmail) {
-      navigate({ to: "/account" });
+      navigate({ to: "/settings" });
     }
   }, []);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
-  if (!newEmail) return <Navigate to="/account" replace />;
+  if (!newEmail) return <Navigate to="/settings" replace />;
 
   if (isChangingEmail) {
     return (
@@ -59,7 +59,7 @@ function ChangeEmailVerifyEmailPage() {
       afterSubmitSuccessAction={async () => {
         try {
           await changeEmail(newEmail);
-          navigate({ to: "/account" });
+          navigate({ to: "/settings" });
           setChangeEmailStep(null);
           const currentUserWithNewEmail: UserBasicInfo = {
             ...currentUser,
@@ -73,7 +73,7 @@ function ChangeEmailVerifyEmailPage() {
       }}
       backButtonAction={() => {
         setChangeEmailStep(null);
-        navigate({ to: "/account" });
+        navigate({ to: "/settings" });
       }}
       email={newEmail}
     />

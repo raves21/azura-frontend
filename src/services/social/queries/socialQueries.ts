@@ -101,7 +101,7 @@ export function useEditUserProfile() {
       banner,
       avatar,
     }: UseEditUserProfileArgs) => {
-      await api.put("/account/details", {
+      await api.put("/settings/details", {
         username,
         bio,
         banner,

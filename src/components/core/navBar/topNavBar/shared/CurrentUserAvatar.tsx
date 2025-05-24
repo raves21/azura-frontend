@@ -54,7 +54,7 @@ export default function CurrentUserAvatar() {
           <p className="group-focus:text-mainWhite">Profile</p>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => navigate({ to: "/account" })}
+          onClick={() => navigate({ to: "/settings" })}
           className="flex items-center w-full gap-3 py-2 font-medium group focus:bg-white/10"
         >
           <Settings className="size-5 group-focus:stroke-mainWhite" />

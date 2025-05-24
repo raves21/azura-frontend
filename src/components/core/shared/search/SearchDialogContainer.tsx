@@ -18,7 +18,7 @@ export default function SearchDialogContainer({ children }: PropsWithChildren) {
 
   const matchRoute = useMatchRoute();
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
-  const isAccountRoute = matchRoute({ to: "/account", fuzzy: true });
+  const isAccountRoute = matchRoute({ to: "/settings", fuzzy: true });
 
   if (isSocialRoute || isAccountRoute) {
     return (

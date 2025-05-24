@@ -45,7 +45,7 @@ export default function DesktopTopNavBar({
   );
 
   const matchRoute = useMatchRoute();
-  const isAccountRoute = matchRoute({ to: "/account", fuzzy: true });
+  const isAccountRoute = matchRoute({ to: "/settings", fuzzy: true });
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
 
   let mediaRouteComponent: ReactNode;
@@ -163,10 +163,10 @@ export default function DesktopTopNavBar({
             Social
           </Link>
           <Link
-            to="/account"
+            to="/settings"
             className={cn("p-[6px]", { "text-mainWhite": isAccountRoute })}
           >
-            Account
+            Settings
           </Link>
         </div>
         <button

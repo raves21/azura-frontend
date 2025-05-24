@@ -22,15 +22,15 @@ import { Route as ProtectedMovieRouteImport } from './routes/_protected/movie/ro
 import { Route as ProtectedAnimeRouteImport } from './routes/_protected/anime/route'
 import { Route as ProtectedTvIndexImport } from './routes/_protected/tv/index'
 import { Route as ProtectedSocialIndexImport } from './routes/_protected/social/index'
+import { Route as ProtectedSettingsIndexImport } from './routes/_protected/settings/index'
 import { Route as ProtectedMovieIndexImport } from './routes/_protected/movie/index'
 import { Route as ProtectedAnimeIndexImport } from './routes/_protected/anime/index'
-import { Route as ProtectedAccountIndexImport } from './routes/_protected/account/index'
 import { Route as AuthSignupIndexImport } from './routes/_auth/signup/index'
 import { Route as AuthLoginIndexImport } from './routes/_auth/login/index'
 import { Route as AuthDetachedModeIndexImport } from './routes/_auth/detached-mode/index'
 import { Route as ProtectedSocialSearchRouteImport } from './routes/_protected/social/search/route'
 import { Route as ProtectedSocialUserHandleRouteImport } from './routes/_protected/social/$userHandle/route'
-import { Route as ProtectedAccountChangeDetailsRouteImport } from './routes/_protected/account/_change-details/route'
+import { Route as ProtectedSettingsChangeDetailsRouteImport } from './routes/_protected/settings/_change-details/route'
 import { Route as ProtectedTvCatalogIndexImport } from './routes/_protected/tv/catalog/index'
 import { Route as ProtectedTvTvIdIndexImport } from './routes/_protected/tv/$tvId/index'
 import { Route as ProtectedSocialSearchIndexImport } from './routes/_protected/social/search/index'
@@ -50,24 +50,24 @@ import { Route as ProtectedSocialUserHandlePostsIndexImport } from './routes/_pr
 import { Route as ProtectedSocialUserHandleFollowingIndexImport } from './routes/_protected/social/$userHandle_/following/index'
 import { Route as ProtectedSocialUserHandleFollowersIndexImport } from './routes/_protected/social/$userHandle_/followers/index'
 import { Route as ProtectedSocialUserHandleCollectionsIndexImport } from './routes/_protected/social/$userHandle/collections/index'
+import { Route as ProtectedSettingsChangeDetailsChangePasswordIndexImport } from './routes/_protected/settings/_change-details/change-password/index'
+import { Route as ProtectedSettingsChangeDetailsChangeHandleIndexImport } from './routes/_protected/settings/_change-details/change-handle/index'
+import { Route as ProtectedSettingsChangeDetailsChangeEmailIndexImport } from './routes/_protected/settings/_change-details/change-email/index'
 import { Route as ProtectedMovieCatalogSearchIndexImport } from './routes/_protected/movie/catalog/search/index'
 import { Route as ProtectedMovieMovieIdWatchIndexImport } from './routes/_protected/movie/$movieId/watch/index'
 import { Route as ProtectedAnimeAnimeIdWatchIndexImport } from './routes/_protected/anime/$animeId/watch/index'
-import { Route as ProtectedAccountChangeDetailsChangePasswordIndexImport } from './routes/_protected/account/_change-details/change-password/index'
-import { Route as ProtectedAccountChangeDetailsChangeHandleIndexImport } from './routes/_protected/account/_change-details/change-handle/index'
-import { Route as ProtectedAccountChangeDetailsChangeEmailIndexImport } from './routes/_protected/account/_change-details/change-email/index'
 import { Route as AuthLoginForgotPasswordVerifyEmailIndexImport } from './routes/_auth/login/forgot-password/verify-email/index'
 import { Route as AuthLoginForgotPasswordFindAccountIndexImport } from './routes/_auth/login/forgot-password/find-account/index'
 import { Route as AuthLoginForgotPasswordChangePasswordIndexImport } from './routes/_auth/login/forgot-password/change-password/index'
 import { Route as ProtectedSocialUserHandlePostsPostIdIndexImport } from './routes/_protected/social/$userHandle_/posts/$postId/index'
 import { Route as ProtectedSocialUserHandleCollectionsCollectionIdIndexImport } from './routes/_protected/social/$userHandle_/collections/$collectionId/index'
-import { Route as ProtectedAccountChangeDetailsChangePasswordVerifyEmailIndexImport } from './routes/_protected/account/_change-details/change-password/verify-email/index'
-import { Route as ProtectedAccountChangeDetailsChangePasswordInputPasswordIndexImport } from './routes/_protected/account/_change-details/change-password/input-password/index'
-import { Route as ProtectedAccountChangeDetailsChangeEmailVerifyEmailIndexImport } from './routes/_protected/account/_change-details/change-email/verify-email/index'
+import { Route as ProtectedSettingsChangeDetailsChangePasswordVerifyEmailIndexImport } from './routes/_protected/settings/_change-details/change-password/verify-email/index'
+import { Route as ProtectedSettingsChangeDetailsChangePasswordInputPasswordIndexImport } from './routes/_protected/settings/_change-details/change-password/input-password/index'
+import { Route as ProtectedSettingsChangeDetailsChangeEmailVerifyEmailIndexImport } from './routes/_protected/settings/_change-details/change-email/verify-email/index'
 
 // Create Virtual Routes
 
-const ProtectedAccountImport = createFileRoute('/_protected/account')()
+const ProtectedSettingsImport = createFileRoute('/_protected/settings')()
 
 // Create/Update Routes
 
@@ -86,8 +86,8 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProtectedAccountRoute = ProtectedAccountImport.update({
-  path: '/account',
+const ProtectedSettingsRoute = ProtectedSettingsImport.update({
+  path: '/settings',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -121,6 +121,11 @@ const ProtectedSocialIndexRoute = ProtectedSocialIndexImport.update({
   getParentRoute: () => ProtectedSocialRouteRoute,
 } as any)
 
+const ProtectedSettingsIndexRoute = ProtectedSettingsIndexImport.update({
+  path: '/',
+  getParentRoute: () => ProtectedSettingsRoute,
+} as any)
+
 const ProtectedMovieIndexRoute = ProtectedMovieIndexImport.update({
   path: '/',
   getParentRoute: () => ProtectedMovieRouteRoute,
@@ -129,11 +134,6 @@ const ProtectedMovieIndexRoute = ProtectedMovieIndexImport.update({
 const ProtectedAnimeIndexRoute = ProtectedAnimeIndexImport.update({
   path: '/',
   getParentRoute: () => ProtectedAnimeRouteRoute,
-} as any)
-
-const ProtectedAccountIndexRoute = ProtectedAccountIndexImport.update({
-  path: '/',
-  getParentRoute: () => ProtectedAccountRoute,
 } as any)
 
 const AuthSignupIndexRoute = AuthSignupIndexImport.update({
@@ -164,10 +164,10 @@ const ProtectedSocialUserHandleRouteRoute =
     getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
-const ProtectedAccountChangeDetailsRouteRoute =
-  ProtectedAccountChangeDetailsRouteImport.update({
-    id: '/account/_change-details',
-    getParentRoute: () => ProtectedAccountRoute,
+const ProtectedSettingsChangeDetailsRouteRoute =
+  ProtectedSettingsChangeDetailsRouteImport.update({
+    id: '/settings/_change-details',
+    getParentRoute: () => ProtectedSettingsRoute,
   } as any)
 
 const ProtectedTvCatalogIndexRoute = ProtectedTvCatalogIndexImport.update({
@@ -287,6 +287,24 @@ const ProtectedSocialUserHandleCollectionsIndexRoute =
     getParentRoute: () => ProtectedSocialUserHandleRouteRoute,
   } as any)
 
+const ProtectedSettingsChangeDetailsChangePasswordIndexRoute =
+  ProtectedSettingsChangeDetailsChangePasswordIndexImport.update({
+    path: '/change-password/',
+    getParentRoute: () => ProtectedSettingsChangeDetailsRouteRoute,
+  } as any)
+
+const ProtectedSettingsChangeDetailsChangeHandleIndexRoute =
+  ProtectedSettingsChangeDetailsChangeHandleIndexImport.update({
+    path: '/change-handle/',
+    getParentRoute: () => ProtectedSettingsChangeDetailsRouteRoute,
+  } as any)
+
+const ProtectedSettingsChangeDetailsChangeEmailIndexRoute =
+  ProtectedSettingsChangeDetailsChangeEmailIndexImport.update({
+    path: '/change-email/',
+    getParentRoute: () => ProtectedSettingsChangeDetailsRouteRoute,
+  } as any)
+
 const ProtectedMovieCatalogSearchIndexRoute =
   ProtectedMovieCatalogSearchIndexImport.update({
     path: '/catalog/search/',
@@ -303,24 +321,6 @@ const ProtectedAnimeAnimeIdWatchIndexRoute =
   ProtectedAnimeAnimeIdWatchIndexImport.update({
     path: '/$animeId/watch/',
     getParentRoute: () => ProtectedAnimeRouteRoute,
-  } as any)
-
-const ProtectedAccountChangeDetailsChangePasswordIndexRoute =
-  ProtectedAccountChangeDetailsChangePasswordIndexImport.update({
-    path: '/change-password/',
-    getParentRoute: () => ProtectedAccountChangeDetailsRouteRoute,
-  } as any)
-
-const ProtectedAccountChangeDetailsChangeHandleIndexRoute =
-  ProtectedAccountChangeDetailsChangeHandleIndexImport.update({
-    path: '/change-handle/',
-    getParentRoute: () => ProtectedAccountChangeDetailsRouteRoute,
-  } as any)
-
-const ProtectedAccountChangeDetailsChangeEmailIndexRoute =
-  ProtectedAccountChangeDetailsChangeEmailIndexImport.update({
-    path: '/change-email/',
-    getParentRoute: () => ProtectedAccountChangeDetailsRouteRoute,
   } as any)
 
 const AuthLoginForgotPasswordVerifyEmailIndexRoute =
@@ -353,22 +353,22 @@ const ProtectedSocialUserHandleCollectionsCollectionIdIndexRoute =
     getParentRoute: () => ProtectedSocialRouteRoute,
   } as any)
 
-const ProtectedAccountChangeDetailsChangePasswordVerifyEmailIndexRoute =
-  ProtectedAccountChangeDetailsChangePasswordVerifyEmailIndexImport.update({
+const ProtectedSettingsChangeDetailsChangePasswordVerifyEmailIndexRoute =
+  ProtectedSettingsChangeDetailsChangePasswordVerifyEmailIndexImport.update({
     path: '/change-password/verify-email/',
-    getParentRoute: () => ProtectedAccountChangeDetailsRouteRoute,
+    getParentRoute: () => ProtectedSettingsChangeDetailsRouteRoute,
   } as any)
 
-const ProtectedAccountChangeDetailsChangePasswordInputPasswordIndexRoute =
-  ProtectedAccountChangeDetailsChangePasswordInputPasswordIndexImport.update({
+const ProtectedSettingsChangeDetailsChangePasswordInputPasswordIndexRoute =
+  ProtectedSettingsChangeDetailsChangePasswordInputPasswordIndexImport.update({
     path: '/change-password/input-password/',
-    getParentRoute: () => ProtectedAccountChangeDetailsRouteRoute,
+    getParentRoute: () => ProtectedSettingsChangeDetailsRouteRoute,
   } as any)
 
-const ProtectedAccountChangeDetailsChangeEmailVerifyEmailIndexRoute =
-  ProtectedAccountChangeDetailsChangeEmailVerifyEmailIndexImport.update({
+const ProtectedSettingsChangeDetailsChangeEmailVerifyEmailIndexRoute =
+  ProtectedSettingsChangeDetailsChangeEmailVerifyEmailIndexImport.update({
     path: '/change-email/verify-email/',
-    getParentRoute: () => ProtectedAccountChangeDetailsRouteRoute,
+    getParentRoute: () => ProtectedSettingsChangeDetailsRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -424,19 +424,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTvRouteImport
       parentRoute: typeof ProtectedRouteImport
     }
-    '/_protected/account': {
-      id: '/_protected/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof ProtectedAccountImport
+    '/_protected/settings': {
+      id: '/_protected/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsImport
       parentRoute: typeof ProtectedRouteImport
     }
-    '/_protected/account/_change-details': {
-      id: '/_protected/account/_change-details'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsRouteImport
-      parentRoute: typeof ProtectedAccountRoute
+    '/_protected/settings/_change-details': {
+      id: '/_protected/settings/_change-details'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsRouteImport
+      parentRoute: typeof ProtectedSettingsRoute
     }
     '/_protected/social/$userHandle': {
       id: '/_protected/social/$userHandle'
@@ -473,13 +473,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupIndexImport
       parentRoute: typeof AuthRouteImport
     }
-    '/_protected/account/': {
-      id: '/_protected/account/'
-      path: '/'
-      fullPath: '/account/'
-      preLoaderRoute: typeof ProtectedAccountIndexImport
-      parentRoute: typeof ProtectedAccountImport
-    }
     '/_protected/anime/': {
       id: '/_protected/anime/'
       path: '/'
@@ -493,6 +486,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/movie/'
       preLoaderRoute: typeof ProtectedMovieIndexImport
       parentRoute: typeof ProtectedMovieRouteImport
+    }
+    '/_protected/settings/': {
+      id: '/_protected/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof ProtectedSettingsIndexImport
+      parentRoute: typeof ProtectedSettingsImport
     }
     '/_protected/social/': {
       id: '/_protected/social/'
@@ -606,27 +606,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginForgotPasswordVerifyEmailIndexImport
       parentRoute: typeof AuthRouteImport
     }
-    '/_protected/account/_change-details/change-email/': {
-      id: '/_protected/account/_change-details/change-email/'
-      path: '/change-email'
-      fullPath: '/account/change-email'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsChangeEmailIndexImport
-      parentRoute: typeof ProtectedAccountChangeDetailsRouteImport
-    }
-    '/_protected/account/_change-details/change-handle/': {
-      id: '/_protected/account/_change-details/change-handle/'
-      path: '/change-handle'
-      fullPath: '/account/change-handle'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsChangeHandleIndexImport
-      parentRoute: typeof ProtectedAccountChangeDetailsRouteImport
-    }
-    '/_protected/account/_change-details/change-password/': {
-      id: '/_protected/account/_change-details/change-password/'
-      path: '/change-password'
-      fullPath: '/account/change-password'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsChangePasswordIndexImport
-      parentRoute: typeof ProtectedAccountChangeDetailsRouteImport
-    }
     '/_protected/anime/$animeId/watch/': {
       id: '/_protected/anime/$animeId/watch/'
       path: '/$animeId/watch'
@@ -647,6 +626,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/movie/catalog/search'
       preLoaderRoute: typeof ProtectedMovieCatalogSearchIndexImport
       parentRoute: typeof ProtectedMovieRouteImport
+    }
+    '/_protected/settings/_change-details/change-email/': {
+      id: '/_protected/settings/_change-details/change-email/'
+      path: '/change-email'
+      fullPath: '/settings/change-email'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsChangeEmailIndexImport
+      parentRoute: typeof ProtectedSettingsChangeDetailsRouteImport
+    }
+    '/_protected/settings/_change-details/change-handle/': {
+      id: '/_protected/settings/_change-details/change-handle/'
+      path: '/change-handle'
+      fullPath: '/settings/change-handle'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsChangeHandleIndexImport
+      parentRoute: typeof ProtectedSettingsChangeDetailsRouteImport
+    }
+    '/_protected/settings/_change-details/change-password/': {
+      id: '/_protected/settings/_change-details/change-password/'
+      path: '/change-password'
+      fullPath: '/settings/change-password'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsChangePasswordIndexImport
+      parentRoute: typeof ProtectedSettingsChangeDetailsRouteImport
     }
     '/_protected/social/$userHandle/collections/': {
       id: '/_protected/social/$userHandle/collections/'
@@ -704,26 +704,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTvCatalogSearchIndexImport
       parentRoute: typeof ProtectedTvRouteImport
     }
-    '/_protected/account/_change-details/change-email/verify-email/': {
-      id: '/_protected/account/_change-details/change-email/verify-email/'
+    '/_protected/settings/_change-details/change-email/verify-email/': {
+      id: '/_protected/settings/_change-details/change-email/verify-email/'
       path: '/change-email/verify-email'
-      fullPath: '/account/change-email/verify-email'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsChangeEmailVerifyEmailIndexImport
-      parentRoute: typeof ProtectedAccountChangeDetailsRouteImport
+      fullPath: '/settings/change-email/verify-email'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsChangeEmailVerifyEmailIndexImport
+      parentRoute: typeof ProtectedSettingsChangeDetailsRouteImport
     }
-    '/_protected/account/_change-details/change-password/input-password/': {
-      id: '/_protected/account/_change-details/change-password/input-password/'
+    '/_protected/settings/_change-details/change-password/input-password/': {
+      id: '/_protected/settings/_change-details/change-password/input-password/'
       path: '/change-password/input-password'
-      fullPath: '/account/change-password/input-password'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsChangePasswordInputPasswordIndexImport
-      parentRoute: typeof ProtectedAccountChangeDetailsRouteImport
+      fullPath: '/settings/change-password/input-password'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsChangePasswordInputPasswordIndexImport
+      parentRoute: typeof ProtectedSettingsChangeDetailsRouteImport
     }
-    '/_protected/account/_change-details/change-password/verify-email/': {
-      id: '/_protected/account/_change-details/change-password/verify-email/'
+    '/_protected/settings/_change-details/change-password/verify-email/': {
+      id: '/_protected/settings/_change-details/change-password/verify-email/'
       path: '/change-password/verify-email'
-      fullPath: '/account/change-password/verify-email'
-      preLoaderRoute: typeof ProtectedAccountChangeDetailsChangePasswordVerifyEmailIndexImport
-      parentRoute: typeof ProtectedAccountChangeDetailsRouteImport
+      fullPath: '/settings/change-password/verify-email'
+      preLoaderRoute: typeof ProtectedSettingsChangeDetailsChangePasswordVerifyEmailIndexImport
+      parentRoute: typeof ProtectedSettingsChangeDetailsRouteImport
     }
     '/_protected/social/$userHandle/collections/$collectionId/': {
       id: '/_protected/social/$userHandle/collections/$collectionId/'
@@ -797,17 +797,17 @@ export const routeTree = rootRoute.addChildren({
       ProtectedTvTvIdWatchIndexRoute,
       ProtectedTvCatalogSearchIndexRoute,
     }),
-    ProtectedAccountRoute: ProtectedAccountRoute.addChildren({
-      ProtectedAccountChangeDetailsRouteRoute:
-        ProtectedAccountChangeDetailsRouteRoute.addChildren({
-          ProtectedAccountChangeDetailsChangeEmailIndexRoute,
-          ProtectedAccountChangeDetailsChangeHandleIndexRoute,
-          ProtectedAccountChangeDetailsChangePasswordIndexRoute,
-          ProtectedAccountChangeDetailsChangeEmailVerifyEmailIndexRoute,
-          ProtectedAccountChangeDetailsChangePasswordInputPasswordIndexRoute,
-          ProtectedAccountChangeDetailsChangePasswordVerifyEmailIndexRoute,
+    ProtectedSettingsRoute: ProtectedSettingsRoute.addChildren({
+      ProtectedSettingsChangeDetailsRouteRoute:
+        ProtectedSettingsChangeDetailsRouteRoute.addChildren({
+          ProtectedSettingsChangeDetailsChangeEmailIndexRoute,
+          ProtectedSettingsChangeDetailsChangeHandleIndexRoute,
+          ProtectedSettingsChangeDetailsChangePasswordIndexRoute,
+          ProtectedSettingsChangeDetailsChangeEmailVerifyEmailIndexRoute,
+          ProtectedSettingsChangeDetailsChangePasswordInputPasswordIndexRoute,
+          ProtectedSettingsChangeDetailsChangePasswordVerifyEmailIndexRoute,
         }),
-      ProtectedAccountIndexRoute,
+      ProtectedSettingsIndexRoute,
     }),
   }),
 })
@@ -848,7 +848,7 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/movie",
         "/_protected/social",
         "/_protected/tv",
-        "/_protected/account"
+        "/_protected/settings"
       ]
     },
     "/_protected/anime": {
@@ -898,24 +898,24 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/tv/catalog/search/"
       ]
     },
-    "/_protected/account": {
-      "filePath": "_protected/account/_change-details",
+    "/_protected/settings": {
+      "filePath": "_protected/settings/_change-details",
       "parent": "/_protected",
       "children": [
-        "/_protected/account/_change-details",
-        "/_protected/account/"
+        "/_protected/settings/_change-details",
+        "/_protected/settings/"
       ]
     },
-    "/_protected/account/_change-details": {
-      "filePath": "_protected/account/_change-details/route.tsx",
-      "parent": "/_protected/account",
+    "/_protected/settings/_change-details": {
+      "filePath": "_protected/settings/_change-details/route.tsx",
+      "parent": "/_protected/settings",
       "children": [
-        "/_protected/account/_change-details/change-email/",
-        "/_protected/account/_change-details/change-handle/",
-        "/_protected/account/_change-details/change-password/",
-        "/_protected/account/_change-details/change-email/verify-email/",
-        "/_protected/account/_change-details/change-password/input-password/",
-        "/_protected/account/_change-details/change-password/verify-email/"
+        "/_protected/settings/_change-details/change-email/",
+        "/_protected/settings/_change-details/change-handle/",
+        "/_protected/settings/_change-details/change-password/",
+        "/_protected/settings/_change-details/change-email/verify-email/",
+        "/_protected/settings/_change-details/change-password/input-password/",
+        "/_protected/settings/_change-details/change-password/verify-email/"
       ]
     },
     "/_protected/social/$userHandle": {
@@ -947,10 +947,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_auth/signup/index.tsx",
       "parent": "/_auth"
     },
-    "/_protected/account/": {
-      "filePath": "_protected/account/index.tsx",
-      "parent": "/_protected/account"
-    },
     "/_protected/anime/": {
       "filePath": "_protected/anime/index.tsx",
       "parent": "/_protected/anime"
@@ -958,6 +954,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/movie/": {
       "filePath": "_protected/movie/index.tsx",
       "parent": "/_protected/movie"
+    },
+    "/_protected/settings/": {
+      "filePath": "_protected/settings/index.tsx",
+      "parent": "/_protected/settings"
     },
     "/_protected/social/": {
       "filePath": "_protected/social/index.tsx",
@@ -1023,18 +1023,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_auth/login/forgot-password/verify-email/index.tsx",
       "parent": "/_auth"
     },
-    "/_protected/account/_change-details/change-email/": {
-      "filePath": "_protected/account/_change-details/change-email/index.tsx",
-      "parent": "/_protected/account/_change-details"
-    },
-    "/_protected/account/_change-details/change-handle/": {
-      "filePath": "_protected/account/_change-details/change-handle/index.tsx",
-      "parent": "/_protected/account/_change-details"
-    },
-    "/_protected/account/_change-details/change-password/": {
-      "filePath": "_protected/account/_change-details/change-password/index.tsx",
-      "parent": "/_protected/account/_change-details"
-    },
     "/_protected/anime/$animeId/watch/": {
       "filePath": "_protected/anime/$animeId/watch/index.tsx",
       "parent": "/_protected/anime"
@@ -1046,6 +1034,18 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/movie/catalog/search/": {
       "filePath": "_protected/movie/catalog/search/index.tsx",
       "parent": "/_protected/movie"
+    },
+    "/_protected/settings/_change-details/change-email/": {
+      "filePath": "_protected/settings/_change-details/change-email/index.tsx",
+      "parent": "/_protected/settings/_change-details"
+    },
+    "/_protected/settings/_change-details/change-handle/": {
+      "filePath": "_protected/settings/_change-details/change-handle/index.tsx",
+      "parent": "/_protected/settings/_change-details"
+    },
+    "/_protected/settings/_change-details/change-password/": {
+      "filePath": "_protected/settings/_change-details/change-password/index.tsx",
+      "parent": "/_protected/settings/_change-details"
     },
     "/_protected/social/$userHandle/collections/": {
       "filePath": "_protected/social/$userHandle/collections/index.tsx",
@@ -1079,17 +1079,17 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/tv/catalog/search/index.tsx",
       "parent": "/_protected/tv"
     },
-    "/_protected/account/_change-details/change-email/verify-email/": {
-      "filePath": "_protected/account/_change-details/change-email/verify-email/index.tsx",
-      "parent": "/_protected/account/_change-details"
+    "/_protected/settings/_change-details/change-email/verify-email/": {
+      "filePath": "_protected/settings/_change-details/change-email/verify-email/index.tsx",
+      "parent": "/_protected/settings/_change-details"
     },
-    "/_protected/account/_change-details/change-password/input-password/": {
-      "filePath": "_protected/account/_change-details/change-password/input-password/index.tsx",
-      "parent": "/_protected/account/_change-details"
+    "/_protected/settings/_change-details/change-password/input-password/": {
+      "filePath": "_protected/settings/_change-details/change-password/input-password/index.tsx",
+      "parent": "/_protected/settings/_change-details"
     },
-    "/_protected/account/_change-details/change-password/verify-email/": {
-      "filePath": "_protected/account/_change-details/change-password/verify-email/index.tsx",
-      "parent": "/_protected/account/_change-details"
+    "/_protected/settings/_change-details/change-password/verify-email/": {
+      "filePath": "_protected/settings/_change-details/change-password/verify-email/index.tsx",
+      "parent": "/_protected/settings/_change-details"
     },
     "/_protected/social/$userHandle/collections/$collectionId/": {
       "filePath": "_protected/social/$userHandle_/collections/$collectionId/index.tsx",

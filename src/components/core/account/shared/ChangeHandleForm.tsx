@@ -68,7 +68,7 @@ export default function ChangeHandleForm() {
               handle: values.handle,
             });
             toast({ description: "Successfully changed handle." });
-            navigate({ to: "/account", replace: true });
+            navigate({ to: "/settings", replace: true });
           }}
         />
       );
@@ -119,7 +119,7 @@ export default function ChangeHandleForm() {
             type="button"
             onClick={() => {
               setChangeHandleStep(null);
-              navigate({ to: "/account", replace: true });
+              navigate({ to: "/settings", replace: true });
             }}
             className="grid w-1/2 h-full py-2 disabled:text-gray-300 mt-8 font-medium transition-colors bg-gray-800 border rounded-lg disabled:bg-gray-900 disabled:border-fuchsia-800/80 disabled:hover:border-fuchsia-800/80 hover:bg-gray-900 place-items-center border-mainAccent/80 hover:border-fuchsia-700/80"
           >
