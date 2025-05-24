@@ -57,7 +57,6 @@ function ChangePasswordPage() {
         user={findAccountFoundUser}
         afterSubmitSuccessAction={async (values) => {
           try {
-            //todo: show dialog choice before logging in, if user wants to logout other sessions or not
             await login({
               email: findAccountFoundUser.email.trim(),
               password: values.newPassword.trim(),

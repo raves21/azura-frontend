@@ -849,7 +849,6 @@ export function useUpdateNotificationReadStatus() {
       });
     },
     onSuccess: () => {
-      //todo change this to cache mutation
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
   });
@@ -861,19 +860,18 @@ export function useDeleteNotification() {
       await api.delete(`/collections/${collectionId}`);
     },
     onSuccess: () => {
-      //todo change this to cache mutation
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
   });
 }
 
-export function useDeleteAllNotifications() {
+export function useDeleteAllNotifications({ key }: { key: string }) {
   return useMutation({
+    mutationKey: [key],
     mutationFn: async () => {
-      await api.delete(`/collections`);
+      await api.delete(`/notifications`);
     },
     onSuccess: () => {
-      //todo change this to cache mutation
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },
   });
