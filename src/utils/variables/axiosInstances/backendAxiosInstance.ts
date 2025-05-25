@@ -8,6 +8,7 @@ import { queryClient } from "../queryClient";
 let abortController = new AbortController();
 
 const api = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_BASE_URL_1,
   withCredentials: true,
 });
 

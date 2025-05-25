@@ -12,14 +12,13 @@ import axios from "axios";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import {
   closeAllPopups,
-  getBackendURL,
 } from "@/utils/functions/sharedFunctions";
 
 export function useCurrentUser() {
   return useQuery({
     queryKey: [`authenticatedUser`],
     queryFn: async () => {
-      const { data } = await axios.get(`${getBackendURL()}/users/me`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL_1}/users/me`, {
         withCredentials: true,
       });
       return data.data as UserBasicInfo;
@@ -32,7 +31,7 @@ export function useSendOTC({ key }: { key?: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (email: string) => {
-      const response = await api.post(`${getBackendURL()}/otc/send`, { email });
+      const response = await api.post(`/otc/send`, { email });
       return {
         message: response.data.message,
         statusCode: response.status,
@@ -46,7 +45,7 @@ type UseVerifyOTCArgs = { email: string; otc: string };
 export function useVerifyOTC() {
   return useMutation({
     mutationFn: async ({ email, otc }: UseVerifyOTCArgs) => {
-      await api.get(`${getBackendURL()}/otc/verify`, { params: { email, otc } });
+      await api.get(`/otc/verify`, { params: { email, otc } });
     },
   });
 }
@@ -64,7 +63,7 @@ export function useCreateAccount() {
       password: string;
       handle: string;
     }) => {
-      await api.post(`${getBackendURL()}/auth/signup`, {
+      await api.post(`/auth/signup`, {
         username,
         email,
         password,
@@ -84,7 +83,7 @@ export function useLogin() {
       password: string;
     }) => {
       const userAgentParser = Bowser.getParser(window.navigator.userAgent);
-      const { data } = await api.post(`${getBackendURL()}/auth/login`, {
+      const { data } = await api.post(`/auth/login`, {
         email,
         password,
         browser: userAgentParser.getBrowser().name,
@@ -120,7 +119,7 @@ export function useFindUserByEmail() {
   return useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       const { data } = await api.get(
-        `${getBackendURL()}/auth/forgot-password/find-user-by-email`,
+        `/auth/forgot-password/find-user-by-email`,
         {
           params: {
             email,
@@ -140,7 +139,7 @@ type UseChangePasswordArgs = {
 export function useForgotPasswordChangePassword() {
   return useMutation({
     mutationFn: async ({ newPassword, userId }: UseChangePasswordArgs) => {
-      await api.post(`${getBackendURL()}/auth/forgot-password/change-password`, {
+      await api.post(`/auth/forgot-password/change-password`, {
         userId,
         newPassword,
       });
@@ -153,7 +152,7 @@ export function useChangePassword() {
     mutationFn: async ({
       newPassword,
     }: Pick<UseChangePasswordArgs, `newPassword`>) => {
-      await api.put(`${getBackendURL()}/account/password`, {
+      await api.put(`/account/password`, {
         password: newPassword,
       });
     },
@@ -164,7 +163,7 @@ export function useLogout({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async () => {
-      await api.post(`${getBackendURL()}/auth/logout`);
+      await api.post(`/auth/logout`);
     },
     onSuccess: () => {
       setCurrentUser(null);
@@ -179,7 +178,7 @@ export function useSessions() {
   return useQuery({
     queryKey: [`currentUserSessions`],
     queryFn: async () => {
-      const { data: currentUserSessions } = await api.get(`${getBackendURL()}/sessions`);
+      const { data: currentUserSessions } = await api.get(`/sessions`);
       return currentUserSessions.data as UserSession[];
     },
   });
@@ -188,7 +187,7 @@ export function useSessions() {
 export function useVerifyPassword() {
   return useMutation({
     mutationFn: async (password: string) => {
-      await api.post(`${getBackendURL()}/account/verify-password`, { password });
+      await api.post(`/account/verify-password`, { password });
     },
   });
 }
@@ -196,7 +195,7 @@ export function useVerifyPassword() {
 export function useChangeEmail() {
   return useMutation({
     mutationFn: async (email: string) => {
-      await api.put(`${getBackendURL()}/account/email`, { email });
+      await api.put(`/account/email`, { email });
     },
   });
 }
@@ -205,7 +204,7 @@ export function useChangeHandle({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (handle: string) => {
-      await api.put(`${getBackendURL()}/account/handle`, { handle });
+      await api.put(`/account/handle`, { handle });
     },
   });
 }
@@ -213,7 +212,7 @@ export function useChangeHandle({ key }: { key: string }) {
 export function useVerifyHandle() {
   return useMutation({
     mutationFn: async (handle: string) => {
-      await api.get(`${getBackendURL()}/auth/check-handle-availability`, {
+      await api.get(`/auth/check-handle-availability`, {
         params: {
           handle,
         },
@@ -226,7 +225,7 @@ export function useAccountSettingLogoutSession({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (sessionId: string) => {
-      await api.post(`${getBackendURL()}/sessions/${sessionId}/logout`);
+      await api.post(`/sessions/${sessionId}/logout`);
     },
     onSuccess: (_, sessionId) => {
       queryClient.setQueryData<UserSession[] | undefined>(
@@ -244,7 +243,7 @@ export function useDetachedModeLogoutSession({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (sessionId: string) => {
-      await api.post(`${getBackendURL()}/auth/detached/${sessionId}/logout`);
+      await api.post(`/auth/detached/${sessionId}/logout`);
     },
   });
 }
@@ -253,7 +252,7 @@ export function useDeleteAccount({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async () => {
-      await api.post(`${getBackendURL()}/account/delete-account`);
+      await api.post(`/account/delete-account`);
     },
     onSuccess: () => {
       setCurrentUser(null);
