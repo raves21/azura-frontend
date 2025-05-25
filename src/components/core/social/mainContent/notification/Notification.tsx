@@ -28,6 +28,7 @@ export default function Notification({ notification }: Props) {
       },
     };
   } else {
+    //blablabla on YOUR post
     linkProps = {
       to: "/social/$userHandle/posts/$postId",
       params: {

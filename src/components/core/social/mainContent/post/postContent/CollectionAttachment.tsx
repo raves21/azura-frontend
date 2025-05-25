@@ -19,7 +19,7 @@ export default function CollectionAttachment({
 }: Props) {
   let attachmentBg: string | null | undefined;
 
-  if (collection.previewMedias.length !== 0) {
+  if (!!collection.previewMedias?.length) {
     const previewCoverImage = collection.previewMedias
       .map((poster) => poster.coverImage)
       .find(Boolean);
@@ -99,7 +99,10 @@ export default function CollectionAttachment({
     );
   }
   return (
-    <div className="w-full overflow-hidden bg-socialPrimary border border-socialTextSecondary px-4 sm:px-8 grid place-items-center rounded-lg h-24 mobile-m:h-28 sm:h-32 md:h-36 xl:h-40">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="w-full overflow-hidden bg-socialPrimary border border-socialTextSecondary px-4 sm:px-8 grid place-items-center rounded-lg h-24 mobile-m:h-28 sm:h-32 md:h-36 xl:h-40"
+    >
       <p className="text-xs mobile-l:text-sm sm:text-base font-medium text-socialTextSecondary text-center">
         {"You are unable to view this collection due to it's privacy setting."}
       </p>

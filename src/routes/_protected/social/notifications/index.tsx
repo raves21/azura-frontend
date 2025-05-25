@@ -113,7 +113,7 @@ function NotificationsPage() {
         </div>
         <div className="w-full flex flex-col">
           {notifications.pages[0].data.length === 0 ? (
-            <p className="w-full py-24 text-center font-medium text-xl">
+            <p className="w-full py-24 text-center text-socialTextSecondary font-medium text-xl">
               No notifications.
             </p>
           ) : (

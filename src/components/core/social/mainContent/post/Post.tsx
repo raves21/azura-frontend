@@ -61,7 +61,13 @@ export default function Post({ fromState, post }: Props) {
       onClick={() =>
         navigate({
           to: "/social/$userHandle/posts/$postId",
-          params: { userHandle: currentUser.handle, postId: post.id },
+          params: {
+            userHandle:
+              post.owner.id === currentUser.id
+                ? currentUser.handle
+                : post.owner.handle,
+            postId: post.id,
+          },
           state: {
             postInfoState: fromState ? { from: fromState } : undefined,
           },
@@ -74,7 +80,12 @@ export default function Post({ fromState, post }: Props) {
           post={post}
           linkProps={{
             to: "/social/$userHandle",
-            params: { userHandle: currentUser.handle },
+            params: {
+              userHandle:
+                post.owner.id === currentUser.id
+                  ? currentUser.handle
+                  : post.owner.handle,
+            },
           }}
         />
         {postContent}
