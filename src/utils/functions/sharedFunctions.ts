@@ -71,3 +71,9 @@ export function getUsernamePreview({
   }
   return "lucie too bi".slice(0, maxLength) + "...";
 }
+
+export function drawRandomURL({ urlList }: { urlList: string[] }): string {
+  //💀💀 LOAD BALANCER HAHSQHAHAHHAHAHAH
+  const randomURL = urlList[Math.floor(Math.random() * urlList.length)];
+  return randomURL;
+}

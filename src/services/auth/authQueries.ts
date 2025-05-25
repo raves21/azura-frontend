@@ -10,14 +10,21 @@ import Bowser from "bowser";
 import { setCurrentUser } from "./sharedFunctions";
 import axios from "axios";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
-import { closeAllPopups } from "@/utils/functions/sharedFunctions";
-
-const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+import {
+  closeAllPopups,
+  drawRandomURL,
+} from "@/utils/functions/sharedFunctions";
 
 export function useCurrentUser() {
   return useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: async () => {
+      const BACKEND_BASE_URL = drawRandomURL({
+        urlList: [
+          `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
+          `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
+        ],
+      });
       const { data } = await axios.get(`${BACKEND_BASE_URL}/users/me`, {
         withCredentials: true,
       });

@@ -1,3 +1,4 @@
+import { drawRandomURL } from "@/utils/functions/sharedFunctions";
 import { AniwatchEpisode } from "@/utils/types/media/anime/animeAniwatch";
 import { AnimeInfoAnizip } from "@/utils/types/media/anime/animeAnizip";
 import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
@@ -56,6 +57,5 @@ export function getRandomAniwatchProxyURL(): string {
     `${import.meta.env.VITE_ANIWATCH_API_PROXY_4}`,
     `${import.meta.env.VITE_ANIWATCH_API_PROXY_5}`,
   ];
-  const randomURL = urls[Math.floor(Math.random() * urls.length)];
-  return randomURL;
+  return drawRandomURL({urlList: urls})
 }

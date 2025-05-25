@@ -1,12 +1,20 @@
 import axios from "axios";
 import { setCurrentUser } from "@/services/auth/sharedFunctions";
-import { closeAllPopups } from "@/utils/functions/sharedFunctions";
+import {
+  closeAllPopups,
+  drawRandomURL,
+} from "@/utils/functions/sharedFunctions";
 import { queryClient } from "../queryClient";
 
 let abortController = new AbortController();
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
+  baseURL: drawRandomURL({
+    urlList: [
+      `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
+      `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
+    ],
+  }),
   withCredentials: true,
 });
 
