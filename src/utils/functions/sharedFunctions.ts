@@ -62,14 +62,16 @@ export function replaceDialogContent({
 }
 
 export function getUsernamePreview({
+  currentUserUsername,
   maxLength,
 }: {
+  currentUserUsername: string
   maxLength: number;
 }): string {
-  if ("lucie too bi".length <= "lucie too bi".slice(0, maxLength).length) {
-    return "lucie too bi";
+  if (currentUserUsername.length <= currentUserUsername.slice(0, maxLength).length) {
+    return currentUserUsername;
   }
-  return "lucie too bi".slice(0, maxLength) + "...";
+  return currentUserUsername.slice(0, maxLength) + "...";
 }
 
 export function drawRandomURL({ urlList }: { urlList: string[] }): string {

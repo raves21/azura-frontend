@@ -16,11 +16,11 @@ export default function CreatePost() {
   let username: string;
 
   if (isTabletExtraSmallUp) {
-    username = getUsernamePreview({ maxLength: 20 });
+    username = getUsernamePreview({ maxLength: 20, currentUserUsername: currentUser.username });
   } else if (isMobileMediumUp) {
-    username = getUsernamePreview({ maxLength: 8 });
+    username = getUsernamePreview({ maxLength: 8, currentUserUsername: currentUser.username });
   } else {
-    username = getUsernamePreview({ maxLength: 5 });
+    username = getUsernamePreview({ maxLength: 5, currentUserUsername: currentUser.username });
   }
 
   return (
