@@ -8,15 +8,19 @@ import { queryClient } from "../queryClient";
 
 let abortController = new AbortController();
 
-const BASE_URL = !!(Number(import.meta.env.VITE_IS_PROD)) ? drawRandomURL({
-    urlList: [
-      `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
-      `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
-    ],
-  }) : import.meta.env.VITE_BACKEND_BASE_URL
+const RANDOM_BACKEND_URL = drawRandomURL({
+  urlList: [
+    `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
+    `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
+  ],
+});
+
+const BACKEND_URL = !!Number(import.meta.env.VITE_IS_PROD)
+  ? RANDOM_BACKEND_URL
+  : import.meta.env.VITE_BACKEND_BASE_URL;
 
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BACKEND_URL,
   withCredentials: true,
 });
 

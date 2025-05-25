@@ -19,13 +19,17 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: async () => {
-      const BACKEND_BASE_URL = drawRandomURL({
+      const RANDOM_BACKEND_URL = drawRandomURL({
         urlList: [
           `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
           `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
         ],
       });
-      const { data } = await axios.get(`${BACKEND_BASE_URL}/users/me`, {
+
+      const BACKEND_URL = !!Number(import.meta.env.VITE_IS_PROD)
+        ? RANDOM_BACKEND_URL
+        : import.meta.env.VITE_BACKEND_BASE_URL;
+      const { data } = await axios.get(`${BACKEND_URL}/users/me`, {
         withCredentials: true,
       });
       return data.data as UserBasicInfo;
