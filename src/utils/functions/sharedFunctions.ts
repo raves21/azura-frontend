@@ -77,3 +77,17 @@ export function drawRandomURL({ urlList }: { urlList: string[] }): string {
   const randomURL = urlList[Math.floor(Math.random() * urlList.length)];
   return randomURL;
 }
+
+export function getBackendURL() {
+  const RANDOM_BACKEND_URL = drawRandomURL({
+    urlList: [
+      `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
+      `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
+    ],
+  });
+
+  const url = !!Number(import.meta.env.VITE_IS_PROD)
+    ? RANDOM_BACKEND_URL
+    : import.meta.env.VITE_BACKEND_BASE_URL;
+  return url;
+}

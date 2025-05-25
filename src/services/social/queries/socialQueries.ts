@@ -49,12 +49,13 @@ import {
   getCurrentUser,
   setCurrentUser,
 } from "@/services/auth/sharedFunctions";
+import { getBackendURL } from "@/utils/functions/sharedFunctions";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
-    queryKey: ["posts", "forYouFeed"],
+    queryKey: [`posts`, `forYouFeed`],
     queryFn: async ({ pageParam }) => {
-      const { data } = await api.get(`/feed/for-you`, {
+      const { data } = await api.get(`${getBackendURL()}/feed/for-you`, {
         params: { page: pageParam },
       });
       return data as PaginatedPostsResponse;
@@ -72,13 +73,13 @@ export function useUserProfile(
   currentUserHandle: string | undefined
 ) {
   return useQuery({
-    queryKey: ["userProfile", userHandle],
+    queryKey: [`userProfile`, userHandle],
     queryFn: async () => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = "/users/me";
+        url = `${getBackendURL()}/users/me`;
       } else {
-        url = `/users/${userHandle}`;
+        url = `${getBackendURL()}/users/${userHandle}`;
       }
       const { data } = await api.get(url);
       return data.data as UserProfile;
@@ -103,7 +104,7 @@ export function useEditUserProfile() {
       banner,
       avatar,
     }: UseEditUserProfileArgs) => {
-      await api.put("/settings/details", {
+      await api.put(`${getBackendURL()}/settings/details`, {
         username,
         bio,
         banner,
@@ -156,7 +157,7 @@ export function useCreatePost() {
       collectionId,
       privacy,
     }: CreatePostArgs) => {
-      const { data } = await api.post("/posts", {
+      const { data } = await api.post(`${getBackendURL()}/posts`, {
         content,
         media,
         collectionId,
@@ -173,12 +174,12 @@ export function useCreatePost() {
       if (currentUserHandle) {
         createPost_PostsCacheMutation({
           currentUserHandle,
-          postsFrom: "forYouFeed",
+          postsFrom: `forYouFeed`,
           result,
         });
         createPost_PostsCacheMutation({
           currentUserHandle,
-          postsFrom: "currentUserProfile",
+          postsFrom: `currentUserProfile`,
           result,
         });
       }
@@ -190,11 +191,11 @@ export function useLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
       //run the api call
-      return await api.post(`posts/${postId}/likes`);
+      return await api.post(`${getBackendURL()}/posts/${postId}/likes`);
     },
     onError: async (error, postId) => {
-      if (!error.message.includes("400")) {
-        post_ReactionCacheMutation({ postId, type: "unlike" });
+      if (!error.message.includes(`400`)) {
+        post_ReactionCacheMutation({ postId, type: `unlike` });
       }
     },
   });
@@ -204,11 +205,11 @@ export function useUnLikePost() {
   return useMutation({
     mutationFn: async (postId: string) => {
       //run the api call
-      return await api.delete(`posts/${postId}/likes`);
+      return await api.delete(`${getBackendURL()}/posts/${postId}/likes`);
     },
     onError: async (error, postId) => {
-      if (!error.message.includes("404")) {
-        post_ReactionCacheMutation({ postId, type: "like" });
+      if (!error.message.includes(`404`)) {
+        post_ReactionCacheMutation({ postId, type: `like` });
       }
     },
   });
@@ -216,9 +217,9 @@ export function useUnLikePost() {
 
 export function usePostInfo(postId: string) {
   return useQuery({
-    queryKey: ["postInfo", postId],
+    queryKey: [`postInfo`, postId],
     queryFn: async () => {
-      const { data } = await api.get(`/posts/${postId}`);
+      const { data } = await api.get(`${getBackendURL()}/posts/${postId}`);
       return data.data as TPostInfo;
     },
   });
@@ -226,9 +227,9 @@ export function usePostInfo(postId: string) {
 
 export function usePostComments(postId: string) {
   return useInfiniteQuery({
-    queryKey: ["postComments", postId],
+    queryKey: [`postComments`, postId],
     queryFn: async ({ pageParam }) => {
-      const { data } = await api.get(`/posts/${postId}/comments`, {
+      const { data } = await api.get(`${getBackendURL()}/posts/${postId}/comments`, {
         params: { page: pageParam, perPage: 5 },
       });
       return data as PaginatedCommentsResponse;
@@ -249,7 +250,7 @@ type CreatePostCommentArgs = {
 export function useCreatePostComment() {
   return useMutation({
     mutationFn: async ({ postId, content }: CreatePostCommentArgs) => {
-      const { data } = await api.post(`/posts/${postId}/comments`, { content });
+      const { data } = await api.post(`${getBackendURL()}/posts/${postId}/comments`, { content });
       return data.data as { id: string };
     },
     onSuccess: async (result, variables) => {
@@ -283,9 +284,9 @@ export function useCreatePostComment() {
 
 export function useDeletePost(postId: string | null) {
   return useMutation({
-    mutationKey: ["deletePost", postId],
+    mutationKey: [`deletePost`, postId],
     mutationFn: async (postId: string) => {
-      return await api.delete(`/posts/${postId}`);
+      return await api.delete(`${getBackendURL()}/posts/${postId}`);
     },
     onSuccess: async (_, postId) => {
       deletePost_PostsCacheMutation(postId);
@@ -298,13 +299,13 @@ export function useUserProfilePosts(
   currentUserHandle: string | undefined
 ) {
   return useInfiniteQuery({
-    queryKey: ["posts", "userProfilePosts", userHandle],
+    queryKey: [`posts`, `userProfilePosts`, userHandle],
     queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = `/posts/user/me`;
+        url = `${getBackendURL()}/posts/user/me`;
       } else {
-        url = `/posts/user/${userHandle}`;
+        url = `${getBackendURL()}/posts/user/${userHandle}`;
       }
       const { data } = await api.get(url, { params: { page: pageParam } });
       return data as PaginatedPostsResponse;
@@ -328,13 +329,13 @@ export function useUserCollections({
   currentUserHandle,
 }: UseUserCollectionArgs) {
   return useInfiniteQuery({
-    queryKey: ["collections", "userCollections", userHandle],
+    queryKey: [`collections`, `userCollections`, userHandle],
     queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = `/collections/user/me`;
+        url = `${getBackendURL()}/collections/user/me`;
       } else {
-        url = `/collections/user/${userHandle}`;
+        url = `${getBackendURL()}/collections/user/${userHandle}`;
       }
       const { data } = await api.get(url, { params: { page: pageParam } });
       return data as PaginatedCollectionsResponse;
@@ -351,9 +352,9 @@ export function useUserCollections({
 
 export function useCurrentUserCollections() {
   return useInfiniteQuery({
-    queryKey: ["collections", "currentUserCollections"],
+    queryKey: [`collections`, `currentUserCollections`],
     queryFn: async ({ pageParam }) => {
-      const { data: collections } = await api.get("/collections/user/me", {
+      const { data: collections } = await api.get(`${getBackendURL()}/collections/user/me`, {
         params: { page: pageParam },
       });
       return collections as PaginatedCollectionsResponse;
@@ -370,7 +371,7 @@ export function useEditPost() {
   return useMutation({
     mutationFn: async (editedPost: TPost) => {
       const { id, content, privacy, media, collection } = editedPost;
-      return await api.put(`/posts/${id}`, {
+      return await api.put(`${getBackendURL()}/posts/${id}`, {
         content,
         privacy,
         media,
@@ -394,11 +395,11 @@ export function useFollowUser() {
   return useMutation({
     mutationFn: async ({ userId }: FollowUnfollowArgs) => {
       //run the api call
-      await api.post(`/users/${userId}/follow`);
+      await api.post(`${getBackendURL()}/users/${userId}/follow`);
     },
     onError: async (error, variables) => {
       const { userHandle, currentUserHandle } = variables;
-      if (!error.message.includes("400")) {
+      if (!error.message.includes(`400`)) {
         //if error, set it data back to unfollowed
         unFollowUser_UserProfileCacheMutation({
           userHandle,
@@ -414,11 +415,11 @@ export function useUnfollowUser() {
   return useMutation({
     mutationFn: async ({ userId }: FollowUnfollowArgs) => {
       //run the api call
-      await api.post(`/users/${userId}/unfollow`);
+      await api.post(`${getBackendURL()}/users/${userId}/unfollow`);
     },
     onError: async (error, variables) => {
       const { userHandle, currentUserHandle } = variables;
-      if (!error.message.includes("404")) {
+      if (!error.message.includes(`404`)) {
         //if error, set it data back to followed
         followUser_UserProfileCacheMutation({
           userHandle,
@@ -436,9 +437,9 @@ type UseFollowingFeedArgs = {
 
 export function useFollowingFeed({ enabled }: UseFollowingFeedArgs) {
   return useInfiniteQuery({
-    queryKey: ["posts", "followingFeed"],
+    queryKey: [`posts`, `followingFeed`],
     queryFn: async ({ pageParam }) => {
-      const { data: followingFeed } = await api.get("/feed/following", {
+      const { data: followingFeed } = await api.get(`${getBackendURL()}/feed/following`, {
         params: { page: pageParam },
       });
       return followingFeed as PaginatedPostsResponse;
@@ -454,9 +455,9 @@ export function useFollowingFeed({ enabled }: UseFollowingFeedArgs) {
 
 export function useTrends() {
   return useQuery({
-    queryKey: ["trends"],
+    queryKey: [`trends`],
     queryFn: async () => {
-      const { data: trends } = await api.get("/trending");
+      const { data: trends } = await api.get(`${getBackendURL()}/trending`);
       return trends.data as Trend[];
     },
     refetchInterval: 60 * 60 * 1000,
@@ -466,10 +467,10 @@ export function useTrends() {
 
 export function useDiscoverPeople() {
   return useInfiniteQuery({
-    queryKey: ["discoverPeople", "userPreviewList"],
+    queryKey: [`discoverPeople`, `userPreviewList`],
     queryFn: async ({ pageParam }) => {
       const { data: discoverPeopleResponse } = await api.get(
-        "/discover-people",
+        `${getBackendURL()}/discover-people`,
         { params: { page: pageParam } }
       );
       return discoverPeopleResponse as PaginatedUserPreviewsResponse;
@@ -484,13 +485,13 @@ export function useDiscoverPeople() {
 
 export function useUserFollowingList(userId: string, currentUserId: string) {
   return useInfiniteQuery({
-    queryKey: ["userFollowingList", "userPreviewList", userId],
+    queryKey: [`userFollowingList`, `userPreviewList`, userId],
     queryFn: async ({ pageParam }) => {
       let url: string;
       if (userId === currentUserId) {
-        url = "/users/me/following";
+        url = `${getBackendURL()}/users/me/following`;
       } else {
-        url = `users/${userId}/following`;
+        url = `${getBackendURL()}/users/${userId}/following`;
       }
       const { data: discoverPeopleResponse } = await api.get(url, {
         params: { page: pageParam },
@@ -507,13 +508,13 @@ export function useUserFollowingList(userId: string, currentUserId: string) {
 
 export function useUserFollowerList(userId: string, currentUserId: string) {
   return useInfiniteQuery({
-    queryKey: ["currentUserFollowerList", "userPreviewList", userId],
+    queryKey: [`currentUserFollowerList`, `userPreviewList`, userId],
     queryFn: async ({ pageParam }) => {
       let url: string;
       if (userId === currentUserId) {
-        url = "/users/me/followers";
+        url = `${getBackendURL()}/users/me/followers`;
       } else {
-        url = `users/${userId}/followers`;
+        url = `${getBackendURL()}/users/${userId}/followers`;
       }
       const { data: discoverPeopleResponse } = await api.get(url, {
         params: { page: pageParam },
@@ -530,9 +531,9 @@ export function useUserFollowerList(userId: string, currentUserId: string) {
 
 export function useSearchPeople(query: string, enabled: boolean) {
   return useInfiniteQuery({
-    queryKey: ["searchPeople", "userPreviewList", query],
+    queryKey: [`searchPeople`, `userPreviewList`, query],
     queryFn: async ({ pageParam }) => {
-      const { data: searchPeopleResults } = await api.get("/search/users", {
+      const { data: searchPeopleResults } = await api.get(`${getBackendURL()}/search/users`, {
         params: {
           query,
           page: pageParam,
@@ -551,9 +552,9 @@ export function useSearchPeople(query: string, enabled: boolean) {
 
 export function useSearchPosts(query: string, enabled: boolean) {
   return useInfiniteQuery({
-    queryKey: ["searchPosts", "posts", query],
+    queryKey: [`searchPosts`, `posts`, query],
     queryFn: async ({ pageParam }) => {
-      const { data: searchPostsResults } = await api.get("/search/posts", {
+      const { data: searchPostsResults } = await api.get(`${getBackendURL()}/search/posts`, {
         params: {
           query,
           page: pageParam,
@@ -581,14 +582,14 @@ export function useMediaExistenceInCollections({
 }: UseMediaExistenceInCollectionArgs) {
   return useInfiniteQuery({
     queryKey: [
-      "collections",
-      "mediaExistenceInCollections",
+      `collections`,
+      `mediaExistenceInCollections`,
       mediaId,
       mediaType,
     ],
     queryFn: async ({ pageParam }) => {
       const { data: mediaExistenceInCollections } = await api.get(
-        `/collections/check-media-existence`,
+        `${getBackendURL()}/collections/check-media-existence`,
         { params: { mediaId, type: mediaType, page: pageParam } }
       );
       return mediaExistenceInCollections as PaginatedMediaExistenceInCollectionsResponse;
@@ -606,10 +607,10 @@ export function useMediaExistenceInCollection({
   collectionId,
 }: UseMediaExistenceInCollectionArgs & { collectionId: string }) {
   return useQuery({
-    queryKey: ["mediaExistenceInCollection", mediaId, mediaType],
+    queryKey: [`mediaExistenceInCollection`, mediaId, mediaType],
     queryFn: async () => {
       const { data: mediaExistenceInCollection } = await api.get(
-        `/collections/${collectionId}/check-media-existence`,
+        `${getBackendURL()}/collections/${collectionId}/check-media-existence`,
         { params: { mediaId, type: mediaType } }
       );
       return mediaExistenceInCollection.data as {
@@ -628,7 +629,7 @@ type UseAddCollectionItemArgs = {
 export function useAddCollectionItem() {
   return useMutation({
     mutationFn: async ({ collectionId, media }: UseAddCollectionItemArgs) => {
-      await api.post(`/collections/${collectionId}/collection-items`, {
+      await api.post(`${getBackendURL()}/collections/${collectionId}/collection-items`, {
         mediaId: media.id,
         type: media.type,
         title: media.title,
@@ -648,29 +649,29 @@ export function useAddCollectionItem() {
       if (currentUserHandle) {
         queryClient.invalidateQueries({
           queryKey: [
-            "collections",
-            "mediaExistenceInCollections",
+            `collections`,
+            `mediaExistenceInCollections`,
             media.id,
             media.type,
           ],
-          refetchType: "none",
+          refetchType: `none`,
           exact: true,
         });
         queryClient.invalidateQueries({
-          queryKey: ["collections", "userCollections", currentUserHandle],
+          queryKey: [`collections`, `userCollections`, currentUserHandle],
           exact: true,
         });
       }
     },
     onError: async (error, variables) => {
       const { collectionId, media } = variables;
-      if (!error.message.includes("400")) {
+      if (!error.message.includes(`400`)) {
         //if error, set it back to doesGivenMediaExist: false
         toggleMediaExistenceInCollectionCacheMutation({
           collectionId,
           mediaId: media.id,
           mediaType: media.type,
-          type: "remove",
+          type: `remove`,
         });
       }
     },
@@ -687,7 +688,7 @@ export function useDeleteCollectionItem({
   media,
 }: UseDeleteCollectionItemArgs) {
   return useMutation({
-    mutationKey: ["deleteCollectionItem", collectionId, media.id, media.type],
+    mutationKey: [`deleteCollectionItem`, collectionId, media.id, media.type],
     mutationFn: async ({
       collectionId,
       media,
@@ -699,19 +700,19 @@ export function useDeleteCollectionItem({
         mediaType: media.type,
       });
       //run the api call
-      await api.delete(`/collections/${collectionId}/collection-items`, {
+      await api.delete(`${getBackendURL()}/collections/${collectionId}/collection-items`, {
         params: { mediaId: media.id, mediaType: media.type },
       });
     },
     onError: async (error, variables) => {
       const { collectionId, media } = variables;
-      if (!error.message.includes("404")) {
+      if (!error.message.includes(`404`)) {
         //if error, set it back to doesGivenMediaExist: true
         toggleMediaExistenceInCollectionCacheMutation({
           collectionId,
           mediaId: media.id,
           mediaType: media.type,
-          type: "add",
+          type: `add`,
         });
       }
     },
@@ -733,7 +734,7 @@ export function useCreateCollection() {
       description,
       photo,
     }: UseCreateCollectionArgs) => {
-      const { data: newCollection } = await api.post("/collections", {
+      const { data: newCollection } = await api.post(`${getBackendURL()}/collections`, {
         name,
         privacy,
         description,
@@ -751,7 +752,7 @@ export function useEditCollection() {
   return useMutation({
     mutationFn: async (editedCollection: TCollection) => {
       const { description, id, name, privacy, photo } = editedCollection;
-      await api.put(`/collections/${id}`, {
+      await api.put(`${getBackendURL()}/collections/${id}`, {
         description,
         name,
         privacy,
@@ -761,12 +762,12 @@ export function useEditCollection() {
     onSuccess: (_, editedCollection) => {
       queryClient.invalidateQueries({
         predicate(query) {
-          return query.queryKey.includes("collections");
+          return query.queryKey.includes(`collections`);
         },
       });
       queryClient.invalidateQueries({
         predicate(query) {
-          return query.queryKey.includes("posts");
+          return query.queryKey.includes(`posts`);
         },
       });
       editCollection_CollectionInfoCacheMutation(editedCollection);
@@ -776,10 +777,10 @@ export function useEditCollection() {
 
 export function useCollectionInfo(collectionId: string) {
   return useQuery({
-    queryKey: ["collectionInfo", collectionId],
+    queryKey: [`collectionInfo`, collectionId],
     queryFn: async () => {
       const { data: collectionInfo } = await api.get(
-        `/collections/${collectionId}`
+        `${getBackendURL()}/collections/${collectionId}`
       );
       return collectionInfo.data as TCollection;
     },
@@ -798,10 +799,10 @@ export function useCollectionItems({
   isCurrentUser,
 }: UseCollectionItemsArgs) {
   return useInfiniteQuery({
-    queryKey: ["collectionItems", collectionId],
+    queryKey: [`collectionItems`, collectionId],
     queryFn: async ({ pageParam }) => {
       const { data: collectionItems } = await api.get(
-        `/collections/${collectionId}/collection-items`,
+        `${getBackendURL()}/collections/${collectionId}/collection-items`,
         { params: { page: pageParam } }
       );
       return collectionItems as PaginatedCollectionItemsResponse;
@@ -822,31 +823,31 @@ type UseDeleteCollectionArgs = {
 
 export function useDeleteCollection({ collectionId }: UseDeleteCollectionArgs) {
   return useMutation({
-    mutationKey: ["deleteCollection", collectionId],
+    mutationKey: [`deleteCollection`, collectionId],
     mutationFn: async ({ collectionId }: UseDeleteCollectionArgs) => {
-      await api.delete(`/collections/${collectionId}`);
+      await api.delete(`${getBackendURL()}/collections/${collectionId}`);
     },
     onSuccess: (_, { userHandle, collectionId }) => {
       queryClient.invalidateQueries({
         predicate(query) {
-          return query.queryKey.includes("posts");
+          return query.queryKey.includes(`posts`);
         },
       });
       queryClient.removeQueries({
-        queryKey: ["collectionInfo", collectionId],
+        queryKey: [`collectionInfo`, collectionId],
         exact: true,
       });
       deleteCollection_CollectionsCacheMutation(collectionId);
-      history.pushState(null, "", `/social/${userHandle}/collections`);
+      history.pushState(null, ``, `/social/${userHandle}/collections`);
     },
   });
 }
 
 export function useNotifications() {
   return useInfiniteQuery({
-    queryKey: ["notifications"],
+    queryKey: [`notifications`],
     queryFn: async ({ pageParam }) => {
-      const { data: notifications } = await api.get("/notifications", {
+      const { data: notifications } = await api.get(`${getBackendURL()}/notifications`, {
         params: {
           page: pageParam,
         },
@@ -872,12 +873,12 @@ export function useUpdateNotificationReadStatus() {
       isRead,
       notificationId,
     }: UseUpdateNotificationReadStatus) => {
-      await api.put(`/collections/${notificationId}`, {
+      await api.put(`${getBackendURL()}/collections/${notificationId}`, {
         isRead,
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({ queryKey: [`notifications`] });
     },
   });
 }
@@ -885,10 +886,10 @@ export function useUpdateNotificationReadStatus() {
 export function useDeleteNotification() {
   return useMutation({
     mutationFn: async (collectionId: string) => {
-      await api.delete(`/collections/${collectionId}`);
+      await api.delete(`${getBackendURL()}/collections/${collectionId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({ queryKey: [`notifications`] });
     },
   });
 }
@@ -897,10 +898,10 @@ export function useDeleteAllNotifications({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async () => {
-      await api.delete(`/notifications`);
+      await api.delete(`${getBackendURL()}/notifications`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({ queryKey: [`notifications`] });
     },
   });
 }
@@ -916,17 +917,17 @@ export function useFollowingList({
 }: FollowingFollowerList) {
   return useInfiniteQuery({
     queryKey: [
-      "followingList",
-      "userPreviewList",
+      `followingList`,
+      `userPreviewList`,
       userHandle,
       currentUserHandle,
     ],
     queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = "/users/me/following";
+        url = `${getBackendURL()}/users/me/following`;
       } else {
-        url = `/users/${userHandle}/following`;
+        url = `${getBackendURL()}/users/${userHandle}/following`;
       }
 
       const { data: followingList } = await api.get(url, {
@@ -949,17 +950,17 @@ export function useFollowerList({
 }: FollowingFollowerList) {
   return useInfiniteQuery({
     queryKey: [
-      "followerList",
-      "userPreviewList",
+      `followerList`,
+      `userPreviewList`,
       userHandle,
       currentUserHandle,
     ],
     queryFn: async ({ pageParam }) => {
       let url: string;
       if (userHandle === currentUserHandle) {
-        url = "/users/me/followers";
+        url = `${getBackendURL()}/users/me/followers`;
       } else {
-        url = `/users/${userHandle}/followers`;
+        url = `${getBackendURL()}/users/${userHandle}/followers`;
       }
 
       const { data: followerList } = await api.get(url, {
@@ -983,9 +984,9 @@ type DeleteUpdatePostCommentArgs = {
 
 export function useDeletePostComment(commentId: string) {
   return useMutation({
-    mutationKey: ["deleteComment", commentId],
+    mutationKey: [`deleteComment`, commentId],
     mutationFn: async ({ commentId, postId }: DeleteUpdatePostCommentArgs) => {
-      await api.delete(`/posts/${postId}/comments/${commentId}`);
+      await api.delete(`${getBackendURL()}/posts/${postId}/comments/${commentId}`);
     },
     onSuccess: (_, { postId, commentId }) => {
       deleteComment_CommentsCacheMutation({ commentId, postId });
@@ -995,13 +996,13 @@ export function useDeletePostComment(commentId: string) {
 
 export function useEditPostComment(commentId: string) {
   return useMutation({
-    mutationKey: ["editComment", commentId],
+    mutationKey: [`editComment`, commentId],
     mutationFn: async ({
       commentId,
       postId,
       content,
     }: DeleteUpdatePostCommentArgs & { content: string }) => {
-      await api.put(`/posts/${postId}/comments/${commentId}`, { content });
+      await api.put(`${getBackendURL()}/posts/${postId}/comments/${commentId}`, { content });
     },
     onSuccess: (_, { commentId, content, postId }) => {
       editComment_CommentsCacheMutation({ commentId, content, postId });
@@ -1011,9 +1012,9 @@ export function useEditPostComment(commentId: string) {
 
 export function usePostLikes(postId: string) {
   return useInfiniteQuery({
-    queryKey: ["postLikes", postId, "userPreviewList"],
+    queryKey: [`postLikes`, postId, `userPreviewList`],
     queryFn: async () => {
-      const { data: postLikes } = await api.get(`/posts/${postId}/likes`);
+      const { data: postLikes } = await api.get(`${getBackendURL()}/posts/${postId}/likes`);
       return postLikes as PaginatedPostLikesResponse;
     },
     initialPageParam: 1,

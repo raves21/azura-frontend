@@ -2,25 +2,12 @@ import axios from "axios";
 import { setCurrentUser } from "@/services/auth/sharedFunctions";
 import {
   closeAllPopups,
-  drawRandomURL,
 } from "@/utils/functions/sharedFunctions";
 import { queryClient } from "../queryClient";
 
 let abortController = new AbortController();
 
-const RANDOM_BACKEND_URL = drawRandomURL({
-  urlList: [
-    `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
-    `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
-  ],
-});
-
-const BACKEND_URL = !!Number(import.meta.env.VITE_IS_PROD)
-  ? RANDOM_BACKEND_URL
-  : import.meta.env.VITE_BACKEND_BASE_URL;
-
 const api = axios.create({
-  baseURL: BACKEND_URL,
   withCredentials: true,
 });
 

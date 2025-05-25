@@ -12,24 +12,14 @@ import axios from "axios";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import {
   closeAllPopups,
-  drawRandomURL,
+  getBackendURL,
 } from "@/utils/functions/sharedFunctions";
 
 export function useCurrentUser() {
   return useQuery({
-    queryKey: ["authenticatedUser"],
+    queryKey: [`authenticatedUser`],
     queryFn: async () => {
-      const RANDOM_BACKEND_URL = drawRandomURL({
-        urlList: [
-          `${import.meta.env.VITE_BACKEND_BASE_URL_1}`,
-          `${import.meta.env.VITE_BACKEND_BASE_URL_2}`,
-        ],
-      });
-
-      const BACKEND_URL = !!Number(import.meta.env.VITE_IS_PROD)
-        ? RANDOM_BACKEND_URL
-        : import.meta.env.VITE_BACKEND_BASE_URL;
-      const { data } = await axios.get(`${BACKEND_URL}/users/me`, {
+      const { data } = await axios.get(`${getBackendURL()}/users/me`, {
         withCredentials: true,
       });
       return data.data as UserBasicInfo;
@@ -42,7 +32,7 @@ export function useSendOTC({ key }: { key?: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (email: string) => {
-      const response = await api.post("/otc/send", { email });
+      const response = await api.post(`${getBackendURL()}/otc/send`, { email });
       return {
         message: response.data.message,
         statusCode: response.status,
@@ -56,7 +46,7 @@ type UseVerifyOTCArgs = { email: string; otc: string };
 export function useVerifyOTC() {
   return useMutation({
     mutationFn: async ({ email, otc }: UseVerifyOTCArgs) => {
-      await api.get("/otc/verify", { params: { email, otc } });
+      await api.get(`${getBackendURL()}/otc/verify`, { params: { email, otc } });
     },
   });
 }
@@ -74,7 +64,7 @@ export function useCreateAccount() {
       password: string;
       handle: string;
     }) => {
-      await api.post("/auth/signup", {
+      await api.post(`${getBackendURL()}/auth/signup`, {
         username,
         email,
         password,
@@ -94,7 +84,7 @@ export function useLogin() {
       password: string;
     }) => {
       const userAgentParser = Bowser.getParser(window.navigator.userAgent);
-      const { data } = await api.post("/auth/login", {
+      const { data } = await api.post(`${getBackendURL()}/auth/login`, {
         email,
         password,
         browser: userAgentParser.getBrowser().name,
@@ -117,10 +107,10 @@ export function useLogin() {
             },
           },
         });
-        history.replaceState(null, "", "/detached-mode");
+        history.replaceState(null, ``, `/detached-mode`);
       } else {
         setCurrentUser(result.data.user);
-        history.replaceState(null, "", "/anime");
+        history.replaceState(null, ``, `/anime`);
       }
     },
   });
@@ -130,7 +120,7 @@ export function useFindUserByEmail() {
   return useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       const { data } = await api.get(
-        "/auth/forgot-password/find-user-by-email",
+        `${getBackendURL()}/auth/forgot-password/find-user-by-email`,
         {
           params: {
             email,
@@ -150,7 +140,7 @@ type UseChangePasswordArgs = {
 export function useForgotPasswordChangePassword() {
   return useMutation({
     mutationFn: async ({ newPassword, userId }: UseChangePasswordArgs) => {
-      await api.post("/auth/forgot-password/change-password", {
+      await api.post(`${getBackendURL()}/auth/forgot-password/change-password`, {
         userId,
         newPassword,
       });
@@ -162,8 +152,8 @@ export function useChangePassword() {
   return useMutation({
     mutationFn: async ({
       newPassword,
-    }: Pick<UseChangePasswordArgs, "newPassword">) => {
-      await api.put("/account/password", {
+    }: Pick<UseChangePasswordArgs, `newPassword`>) => {
+      await api.put(`${getBackendURL()}/account/password`, {
         password: newPassword,
       });
     },
@@ -174,22 +164,22 @@ export function useLogout({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async () => {
-      await api.post("/auth/logout");
+      await api.post(`${getBackendURL()}/auth/logout`);
     },
     onSuccess: () => {
       setCurrentUser(null);
       closeAllPopups();
       queryClient.clear();
-      history.replaceState(null, "", "/login");
+      history.replaceState(null, ``, `/login`);
     },
   });
 }
 
 export function useSessions() {
   return useQuery({
-    queryKey: ["currentUserSessions"],
+    queryKey: [`currentUserSessions`],
     queryFn: async () => {
-      const { data: currentUserSessions } = await api.get("/sessions");
+      const { data: currentUserSessions } = await api.get(`${getBackendURL()}/sessions`);
       return currentUserSessions.data as UserSession[];
     },
   });
@@ -198,7 +188,7 @@ export function useSessions() {
 export function useVerifyPassword() {
   return useMutation({
     mutationFn: async (password: string) => {
-      await api.post("/account/verify-password", { password });
+      await api.post(`${getBackendURL()}/account/verify-password`, { password });
     },
   });
 }
@@ -206,7 +196,7 @@ export function useVerifyPassword() {
 export function useChangeEmail() {
   return useMutation({
     mutationFn: async (email: string) => {
-      await api.put("/account/email", { email });
+      await api.put(`${getBackendURL()}/account/email`, { email });
     },
   });
 }
@@ -215,7 +205,7 @@ export function useChangeHandle({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (handle: string) => {
-      await api.put("/account/handle", { handle });
+      await api.put(`${getBackendURL()}/account/handle`, { handle });
     },
   });
 }
@@ -223,7 +213,7 @@ export function useChangeHandle({ key }: { key: string }) {
 export function useVerifyHandle() {
   return useMutation({
     mutationFn: async (handle: string) => {
-      await api.get("/auth/check-handle-availability", {
+      await api.get(`${getBackendURL()}/auth/check-handle-availability`, {
         params: {
           handle,
         },
@@ -236,11 +226,11 @@ export function useAccountSettingLogoutSession({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (sessionId: string) => {
-      await api.post(`/sessions/${sessionId}/logout`);
+      await api.post(`${getBackendURL()}/sessions/${sessionId}/logout`);
     },
     onSuccess: (_, sessionId) => {
       queryClient.setQueryData<UserSession[] | undefined>(
-        ["currentUserSessions"],
+        [`currentUserSessions`],
         (oldData) => {
           if (!oldData) return undefined;
           return oldData.filter((userSession) => userSession.id !== sessionId);
@@ -254,7 +244,7 @@ export function useDetachedModeLogoutSession({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async (sessionId: string) => {
-      await api.post(`/auth/detached/${sessionId}/logout`);
+      await api.post(`${getBackendURL()}/auth/detached/${sessionId}/logout`);
     },
   });
 }
@@ -263,13 +253,13 @@ export function useDeleteAccount({ key }: { key: string }) {
   return useMutation({
     mutationKey: [key],
     mutationFn: async () => {
-      await api.post("/account/delete-account");
+      await api.post(`${getBackendURL()}/account/delete-account`);
     },
     onSuccess: () => {
       setCurrentUser(null);
       closeAllPopups();
       queryClient.clear();
-      history.replaceState(null, "", "/login");
+      history.replaceState(null, ``, `/login`);
     },
   });
 }
