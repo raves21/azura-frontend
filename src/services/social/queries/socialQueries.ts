@@ -104,7 +104,7 @@ export function useEditUserProfile() {
       banner,
       avatar,
     }: UseEditUserProfileArgs) => {
-      await api.put(`${getBackendURL()}/settings/details`, {
+      await api.put(`${getBackendURL()}/account/details`, {
         username,
         bio,
         banner,
