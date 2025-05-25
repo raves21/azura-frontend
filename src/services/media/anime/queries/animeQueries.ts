@@ -22,6 +22,23 @@ import {
   AniwatchEpisode,
 } from "@/utils/types/media/anime/animeAniwatch";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import { drawRandomURL } from "@/utils/functions/sharedFunctions";
+
+const ANILIST_URL = drawRandomURL({
+  urlList: [
+    `${import.meta.env.VITE_N_ANILIST_URL}`,
+    `${import.meta.env.VITE_ANILIST_URL}`,
+    `${import.meta.env.VITE_K_ANILIST_URL}`,
+  ],
+});
+
+const ANIWATCH_URL = drawRandomURL({
+  urlList: [
+    `${import.meta.env.VITE_ANIWATCH_API_URL_2}`,
+    `${import.meta.env.VITE_ANIWATCH_API_URL_3}`,
+    `${import.meta.env.VITE_ANIWATCH_API_URL}`,
+  ]
+})
 
 export function useAnimesByCategory(
   perPage: number,
@@ -32,7 +49,7 @@ export function useAnimesByCategory(
     queryKey: ["categoryAnime", perPage, category],
     queryFn: async () => {
       const { data: categoryAnime } = await axios.get(
-        `${import.meta.env.VITE_N_ANILIST_URL}/advanced-search?sort=["${category}"]&perPage=${perPage}${status ? `&status=${status}` : ""}`
+        `${ANILIST_URL}/advanced-search?sort=["${category}"]&perPage=${perPage}${status ? `&status=${status}` : ""}`
       );
       return categoryAnime as PaginatedAnimeResponse;
     },
@@ -44,7 +61,7 @@ export function useSearchAnime(query: string, enabled: boolean) {
     queryKey: ["search", query],
     queryFn: async () => {
       const { data: searchResults } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/advanced-search?query=${query}&perPage=10`
+        `${ANILIST_URL}/advanced-search?query=${query}&perPage=10`
       );
       return searchResults as PaginatedAnimeResponse;
     },
@@ -87,7 +104,7 @@ export function useFilterAnime({
     ],
     queryFn: async () => {
       const { data: filteredAnimes } = await axios.get(
-        `${import.meta.env.VITE_ANILIST_URL}/advanced-search`,
+        `${ANILIST_URL}/advanced-search`,
         {
           params: {
             perPage: 30,
@@ -125,9 +142,7 @@ export function useAnimeInfo({
     queryKey: ["animeInfo", animeId],
     queryFn: async () => {
       const [anilistResponse, aniwatchResponse] = await axios.all([
-        axios
-          .get(`${import.meta.env.VITE_ANILIST_URL}/data/${animeId}`)
-          .catch(() => null),
+        axios.get(`${ANILIST_URL}/data/${animeId}`).catch(() => null),
         axios
           .get(`${import.meta.env.VITE_ANILIST_TO_ANIWATCH_URL}/info`, {
             params: {
@@ -196,7 +211,7 @@ export function useAnimeEpisodeStreamLinks(episodeId: string) {
         `${getRandomAniwatchProxyURL()}`,
         {
           params: {
-            url: `${import.meta.env.VITE_ANIWATCH_API_URL}/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}&server=hd-2`,
+            url: `${ANIWATCH_URL}/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}&server=hd-2`,
           },
         }
       );
