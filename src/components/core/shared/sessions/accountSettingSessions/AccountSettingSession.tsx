@@ -1,4 +1,4 @@
-import PasswordVerificationDialog from "@/components/core/account/shared/PasswordVerificationDialog";
+import PasswordVerificationDialog from "@/components/core/settings/account/shared/PasswordVerificationDialog";
 import { cn } from "@/lib/utils";
 import { useAccountSettingLogoutSession } from "@/services/auth/authQueries";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";

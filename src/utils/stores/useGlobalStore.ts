@@ -90,7 +90,7 @@ export const useGlobalStore = create<Store>((set) => ({
       //so that dialog closing animation does not skip frames
       setTimeout(() => {
         set({ sheetContent: null });
-      }, 300);
+      }, 400);
     }
   },
   toggleOpenDrawer: (drawerContent: ReactNode | null) => {

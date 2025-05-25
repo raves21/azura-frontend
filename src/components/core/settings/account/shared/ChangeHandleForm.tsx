@@ -20,7 +20,7 @@ import {
   getCurrentUser,
   setCurrentUser,
 } from "@/services/auth/sharedFunctions";
-import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { cn } from "@/lib/utils";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { useToast } from "@/components/ui/use-toast";

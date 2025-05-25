@@ -1,4 +1,4 @@
-import ChangeEmailForm from "@/components/core/account/shared/ChangeEmailForm";
+import ChangeEmailForm from "@/components/core/settings/account/shared/ChangeEmailForm";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";

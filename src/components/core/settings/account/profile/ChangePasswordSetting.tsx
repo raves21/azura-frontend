@@ -1,7 +1,7 @@
 import { useCurrentUser, useSendOTC } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Circle, Edit2 } from "lucide-react";
-import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";

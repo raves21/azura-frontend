@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 } & PropsWithChildren;
 
-export default function AccountSettingSelectionItem({
+export default function SettingContentItem({
   description,
   title,
   children,

@@ -10,6 +10,7 @@ import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../shared/CustomDropdown";
 import { getTMDBImageURL } from "@/services/media/sharedFunctions";
+import { ServerName } from "@/utils/types/media/shared";
 
 type Props = {
   totalSeasons: number | null;
@@ -33,6 +34,10 @@ export default function InfoPageTVEpisodes({
     isLoading: isTvSeasonEpisodesLoading,
     error: tvSeasonEpisodesError,
   } = tvSeasonEpisodesQuery;
+
+  const defaultTVMovieServer = localStorage.getItem(
+    "defaultTVMovieServer"
+  ) as ServerName | null;
 
   if (isTvSeasonEpisodesLoading || !totalSeasons) {
     return <AllEpisodesLoading variant="infoPage" />;
@@ -81,6 +86,7 @@ export default function InfoPageTVEpisodes({
                   search: {
                     tvSeason: episode.season_number,
                     tvEp: episode.episode_number,
+                    server: defaultTVMovieServer || ServerName.embed1,
                   },
                 }}
                 episodeNumber={`Episode ${episode.episode_number}`}

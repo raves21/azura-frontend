@@ -24,8 +24,14 @@ import { ServerName } from "@/utils/types/media/shared";
 import { z } from "zod";
 import MovieEpisodeWatchPage from "@/components/core/media/movie/episodeList/MovieEpisodeWatchPage";
 
+const defaultTVMovieServer = localStorage.getItem(
+  "defaultTVMovieServer"
+) as ServerName | null;
+
 const watchMoviePageSchema = z.object({
-  server: z.nativeEnum(ServerName).catch(ServerName.azuraMain),
+  server: z
+    .nativeEnum(ServerName)
+    .catch(defaultTVMovieServer || ServerName.embed1),
 });
 
 type WatchMoviePageSchema = z.infer<typeof watchMoviePageSchema>;

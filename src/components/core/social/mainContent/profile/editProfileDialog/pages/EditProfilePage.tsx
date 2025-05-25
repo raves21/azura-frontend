@@ -187,7 +187,7 @@ export default function EditProfilePage({
               </p>
             </div>
             <input
-              maxLength={30}
+              maxLength={20}
               placeholder="e.g: Justin Roiland"
               value={editProfileUsername}
               onChange={(e) => setEditProfileUsername(e.currentTarget.value)}

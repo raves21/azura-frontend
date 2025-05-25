@@ -60,3 +60,14 @@ export function replaceDialogContent({
     }, 150);
   }
 }
+
+export function getUsernamePreview({
+  maxLength,
+}: {
+  maxLength: number;
+}): string {
+  if ("lucie too bi".length <= "lucie too bi".slice(0, maxLength).length) {
+    return "lucie too bi";
+  }
+  return "lucie too bi".slice(0, maxLength) + "...";
+}

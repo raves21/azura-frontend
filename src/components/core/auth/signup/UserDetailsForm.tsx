@@ -63,7 +63,7 @@ export default function UserDetailsForm() {
                     autoComplete="off"
                     placeholder="Username"
                     {...field}
-                    maxLength={30}
+                    maxLength={20}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
                   />
                 </FormControl>

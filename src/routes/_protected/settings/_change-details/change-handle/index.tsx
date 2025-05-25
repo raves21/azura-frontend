@@ -1,4 +1,4 @@
-import ChangeHandleForm from "@/components/core/account/shared/ChangeHandleForm";
+import ChangeHandleForm from "@/components/core/settings/account/shared/ChangeHandleForm";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";

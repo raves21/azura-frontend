@@ -14,7 +14,7 @@ import { changeEmailFormSchema } from "@/utils/variables/formSchemas";
 import { ChangeEmailFormData } from "@/utils/types/auth/forms";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
-import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { useSendOTC } from "@/services/auth/authQueries";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { useShallow } from "zustand/react/shallow";

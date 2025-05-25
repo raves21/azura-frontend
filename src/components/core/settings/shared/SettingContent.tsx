@@ -7,7 +7,7 @@ type Props = {
 } & PropsWithChildren &
   HTMLAttributes<HTMLDivElement>;
 
-const AccountSettingSelection = forwardRef<HTMLDivElement, Props>(
+const SettingContent = forwardRef<HTMLDivElement, Props>(
   ({ title, children, className }, ref) => (
     <div ref={ref} className={cn("flex flex-col gap-8 w-full", className)}>
       <h2 className="font-bold text-3xl sm:text-4xl pb-4 border-b border-socialTextSecondary">
@@ -18,4 +18,4 @@ const AccountSettingSelection = forwardRef<HTMLDivElement, Props>(
   )
 );
 
-export default AccountSettingSelection;
+export default SettingContent;

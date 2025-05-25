@@ -3,9 +3,9 @@ import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { Trash } from "lucide-react";
-import AsyncConfirmationDialog from "../../shared/confirmationDialog/AsyncConfirmationDialog";
-import ErrorDialog from "../../shared/ErrorDialog";
 import PasswordVerificationDialog from "../shared/PasswordVerificationDialog";
+import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 
 export default function DeleteAccountButton() {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);

@@ -1,9 +1,10 @@
 import { useUserProfile } from "@/services/social/queries/socialQueries";
 import { Navigate } from "@tanstack/react-router";
-import ProfileDetails from "../../social/mainContent/profile/profileDetails/ProfileDetails";
-import ProfileImages from "../../social/mainContent/profile/profileImages/ProfileImages";
-import UserProfileSkeleton from "../../loadingSkeletons/social/UserProfileSkeleton";
+
 import { useCurrentUser } from "@/services/auth/authQueries";
+import UserProfileSkeleton from "@/components/core/loadingSkeletons/social/UserProfileSkeleton";
+import ProfileDetails from "@/components/core/social/mainContent/profile/profileDetails/ProfileDetails";
+import ProfileImages from "@/components/core/social/mainContent/profile/profileImages/ProfileImages";
 
 export default function ChangeProfileSettings() {
   const { data: currentUser } = useCurrentUser();

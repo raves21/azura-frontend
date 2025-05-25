@@ -30,10 +30,16 @@ import { queryClient } from "@/utils/variables/queryClient";
 import { tmdbApi } from "@/utils/variables/axiosInstances/tmdbAxiosInstance";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 
+const defaultTVMovieServer = localStorage.getItem(
+  "defaultTVMovieServer"
+) as ServerName | null;
+
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
   tvSeason: z.number(),
-  server: z.nativeEnum(ServerName).catch(ServerName.azuraMain),
+  server: z
+    .nativeEnum(ServerName)
+    .catch(defaultTVMovieServer || ServerName.embed1),
 });
 
 type WatchTVEpisodePageSchema = z.infer<typeof watchTVEpisodePageSchema>;

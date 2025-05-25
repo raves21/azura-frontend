@@ -3,7 +3,7 @@ import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDial
 import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
 import { useVerifyPassword } from "@/services/auth/authQueries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import ErrorDialog from "../../shared/ErrorDialog";
+import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { PasswordInput } from "@/components/ui/password-input";

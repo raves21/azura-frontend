@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Link, useMatchRoute } from "@tanstack/react-router";
-import { Menu, Search } from "lucide-react";
+import { Circle, Menu, Search } from "lucide-react";
 import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 import AzuraLogo from "@/components/core/shared/AzuraLogo";
@@ -57,11 +57,15 @@ export default function DesktopTopNavBar({
         <Link
           to="/anime"
           className={cn(
-            "p-[6px]",
+            "p-[6px] hover:text-mainAccent transition-colors",
             {
-              "text-mainWhite": props.isAnimeRoute,
+              "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+                props.isAnimeRoute,
             },
-            { "text-gray-300": props.isAnimeCatalogRoute }
+            {
+              "text-gray-300 font-normal no-underline":
+                props.isAnimeCatalogRoute,
+            }
           )}
         >
           Anime
@@ -70,8 +74,9 @@ export default function DesktopTopNavBar({
       mediaCatalogRouteComponent = (
         <Link
           to="/anime/catalog"
-          className={cn("p-[6px]", {
-            "text-mainWhite": props.isAnimeCatalogRoute,
+          className={cn("p-[6px] hover:text-mainAccent transition-colors", {
+            "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+              props.isAnimeCatalogRoute,
           })}
         >
           Catalog
@@ -83,11 +88,15 @@ export default function DesktopTopNavBar({
         <Link
           to="/movie"
           className={cn(
-            "p-[6px]",
+            "p-[6px] hover:text-mainAccent transition-colors",
             {
-              "text-mainWhite": props.isMovieRoute,
+              "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+                props.isMovieRoute,
             },
-            { "text-gray-300": props.isMovieCatalogRoute }
+            {
+              "text-gray-300 font-normal no-underline":
+                props.isMovieCatalogRoute,
+            }
           )}
         >
           Movie
@@ -96,8 +105,9 @@ export default function DesktopTopNavBar({
       mediaCatalogRouteComponent = (
         <Link
           to="/movie/catalog"
-          className={cn("p-[6px]", {
-            "text-mainWhite": props.isMovieCatalogRoute,
+          className={cn("p-[6px] hover:text-mainAccent transition-colors", {
+            "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+              props.isMovieCatalogRoute,
           })}
         >
           Catalog
@@ -109,11 +119,12 @@ export default function DesktopTopNavBar({
         <Link
           to="/tv"
           className={cn(
-            "p-[6px]",
+            "p-[6px] hover:text-mainAccent transition-colors",
             {
-              "text-mainWhite": props.isTVRoute,
+              "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+                props.isTVRoute,
             },
-            { "text-gray-300": props.isTVCatalogRoute }
+            { "text-gray-300 font-normal no-underline": props.isTVCatalogRoute }
           )}
         >
           TV
@@ -122,8 +133,9 @@ export default function DesktopTopNavBar({
       mediaCatalogRouteComponent = (
         <Link
           to="/tv/catalog"
-          className={cn("p-[6px]", {
-            "text-mainWhite": props.isTVCatalogRoute,
+          className={cn("p-[6px] hover:text-mainAccent transition-colors", {
+            "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+              props.isTVCatalogRoute,
           })}
         >
           Catalog
@@ -143,10 +155,11 @@ export default function DesktopTopNavBar({
         className={`flex font-medium items-center justify-between mx-auto px-2 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] py-4`}
       >
         <button
-          className="p-[6px]"
+          className="p-[6px] relative group"
           onClick={() => toggleOpenSheet(<SideMenuSheet />)}
         >
           <Menu />
+          <Circle className="fill-mainAccent/30 -z-10 stroke-none size-[190%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
         </button>
         <div className="flex items-center gap-12 text-sm text-gray-300 text-gray-30">
           {mediaRouteComponent}
@@ -156,24 +169,29 @@ export default function DesktopTopNavBar({
           </button>
           <Link
             to="/social"
-            className={cn("p-[6px]", {
-              "text-mainWhite": isSocialRoute,
+            className={cn("p-[6px] hover:text-mainAccent transition-colors", {
+              "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+                isSocialRoute,
             })}
           >
             Social
           </Link>
           <Link
             to="/settings"
-            className={cn("p-[6px]", { "text-mainWhite": isAccountRoute })}
+            className={cn("p-[6px] hover:text-mainAccent transition-colors", {
+              "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+                isAccountRoute,
+            })}
           >
             Settings
           </Link>
         </div>
         <button
           onClick={() => toggleOpenDialog(searchDialogComponent)}
-          className="p-[6px]"
+          className="p-[6px] relative group"
         >
           <Search />
+          <Circle className="fill-mainAccent/30 -z-10 stroke-none size-[190%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
         </button>
       </div>
     </div>
