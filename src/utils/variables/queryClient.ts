@@ -1,6 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
 
-//this is the settings during development. to minimize network requests
 const neverRefetchSettings = {
   gcTime: Infinity,
   staleTime: Infinity,
@@ -8,6 +7,16 @@ const neverRefetchSettings = {
   refetchOnMount: false,
   refetchOnWindowFocus: false,
   refetchOnReconnect: false
+};
+
+export const frequentlyChanging = {
+  gcTime: 20 * 60 * 1000, //20 min
+  staleTime: 15 * 60 * 1000, //15 min
+};
+
+export const rarelyChanging = {
+  gcTime: 300 * (60 * 1000), //5 hrs
+  staleTime: 240 * (60 * 1000), //4 hrs
 };
 
 export const queryClient = new QueryClient({

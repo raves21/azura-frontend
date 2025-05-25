@@ -23,16 +23,6 @@ import {
 } from "@/utils/types/media/anime/animeAniwatch";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 
-// const frequentlyChanging = {
-//   gcTime: 180 * (60 * 1000), //3 hrs
-//   staleTime: 120 * (60 * 1000), //2 hrs
-// };
-
-// const rarelyChanging = {
-//   gcTime: 300 * (60 * 1000), //5 hrs
-//   staleTime: 240 * (60 * 1000), //4 hrs
-// };
-
 export function useAnimesByCategory(
   perPage: number,
   category: AnimeSortBy,

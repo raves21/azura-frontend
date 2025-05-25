@@ -44,7 +44,7 @@ import {
 } from "../functions/cacheMutations";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
-import { queryClient } from "@/utils/variables/queryClient";
+import { frequentlyChanging, queryClient, rarelyChanging } from "@/utils/variables/queryClient";
 import {
   getCurrentUser,
   setCurrentUser,
@@ -62,6 +62,8 @@ export function useForYouFeed() {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -234,6 +236,8 @@ export function usePostComments(postId: string) {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -309,6 +313,8 @@ export function useUserProfilePosts(
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!currentUserHandle,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -338,6 +344,8 @@ export function useUserCollections({
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!currentUserHandle,
+    gcTime: rarelyChanging.gcTime,
+    staleTime: rarelyChanging.staleTime
   });
 }
 
@@ -353,6 +361,8 @@ export function useCurrentUserCollections() {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: rarelyChanging.gcTime,
+    staleTime: rarelyChanging.staleTime
   });
 }
 
@@ -437,6 +447,8 @@ export function useFollowingFeed({ enabled }: UseFollowingFeedArgs) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!enabled,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -447,7 +459,7 @@ export function useTrends() {
       const { data: trends } = await api.get("/trending");
       return trends.data as Trend[];
     },
-    refetchInterval: 300000,
+    refetchInterval: 60 * 60 * 1000,
     refetchIntervalInBackground: true,
   });
 }
@@ -465,6 +477,8 @@ export function useDiscoverPeople() {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: rarelyChanging.gcTime,
+    staleTime: rarelyChanging.staleTime
   });
 }
 
@@ -486,6 +500,8 @@ export function useUserFollowingList(userId: string, currentUserId: string) {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -507,6 +523,8 @@ export function useUserFollowerList(userId: string, currentUserId: string) {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -526,6 +544,8 @@ export function useSearchPeople(query: string, enabled: boolean) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!enabled,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -545,6 +565,8 @@ export function useSearchPosts(query: string, enabled: boolean) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!enabled,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -761,6 +783,8 @@ export function useCollectionInfo(collectionId: string) {
       );
       return collectionInfo.data as TCollection;
     },
+    gcTime: rarelyChanging.gcTime,
+    staleTime: rarelyChanging.staleTime
   });
 }
 
@@ -786,6 +810,8 @@ export function useCollectionItems({
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -830,6 +856,8 @@ export function useNotifications() {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -910,6 +938,8 @@ export function useFollowingList({
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -941,6 +971,8 @@ export function useFollowerList({
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
 
@@ -987,5 +1019,7 @@ export function usePostLikes(postId: string) {
     initialPageParam: 1,
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: frequentlyChanging.gcTime,
+    staleTime: frequentlyChanging.staleTime
   });
 }
