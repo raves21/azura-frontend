@@ -48,7 +48,7 @@ export default function VideoPlayer({
       >
         <MediaPlayer
           crossOrigin
-          playsInline={false}
+          playsInline={true}
           className="rounded-none size-full"
           title={title}
           src={streamLinkFinal}
