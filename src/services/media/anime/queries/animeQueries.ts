@@ -207,6 +207,7 @@ export function useAnimeEpisodeStreamLinks(episodeId: string) {
   return useQuery({
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {
+      console.log('ADJK', `${ANIWATCH_URL}/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}&server=hd-2`);
       const { data: episodeStreamLinks } = await axios.get(
         `${getRandomAniwatchProxyURL()}`,
         {
@@ -215,6 +216,7 @@ export function useAnimeEpisodeStreamLinks(episodeId: string) {
           },
         }
       );
+      console.log('EPISOIDESTREAMLINKS', episodeStreamLinks.data);
       return episodeStreamLinks.data as AnimeEpisodeStreamLinks;
     },
   });

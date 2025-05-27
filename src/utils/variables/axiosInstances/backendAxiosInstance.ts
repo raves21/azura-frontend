@@ -7,8 +7,10 @@ import { queryClient } from "../queryClient";
 
 let abortController = new AbortController();
 
+const BACKEND = !!Number(import.meta.env.VITE_IS_PROD) ? import.meta.env.VITE_BACKEND_BASE_URL_1 : import.meta.env.VITE_BACKEND_BASE_URL
+ 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_BASE_URL_1,
+  baseURL: BACKEND,
   withCredentials: true,
 });
 

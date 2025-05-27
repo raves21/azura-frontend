@@ -10,17 +10,18 @@ import Bowser from "bowser";
 import { setCurrentUser } from "./sharedFunctions";
 import axios from "axios";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
-import {
-  closeAllPopups,
-} from "@/utils/functions/sharedFunctions";
+import { closeAllPopups } from "@/utils/functions/sharedFunctions";
 
 export function useCurrentUser() {
   return useQuery({
     queryKey: [`authenticatedUser`],
     queryFn: async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL_1}/users/me`, {
-        withCredentials: true,
-      });
+      const { data } = await axios.get(
+        `${!!Number(import.meta.env.VITE_IS_PROD) ? import.meta.env.VITE_BACKEND_BASE_URL_1 : import.meta.env.VITE_BACKEND_BASE_URL}/users/me`,
+        {
+          withCredentials: true,
+        }
+      );
       return data.data as UserBasicInfo;
     },
     retryOnMount: false,
