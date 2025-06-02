@@ -4,6 +4,7 @@ import UserAvatar from "../../shared/UserAvatar";
 import { LinkProps, Navigate, useNavigate } from "@tanstack/react-router";
 import { useCurrentUser } from "@/services/auth/authQueries";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
+import { queryClient } from "@/utils/variables/queryClient";
 
 type Props = {
   notification: TNotification;
@@ -40,7 +41,14 @@ export default function Notification({ notification }: Props) {
 
   return (
     <button
-      onClick={() => navigate(linkProps)}
+      onClick={() => {
+        if(notification.postId){
+          queryClient.invalidateQueries({
+          queryKey: [`postInfo`, notification.postId],
+        });
+        }
+        navigate(linkProps);
+      }}
       className="text-start w-full hover:bg-socialPrimaryHover items-start flex text-sm mobile-m:text-base px-3 py-4 gap-4 570:gap-6 mobile-m:px-4 mobile-m:py-5 md:p-5"
     >
       <UserAvatar

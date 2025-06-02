@@ -105,7 +105,10 @@ export function createPost_PostsCacheMutation({
           pageParams: oldData.pageParams,
           pages: [
             {
-              data: [newPost, ...firstPage.data],
+              data: [
+                { ...newPost, isCollectionAttachmentViewable: true },
+                ...firstPage.data,
+              ],
               totalPages: oldData.pages[0].totalPages,
               message: "added post",
               page: 1,

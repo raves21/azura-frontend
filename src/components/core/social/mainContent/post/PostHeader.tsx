@@ -63,14 +63,14 @@ export default function PostHeader({ className, post, linkProps }: Props) {
         <div className="flex items-center gap-[6px] mobile-m:gap-2 mobile-m:mt-1 sm:mt-0">
           {isPostInfoPage && (
             <>
-              <div
-                onMouseEnter={() => setIsPrivacyHovered(true)}
-                onMouseLeave={() => setIsPrivacyHovered(false)}
-                className="relative"
-              >
+              <div className="relative">
                 {post.privacy === "FRIENDS_ONLY" && (
                   <>
-                    <Users className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
+                    <Users
+                      onMouseEnter={() => setIsPrivacyHovered(true)}
+                      onMouseLeave={() => setIsPrivacyHovered(false)}
+                      className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary"
+                    />
                     <p
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
@@ -85,7 +85,11 @@ export default function PostHeader({ className, post, linkProps }: Props) {
                 )}
                 {post.privacy === "ONLY_ME" && (
                   <>
-                    <Lock className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
+                    <Lock
+                      onMouseEnter={() => setIsPrivacyHovered(true)}
+                      onMouseLeave={() => setIsPrivacyHovered(false)}
+                      className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary"
+                    />
                     <p
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",
@@ -100,7 +104,11 @@ export default function PostHeader({ className, post, linkProps }: Props) {
                 )}
                 {post.privacy === "PUBLIC" && (
                   <>
-                    <Globe className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary" />
+                    <Globe
+                      onMouseEnter={() => setIsPrivacyHovered(true)}
+                      onMouseLeave={() => setIsPrivacyHovered(false)}
+                      className="size-[14px] mobile-m:size-4 stroke-socialTextSecondary"
+                    />
                     <p
                       className={cn(
                         "absolute -top-6 -right-12 transition-opacity text-darkBg p-2 font-medium rounded-full text-xs bg-gray-400 opacity-0",

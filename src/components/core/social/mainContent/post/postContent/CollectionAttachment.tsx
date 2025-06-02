@@ -79,7 +79,7 @@ export default function CollectionAttachment({
             </div>
             <div className="flex items-center gap-2 text-[10px] mobile-l:text-xs">
               <UserAvatar
-                src={collection.owner.avatar || "/sample-user-pfp.png"}
+                src={collection.owner.avatar || "/no-image-2.jpg"}
                 imageClassName="size-4 md:size-4"
               />
               <p
