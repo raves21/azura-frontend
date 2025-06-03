@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, PropsWithChildren } from "react";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { X, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Link, LinkProps, Navigate, useParams } from "@tanstack/react-router";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { MutationKey } from "@tanstack/react-query";

@@ -1,7 +1,5 @@
 import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
-import { MediaScraperResponse } from "@/utils/types/media/shared";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
 
 export function getTMDBImageURL(imagePath: string) {
   return `https://image.tmdb.org/t/p/original${imagePath}`;
@@ -34,46 +32,6 @@ export function getTMDBRating(rating: number | null) {
   return rating ? rating.toFixed(1).split("-")[0] : null;
 }
 
-type UseMediaScraperArgs = {
-  type: "TV" | "MOVIE";
-  mediaId: string;
-  epNum?: number;
-  seasonNum?: number;
-  enabled: boolean;
-};
-
-export function useMediaScraper({
-  type,
-  mediaId,
-  epNum,
-  seasonNum,
-  enabled,
-}: UseMediaScraperArgs) {
-  return useQuery({
-    queryKey: ["mediaScraper", type, mediaId, epNum, seasonNum],
-    queryFn: async () => {
-      const mediaScraperApiBaseURL = import.meta.env
-        .VITE_HONO_RABBIT_SCRAPER_URL;
-      let url: string;
-
-      if (type === "TV") {
-        url = `${mediaScraperApiBaseURL}?mediaId=${mediaId}&seasonNum=${seasonNum}&epNum=${epNum}`;
-      } else {
-        url = `${mediaScraperApiBaseURL}?mediaId=${mediaId}`;
-      }
-
-      const { data: mediaScraperResponse } = await axios.get(url);
-
-      if (mediaScraperResponse.message || mediaScraperResponse.error) {
-        throw new Error("Media unavailable.");
-      }
-
-      return mediaScraperResponse as MediaScraperResponse;
-    },
-    enabled: !!enabled,
-  });
-}
-
 export function toggleMediaPortal(isMediaPortalOpen: boolean) {
   const setMediaPortalAnimationStatus =
     useMediaPortalStore.getState().setMediaPortalAnimationStatus;
@@ -91,4 +49,25 @@ export function toggleMediaPortal(isMediaPortalOpen: boolean) {
     setMediaPortalAnimationStatus("intro");
     setIsMediaPortalOpen(true);
   }
+}
+
+export function chunkEpisodes(
+  eps: EpisodeToBeRendered[] | null,
+  epsPerChunk: number
+): EpisodeChunk[] | null {
+  if (!eps) return null;
+  const chunkedEpisodes = Array.from(
+    { length: Math.ceil(eps.length / epsPerChunk) },
+    (_, i) => {
+      const start = i * epsPerChunk + 1;
+      const end = Math.min((i + 1) * epsPerChunk, eps.length);
+      return {
+        label: `${start} - ${end}`,
+        startEp: start,
+        endEp: end,
+        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk),
+      };
+    }
+  );
+  return chunkedEpisodes;
 }

@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "@tanstack/react-router";
 import { Edit2 } from "lucide-react";
 import PasswordVerificationDialog from "../shared/PasswordVerificationDialog";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 
 export default function ChangeEmailSetting() {
   const { data: currentUser } = useCurrentUser();

@@ -13,10 +13,10 @@ import {
   AnimeEpisodeStreamLinks,
 } from "@/utils/types/media/anime/animeAnilist";
 import {
-  chunkEpisodes,
   getEpisodesToBeRendered,
   getRandomAniwatchProxyURL,
-} from "../functions/animeFunctions";
+} from "@/utils/functions/media/animeFunctions";
+import { chunkEpisodes } from "@/utils/functions/media/sharedFunctions";
 import {
   AnimeInfoAniwatch,
   AniwatchEpisode,

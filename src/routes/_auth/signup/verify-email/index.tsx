@@ -3,7 +3,7 @@ import CodeVerificationForm from "@/components/core/auth/shared/CodeVerification
 import { SignUpStep } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect } from "react";
-import { useCreateAccount, useLogin } from "@/services/auth/authQueries";
+import { useCreateAccount, useLogin } from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useAuthStore } from "@/utils/stores/useAuthStore";

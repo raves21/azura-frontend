@@ -7,12 +7,8 @@ import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
   useMovieRecommendations,
-} from "@/services/media/movie/movieQueries";
-import { useMediaScraper } from "@/services/media/sharedFunctions";
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+} from "@/services/media/movie/queries";
+import { useMediaScraper } from "@/services/media/sharedQueries";
 import { createFileRoute } from "@tanstack/react-router";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
@@ -23,6 +19,7 @@ import EmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer
 import { ServerName } from "@/utils/types/media/shared";
 import { z } from "zod";
 import MovieEpisodeWatchPage from "@/components/core/media/movie/episodeList/MovieEpisodeWatchPage";
+import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 
 const defaultTVMovieServer = localStorage.getItem(
   "defaultTVMovieServer"

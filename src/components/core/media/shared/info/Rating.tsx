@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import {
-  getTMDBRating,
-  getAnimeRating,
-} from "@/services/media/sharedFunctions";
+import { getAnimeRating, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 
 type InfoPageVariant = {
   variant: "infoPage";

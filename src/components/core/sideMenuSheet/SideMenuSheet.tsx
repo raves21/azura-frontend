@@ -2,7 +2,7 @@ import { Cat, Clapperboard, Tv } from "lucide-react";
 import LogoutButton from "./LogoutButton";
 import SideMenuSheetButton from "./SideMenuSheetButton";
 import { useNavigateToMedia } from "@/utils/hooks/useNavigateToMedia";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 

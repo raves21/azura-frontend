@@ -1,8 +1,5 @@
-import { getTMDBRating } from "@/services/media/sharedFunctions";
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+
+import { getTMDBImageURL, getTMDBReleaseYear, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { MovieTMDB } from "@/utils/types/media/movie/movieTmdb";
 import { Link } from "@tanstack/react-router";

@@ -5,8 +5,8 @@ import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import Notification from "@/components/core/social/mainContent/notification/Notification";
 import {
   useDeleteAllNotifications,
-  useNotifications,
-} from "@/services/social/queries/socialQueries";
+} from "@/services/social/api/mutations";
+import { useNotifications } from "@/services/social/api/queries";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

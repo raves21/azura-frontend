@@ -6,11 +6,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
-import { useDeletePostComment } from "@/services/social/queries/socialQueries";
+import { useDeletePostComment } from "@/services/social/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import EditPostCommentDialog from "./EditPostCommentDialog";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate } from "@tanstack/react-router";
 import { useToast } from "@/components/ui/use-toast";
 

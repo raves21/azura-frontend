@@ -1,7 +1,7 @@
 import PostComment from "./PostComment";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate, useParams } from "@tanstack/react-router";
-import { usePostComments } from "@/services/social/queries/socialQueries";
+import { usePostComments } from "@/services/social/api/queries";
 import PostCommentsSkeleton from "@/components/core/loadingSkeletons/social/PostCommentsSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReactNode } from "react";

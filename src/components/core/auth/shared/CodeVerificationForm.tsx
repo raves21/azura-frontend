@@ -15,7 +15,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { useSendOTC, useVerifyOTC } from "@/services/auth/authQueries";
+import { useSendOTC, useVerifyOTC } from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "../../shared/ErrorDialog";
 import { Check } from "lucide-react";

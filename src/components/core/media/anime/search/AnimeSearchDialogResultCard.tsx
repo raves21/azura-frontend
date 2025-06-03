@@ -1,5 +1,5 @@
+import { getAnimeRating } from "@/utils/functions/media/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
-import { getAnimeRating } from "@/services/media/sharedFunctions";
 import { Anime, AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
 import { animeStatusLabels } from "@/utils/variables/media/anime";
 import { Link } from "@tanstack/react-router";

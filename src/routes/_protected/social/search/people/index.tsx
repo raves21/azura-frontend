@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import { useSearchPeople } from "@/services/social/queries/socialQueries";
+import { useSearchPeople } from "@/services/social/api/queries";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";

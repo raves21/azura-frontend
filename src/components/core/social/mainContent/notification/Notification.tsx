@@ -2,7 +2,7 @@ import { TNotification } from "@/utils/types/social/social";
 import NotificationText from "./NotificationText";
 import UserAvatar from "../../shared/UserAvatar";
 import { LinkProps, Navigate, useNavigate } from "@tanstack/react-router";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 import { queryClient } from "@/utils/variables/queryClient";
 

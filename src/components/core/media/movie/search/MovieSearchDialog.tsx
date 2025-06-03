@@ -7,7 +7,7 @@ import SearchDialogContainer from "@/components/core/shared/search/SearchDialogC
 import SearchDialogForm from "@/components/core/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import MovieSearchDialogResults from "./MovieSearchDialogResults";
-import { useSearchMovie } from "@/services/media/movie/movieQueries";
+import { useSearchMovie } from "@/services/media/movie/queries";
 
 export default function MovieSearchDialog() {
   const [searchInput, setSearchInput] = useState("");

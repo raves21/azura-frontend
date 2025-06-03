@@ -9,8 +9,8 @@ import {
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import PostInfoSkeleton from "@/components/core/loadingSkeletons/social/PostInfoSkeleton";
-import { usePostInfo } from "@/services/social/queries/socialQueries";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { usePostInfo } from "@/services/social/api/queries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 
 export const Route = createFileRoute(
   "/_protected/social/$userHandle/posts/$postId/"

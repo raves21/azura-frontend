@@ -6,7 +6,7 @@ import {
 import {
   useLikePost,
   useUnLikePost,
-} from "@/services/social/queries/socialQueries";
+} from "@/services/social/api/mutations";
 import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import { useMatchRoute } from "@tanstack/react-router";
 import { Heart, MessageCircle, Circle } from "lucide-react";

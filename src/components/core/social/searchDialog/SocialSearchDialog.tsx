@@ -9,7 +9,7 @@ import { useShallow } from "zustand/react/shallow";
 import {
   useSearchPeople,
   useSearchPosts,
-} from "@/services/social/queries/socialQueries";
+} from "@/services/social/api/queries";
 import SearchPeopleResults from "./searchPeople/SearchPeopleResults";
 import SearchPostsResults from "./searchPosts/SearchPostsResults";
 import { useNavigate } from "@tanstack/react-router";

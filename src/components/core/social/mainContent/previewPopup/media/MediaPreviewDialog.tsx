@@ -1,11 +1,8 @@
 import { Media } from "@/utils/types/social/social";
 import Description from "@/components/core/media/shared/info/Description";
 import { Circle, Cat, Clapperboard, Tv, Star } from "lucide-react";
-import {
-  getAnimeRating,
-  getTMDBRating,
-} from "@/services/media/sharedFunctions";
 import MediaPreviewContainer from "./MediaPreviewContainer";
+import { getAnimeRating, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   media: Media;

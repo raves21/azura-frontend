@@ -1,4 +1,4 @@
-import { toggleMediaPortal } from "@/services/media/sharedFunctions";
+import { toggleMediaPortal } from "../functions/media/sharedFunctions";
 import { useNavigate, useLocation, LinkProps } from "@tanstack/react-router";
 import { useMediaPortalStore } from "../stores/useMediaPortal";
 import { MediaType } from "../types/shared";

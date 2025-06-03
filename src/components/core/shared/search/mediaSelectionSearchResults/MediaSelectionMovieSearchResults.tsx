@@ -2,19 +2,15 @@ import SearchDialogResultsLoading from "@/components/core/loadingSkeletons/media
 import {
   useMoviesByCategory,
   useSearchMovie,
-} from "@/services/media/movie/movieQueries";
+} from "@/services/media/movie/queries";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import {
-  getTMDBImageURL,
-  getTMDBRating,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
 import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
 import AddCollectionItemMediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import MovieSearchResultCard from "../mediaSearchResultCards/MovieSearchResultCard";
+import { getTMDBImageURL, getTMDBRating, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   query: string;

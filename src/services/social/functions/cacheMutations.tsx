@@ -17,7 +17,7 @@ import {
 import { QueryFilters, InfiniteData, QueryKey } from "@tanstack/react-query";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
-import { getCurrentUser } from "@/services/auth/sharedFunctions";
+import { getCurrentUser } from "@/utils/functions/auth/functions";
 
 const POSTS_QUERY_FILTER: QueryFilters = {
   predicate(query) {

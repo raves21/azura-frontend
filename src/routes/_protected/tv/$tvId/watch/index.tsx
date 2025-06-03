@@ -5,15 +5,13 @@ import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/Vide
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPageTVEpisodes";
 import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
   useMediaScraper,
-} from "@/services/media/sharedFunctions";
+} from "@/services/media/sharedQueries";
 import {
   useTVInfo,
   useTVRecommendations,
   useTVSeasonEpisodes,
-} from "@/services/media/tv/tvQueries";
+} from "@/services/media/tv/queries";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
@@ -29,6 +27,7 @@ import EmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer
 import { queryClient } from "@/utils/variables/queryClient";
 import { tmdbApi } from "@/utils/variables/axiosInstances/tmdbAxiosInstance";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
+import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 
 const defaultTVMovieServer = localStorage.getItem(
   "defaultTVMovieServer"

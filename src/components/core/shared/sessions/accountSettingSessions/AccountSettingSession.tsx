@@ -1,6 +1,6 @@
 import PasswordVerificationDialog from "@/components/core/settings/account/shared/PasswordVerificationDialog";
 import { cn } from "@/lib/utils";
-import { useAccountSettingLogoutSession } from "@/services/auth/authQueries";
+import { useAccountSettingLogoutSession } from "@/services/auth/api/mutations";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

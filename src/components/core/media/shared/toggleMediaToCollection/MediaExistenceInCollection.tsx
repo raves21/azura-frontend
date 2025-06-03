@@ -1,10 +1,10 @@
 import CustomCheckBox from "@/components/core/shared/CustomCheckBox";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { toggleMediaExistenceInCollectionCacheMutation } from "@/services/social/functions/cacheMutations";
 import {
   useAddCollectionItem,
   useDeleteCollectionItem,
-} from "@/services/social/queries/socialQueries";
+} from "@/services/social/api/mutations";
 import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import { Media } from "@/utils/types/social/social";
 

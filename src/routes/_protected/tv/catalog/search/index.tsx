@@ -2,7 +2,7 @@ import CatalogPageSkeleton from "@/components/core/loadingSkeletons/media/catalo
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
-import { useSearchTV } from "@/services/media/tv/tvQueries";
+import { useSearchTV } from "@/services/media/tv/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";

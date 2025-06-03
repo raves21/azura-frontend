@@ -1,4 +1,3 @@
-import { useCurrentUser, useLogout } from "@/services/auth/authQueries";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -10,6 +9,8 @@ import { useNavigate, Navigate } from "@tanstack/react-router";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
+import { useLogout } from "@/services/auth/api/mutations";
+import { useCurrentUser } from "@/services/auth/api/queries";
 
 export default function CurrentUserAvatar() {
   const { data: currentUser } = useCurrentUser();

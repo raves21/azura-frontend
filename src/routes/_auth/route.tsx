@@ -1,6 +1,6 @@
 import StaticLoadingPage from "@/components/core/shared/StaticLoadingPage";
 import Waves from "@/components/core/shared/Waves";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { MediaType } from "@/utils/types/shared";
 import {
   createFileRoute,

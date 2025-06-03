@@ -7,7 +7,7 @@ import { TPost } from "@/utils/types/social/social";
 import { Link } from "@tanstack/react-router";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 import { useState } from "react";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 
 type Props = {
   className?: string;

@@ -5,14 +5,11 @@ import MediaCard from "@/components/core/media/shared/MediaCard";
 import InfoPageTVEpisodes from "@/components/core/media/tv/episodeList/InfoPageTVEpisodes";
 import TVInfoPageHero from "@/components/core/media/tv/infoSection/TVInfoPageHero";
 import {
-  getTMDBImageURL,
-  getTMDBReleaseYear
-} from "@/services/media/sharedFunctions";
-import {
   useTVInfo,
   useTVRecommendations,
   useTVSeasonEpisodes
-} from "@/services/media/tv/tvQueries";
+} from "@/services/media/tv/queries";
+import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";

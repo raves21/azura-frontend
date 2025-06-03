@@ -1,9 +1,9 @@
 import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
 import Post from "@/components/core/social/mainContent/post/Post";
-import { useUserProfilePosts } from "@/services/social/queries/socialQueries";
+import { useUserProfilePosts } from "@/services/social/api/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 

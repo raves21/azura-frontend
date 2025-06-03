@@ -8,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useDeleteCollection } from "@/services/social/queries/socialQueries";
+import { useDeleteCollection } from "@/services/social/api/mutations";
 import { useParams } from "@tanstack/react-router";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 

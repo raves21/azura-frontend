@@ -1,11 +1,11 @@
 import { Circle, LoaderCircle, SendHorizonal, Smile } from "lucide-react";
 import UserAvatar from "@/components/core/social/shared/UserAvatar";
 import { EntityOwner } from "@/utils/types/social/shared";
-import { useCreatePostComment } from "@/services/social/queries/socialQueries";
+import { useCreatePostComment } from "@/services/social/api/mutations";
 import { Navigate, useParams } from "@tanstack/react-router";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useState } from "react";
 import { AutosizeTextarea } from "@/components/ui/autosize-text-area";
 

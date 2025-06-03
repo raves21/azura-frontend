@@ -3,7 +3,7 @@ import UserListItem from "@/components/core/social/shared/UserListItem";
 import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
 import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
 import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
-import { usePostLikes } from "@/services/social/queries/socialQueries";
+import { usePostLikes } from "@/services/social/api/queries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Fragment } from "react/jsx-runtime";

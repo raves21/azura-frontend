@@ -3,7 +3,7 @@ import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
 import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
 import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
 import { useToast } from "@/components/ui/use-toast";
-import { useEditPostComment } from "@/services/social/queries/socialQueries";
+import { useEditPostComment } from "@/services/social/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TPostComment } from "@/utils/types/social/social";
 import { Textarea } from "@headlessui/react";

@@ -17,7 +17,7 @@ import { ReactNode } from "react";
 import AzuraLogo from "../../shared/AzuraLogo";
 import { cn } from "@/lib/utils";
 import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
-import { toggleMediaPortal } from "@/services/media/sharedFunctions";
+import { toggleMediaPortal } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   type: MediaType;

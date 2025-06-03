@@ -1,4 +1,4 @@
-import { useCurrentUserCollections } from "@/services/social/queries/socialQueries";
+import { useCurrentUserCollections } from "@/services/social/api/queries";
 import AttachmentCollectionListItem from "../postAttachment/collectionAttachment/AttachmentCollectionListItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";

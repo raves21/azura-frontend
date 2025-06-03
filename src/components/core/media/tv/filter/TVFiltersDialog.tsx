@@ -7,7 +7,7 @@ import { isEqual } from "radash";
 import { X } from "lucide-react";
 import { TVGenre, TVSortBy } from "@/utils/types/media/TV/tvShowTmdb";
 import { tvSortByLabels } from "@/utils/variables/media/tv";
-import { useTVGenres } from "@/services/media/tv/tvQueries";
+import { useTVGenres } from "@/services/media/tv/queries";
 
 const startYear = 1900;
 const endYear = new Date().getFullYear();

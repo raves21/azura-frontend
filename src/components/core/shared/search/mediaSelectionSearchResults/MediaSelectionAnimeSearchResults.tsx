@@ -3,7 +3,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import {
   useAnimesByCategory,
   useFilterAnime,
-} from "@/services/media/anime/queries/animeQueries";
+} from "@/services/media/anime/queries";
 import { AnimeSortBy } from "@/utils/types/media/anime/animeAnilist";
 import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";

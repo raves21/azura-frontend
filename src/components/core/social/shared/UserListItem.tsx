@@ -1,7 +1,7 @@
 import { UserPreview } from "@/utils/types/social/social";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import ToggleFollowButton from "../mainContent/profile/profileDetails/ToggleFollowButton";
 import ProfileBioRenderer from "../mainContent/profile/profileDetails/ProfileBioRenderer";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

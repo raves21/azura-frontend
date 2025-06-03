@@ -9,7 +9,7 @@ import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../shared/CustomDropdown";
-import { getTMDBImageURL } from "@/services/media/sharedFunctions";
+import { getTMDBImageURL } from "@/utils/functions/media/sharedFunctions";
 import { ServerName } from "@/utils/types/media/shared";
 
 type Props = {

@@ -7,7 +7,7 @@ import SearchDialogContainer from "@/components/core/shared/search/SearchDialogC
 import SearchDialogForm from "@/components/core/shared/search/SearchDialogForm";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import TVSearchDialogResults from "./TVSearchDialogResults";
-import { useSearchTV } from "@/services/media/tv/tvQueries";
+import { useSearchTV } from "@/services/media/tv/queries";
 
 export default function TVSearchDialog() {
   const [searchInput, setSearchInput] = useState("");

@@ -2,7 +2,7 @@ import CatalogPageSkeleton from "@/components/core/loadingSkeletons/media/catalo
 import CatalogMovieList from "@/components/core/media/movie/CatalogMovieList";
 import AppliedFilterPill from "@/components/core/media/shared/catalog/AppliedFilterPill";
 import Pagination from "@/components/core/media/shared/catalog/pagination/Pagination";
-import { useSearchMovie } from "@/services/media/movie/movieQueries";
+import { useSearchMovie } from "@/services/media/movie/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";

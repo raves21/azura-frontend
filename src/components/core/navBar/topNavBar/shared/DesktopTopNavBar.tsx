@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 import AzuraLogo from "@/components/core/shared/AzuraLogo";
 import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
-import { toggleMediaPortal } from "@/services/media/sharedFunctions";
+import { toggleMediaPortal } from "@/utils/functions/media/sharedFunctions";
 import SideMenuSheet from "@/components/core/sideMenuSheet/SideMenuSheet";
 
 type MovieProps = {

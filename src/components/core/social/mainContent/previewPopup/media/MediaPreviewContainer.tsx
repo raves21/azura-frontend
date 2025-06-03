@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, PropsWithChildren } from "react";
 import { X, SquareArrowOutUpRight } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Link, LinkProps, Navigate } from "@tanstack/react-router";
 import { MediaType } from "@/utils/types/shared";
 import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";

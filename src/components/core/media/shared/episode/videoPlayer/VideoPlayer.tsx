@@ -7,7 +7,7 @@ import {
 } from "@vidstack/react/player/layouts/default";
 import { cn } from "@/lib/utils";
 import { Subtitle } from "@/utils/types/media/shared";
-import { getRandomAniwatchProxyURL } from "@/services/media/anime/functions/animeFunctions";
+import { getRandomAniwatchProxyURL } from "@/utils/functions/media/animeFunctions";
 
 type VideoPlayerProps = {
   streamLink: string | undefined | null;

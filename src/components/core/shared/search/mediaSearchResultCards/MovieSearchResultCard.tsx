@@ -1,8 +1,5 @@
-import { getTMDBRating } from "@/services/media/sharedFunctions";
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+
+import { getTMDBImageURL, getTMDBReleaseYear, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 import { MovieTMDB } from "@/utils/types/media/movie/movieTmdb";
 import { Star } from "lucide-react";
 

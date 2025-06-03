@@ -1,10 +1,6 @@
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+import { getTMDBImageURL, getTMDBReleaseYear, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
 import { Star } from "lucide-react";
-import { getTMDBRating } from "@/services/media/sharedFunctions";
 
 type Props = {
   tv: TVShowTMDB;

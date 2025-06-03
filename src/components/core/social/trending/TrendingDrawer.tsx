@@ -1,4 +1,4 @@
-import { useTrends } from "@/services/social/queries/socialQueries";
+import { useTrends } from "@/services/social/api/queries";
 import TrendingListItemSkeleton from "../../loadingSkeletons/social/TrendingListItemSkeleton";
 import TrendingListItem from "./TrendingListItem";
 

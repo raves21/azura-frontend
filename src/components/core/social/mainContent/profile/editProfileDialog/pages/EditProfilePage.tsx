@@ -1,5 +1,5 @@
-import { useEditUserProfile } from "@/services/social/queries/socialQueries";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useEditUserProfile } from "@/services/social/api/mutations";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useEditProfileStore } from "@/utils/stores/useEditProfileStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";

@@ -1,28 +1,7 @@
 import { drawRandomURL } from "@/utils/functions/sharedFunctions";
 import { AniwatchEpisode } from "@/utils/types/media/anime/animeAniwatch";
 import { AnimeInfoAnizip } from "@/utils/types/media/anime/animeAnizip";
-import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
-
-export function chunkEpisodes(
-  eps: EpisodeToBeRendered[] | null,
-  epsPerChunk: number
-): EpisodeChunk[] | null {
-  if (!eps) return null;
-  const chunkedEpisodes = Array.from(
-    { length: Math.ceil(eps.length / epsPerChunk) },
-    (_, i) => {
-      const start = i * epsPerChunk + 1;
-      const end = Math.min((i + 1) * epsPerChunk, eps.length);
-      return {
-        label: `${start} - ${end}`,
-        startEp: start,
-        endEp: end,
-        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk),
-      };
-    }
-  );
-  return chunkedEpisodes;
-}
+import { EpisodeToBeRendered } from "@/utils/types/media/shared";
 
 export function getEpisodesToBeRendered(
   aniwatchEpisodes: AniwatchEpisode[] | undefined,

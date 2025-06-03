@@ -1,6 +1,6 @@
 import { LinkProps, Navigate, useMatchRoute } from "@tanstack/react-router";
 import FloatingPagesBarItem from "./FloatingPagesBarItem";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 
 type PageName = "Home" | "Profile" | "Notifications";
 

@@ -8,11 +8,8 @@ import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
   useMovieRecommendations,
-} from "@/services/media/movie/movieQueries";
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+} from "@/services/media/movie/queries";
+import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 

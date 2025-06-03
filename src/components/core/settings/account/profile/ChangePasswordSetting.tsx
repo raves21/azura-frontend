@@ -1,4 +1,5 @@
-import { useCurrentUser, useSendOTC } from "@/services/auth/authQueries";
+import { useSendOTC } from "@/services/auth/api/mutations";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Circle, Edit2 } from "lucide-react";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";

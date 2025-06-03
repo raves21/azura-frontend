@@ -6,7 +6,7 @@ import Pagination from "@/components/core/media/shared/catalog/pagination/Pagina
 import {
   useDiscoverMovies,
   useMovieGenres,
-} from "@/services/media/movie/movieQueries";
+} from "@/services/media/movie/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

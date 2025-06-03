@@ -1,6 +1,6 @@
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ManagePostDialog from "./managePostDialog/ManagePostDialog";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../../shared/UserAvatar";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";

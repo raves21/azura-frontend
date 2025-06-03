@@ -1,4 +1,4 @@
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { Edit2 } from "lucide-react";

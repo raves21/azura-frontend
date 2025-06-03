@@ -1,4 +1,4 @@
-import { useMediaExistenceInCollections } from "@/services/social/queries/socialQueries";
+import { useMediaExistenceInCollections } from "@/services/social/api/queries";
 import { Fragment } from "react/jsx-runtime";
 import MediaExistenceInCollection from "./MediaExistenceInCollection";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

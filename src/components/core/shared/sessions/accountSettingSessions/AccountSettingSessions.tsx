@@ -1,4 +1,4 @@
-import { useSessions } from "@/services/auth/authQueries";
+import { useSessions } from "@/services/auth/api/queries";
 import AccountSettingSession from "./AccountSettingSession";
 import SessionSkeleton from "@/components/core/loadingSkeletons/auth/SessionSkeleton";
 

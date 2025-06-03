@@ -1,4 +1,4 @@
-import { useDeleteAccount } from "@/services/auth/authQueries";
+import { useDeleteAccount } from "@/services/auth/api/mutations";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";

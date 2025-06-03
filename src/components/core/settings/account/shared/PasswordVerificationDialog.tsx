@@ -1,7 +1,7 @@
 import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
 import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
 import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";
-import { useVerifyPassword } from "@/services/auth/authQueries";
+import { useVerifyPassword } from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useState } from "react";

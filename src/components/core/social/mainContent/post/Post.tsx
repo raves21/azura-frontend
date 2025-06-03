@@ -1,6 +1,6 @@
 import { TPost } from "@/utils/types/social/social";
 import { Navigate, useMatchRoute, useNavigate } from "@tanstack/react-router";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { cn } from "@/lib/utils";
 import ActivityContentRenderer from "../activity/ActivityContentRenderer";
 import PostActions from "./PostActions";

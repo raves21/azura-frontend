@@ -1,7 +1,4 @@
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 import MediaCard from "../shared/MediaCard";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
 type Props = { tvShowList: TVShowTMDB[] };

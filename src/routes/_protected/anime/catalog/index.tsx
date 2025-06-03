@@ -1,4 +1,4 @@
-import { useFilterAnime } from "@/services/media/anime/queries/animeQueries";
+import { useFilterAnime } from "@/services/media/anime/queries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { z } from "zod";

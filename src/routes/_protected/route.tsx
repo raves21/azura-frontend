@@ -13,7 +13,7 @@ import BottomNavBar from "@/components/core/navBar/bottomNavBar/BottomNavBar";
 import AnimeTopNavBar from "@/components/core/navBar/topNavBar/AnimeTopNavBar";
 import MovieTopNavBar from "@/components/core/navBar/topNavBar/MovieTopNavBar";
 import TVTopNavBar from "@/components/core/navBar/topNavBar/TVTopNavBar";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 
 export const Route = createFileRoute("/_protected")({
   component: () => <Protected />,

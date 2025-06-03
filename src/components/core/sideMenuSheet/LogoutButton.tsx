@@ -1,4 +1,4 @@
-import { useLogout } from "@/services/auth/authQueries";
+import { useLogout } from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { LogOut } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";

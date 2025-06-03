@@ -1,7 +1,7 @@
 import {
   useAnimeEpisodes,
   useAnimeInfo,
-} from "@/services/media/anime/queries/animeQueries";
+} from "@/services/media/anime/queries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
 import { useEffect } from "react";
@@ -13,7 +13,7 @@ import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/
 import z from "zod";
 import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
-import { getAnimeRatingInfoPage } from "@/services/media/sharedFunctions";
+import { getAnimeRatingInfoPage } from "@/utils/functions/media/sharedFunctions";
 
 const searchParamsSchema = z.object({
   title: z.string(),

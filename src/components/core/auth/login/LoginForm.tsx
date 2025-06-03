@@ -14,7 +14,7 @@ import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { Link } from "@tanstack/react-router";
 import { loginFormSchema } from "@/utils/variables/formSchemas";
 import { LoginFormData } from "@/utils/types/auth/forms";
-import { useLogin } from "@/services/auth/authQueries";
+import { useLogin } from "@/services/auth/api/mutations";
 import { PasswordInput } from "@/components/ui/password-input";
 
 export default function LoginForm() {

@@ -1,30 +1,88 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { queryClient } from "@/utils/variables/queryClient";
-import {
-  LoginResponse,
-  UserBasicInfo,
-  UserSession,
-} from "@/utils/types/auth/auth";
-import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
-import Bowser from "bowser";
-import { setCurrentUser } from "./sharedFunctions";
-import axios from "axios";
-import { useAuthStore } from "@/utils/stores/useAuthStore";
 import { closeAllPopups } from "@/utils/functions/sharedFunctions";
+import { LoginResponse, UserBasicInfo, UserSession } from "@/utils/types/auth/auth";
+import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
+import { queryClient } from "@/utils/variables/queryClient";
+import { useMutation } from "@tanstack/react-query";
+import { setCurrentUser } from "@/utils/functions/auth/functions";
+import { useAuthStore } from "@/utils/stores/useAuthStore";
+import Bowser from "bowser";
 
-export function useCurrentUser() {
-  return useQuery({
-    queryKey: [`authenticatedUser`],
-    queryFn: async () => {
-      const { data } = await axios.get(
-        `${!!Number(import.meta.env.VITE_IS_PROD) ? import.meta.env.VITE_BACKEND_BASE_URL_1 : import.meta.env.VITE_BACKEND_BASE_URL}/users/me`,
-        {
-          withCredentials: true,
+export function useVerifyPassword() {
+  return useMutation({
+    mutationFn: async (password: string) => {
+      await api.post(`/account/verify-password`, { password });
+    },
+  });
+}
+
+export function useChangeEmail() {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      await api.put(`/account/email`, { email });
+    },
+  });
+}
+
+export function useChangeHandle({ key }: { key: string }) {
+  return useMutation({
+    mutationKey: [key],
+    mutationFn: async (handle: string) => {
+      await api.put(`/account/handle`, { handle });
+    },
+  });
+}
+
+export function useVerifyHandle() {
+  return useMutation({
+    mutationFn: async (handle: string) => {
+      await api.get(`/auth/check-handle-availability`, {
+        params: {
+          handle,
+        },
+      });
+    },
+  });
+}
+
+export function useAccountSettingLogoutSession({ key }: { key: string }) {
+  return useMutation({
+    mutationKey: [key],
+    mutationFn: async (sessionId: string) => {
+      await api.post(`/sessions/${sessionId}/logout`);
+    },
+    onSuccess: (_, sessionId) => {
+      queryClient.setQueryData<UserSession[] | undefined>(
+        [`currentUserSessions`],
+        (oldData) => {
+          if (!oldData) return undefined;
+          return oldData.filter((userSession) => userSession.id !== sessionId);
         }
       );
-      return data.data as UserBasicInfo;
     },
-    retryOnMount: false,
+  });
+}
+
+export function useDetachedModeLogoutSession({ key }: { key: string }) {
+  return useMutation({
+    mutationKey: [key],
+    mutationFn: async (sessionId: string) => {
+      await api.post(`/auth/detached/${sessionId}/logout`);
+    },
+  });
+}
+
+export function useDeleteAccount({ key }: { key: string }) {
+  return useMutation({
+    mutationKey: [key],
+    mutationFn: async () => {
+      await api.post(`/account/delete-account`);
+    },
+    onSuccess: () => {
+      setCurrentUser(null);
+      closeAllPopups();
+      queryClient.clear();
+      history.replaceState(null, ``, `/login`);
+    },
   });
 }
 
@@ -165,95 +223,6 @@ export function useLogout({ key }: { key: string }) {
     mutationKey: [key],
     mutationFn: async () => {
       await api.post(`/auth/logout`);
-    },
-    onSuccess: () => {
-      setCurrentUser(null);
-      closeAllPopups();
-      queryClient.clear();
-      history.replaceState(null, ``, `/login`);
-    },
-  });
-}
-
-export function useSessions() {
-  return useQuery({
-    queryKey: [`currentUserSessions`],
-    queryFn: async () => {
-      const { data: currentUserSessions } = await api.get(`/sessions`);
-      return currentUserSessions.data as UserSession[];
-    },
-  });
-}
-
-export function useVerifyPassword() {
-  return useMutation({
-    mutationFn: async (password: string) => {
-      await api.post(`/account/verify-password`, { password });
-    },
-  });
-}
-
-export function useChangeEmail() {
-  return useMutation({
-    mutationFn: async (email: string) => {
-      await api.put(`/account/email`, { email });
-    },
-  });
-}
-
-export function useChangeHandle({ key }: { key: string }) {
-  return useMutation({
-    mutationKey: [key],
-    mutationFn: async (handle: string) => {
-      await api.put(`/account/handle`, { handle });
-    },
-  });
-}
-
-export function useVerifyHandle() {
-  return useMutation({
-    mutationFn: async (handle: string) => {
-      await api.get(`/auth/check-handle-availability`, {
-        params: {
-          handle,
-        },
-      });
-    },
-  });
-}
-
-export function useAccountSettingLogoutSession({ key }: { key: string }) {
-  return useMutation({
-    mutationKey: [key],
-    mutationFn: async (sessionId: string) => {
-      await api.post(`/sessions/${sessionId}/logout`);
-    },
-    onSuccess: (_, sessionId) => {
-      queryClient.setQueryData<UserSession[] | undefined>(
-        [`currentUserSessions`],
-        (oldData) => {
-          if (!oldData) return undefined;
-          return oldData.filter((userSession) => userSession.id !== sessionId);
-        }
-      );
-    },
-  });
-}
-
-export function useDetachedModeLogoutSession({ key }: { key: string }) {
-  return useMutation({
-    mutationKey: [key],
-    mutationFn: async (sessionId: string) => {
-      await api.post(`/auth/detached/${sessionId}/logout`);
-    },
-  });
-}
-
-export function useDeleteAccount({ key }: { key: string }) {
-  return useMutation({
-    mutationKey: [key],
-    mutationFn: async () => {
-      await api.post(`/account/delete-account`);
     },
     onSuccess: () => {
       setCurrentUser(null);

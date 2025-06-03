@@ -4,8 +4,8 @@ import Follow from "./Follow";
 import {
   useFollowUser,
   useUnfollowUser,
-} from "@/services/social/queries/socialQueries";
-import { useCurrentUser } from "@/services/auth/authQueries";
+} from "@/services/social/api/mutations";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useDebounceOnClick } from "@/utils/hooks/useDebounceOnClick";
 import {
   followUser_UserPreviewListCacheMutation,

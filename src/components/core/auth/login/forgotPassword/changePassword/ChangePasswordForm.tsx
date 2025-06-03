@@ -14,7 +14,7 @@ import { ChangePasswordFormData } from "@/utils/types/auth/forms";
 import {
   useChangePassword,
   useForgotPasswordChangePassword,
-} from "@/services/auth/authQueries";
+} from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { ForgotPasswordStep, UserBasicInfo } from "@/utils/types/auth/auth";

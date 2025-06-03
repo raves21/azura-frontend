@@ -1,9 +1,9 @@
 import CodeVerificationForm from "@/components/core/auth/shared/CodeVerificationForm";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
-import { useChangeEmail } from "@/services/auth/authQueries";
-import { setCurrentUser } from "@/services/auth/sharedFunctions";
+import { useChangeEmail } from "@/services/auth/api/mutations";
+import { setCurrentUser } from "@/utils/functions/auth/functions";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { UserBasicInfo } from "@/utils/types/auth/auth";
 import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";

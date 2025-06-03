@@ -13,7 +13,7 @@ import {
   useAnimeInfo,
   useChunkAnimeEpisodes,
   useEpisodeInfo,
-} from "@/services/media/anime/queries/animeQueries";
+} from "@/services/media/anime/queries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
@@ -29,8 +29,8 @@ import {
   Subtitle,
 } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
-import { getAnimeRatingInfoPage } from "@/services/media/sharedFunctions";
 import { Kind } from "@/utils/types/media/anime/animeAnilist";
+import { getAnimeRatingInfoPage } from "@/utils/functions/media/sharedFunctions";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),

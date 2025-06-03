@@ -5,9 +5,9 @@ import CollectionEditButton from "@/components/core/social/mainContent/collectio
 import CollectionInfo from "@/components/core/social/mainContent/collection/collectionInfo/CollectionInfo";
 import CollectionItems from "@/components/core/social/mainContent/collection/collectionInfo/collectionItems/CollectionItems";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCollectionInfo } from "@/services/social/queries/socialQueries";
+import { useCollectionInfo } from "@/services/social/api/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Circle } from "lucide-react";
 

@@ -15,15 +15,12 @@ import { ChangeHandleFormData } from "@/utils/types/auth/forms";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
-import { useChangeHandle, useVerifyHandle } from "@/services/auth/authQueries";
-import {
-  getCurrentUser,
-  setCurrentUser,
-} from "@/services/auth/sharedFunctions";
+import { useChangeHandle, useVerifyHandle } from "@/services/auth/api/mutations";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import { cn } from "@/lib/utils";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { useToast } from "@/components/ui/use-toast";
+import { getCurrentUser, setCurrentUser } from "@/utils/functions/auth/functions";
 
 export default function ChangeHandleForm() {
   const navigate = useNavigate();

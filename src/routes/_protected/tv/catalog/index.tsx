@@ -3,7 +3,7 @@ import Pagination from "@/components/core/media/shared/catalog/pagination/Pagina
 import CatalogTVList from "@/components/core/media/tv/CatalogTVList";
 import TVAppliedFilters from "@/components/core/media/tv/filter/TVAppliedFilters";
 import TVFiltersDialog from "@/components/core/media/tv/filter/TVFiltersDialog";
-import { useDiscoverTV, useTVGenres } from "@/services/media/tv/tvQueries";
+import { useDiscoverTV, useTVGenres } from "@/services/media/tv/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

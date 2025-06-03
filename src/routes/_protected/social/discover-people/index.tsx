@@ -1,7 +1,7 @@
 import UserListItemSkeleton from "@/components/core/loadingSkeletons/social/UserListItemSkeleton";
 import BackButton from "@/components/core/shared/BackButton";
 import UserListItem from "@/components/core/social/shared/UserListItem";
-import { useDiscoverPeople } from "@/services/social/queries/socialQueries";
+import { useDiscoverPeople } from "@/services/social/api/queries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { createFileRoute } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";

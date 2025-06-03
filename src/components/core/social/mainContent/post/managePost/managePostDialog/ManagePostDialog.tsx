@@ -7,7 +7,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useShallow } from "zustand/react/shallow";
 import { EntityPrivacy } from "@/utils/types/social/shared";
 import { TPost } from "@/utils/types/social/social";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate } from "@tanstack/react-router";
 import SelectMediaAttachmentPage from "./pages/SelectMediaAttachmentPage";
 import SelectCollectionAttachmentPage from "./pages/SelectCollectionAttachmentPage";

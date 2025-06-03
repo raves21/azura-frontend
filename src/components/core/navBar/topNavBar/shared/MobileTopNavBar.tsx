@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useScrolledState } from "@/utils/hooks/useScrolledState";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";

@@ -1,7 +1,7 @@
-import { useUserProfile } from "@/services/social/queries/socialQueries";
+import { useUserProfile } from "@/services/social/api/queries";
 import { Navigate } from "@tanstack/react-router";
 
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import UserProfileSkeleton from "@/components/core/loadingSkeletons/social/UserProfileSkeleton";
 import ProfileDetails from "@/components/core/social/mainContent/profile/profileDetails/ProfileDetails";
 import ProfileImages from "@/components/core/social/mainContent/profile/profileImages/ProfileImages";

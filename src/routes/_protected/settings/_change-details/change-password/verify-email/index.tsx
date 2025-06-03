@@ -1,5 +1,5 @@
 import CodeVerificationForm from "@/components/core/auth/shared/CodeVerificationForm";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useAccountSettingStore } from "@/utils/stores/useAccountSettingStore";
 import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";

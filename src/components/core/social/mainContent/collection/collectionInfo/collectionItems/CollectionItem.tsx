@@ -3,7 +3,7 @@ import Media from "@/components/core/media/shared/Media";
 import CollectionItemPreviewDialog from "../../../previewPopup/collectionItem/CollectionItemPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useParams } from "@tanstack/react-router";
-import { useDeleteCollectionItem } from "@/services/social/queries/socialQueries";
+import { useDeleteCollectionItem } from "@/services/social/api/mutations";
 import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {

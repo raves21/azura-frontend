@@ -3,7 +3,7 @@ import { LinkProps, Navigate } from "@tanstack/react-router";
 import { TPostComment } from "@/utils/types/social/social";
 import { Link } from "@tanstack/react-router";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import UserAvatar from "@/components/core/social/shared/UserAvatar";
 import PostCommentOptionsDropdown from "./PostCommentOptionsDropdown";
 

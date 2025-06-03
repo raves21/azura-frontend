@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setCurrentUser } from "@/services/auth/sharedFunctions";
+import { setCurrentUser } from "@/utils/functions/auth/functions";
 import {
   closeAllPopups,
 } from "@/utils/functions/sharedFunctions";

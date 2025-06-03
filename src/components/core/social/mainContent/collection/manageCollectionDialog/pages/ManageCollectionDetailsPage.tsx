@@ -2,8 +2,8 @@ import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import {
   useCreateCollection,
   useEditCollection,
-} from "@/services/social/queries/socialQueries";
-import { useCurrentUser } from "@/services/auth/authQueries";
+} from "@/services/social/api/mutations";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TCollection } from "@/utils/types/social/social";
 import { Navigate } from "@tanstack/react-router";

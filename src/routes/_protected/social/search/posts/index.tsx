@@ -1,7 +1,7 @@
 import ActivitySkeleton from "@/components/core/loadingSkeletons/social/ActivitySkeleton";
 import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
 import Post from "@/components/core/social/mainContent/post/Post";
-import { useSearchPosts } from "@/services/social/queries/socialQueries";
+import { useSearchPosts } from "@/services/social/api/queries";
 import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestoration";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";

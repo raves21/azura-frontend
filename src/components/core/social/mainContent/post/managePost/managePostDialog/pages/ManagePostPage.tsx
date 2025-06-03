@@ -2,8 +2,8 @@ import UserAvatar from "@/components/core/social/shared/UserAvatar";
 import {
   useCreatePost,
   useEditPost,
-} from "@/services/social/queries/socialQueries";
-import { useCurrentUser } from "@/services/auth/authQueries";
+} from "@/services/social/api/mutations";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { Navigate } from "@tanstack/react-router";

@@ -1,4 +1,4 @@
-import { getAnimeRating } from "@/services/media/sharedFunctions";
+import { getAnimeRating } from "@/utils/functions/media/sharedFunctions";
 import { Anime, AnimeStatus } from "@/utils/types/media/anime/animeAnilist";
 import { animeStatusLabels } from "@/utils/variables/media/anime";
 import { Star } from "lucide-react";

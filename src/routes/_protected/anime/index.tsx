@@ -1,7 +1,7 @@
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
-import { useAnimesByCategory } from "@/services/media/anime/queries/animeQueries";
+import { useAnimesByCategory } from "@/services/media/anime/queries";
 import {
   AnimeSortBy,
   AnilistAnimeStatus,

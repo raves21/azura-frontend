@@ -1,12 +1,8 @@
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+import { getTMDBImageURL, getTMDBReleaseYear, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { TVShowTMDB } from "@/utils/types/media/TV/tvShowTmdb";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
-import { getTMDBRating } from "@/services/media/sharedFunctions";
 
 type Props = {
   tv: TVShowTMDB;

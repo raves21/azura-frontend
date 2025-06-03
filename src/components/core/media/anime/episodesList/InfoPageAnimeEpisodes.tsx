@@ -1,5 +1,5 @@
 import { AnimeFormat } from "@/utils/types/media/anime/animeAnilist";
-import { useChunkAnimeEpisodes } from "@/services/media/anime/queries/animeQueries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
 import { useParams } from "@tanstack/react-router";

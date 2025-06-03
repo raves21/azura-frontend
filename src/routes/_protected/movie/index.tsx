@@ -5,11 +5,8 @@ import CategoryCarouselItem from "@/components/core/media/shared/carousel/Catego
 import TrendingHeroCarousel from "@/components/core/media/shared/carousel/TrendingHeroCarousel";
 import TrendingHeroCarouselItem from "@/components/core/media/shared/carousel/TrendingHeroCarouselItem";
 import MediaCard from "@/components/core/media/shared/MediaCard";
-import { useMoviesByCategory } from "@/services/media/movie/movieQueries";
-import {
-  getTMDBImageURL,
-  getTMDBReleaseYear,
-} from "@/services/media/sharedFunctions";
+import { useMoviesByCategory } from "@/services/media/movie/queries";
+import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 import { MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { createFileRoute } from "@tanstack/react-router";
 

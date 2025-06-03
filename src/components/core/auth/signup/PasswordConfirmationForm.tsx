@@ -13,7 +13,7 @@ import { SignUpStep } from "@/utils/types/auth/auth";
 import { useShallow } from "zustand/react/shallow";
 import { passwordConfirmationFormSchema } from "@/utils/variables/formSchemas";
 import { PasswordConfirmationFormData } from "@/utils/types/auth/forms";
-import { useSendOTC } from "@/services/auth/authQueries";
+import { useSendOTC } from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { AxiosError } from "axios";

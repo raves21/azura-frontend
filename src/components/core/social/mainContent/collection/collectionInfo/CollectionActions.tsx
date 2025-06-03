@@ -3,7 +3,7 @@ import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { TCollection } from "@/utils/types/social/social";
 import { Forward, Plus } from "lucide-react";
 import ManagePostDialog from "../../post/managePost/managePostDialog/ManagePostDialog";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate, useParams } from "@tanstack/react-router";
 import AddCollectionItemDialog from "./addCollectionItemDialog/AddCollectionItemDialog";
 

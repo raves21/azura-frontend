@@ -1,6 +1,6 @@
 import FeedPostsSkeleton from "@/components/core/loadingSkeletons/social/FeedPostsSkeleton";
 import PostsSkeleton from "@/components/core/loadingSkeletons/social/PostsSkeleton";
-import { useForYouFeed } from "@/services/social/queries/socialQueries";
+import { useForYouFeed } from "@/services/social/api/queries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
 import ContentOptions from "../../shared/contentOptions/ContentOptions";

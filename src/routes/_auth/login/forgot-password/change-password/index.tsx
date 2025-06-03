@@ -2,7 +2,7 @@ import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import ChangePasswordForm from "../../../../../components/core/auth/login/forgotPassword/changePassword/ChangePasswordForm";
 import { ForgotPasswordStep } from "@/utils/types/auth/auth";
 import { useEffect } from "react";
-import { useLogin } from "@/services/auth/authQueries";
+import { useLogin } from "@/services/auth/api/mutations";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import { useShallow } from "zustand/react/shallow";

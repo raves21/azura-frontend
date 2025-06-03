@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import {
   useDetachedModeLogoutSession,
   useLogin,
-} from "@/services/auth/authQueries";
+} from "@/services/auth/api/mutations";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";

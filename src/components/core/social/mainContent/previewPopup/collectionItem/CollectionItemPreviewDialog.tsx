@@ -1,12 +1,9 @@
-import {
-  getAnimeRating,
-  getTMDBRating,
-} from "@/services/media/sharedFunctions";
 import { Media } from "@/utils/types/social/social";
 import Description from "@/components/core/media/shared/info/Description";
 import { MutationKey } from "@tanstack/react-query";
 import { Circle, Cat, Clapperboard, Tv, Star } from "lucide-react";
 import CollectionItemPreviewContainer from "./CollectionItemPreviewContainer";
+import { getAnimeRating, getTMDBRating } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   isSecondaryDialog?: boolean;

@@ -1,9 +1,9 @@
 import UserListItemSkeleton from "@/components/core/loadingSkeletons/social/UserListItemSkeleton";
 import BackButton from "@/components/core/shared/BackButton";
 import UserListItem from "@/components/core/social/shared/UserListItem";
-import { useFollowerList } from "@/services/social/queries/socialQueries";
+import { useFollowerList } from "@/services/social/api/queries";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
-import { useCurrentUser } from "@/services/auth/authQueries";
+import { useCurrentUser } from "@/services/auth/api/queries";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Fragment } from "react/jsx-runtime";
 

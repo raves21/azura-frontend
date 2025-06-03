@@ -4,7 +4,7 @@ import EpisodesContainer from "../../shared/episode/EpisodesContainer";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
-import { getTMDBImageURL } from "@/services/media/sharedFunctions";
+import { getTMDBImageURL } from "@/utils/functions/media/sharedFunctions";
 import CustomDropdown from "../../../shared/CustomDropdown";
 import { serverNames as serverNames } from "@/utils/variables/media/shared";
 

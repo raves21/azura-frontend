@@ -1,4 +1,4 @@
-import { useDiscoverPeople } from "@/services/social/queries/socialQueries";
+import { useDiscoverPeople } from "@/services/social/api/queries";
 import UserListItem from "../../shared/UserListItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Fragment } from "react/jsx-runtime";

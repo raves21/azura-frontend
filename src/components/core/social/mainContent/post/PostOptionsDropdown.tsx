@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Circle, Ellipsis, Pencil, Trash } from "lucide-react";
-import { useDeletePost } from "@/services/social/queries/socialQueries";
+import { useDeletePost } from "@/services/social/api/queries";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import AsyncConfirmationDialog from "@/components/core/shared/confirmationDialog/AsyncConfirmationDialog";
 import ManagePostDialog from "./managePost/managePostDialog/ManagePostDialog";
