@@ -5,7 +5,7 @@ import UserAvatar from "../../../shared/UserAvatar";
 import { cn } from "@/lib/utils";
 import CollectionPreviewDialog from "../../previewPopup/collection/CollectionPreviewDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
-import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { getPreviewPosters } from "@/services/social/functions/sharedFunctions";
 import { toggleDialogOrDrawer } from "@/utils/functions/sharedFunctions";
 
 type Props = {

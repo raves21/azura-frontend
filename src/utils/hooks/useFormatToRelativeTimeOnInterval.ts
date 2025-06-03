@@ -1,4 +1,4 @@
-import { formatToRelativeTime } from "@/services/social/functions/socialFunctions";
+import { formatToRelativeTime } from "@/services/social/functions/sharedFunctions";
 import { useState, useEffect } from "react";
 
 //5 mins

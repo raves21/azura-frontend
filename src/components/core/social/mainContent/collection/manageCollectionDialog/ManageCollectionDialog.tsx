@@ -9,7 +9,7 @@ import ManageCollectionDetailsPage from "./pages/ManageCollectionDetailsPage";
 import SelectPrivacyPage from "./pages/SelectPrivacyPage";
 import { ArrowLeft } from "lucide-react";
 import ManageCollectionPhotoPage from "./pages/ManageCollectionPhotoPage";
-import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { getPreviewPosters } from "@/services/social/functions/sharedFunctions";
 import GlobalDialogHeader from "@/components/global/shared/GlobalDialogHeader";
 import GlobalDialogHeaderCloseButton from "@/components/global/shared/GlobalDialogHeaderCloseButton";
 import GlobalDialogHeaderTitle from "@/components/global/shared/GlobalDialogHeaderTitle";

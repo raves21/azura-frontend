@@ -1,6 +1,6 @@
 import { TCollection } from "@/utils/types/social/social";
 import CollectionPhoto from "@/components/core/social/mainContent/collection/CollectionPhoto";
-import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { getPreviewPosters } from "@/services/social/functions/sharedFunctions";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
 

@@ -1,7 +1,7 @@
 import CollectionDetails from "./CollectionDetails";
 import CollectionPhoto from "../CollectionPhoto";
 import { TCollection } from "@/utils/types/social/social";
-import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { getPreviewPosters } from "@/services/social/functions/sharedFunctions";
 
 type Props = {
   collection: TCollection;

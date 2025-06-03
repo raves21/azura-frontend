@@ -12,7 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 import { isEqual } from "radash";
 import CollectionPhoto from "../../CollectionPhoto";
 import { Globe, Users, ChevronDown, Lock, ImageUp, X } from "lucide-react";
-import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { getPreviewPosters } from "@/services/social/functions/sharedFunctions";
 import { Textarea } from "@headlessui/react";
 import { useToast } from "@/components/ui/use-toast";
 

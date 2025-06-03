@@ -4,7 +4,7 @@ import UserCollectionsSkeleton from "@/components/core/loadingSkeletons/social/U
 import Collection from "@/components/core/social/mainContent/collection/Collection";
 import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { Fragment } from "react/jsx-runtime";
-import { getPreviewPosters } from "@/services/social/functions/socialFunctions";
+import { getPreviewPosters } from "@/services/social/functions/sharedFunctions";
 import { ChevronRight, Plus } from "lucide-react";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
