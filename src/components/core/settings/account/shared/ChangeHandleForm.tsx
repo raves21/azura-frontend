@@ -92,7 +92,7 @@ export default function ChangeHandleForm() {
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="Handle"
+                    placeholder="Username"
                     {...field}
                     maxLength={15}
                     className="pl-8 font-medium w-full bg-gray-800 border-none text-mainWhite"

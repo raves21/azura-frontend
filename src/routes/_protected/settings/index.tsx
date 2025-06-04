@@ -102,7 +102,7 @@ function SettingsPage() {
           >
             <ChangeProfileSettings />
           </SettingContentItem>
-          <SettingContentItem title="Handle">
+          <SettingContentItem title="Username">
             <ChangeHandleSetting />
           </SettingContentItem>
           <SettingContentItem title="Email">

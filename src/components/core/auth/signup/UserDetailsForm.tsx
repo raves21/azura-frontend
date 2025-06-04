@@ -61,7 +61,7 @@ export default function UserDetailsForm() {
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="Username"
+                    placeholder="Display Name"
                     {...field}
                     maxLength={20}
                     className="font-medium bg-gray-800 border-none text-mainWhite"
@@ -81,7 +81,7 @@ export default function UserDetailsForm() {
                 <FormControl>
                   <Input
                     autoComplete="off"
-                    placeholder="Handle"
+                    placeholder="Username"
                     {...field}
                     maxLength={15}
                     className="pl-8 font-medium bg-gray-800 border-none text-mainWhite"

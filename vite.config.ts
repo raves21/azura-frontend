@@ -21,6 +21,7 @@ export default defineConfig({
         "azura-logo.svg",
       ],
       manifest: {
+        theme_color: "#100c14",
         name: "Azura",
         short_name: "Azura",
         icons: [

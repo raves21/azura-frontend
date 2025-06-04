@@ -178,9 +178,9 @@ export default function EditProfilePage({
           <div className="flex flex-col w-full gap-2">
             <div className="flex justify-between">
               {!editProfileUsername ? (
-                <p className="font-medium text-red-500">Username is required</p>
+                <p className="font-medium text-red-500">Display Name is required</p>
               ) : (
-                <p className="font-medium">Username</p>
+                <p className="font-medium">Display Name</p>
               )}
               <p className="text-sm font-light text-socialTextSecondary">
                 {editProfileUsername.length}/{30}
