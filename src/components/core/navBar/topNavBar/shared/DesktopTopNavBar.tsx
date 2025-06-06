@@ -55,6 +55,7 @@ export default function DesktopTopNavBar({
     case "ANIME":
       mediaRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/anime"
           className={cn(
             "p-[6px] hover:text-mainAccent transition-colors",
@@ -73,6 +74,7 @@ export default function DesktopTopNavBar({
       );
       mediaCatalogRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/anime/catalog"
           className={cn("p-[6px] hover:text-mainAccent transition-colors", {
             "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
@@ -86,6 +88,7 @@ export default function DesktopTopNavBar({
     case "MOVIE":
       mediaRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/movie"
           className={cn(
             "p-[6px] hover:text-mainAccent transition-colors",
@@ -104,6 +107,7 @@ export default function DesktopTopNavBar({
       );
       mediaCatalogRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/movie/catalog"
           className={cn("p-[6px] hover:text-mainAccent transition-colors", {
             "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
@@ -117,6 +121,7 @@ export default function DesktopTopNavBar({
     case "TV":
       mediaRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/tv"
           className={cn(
             "p-[6px] hover:text-mainAccent transition-colors",
@@ -132,6 +137,7 @@ export default function DesktopTopNavBar({
       );
       mediaCatalogRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/tv/catalog"
           className={cn("p-[6px] hover:text-mainAccent transition-colors", {
             "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
@@ -156,7 +162,10 @@ export default function DesktopTopNavBar({
       >
         <button
           className="p-[6px] relative group"
-          onClick={() => toggleOpenSheet(<SideMenuSheet />)}
+          onClick={() => {
+            toggleOpenSheet(<SideMenuSheet />)
+            toggleMediaPortal(true)
+          }}
         >
           <Menu />
           <Circle className="fill-mainAccent/30 -z-10 stroke-none size-[190%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
@@ -168,6 +177,7 @@ export default function DesktopTopNavBar({
             <AzuraLogo className="size-12" />
           </button>
           <Link
+            onClick={() => toggleMediaPortal(true)}
             to="/social"
             className={cn("p-[6px] hover:text-mainAccent transition-colors", {
               "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
@@ -177,6 +187,7 @@ export default function DesktopTopNavBar({
             Social
           </Link>
           <Link
+            onClick={() => toggleMediaPortal(true)}
             to="/settings"
             className={cn("p-[6px] hover:text-mainAccent transition-colors", {
               "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
@@ -187,7 +198,9 @@ export default function DesktopTopNavBar({
           </Link>
         </div>
         <button
-          onClick={() => toggleOpenDialog(searchDialogComponent)}
+          onClick={() => {
+            toggleMediaPortal(true)
+            toggleOpenDialog(searchDialogComponent)}}
           className="p-[6px] relative group"
         >
           <Search />
