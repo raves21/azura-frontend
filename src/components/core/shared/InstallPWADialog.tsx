@@ -105,7 +105,7 @@ export default function InstallPWADialog() {
           <div className="text-xl sm:text-2xl md:text-3xl flex-wrap justify-center w-full flex items-center font-semibold gap-2">
             <p>Install</p>
             <img src="/azura-logo.svg" className="size-10 mb-2" />
-            <p>as an app</p>
+            <p>as an app?</p>
           </div>
           <div className="relative w-full h-[250px] grid place-items-center">
             <img
