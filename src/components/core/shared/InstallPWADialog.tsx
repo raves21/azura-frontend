@@ -65,7 +65,7 @@ export default function InstallPWADialog() {
   const platform = userAgentParser.getPlatform().type;
 
   let stepsBasedOnDevice: any;
-  let initialStepType: "ios" | "android" | "desktop"
+  let initialStepType: "ios" | "android" | "desktop" = "android"
 
   if (os === "iOS" && platform === "mobile") {
     stepsBasedOnDevice = steps.mobile.ios.steps;
