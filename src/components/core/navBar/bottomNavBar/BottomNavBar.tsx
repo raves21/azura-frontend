@@ -42,6 +42,7 @@ export default function BottomNavBar({ type }: Props) {
     case "ANIME":
       mediaRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/anime"
           className={cn("flex flex-col items-center gap-1 flex-1", {
             "stroke-mainAccent text-mainAccent font-medium":
@@ -59,6 +60,7 @@ export default function BottomNavBar({ type }: Props) {
     case "MOVIE":
       mediaRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/movie"
           className={cn("flex flex-col items-center gap-1 flex-1", {
             "stroke-mainAccent text-mainAccent font-medium":
@@ -76,6 +78,7 @@ export default function BottomNavBar({ type }: Props) {
     case "TV":
       mediaRouteComponent = (
         <Link
+          onClick={() => toggleMediaPortal(true)}
           to="/tv"
           className={cn("flex flex-col items-center gap-1 flex-1", {
             "stroke-mainAccent text-mainAccent font-medium":
@@ -101,6 +104,7 @@ export default function BottomNavBar({ type }: Props) {
     >
       {mediaRouteComponent}
       <Link
+        onClick={() => toggleMediaPortal(true)}
         {...mediaCatalogRoute}
         className="flex flex-col items-center gap-1 flex-1"
       >
@@ -119,6 +123,7 @@ export default function BottomNavBar({ type }: Props) {
         <AzuraLogo className="size-[58px]" />
       </button>
       <Link
+        onClick={() => toggleMediaPortal(true)}
         to="/social"
         className={cn("flex flex-col items-center gap-1 flex-1", {
           "stroke-mainAccent text-mainAccent font-medium": isSocialRoute,
@@ -128,6 +133,7 @@ export default function BottomNavBar({ type }: Props) {
         <p>Social</p>
       </Link>
       <Link
+        onClick={() => toggleMediaPortal(true)}
         to="/settings"
         className={cn("flex flex-col items-center gap-1 flex-1", {
           "stroke-mainAccent text-mainAccent font-medium": isAccountRoute,
