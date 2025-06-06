@@ -6,6 +6,8 @@ import GlobalDialogSecondary from "@/components/global/GlobalDialogSecondary";
 import MediaPortal from "@/components/global/mediaPortal/MediaPortal";
 import SocialFloatingActionButton from "@/components/core/social/shared/socialFAB/SocialFloatingActionButton";
 import { Toaster } from "@/components/ui/toaster";
+import { useShowPWAPrompt } from "@/utils/hooks/useShowPWAPrompt";
+import InstallPWADialog from "@/components/core/shared/InstallPWADialog";
 
 export const Route = createRootRoute({
   component: () => <RootRoute />,
@@ -14,6 +16,8 @@ export const Route = createRootRoute({
 function RootRoute() {
   const matchRoute = useMatchRoute();
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
+
+  useShowPWAPrompt(<InstallPWADialog/>)
 
   return (
     <>

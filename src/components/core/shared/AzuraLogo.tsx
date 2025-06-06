@@ -1,14 +1,18 @@
 import { cn } from "@/lib/utils";
+import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 
 type Props = {
   className?: string;
 };
 
 export default function AzuraLogo({ className }: Props) {
+
+  const {isDesktopSmallUp} = useWindowBreakpoints()
+
   return (
     <div className={cn("size-14", className)}>
       <svg
-        className="azura-logo"
+        className={isDesktopSmallUp ? "azura-logo" : "azura-logo-bounce"}
         viewBox="0 0 334 292"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
