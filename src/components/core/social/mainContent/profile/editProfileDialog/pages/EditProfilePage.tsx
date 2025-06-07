@@ -135,14 +135,14 @@ export default function EditProfilePage({
             <div className="absolute flex gap-6 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
               <button
                 onClick={() => setEditProfilePage("manageBannerPage")}
-                className="transition-colors rounded-full hover:bg-gray-700/80 size-12 bg-socialPrimary/60 place-items-center"
+                className="transition-colors rounded-full hover:bg-gray-700/80 size-12 bg-socialPrimary/60 grid place-items-center"
               >
                 <ImageUp className="size-[55%] stroke-[1.5px]" />
               </button>
               {editProfileBanner && (
                 <button
                   onClick={() => setEditProfileBanner(null)}
-                  className="transition-colors rounded-full hover:bg-gray-700/80 size-12 bg-socialPrimary/60 place-items-center"
+                  className="transition-colors rounded-full hover:bg-gray-700/80 size-12 bg-socialPrimary/60 grid place-items-center"
                 >
                   <X className="size-[55%] stroke-[1.5px]" />
                 </button>
@@ -159,14 +159,14 @@ export default function EditProfilePage({
             <div className="absolute flex gap-1 sm:gap-3 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
               <button
                 onClick={() => setEditProfilePage("manageAvatarPage")}
-                className="transition-colors rounded-full hover:bg-gray-700/80 size-8 sm:size-9 bg-socialPrimary/60 place-items-center"
+                className="transition-colors rounded-full hover:bg-gray-700/80 size-8 sm:size-9 bg-socialPrimary/60 grid place-items-center"
               >
                 <ImageUp className="size-[55%] stroke-[1.5px]" />
               </button>
               {editProfileAvatar && (
                 <button
                   onClick={() => setEditProfileAvatar(null)}
-                  className="transition-colors rounded-full hover:bg-gray-700/80 size-8 sm:size-9 bg-socialPrimary/60 place-items-center"
+                  className="transition-colors rounded-full hover:bg-gray-700/80 size-8 sm:size-9 bg-socialPrimary/60 grid place-items-center"
                 >
                   <X className="size-[55%] stroke-[1.5px]" />
                 </button>

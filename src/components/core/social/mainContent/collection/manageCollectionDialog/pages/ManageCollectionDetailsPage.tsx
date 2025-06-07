@@ -151,14 +151,14 @@ export default function ManageCollectionDetailsPage({
           <div className="z-10 flex gap-3">
             <button
               onClick={() => setManageCollectionPage("manageCollecionPhoto")}
-              className="transition-colors rounded-full border-[0.5px] border-mainAccent hover:bg-gray-700/80 size-16 bg-socialPrimary/60 place-items-center"
+              className="transition-colors rounded-full border-[0.5px] border-mainAccent hover:bg-gray-700/80 size-16 bg-socialPrimary/60 grid place-items-center"
             >
               <ImageUp className="size-[55%] stroke-[1.5px]" />
             </button>
             {collectionPhoto && (
               <button
                 onClick={() => setCollectionPhoto(null)}
-                className="transition-colors rounded-full hover:bg-gray-700/80 size-16 border-[0.5px] border-mainAccent bg-socialPrimary/60 place-items-center"
+                className="transition-colors rounded-full hover:bg-gray-700/80 size-16 border-[0.5px] border-mainAccent bg-socialPrimary/60 grid place-items-center"
               >
                 <X className="size-[55%] stroke-[1.5px]" />
               </button>
