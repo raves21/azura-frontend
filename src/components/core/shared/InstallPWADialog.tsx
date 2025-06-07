@@ -10,12 +10,12 @@ const steps: any = {
       steps: [
         {
           image:
-            "https://media.discordapp.net/attachments/735833212198060054/1380569516731400231/Untitled_design_8.png?ex=68445b0e&is=6843098e&hm=6ee7dc33abf1e2d86372685278dfbcc1abe8f3241bebc0c986e788394dc7bc7e&=&format=webp&quality=lossless&width=583&height=699",
+            "/installPWADialogImages/android_1.png",
           instruction: "On your browser, click on options",
         },
         {
           image:
-            "https://media.discordapp.net/attachments/735833212198060054/1380569516357976095/Untitled_design_9.png?ex=68445b0e&is=6843098e&hm=230b2016b467fd571f01c0d4e15ff04cf6837ce747bac52bdf936a3c79cb3a71&=&format=webp&quality=lossless&width=583&height=699",
+            "/installPWADialogImages/android_2.png",
           instruction: "Click on Add to Home screen",
         }
       ],
@@ -24,12 +24,12 @@ const steps: any = {
       steps: [
         {
           image:
-            "https://media.discordapp.net/attachments/735833212198060054/1380569516014174359/Untitled_design_10.png?ex=68445b0e&is=6843098e&hm=5dc4f7f714b19a3c096c6fd453292458c493ec12254eb6a30da7a5e612c766ea&=&format=webp&quality=lossless&width=583&height=699",
+            "/installPWADialogImages/ios_1.png",
           instruction: "On your browser, click on options",
         },
         {
           image:
-            "https://media.discordapp.net/attachments/735833212198060054/1380569515565518898/Untitled_design_11.png?ex=68445b0e&is=6843098e&hm=648a5b68c567254bda52f1630027930d7c98a10cce61d21e85cb5a57e9321dab&=&format=webp&quality=lossless&width=583&height=699",
+            "/installPWADialogImages/ios_2.png",
           instruction: "Click on Add to Home screen",
         },
       ],
@@ -39,13 +39,13 @@ const steps: any = {
     steps: [
       {
         image:
-          "https://media.discordapp.net/attachments/735833212198060054/1380569515217125456/Untitled_design_12.png?ex=68445b0e&is=6843098e&hm=ecc1326ddfc3b490afaae59d983f6bc8b4938eb58328d343232cb39247742026&=&format=webp&quality=lossless&width=583&height=699",
+          "/installPWADialogImages/desktop_1.png",
         instruction:
           "In the Address/URL bar of your browser, click the icon resembling the icon shown in the image",
       },
       {
         image:
-          "https://media.discordapp.net/attachments/735833212198060054/1380564023300325539/image.png?ex=684455f0&is=68430470&hm=e0324448938808a558920e2a56a2eeaec671a23fa78c77db4682b7daa5bde06e&=&format=webp&quality=lossless&width=696&height=271",
+          "/installPWADialogImages/desktop_2.png",
         instruction: "Click on install",
       },
     ],
