@@ -79,11 +79,8 @@ function WatchEpisodePage() {
 
   const windowWidth = useWindowWidth();
 
-  const {
-    data: episodeStreamLinks,
-    isLoading: isEpisodeStreamLinksLoading,
-    error: episodeStreamLinksError,
-  } = useAnimeEpisodeStreamLinks(id);
+  const { data: episodeStreamLinks, isLoading: isEpisodeStreamLinksLoading } =
+    useAnimeEpisodeStreamLinks(id);
 
   const episodesQuery = useAnimeEpisodes({
     animeId,
@@ -128,7 +125,7 @@ function WatchEpisodePage() {
     );
   }
 
-  if (episodeStreamLinksError || episodesQuery.error || animeInfoError) {
+  if (episodesQuery.error || animeInfoError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
