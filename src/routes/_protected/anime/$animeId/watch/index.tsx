@@ -154,7 +154,7 @@ function WatchEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {episodeStreamLinks ? (
+            {episodeStreamLinks && episodeStreamLinks.sources.length !== 0 ? (
               <VideoPlayer
                 mediaType="ANIME"
                 poster={
