@@ -50,10 +50,12 @@ export default defineConfig({
         ],
       },
       workbox: {
+        clientsClaim: true,
+        skipWaiting: true,
         runtimeCaching: [
           {
             urlPattern: ({ url }) => {
-              return url.pathname.startsWith("/api.themoviedb.org");
+              return url.pathname.startsWith("https://api.themoviedb.org/3");
             },
             handler: "CacheFirst",
             options: {

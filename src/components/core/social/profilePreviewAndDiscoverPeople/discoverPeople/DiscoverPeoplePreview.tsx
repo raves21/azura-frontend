@@ -1,7 +1,6 @@
 import { useDiscoverPeoplePreview } from "@/services/social/api/queries";
 import UserListItem from "../../shared/UserListItem";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Fragment } from "react/jsx-runtime";
 import { Link } from "@tanstack/react-router";
 
 export default function DiscoverPeoplePreview() {
@@ -54,38 +53,34 @@ export default function DiscoverPeoplePreview() {
     return (
       <div className="flex flex-col w-full gap-3 rounded-lg justfiy-center bg-socialPrimary">
         <p className="px-5 pt-5 pb-3 text-lg font-semibold">Discover People</p>
-        {discoverPeoplePreview.pages[0].data.length === 0 ? (
+        {discoverPeoplePreview.length === 0 ? (
           <p className="self-center my-6 text-base font-md text-socialTextSecondary">
             No users yet.
           </p>
         ) : (
           <>
             <div className="space-y-2">
-              {discoverPeoplePreview.pages.map((page) => (
-                <Fragment key={page.page}>
-                  {page.data.map((userPreview) => (
-                    <UserListItem
-                      isDiscoverPeopleSection={true}
-                      key={userPreview.id}
-                      avatar={userPreview.avatar}
-                      bio={userPreview.bio}
-                      handle={userPreview.handle}
-                      id={userPreview.id}
-                      isFollowedByCurrentUser={
-                        userPreview.isFollowedByCurrentUser
-                      }
-                      username={userPreview.username}
-                    />
-                  ))}
-                </Fragment>
+              {discoverPeoplePreview.map((userPreview) => (
+                <UserListItem
+                  isDiscoverPeopleSection={true}
+                  key={userPreview.id}
+                  avatar={userPreview.avatar}
+                  bio={userPreview.bio}
+                  handle={userPreview.handle}
+                  id={userPreview.id}
+                  isFollowedByCurrentUser={userPreview.isFollowedByCurrentUser}
+                  username={userPreview.username}
+                />
               ))}
             </div>
-            <Link
-              to="/social/discover-people"
-              className="text-center w-full py-4 text-blue-500 rounded-bl-lg rounded-br-lg hover:bg-socialPrimaryHover"
-            >
-              Show More
-            </Link>
+            {discoverPeoplePreview.length > 5 && (
+              <Link
+                to="/social/discover-people"
+                className="text-center w-full py-4 text-blue-500 rounded-bl-lg rounded-br-lg hover:bg-socialPrimaryHover"
+              >
+                Show More
+              </Link>
+            )}
           </>
         )}
       </div>
