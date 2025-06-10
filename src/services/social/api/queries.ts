@@ -228,10 +228,8 @@ export function useDiscoverPeoplePreview() {
   return useQuery({
     queryKey: [`discoverPeoplePreview`, `userPreviewList`],
     queryFn: async () => {
-      const { data: discoverPeoplePreviewResponse } = await api.get(
-        `/discover-people`,
-        { params: { perPage: 5 } }
-      );
+      const { data: discoverPeoplePreviewResponse } =
+        await api.get(`/discover-people`);
       return discoverPeoplePreviewResponse.data as UserPreview[];
     },
     gcTime: rarelyChanging.gcTime,

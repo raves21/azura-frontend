@@ -60,7 +60,7 @@ export default function DiscoverPeoplePreview() {
         ) : (
           <>
             <div className="space-y-2">
-              {discoverPeoplePreview.map((userPreview) => (
+              {discoverPeoplePreview.slice(0, 5).map((userPreview) => (
                 <UserListItem
                   isDiscoverPeopleSection={true}
                   key={userPreview.id}
