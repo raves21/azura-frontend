@@ -13,7 +13,6 @@ import {
   PaginatedNotificationsResponse,
   PaginatedFollowerFollowingResponse,
   PaginatedPostLikesResponse,
-  UserPreview,
 } from "@/utils/types/social/social";
 import { deletePost_PostsCacheMutation } from "../functions/cacheMutations";
 import { MediaType } from "@/utils/types/shared";
@@ -225,13 +224,18 @@ export function useDiscoverPeople() {
 }
 
 export function useDiscoverPeoplePreview() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [`discoverPeoplePreview`, `userPreviewList`],
-    queryFn: async () => {
-      const { data: discoverPeoplePreviewResponse } =
-        await api.get(`/discover-people`);
-      return discoverPeoplePreviewResponse.data as UserPreview[];
+    queryFn: async ({ pageParam }) => {
+      const { data: discoverPeoplePreviewResponse } = await api.get(
+        `/discover-people`,
+        { params: { page: pageParam } }
+      );
+      return discoverPeoplePreviewResponse as PaginatedUserPreviewsResponse;
     },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: rarelyChanging.gcTime,
     staleTime: rarelyChanging.staleTime,
   });

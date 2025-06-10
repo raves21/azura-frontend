@@ -6,11 +6,11 @@ import { Link } from "@tanstack/react-router";
 export default function DiscoverPeoplePreview() {
   const {
     data: discoverPeoplePreview,
-    isLoading: isDiscoverPeopleLoading,
-    error: discoverPeopleError,
+    isLoading: isDiscoverPeoplePreviewLoading,
+    error: discoverPeoplePreviewError,
   } = useDiscoverPeoplePreview();
 
-  if (isDiscoverPeopleLoading) {
+  if (isDiscoverPeoplePreviewLoading) {
     return (
       <div className="flex flex-col w-full gap-3 overflow-hidden rounded-lg bg-socialPrimary">
         <div className="px-5 pt-5 pb-3 text-lg font-semibold text-transparent">
@@ -41,7 +41,7 @@ export default function DiscoverPeoplePreview() {
     );
   }
 
-  if (discoverPeopleError) {
+  if (discoverPeoplePreviewError) {
     return (
       <div className="w-full gap-3 rounded-lg bg-socialPrimary font-medium text-md h-[300px] grid place-items-center">
         Error!
@@ -53,27 +53,31 @@ export default function DiscoverPeoplePreview() {
     return (
       <div className="flex flex-col w-full gap-3 rounded-lg justfiy-center bg-socialPrimary">
         <p className="px-5 pt-5 pb-3 text-lg font-semibold">Discover People</p>
-        {discoverPeoplePreview.length === 0 ? (
+        {discoverPeoplePreview.pages[0].data.length === 0 ? (
           <p className="self-center my-6 text-base font-md text-socialTextSecondary">
             No users yet.
           </p>
         ) : (
           <>
-            <div className="space-y-2">
-              {discoverPeoplePreview.slice(0, 5).map((userPreview) => (
-                <UserListItem
-                  isDiscoverPeopleSection={true}
-                  key={userPreview.id}
-                  avatar={userPreview.avatar}
-                  bio={userPreview.bio}
-                  handle={userPreview.handle}
-                  id={userPreview.id}
-                  isFollowedByCurrentUser={userPreview.isFollowedByCurrentUser}
-                  username={userPreview.username}
-                />
-              ))}
+            <div className="space-y-2 pb-4">
+              {discoverPeoplePreview.pages[0].data
+                .slice(0, 5)
+                .map((userPreview) => (
+                  <UserListItem
+                    isDiscoverPeopleSection={true}
+                    key={userPreview.id}
+                    avatar={userPreview.avatar}
+                    bio={userPreview.bio}
+                    handle={userPreview.handle}
+                    id={userPreview.id}
+                    isFollowedByCurrentUser={
+                      userPreview.isFollowedByCurrentUser
+                    }
+                    username={userPreview.username}
+                  />
+                ))}
             </div>
-            {discoverPeoplePreview.length > 5 && (
+            {discoverPeoplePreview.pages[0].data.length > 5 && (
               <Link
                 to="/social/discover-people"
                 className="text-center w-full py-4 text-blue-500 rounded-bl-lg rounded-br-lg hover:bg-socialPrimaryHover"
