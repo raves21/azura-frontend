@@ -1,15 +1,15 @@
-import { useDiscoverPeople } from "@/services/social/api/queries";
+import { useDiscoverPeoplePreview } from "@/services/social/api/queries";
 import UserListItem from "../../shared/UserListItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Fragment } from "react/jsx-runtime";
 import { Link } from "@tanstack/react-router";
 
-export default function DiscoverPeople() {
+export default function DiscoverPeoplePreview() {
   const {
-    data: discoverPeople,
+    data: discoverPeoplePreview,
     isLoading: isDiscoverPeopleLoading,
     error: discoverPeopleError,
-  } = useDiscoverPeople();
+  } = useDiscoverPeoplePreview();
 
   if (isDiscoverPeopleLoading) {
     return (
@@ -50,20 +50,20 @@ export default function DiscoverPeople() {
     );
   }
 
-  if (discoverPeople) {
+  if (discoverPeoplePreview) {
     return (
       <div className="flex flex-col w-full gap-3 rounded-lg justfiy-center bg-socialPrimary">
         <p className="px-5 pt-5 pb-3 text-lg font-semibold">Discover People</p>
-        {discoverPeople.pages[0].data.length === 0 ? (
+        {discoverPeoplePreview.pages[0].data.length === 0 ? (
           <p className="self-center my-6 text-base font-md text-socialTextSecondary">
             No users yet.
           </p>
         ) : (
           <>
             <div className="space-y-2">
-              {discoverPeople.pages.map((page) => (
+              {discoverPeoplePreview.pages.map((page) => (
                 <Fragment key={page.page}>
-                  {page.data.slice(0, 5).map((userPreview) => (
+                  {page.data.map((userPreview) => (
                     <UserListItem
                       isDiscoverPeopleSection={true}
                       key={userPreview.id}

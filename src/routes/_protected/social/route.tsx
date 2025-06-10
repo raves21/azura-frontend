@@ -1,6 +1,6 @@
 import FloatingPagesBar from "@/components/core/social/floatingPagesBar/FloatingPagesBar";
 import FloatingCreateCommentBar from "@/components/core/social/mainContent/post/postInfo/postComments/FloatingCreateCommentBar";
-import FollowSuggestions from "@/components/core/social/profilePreviewAndDiscoverPeople/discoverPeople/DiscoverPeople";
+import DiscoverPeoplePreview from "@/components/core/social/profilePreviewAndDiscoverPeople/discoverPeople/DiscoverPeoplePreview";
 import ProfilePreview from "@/components/core/social/profilePreviewAndDiscoverPeople/profilePreview/ProfilePreview";
 import Trending from "@/components/core/social/trending/Trending";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ function SocialPageLayout() {
       <FloatingPagesBar />
       <div className="flex-1 hidden space-y-4 rounded-xl xl:block">
         {matchRoute({ to: "/social" }) && <ProfilePreview />}
-        <FollowSuggestions />
+        <DiscoverPeoplePreview />
       </div>
       <div className="w-full md:w-[68%] xl:w-[50%]">
         <Outlet />

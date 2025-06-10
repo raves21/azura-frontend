@@ -14,12 +14,13 @@ import {
   PaginatedFollowerFollowingResponse,
   PaginatedPostLikesResponse,
 } from "@/utils/types/social/social";
-import {
-  deletePost_PostsCacheMutation,
-} from "../functions/cacheMutations";
+import { deletePost_PostsCacheMutation } from "../functions/cacheMutations";
 import { MediaType } from "@/utils/types/shared";
 import { PaginatedMediaExistenceInCollectionsResponse } from "@/utils/types/media/shared";
-import { frequentlyChanging, rarelyChanging } from "@/utils/variables/queryClient";
+import {
+  frequentlyChanging,
+  rarelyChanging,
+} from "@/utils/variables/queryClient";
 
 export function useForYouFeed() {
   return useInfiniteQuery({
@@ -34,7 +35,7 @@ export function useForYouFeed() {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -57,7 +58,6 @@ export function useUserProfile(
     enabled: !!userHandle || !!currentUserHandle,
   });
 }
-
 
 export function usePostInfo(postId: string) {
   return useQuery({
@@ -82,7 +82,7 @@ export function usePostComments(postId: string) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -119,7 +119,7 @@ export function useUserProfilePosts(
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!currentUserHandle,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -150,7 +150,7 @@ export function useUserCollections({
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!currentUserHandle,
     gcTime: rarelyChanging.gcTime,
-    staleTime: rarelyChanging.staleTime
+    staleTime: rarelyChanging.staleTime,
   });
 }
 
@@ -167,11 +167,9 @@ export function useCurrentUserCollections() {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: rarelyChanging.gcTime,
-    staleTime: rarelyChanging.staleTime
+    staleTime: rarelyChanging.staleTime,
   });
 }
-
-
 
 type UseFollowingFeedArgs = {
   enabled: boolean;
@@ -191,7 +189,7 @@ export function useFollowingFeed({ enabled }: UseFollowingFeedArgs) {
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!enabled,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -221,7 +219,25 @@ export function useDiscoverPeople() {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: rarelyChanging.gcTime,
-    staleTime: rarelyChanging.staleTime
+    staleTime: rarelyChanging.staleTime,
+  });
+}
+
+export function useDiscoverPeoplePreview() {
+  return useInfiniteQuery({
+    queryKey: [`discoverPeoplePreview`, `userPreviewList`],
+    queryFn: async ({ pageParam }) => {
+      const { data: discoverPeopleResponse } = await api.get(
+        `/discover-people`,
+        { params: { page: pageParam } }
+      );
+      return discoverPeopleResponse as PaginatedUserPreviewsResponse;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (result) =>
+      result.page === result.totalPages ? undefined : result.page + 1,
+    gcTime: rarelyChanging.gcTime,
+    staleTime: rarelyChanging.staleTime,
   });
 }
 
@@ -244,7 +260,7 @@ export function useUserFollowingList(userId: string, currentUserId: string) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -267,7 +283,7 @@ export function useUserFollowerList(userId: string, currentUserId: string) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -288,7 +304,7 @@ export function useSearchPeople(query: string, enabled: boolean) {
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!enabled,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -309,7 +325,7 @@ export function useSearchPosts(query: string, enabled: boolean) {
       result.page === result.totalPages ? undefined : result.page + 1,
     enabled: !!enabled,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -372,7 +388,7 @@ export function useCollectionInfo(collectionId: string) {
       return collectionInfo.data as TCollection;
     },
     gcTime: rarelyChanging.gcTime,
-    staleTime: rarelyChanging.staleTime
+    staleTime: rarelyChanging.staleTime,
   });
 }
 
@@ -399,7 +415,7 @@ export function useCollectionItems({
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -418,10 +434,9 @@ export function useNotifications() {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
-
 
 type FollowingFollowerList = {
   userHandle: string;
@@ -457,7 +472,7 @@ export function useFollowingList({
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
 
@@ -490,10 +505,9 @@ export function useFollowerList({
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
-
 
 export function usePostLikes(postId: string) {
   return useInfiniteQuery({
@@ -506,6 +520,6 @@ export function usePostLikes(postId: string) {
     getNextPageParam: (result) =>
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
-    staleTime: frequentlyChanging.staleTime
+    staleTime: frequentlyChanging.staleTime,
   });
 }
