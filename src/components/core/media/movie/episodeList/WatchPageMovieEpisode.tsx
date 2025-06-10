@@ -1,5 +1,5 @@
 import CustomDropdown from "@/components/core/shared/CustomDropdown";
-import { serverNames } from "@/utils/variables/media/shared";
+import { tvMovieserverNames } from "@/utils/variables/media/shared";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";
@@ -10,7 +10,7 @@ type Props = {
   moviePoster: string | null;
 };
 
-export default function MovieEpisodeWatchPage({ moviePoster }: Props) {
+export default function WatchPageMovieEpisode({ moviePoster }: Props) {
   const { movieId } = useParams({
     from: "/_protected/movie/$movieId/watch/",
   });
@@ -23,7 +23,7 @@ export default function MovieEpisodeWatchPage({ moviePoster }: Props) {
       <EpisodesHeader showEpisodesLabel={false} className="justify-end">
         <CustomDropdown
           currentlySelected={server}
-          menuItems={serverNames}
+          menuItems={tvMovieserverNames}
           menuContentMaxHeight={350}
           onSelectItem={(serverName) =>
             navigate({

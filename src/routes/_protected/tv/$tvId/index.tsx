@@ -7,15 +7,18 @@ import TVInfoPageHero from "@/components/core/media/tv/infoSection/TVInfoPageHer
 import {
   useTVInfo,
   useTVRecommendations,
-  useTVSeasonEpisodes
+  useTVSeasonEpisodes,
 } from "@/services/media/tv/queries";
-import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
+import {
+  getTMDBImageURL,
+  getTMDBReleaseYear,
+} from "@/utils/functions/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
 const tvInfoPageSchema = z.object({
-  s: z.number().optional()
+  s: z.number().optional(),
 });
 
 export const Route = createFileRoute("/_protected/tv/$tvId/")({
@@ -26,7 +29,7 @@ export const Route = createFileRoute("/_protected/tv/$tvId/")({
       return validated.data;
     }
     return { s: 1 };
-  }
+  },
 });
 
 function TVInfoPage() {
@@ -39,13 +42,13 @@ function TVInfoPage() {
   const {
     data: tvRecommendations,
     isLoading: isTVRecommendationsLoading,
-    error: tvRecommendationsError
+    error: tvRecommendationsError,
   } = useTVRecommendations(tvId);
 
   const {
     data: tvInfo,
     isLoading: isTvInfoLoading,
-    error: tvInfoError
+    error: tvInfoError,
   } = useTVInfo(tvId);
 
   useEffect(() => {
@@ -66,7 +69,7 @@ function TVInfoPage() {
   const tvSeasonEpisodesQuery = useTVSeasonEpisodes({
     tvId,
     seasonNum: s || 1,
-    enabled: !!tvInfo && hasMainSeasons
+    enabled: !!tvInfo && hasMainSeasons,
   });
 
   useEffect(() => {
@@ -127,11 +130,11 @@ function TVInfoPage() {
                     linkProps={{
                       to: "/tv/$tvId",
                       params: {
-                        tvId: recommendation.id.toString()
-                      }
+                        tvId: recommendation.id.toString(),
+                      },
                     }}
                     subLabels={[
-                      getTMDBReleaseYear(recommendation.first_air_date)
+                      getTMDBReleaseYear(recommendation.first_air_date),
                     ]}
                     title={recommendation.name}
                   />

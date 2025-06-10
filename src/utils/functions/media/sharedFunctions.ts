@@ -1,5 +1,10 @@
 import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
-import { EpisodeToBeRendered, EpisodeChunk } from "@/utils/types/media/shared";
+import {
+  EpisodeToBeRendered,
+  EpisodeChunk,
+  TVMovieServerName,
+  AnimeServerName,
+} from "@/utils/types/media/shared";
 
 export function getTMDBImageURL(imagePath: string) {
   return `https://image.tmdb.org/t/p/original${imagePath}`;
@@ -70,4 +75,18 @@ export function chunkEpisodes(
     }
   );
   return chunkedEpisodes;
+}
+
+export function getDefaultTVMovieServer() {
+  const server = localStorage.getItem(
+    "defaultTVMovieServer"
+  ) as TVMovieServerName | null;
+  return server || TVMovieServerName.embed1;
+}
+
+export function getDefaultAnimeServer() {
+  const server = localStorage.getItem(
+    "defaultAnimeServer"
+  ) as AnimeServerName | null;
+  return server || AnimeServerName.server1;
 }

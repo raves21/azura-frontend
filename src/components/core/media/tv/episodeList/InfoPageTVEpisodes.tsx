@@ -9,8 +9,10 @@ import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import CustomDropdown from "../../../shared/CustomDropdown";
-import { getTMDBImageURL } from "@/utils/functions/media/sharedFunctions";
-import { ServerName } from "@/utils/types/media/shared";
+import {
+  getDefaultTVMovieServer,
+  getTMDBImageURL,
+} from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   totalSeasons: number | null;
@@ -34,10 +36,6 @@ export default function InfoPageTVEpisodes({
     isLoading: isTvSeasonEpisodesLoading,
     error: tvSeasonEpisodesError,
   } = tvSeasonEpisodesQuery;
-
-  const defaultTVMovieServer = localStorage.getItem(
-    "defaultTVMovieServer"
-  ) as ServerName | null;
 
   if (isTvSeasonEpisodesLoading || !totalSeasons) {
     return <AllEpisodesLoading variant="infoPage" />;
@@ -79,6 +77,7 @@ export default function InfoPageTVEpisodes({
               <EpisodeCard
                 key={episode.episode_number}
                 linkProps={{
+                  replace: true,
                   to: "/tv/$tvId/watch",
                   params: {
                     tvId,
@@ -86,7 +85,7 @@ export default function InfoPageTVEpisodes({
                   search: {
                     tvSeason: episode.season_number,
                     tvEp: episode.episode_number,
-                    server: defaultTVMovieServer || ServerName.embed1,
+                    server: getDefaultTVMovieServer(),
                   },
                 }}
                 episodeNumber={`Episode ${episode.episode_number}`}

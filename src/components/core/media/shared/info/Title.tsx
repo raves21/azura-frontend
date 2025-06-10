@@ -12,7 +12,7 @@ export default function Title({ title, variant, linkProps }: Props) {
     <Link
       {...linkProps}
       className={cn(
-        "font-semibold line-clamp-2",
+        "font-semibold line-clamp-2 w-fit hover:text-mainAccent transition-colors",
         { "text-lg sm:text-xl md:text-2xl": variant === "watchPage" },
         {
           "px-8 text-2xl lg:text-3xl lg:px-0 lg:text-start text-center":

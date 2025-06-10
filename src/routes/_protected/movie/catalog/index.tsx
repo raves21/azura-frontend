@@ -49,7 +49,7 @@ function MovieCatalogPage() {
 
   useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/movie" }),
+    onValidationFail: () => navigate({ to: "/movie" }),
   });
 
   const {

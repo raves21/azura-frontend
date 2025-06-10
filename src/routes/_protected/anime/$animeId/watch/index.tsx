@@ -8,10 +8,11 @@ import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
 import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
-  useAnimeEpisodeStreamLinks,
+  useAnimeEpisodeStreamLinkAniwatch,
   useAnimeEpisodes,
   useAnimeInfo,
   useChunkAnimeEpisodes,
+  useEmbedStreamZencloud,
   useEpisodeInfo,
 } from "@/services/media/anime/queries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
@@ -25,17 +26,24 @@ import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
 import {
+  AnimeServerName,
   SearchSchemaValidationStatus,
   Subtitle,
 } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { Kind } from "@/utils/types/media/anime/animeAnilist";
-import { getAnimeRatingInfoPage } from "@/utils/functions/media/sharedFunctions";
+import {
+  getAnimeRatingInfoPage,
+  getDefaultAnimeServer,
+} from "@/utils/functions/media/sharedFunctions";
+import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/AnimeEmbedVideoPlayer";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
   title: z.string(),
   lang: z.enum(["eng", "jap"]),
+  epNum: z.coerce.number(),
+  animeServer: z.nativeEnum(AnimeServerName).catch(getDefaultAnimeServer()),
 });
 
 type EpisodePageSearchSchema = z.infer<typeof episodePageSearchSchema> &
@@ -55,6 +63,8 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
         title: "",
         lang: "eng",
         id: "",
+        epNum: 1,
+        animeServer: AnimeServerName.server1,
         success: false,
       };
     }
@@ -63,12 +73,23 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
 
 function WatchEpisodePage() {
   const navigate = useNavigate();
-  const { id, lang, title, success } = Route.useSearch();
+  const {
+    id,
+    lang,
+    title,
+    success,
+    epNum,
+    animeServer: server,
+  } = Route.useSearch();
   const { animeId } = Route.useParams();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/anime" }),
+    onValidationFail: () => navigate({ to: "/anime" }),
   });
 
   const videoAndEpisodeInfoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -79,8 +100,11 @@ function WatchEpisodePage() {
 
   const windowWidth = useWindowWidth();
 
-  const { data: episodeStreamLinks, isLoading: isEpisodeStreamLinksLoading } =
-    useAnimeEpisodeStreamLinks(id);
+  const { data: aniwatchStreamLink, isLoading: isAniwatchStreamLinkLoading } =
+    useAnimeEpisodeStreamLinkAniwatch(id);
+
+  const { data: zencloudStream, isLoading: isZencloudStreamLoading } =
+    useEmbedStreamZencloud({ animeId: animeId, episodeNum: epNum });
 
   const episodesQuery = useAnimeEpisodes({
     animeId,
@@ -105,12 +129,9 @@ function WatchEpisodePage() {
         videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height
       );
     }
-  }, [episodeStreamLinks, episodeInfo, windowWidth]);
+  }, [aniwatchStreamLink, episodeInfo, windowWidth, zencloudStream, server]);
 
-  if (
-    isEpisodeStreamLinksLoading &&
-    (isAnimeInfoLoading || episodesQuery.isLoading)
-  ) {
+  if (isAnimeInfoLoading || episodesQuery.isLoading) {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -138,8 +159,8 @@ function WatchEpisodePage() {
     const { animeInfoAnilist, animeInfoAniwatch } = animeInfo;
 
     let subtitleTracks: Subtitle[] | undefined = undefined;
-    if (episodeStreamLinks) {
-      subtitleTracks = episodeStreamLinks.tracks
+    if (server === AnimeServerName.server1 && aniwatchStreamLink) {
+      subtitleTracks = aniwatchStreamLink.tracks
         .filter((track) => track.kind === Kind.Captions)
         .map((caption) => ({
           lang: caption.label!,
@@ -151,24 +172,35 @@ function WatchEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {episodeStreamLinks && episodeStreamLinks.sources.length !== 0 ? (
-              <VideoPlayer
-                mediaType="ANIME"
-                poster={
-                  episodeInfo.image ||
-                  animeInfoAnilist?.cover ||
-                  animeInfoAniwatch?.info.poster
-                }
-                subtitleTracks={subtitleTracks}
-                streamLink={episodeStreamLinks.sources[0].url}
-                headers={episodeStreamLinks.headers}
-                title={episodeInfo.title}
-              />
-            ) : isEpisodeStreamLinksLoading ? (
-              <VideoPlayerSkeleton />
-            ) : (
-              <VideoPlayerError />
-            )}
+            {server === AnimeServerName.server1 &&
+              (aniwatchStreamLink && aniwatchStreamLink.sources.length !== 0 ? (
+                <VideoPlayer
+                  mediaType="ANIME"
+                  poster={
+                    episodeInfo.image ||
+                    animeInfoAnilist?.cover ||
+                    animeInfoAniwatch?.info.poster
+                  }
+                  subtitleTracks={subtitleTracks}
+                  streamLink={aniwatchStreamLink.sources[0].url}
+                  headers={aniwatchStreamLink.headers}
+                  title={episodeInfo.title}
+                />
+              ) : isAniwatchStreamLinkLoading ? (
+                <VideoPlayerSkeleton />
+              ) : (
+                <VideoPlayerError serverName={server} />
+              ))}
+
+            {server === AnimeServerName.server2 &&
+              (zencloudStream && zencloudStream.player_url ? (
+                <AnimeEmbedVideoPlayer embedLink={zencloudStream.player_url} />
+              ) : isZencloudStreamLoading ? (
+                <VideoPlayerSkeleton />
+              ) : (
+                <VideoPlayerError serverName={server} />
+              ))}
+
             <EpisodeTitleAndNumber
               episodeNumber={`Episode ${episodeInfo.number}`}
               episodeTitle={episodeInfo.title}

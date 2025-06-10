@@ -15,20 +15,18 @@ import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/me
 import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
-import EmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/EmbedVideoPlayer";
-import { ServerName } from "@/utils/types/media/shared";
+import TVMovieEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/TVMovieEmbedVideoPlayer";
+import { TVMovieServerName } from "@/utils/types/media/shared";
 import { z } from "zod";
-import MovieEpisodeWatchPage from "@/components/core/media/movie/episodeList/MovieEpisodeWatchPage";
-import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
-
-const defaultTVMovieServer = localStorage.getItem(
-  "defaultTVMovieServer"
-) as ServerName | null;
+import WatchPageMovieEpisode from "@/components/core/media/movie/episodeList/WatchPageMovieEpisode";
+import {
+  getDefaultTVMovieServer,
+  getTMDBImageURL,
+  getTMDBReleaseYear,
+} from "@/utils/functions/media/sharedFunctions";
 
 const watchMoviePageSchema = z.object({
-  server: z
-    .nativeEnum(ServerName)
-    .catch(defaultTVMovieServer || ServerName.embed1),
+  server: z.nativeEnum(TVMovieServerName).catch(getDefaultTVMovieServer()),
 });
 
 type WatchMoviePageSchema = z.infer<typeof watchMoviePageSchema>;
@@ -40,10 +38,7 @@ export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
     if (validated.success) {
       return validated.data;
     }
-    const defaultTVMovieServer = localStorage.getItem(
-      "defaultTVMovieServer"
-    ) as ServerName;
-    return { server: defaultTVMovieServer || ServerName.embed1 };
+    return { server: getDefaultTVMovieServer() };
   },
 });
 
@@ -106,9 +101,14 @@ function WatchMoviePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div className="w-full h-fit">
-            {server === ServerName.embed1 || server === ServerName.embed2 ? (
-              <EmbedVideoPlayer server={server} tmdbId={movieId} type="movie" />
-            ) : mediaScraperData && server === ServerName.azuraMain ? (
+            {server === TVMovieServerName.embed1 ||
+            server === TVMovieServerName.embed2 ? (
+              <TVMovieEmbedVideoPlayer
+                server={server}
+                tmdbId={movieId}
+                type="movie"
+              />
+            ) : mediaScraperData && server === TVMovieServerName.azuraMain ? (
               <VideoPlayer
                 mediaType="MOVIE"
                 poster={getTMDBImageURL(movieInfo.backdrop_path)}
@@ -122,14 +122,14 @@ function WatchMoviePage() {
             ) : isMediaScraperLoading ? (
               <VideoPlayerSkeleton />
             ) : (
-              <VideoPlayerError />
+              <VideoPlayerError serverName={server} />
             )}
             <EpisodeTitleAndNumber
               episodeNumber={movieInfo.title}
               episodeTitle={getTMDBReleaseYear(movieInfo.release_date)}
             />
           </div>
-          <MovieEpisodeWatchPage
+          <WatchPageMovieEpisode
             moviePoster={getTMDBImageURL(movieInfo.poster_path)}
           />
         </section>

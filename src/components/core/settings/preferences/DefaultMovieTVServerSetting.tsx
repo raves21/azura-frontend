@@ -1,17 +1,17 @@
 import { cn } from "@/lib/utils";
-import { ServerName } from "@/utils/types/media/shared";
+import { TVMovieServerName } from "@/utils/types/media/shared";
 import { Circle } from "lucide-react";
 import { useState } from "react";
 
 export default function DefaultMovieTVServerSetting() {
   const defaultTVMovieServer =
-    (localStorage.getItem("defaultTVMovieServer") as ServerName) || null;
+    (localStorage.getItem("defaultTVMovieServer") as TVMovieServerName) || null;
 
-  const [selectedServer, setSelectedServer] = useState<ServerName>(
-    defaultTVMovieServer || ServerName.embed1
+  const [selectedServer, setSelectedServer] = useState<TVMovieServerName>(
+    defaultTVMovieServer || TVMovieServerName.embed1
   );
 
-  function handleSelect(serverName: ServerName) {
+  function handleSelect(serverName: TVMovieServerName) {
     localStorage.setItem("defaultTVMovieServer", serverName);
     setSelectedServer(serverName);
   }
@@ -19,7 +19,7 @@ export default function DefaultMovieTVServerSetting() {
   return (
     <div className="w-full flex items-center flex-wrap gap-10 sm:gap-24 lg:gap-16 xl:gap-24 mt-6">
       <button
-        onClick={() => handleSelect(ServerName.azuraMain)}
+        onClick={() => handleSelect(TVMovieServerName.azuraMain)}
         className="flex items-center gap-4 group"
       >
         <Circle
@@ -27,7 +27,7 @@ export default function DefaultMovieTVServerSetting() {
             "rounded-full size-6 stroke-1 stroke-socialTextSecondary",
             {
               "bg-mainAccent stroke-2 stroke-socialPrimary":
-                selectedServer === ServerName.azuraMain,
+                selectedServer === TVMovieServerName.azuraMain,
             }
           )}
         />
@@ -36,7 +36,7 @@ export default function DefaultMovieTVServerSetting() {
         </p>
       </button>
       <button
-        onClick={() => handleSelect(ServerName.embed1)}
+        onClick={() => handleSelect(TVMovieServerName.embed1)}
         className="flex items-center gap-4 group"
       >
         <Circle
@@ -44,7 +44,7 @@ export default function DefaultMovieTVServerSetting() {
             "rounded-full size-6 stroke-1 stroke-socialTextSecondary",
             {
               "bg-mainAccent stroke-2 stroke-socialPrimary":
-                selectedServer === ServerName.embed1,
+                selectedServer === TVMovieServerName.embed1,
             }
           )}
         />
@@ -53,7 +53,7 @@ export default function DefaultMovieTVServerSetting() {
         </p>
       </button>
       <button
-        onClick={() => handleSelect(ServerName.embed2)}
+        onClick={() => handleSelect(TVMovieServerName.embed2)}
         className="flex items-center gap-4 group"
       >
         <Circle
@@ -61,7 +61,7 @@ export default function DefaultMovieTVServerSetting() {
             "rounded-full size-6 stroke-1 stroke-socialTextSecondary",
             {
               "bg-mainAccent stroke-2 stroke-socialPrimary":
-                selectedServer === ServerName.embed2,
+                selectedServer === TVMovieServerName.embed2,
             }
           )}
         />

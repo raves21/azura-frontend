@@ -1,6 +1,6 @@
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
-import MovieEpisodeInfoPage from "@/components/core/media/movie/episodeList/MovieEpisodeInfoPage";
+import InfoPageMovieEpisode from "@/components/core/media/movie/episodeList/InfoPageMovieEpisode";
 import MovieInfoPageHero from "@/components/core/media/movie/infoSection/MovieInfoPageHero";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
@@ -9,7 +9,10 @@ import {
   useMovieInfo,
   useMovieRecommendations,
 } from "@/services/media/movie/queries";
-import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
+import {
+  getTMDBImageURL,
+  getTMDBReleaseYear,
+} from "@/utils/functions/media/sharedFunctions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 
@@ -69,7 +72,7 @@ function MovieInfoPage() {
           title={movieInfo.title}
           voteAverage={movieInfo.vote_average}
         />
-        <MovieEpisodeInfoPage
+        <InfoPageMovieEpisode
           moviePoster={getTMDBImageURL(movieInfo.poster_path)}
         />
         {movieRecommendations.results.length !== 0 && (

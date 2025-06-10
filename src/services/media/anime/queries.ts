@@ -23,6 +23,7 @@ import {
 } from "@/utils/types/media/anime/animeAniwatch";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 import { drawRandomURL } from "@/utils/functions/sharedFunctions";
+import { ZencloudStreamResponse } from "@/utils/types/media/anime/animeZencloud";
 
 const ANILIST_URL = drawRandomURL({
   urlList: [
@@ -37,8 +38,8 @@ const ANIWATCH_URL = drawRandomURL({
     `${import.meta.env.VITE_ANIWATCH_API_URL_2}`,
     `${import.meta.env.VITE_ANIWATCH_API_URL_3}`,
     `${import.meta.env.VITE_ANIWATCH_API_URL}`,
-  ]
-})
+  ],
+});
 
 export function useAnimesByCategory(
   perPage: number,
@@ -203,7 +204,7 @@ export function useAnimeEpisodes({
   });
 }
 
-export function useAnimeEpisodeStreamLinks(episodeId: string) {
+export function useAnimeEpisodeStreamLinkAniwatch(episodeId: string) {
   return useQuery({
     queryKey: ["watchEpisode", episodeId],
     queryFn: async () => {
@@ -216,6 +217,31 @@ export function useAnimeEpisodeStreamLinks(episodeId: string) {
         }
       );
       return episodeStreamLinks.data as AnimeEpisodeStreamLinks;
+    },
+  });
+}
+
+type UseEmbedStreamZencloud = {
+  animeId: string;
+  episodeNum: number;
+};
+
+export function useEmbedStreamZencloud({
+  animeId,
+  episodeNum,
+}: UseEmbedStreamZencloud) {
+  return useQuery({
+    queryKey: ["zencloudStream", animeId, episodeNum],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_ZENCLOUD_URL}`, {
+        params: { anilist_id: animeId, episode: episodeNum },
+      });
+
+      if (data.data.length !== 1) {
+        throw new Error("episode unavailable");
+      }
+
+      return data.data[0] as ZencloudStreamResponse;
     },
   });
 }
@@ -246,8 +272,9 @@ export function useChunkAnimeEpisodes(
 ) {
   const aniwatchEpisodes = animeEpisodes?.aniwatchEps;
   const anizipEpisodes = animeEpisodes?.anizipEps;
+
   return useQuery({
-    queryKey: ["chunkedEpisodes", animeEpisodes],
+    queryKey: ["chunkedEpisodes", aniwatchEpisodes],
     queryFn: () => {
       return chunkEpisodes(
         getEpisodesToBeRendered(aniwatchEpisodes, anizipEpisodes),

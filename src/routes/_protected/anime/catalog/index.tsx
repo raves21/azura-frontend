@@ -55,7 +55,7 @@ function AnimeCatalogPage() {
 
   useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/anime" }),
+    onValidationFail: () => navigate({ to: "/anime" }),
   });
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const {

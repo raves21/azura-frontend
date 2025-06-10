@@ -2,7 +2,7 @@ import { AnimeFormat } from "@/utils/types/media/anime/animeAnilist";
 import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
-import { useParams } from "@tanstack/react-router";
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import CustomDropdown from "@/components/core/shared/CustomDropdown";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
@@ -12,6 +12,7 @@ import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import { animeServerNames } from "@/utils/variables/media/anime";
 
 type Props = {
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
@@ -37,6 +38,12 @@ export default function WatchPageAnimeEpisodes({
   const { animeId } = useParams({
     from: "/_protected/anime/$animeId/watch/",
   });
+
+  const { animeServer, epNum, id } = useSearch({
+    from: "/_protected/anime/$animeId/watch/",
+  });
+
+  const navigate = useNavigate();
 
   const {
     data: episodes,
@@ -71,7 +78,30 @@ export default function WatchPageAnimeEpisodes({
         variant="watchPage"
         episodeListMaxHeight={episodeListMaxHeight}
       >
-        <EpisodesHeader>
+        <EpisodesHeader className="justify-end gap-4" showEpisodesLabel={false}>
+          <CustomDropdown
+            currentlySelected={animeServer}
+            menuItems={animeServerNames}
+            menuContentMaxHeight={350}
+            onSelectItem={(serverName) =>
+              navigate({
+                to: "/anime/$animeId/watch",
+                search: {
+                  animeServer: serverName,
+                  epNum,
+                  id,
+                  lang: titleLang,
+                  title,
+                },
+                params: {
+                  animeId,
+                },
+              })
+            }
+            showMenuContentBorder
+            menuContentClassName="bg-darkBg"
+            dropdownTriggerClassName="text-gray-400"
+          />
           {selectedChunk && chunkedEpisodes.length > 1 && (
             <CustomDropdown
               menuContentClassName="bg-darkBg"
@@ -106,6 +136,8 @@ export default function WatchPageAnimeEpisodes({
                       id: episode.id.replace(/^\//, ""),
                       title,
                       lang: titleLang,
+                      epNum: episode.number,
+                      animeServer,
                     },
                   }}
                   episodeNumber={

@@ -24,6 +24,7 @@ import {
 } from "@/utils/variables/media/anime";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 import ShareMediaButton from "../../shared/info/ShareMediaButton";
+import { AnimeServerName } from "@/utils/types/media/shared";
 
 type Props = {
   image: string | undefined;
@@ -118,6 +119,8 @@ export default function AnimeInfoPageHero({
                     to: "/anime/$animeId/watch",
                     params: { animeId: animeId },
                     search: {
+                      epNum: 1,
+                      animeServer: AnimeServerName.server1,
                       id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
                       lang: titleLang,
                       title,

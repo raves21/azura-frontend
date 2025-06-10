@@ -6,7 +6,7 @@ import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import { getTMDBImageURL } from "@/utils/functions/media/sharedFunctions";
 import CustomDropdown from "../../../shared/CustomDropdown";
-import { serverNames as serverNames } from "@/utils/variables/media/shared";
+import { tvMovieserverNames as tvMovieserverNames } from "@/utils/variables/media/shared";
 
 type Props = {
   totalSeasons: number;
@@ -41,29 +41,27 @@ export default function WatchPageTVEpisodes({
       episodeListMaxHeight={episodeListMaxHeight}
     >
       <EpisodesHeader className="justify-end gap-4" showEpisodesLabel={false}>
-        <div className="flex flex-col justify-end gap-2">
-          <CustomDropdown
-            currentlySelected={server}
-            menuItems={serverNames}
-            menuContentMaxHeight={350}
-            onSelectItem={(serverName) =>
-              navigate({
-                to: "/tv/$tvId/watch",
-                search: {
-                  tvEp,
-                  tvSeason,
-                  server: serverName,
-                },
-                params: {
-                  tvId,
-                },
-              })
-            }
-            showMenuContentBorder
-            menuContentClassName="bg-darkBg"
-            dropdownTriggerClassName="text-gray-400"
-          />
-        </div>
+        <CustomDropdown
+          currentlySelected={server}
+          menuItems={tvMovieserverNames}
+          menuContentMaxHeight={350}
+          onSelectItem={(serverName) =>
+            navigate({
+              to: "/tv/$tvId/watch",
+              search: {
+                tvEp,
+                tvSeason,
+                server: serverName,
+              },
+              params: {
+                tvId,
+              },
+            })
+          }
+          showMenuContentBorder
+          menuContentClassName="bg-darkBg"
+          dropdownTriggerClassName="text-gray-400"
+        />
         <CustomDropdown
           currentlySelected={selectedSeason}
           menuItems={seasons}

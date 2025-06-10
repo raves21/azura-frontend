@@ -1,6 +1,6 @@
 import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
 import { cn } from "@/lib/utils";
-import { ServerName } from "@/utils/types/media/shared";
+import { TVMovieServerName } from "@/utils/types/media/shared";
 import { useState } from "react";
 import VideoPlayerError from "./VideoPlayerError";
 
@@ -16,24 +16,28 @@ type TVProps = {
 
 type Props = {
   tmdbId: string;
-  server: ServerName.embed1 | ServerName.embed2;
+  server: TVMovieServerName.embed1 | TVMovieServerName.embed2;
 } & (MovieProps | TVProps);
 
-export default function EmbedVideoPlayer({ tmdbId, server, ...props }: Props) {
+export default function TVMovieEmbedVideoPlayer({
+  tmdbId,
+  server,
+  ...props
+}: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   let src: string;
 
   switch (server) {
-    case ServerName.embed1:
+    case TVMovieServerName.embed1:
       if (props.type === "movie") {
         src = `${import.meta.env.VITE_EMBED1_URL}/v2/embed/movie/${tmdbId}?autoPlay=false`;
       } else {
         src = `${import.meta.env.VITE_EMBED1_URL}/v2/embed/tv/${tmdbId}/${props.tvSeason}/${props.tvEp}?autoPlay=false`;
       }
       break;
-    case ServerName.embed2:
+    case TVMovieServerName.embed2:
       if (props.type === "movie") {
         src = `${import.meta.env.VITE_EMBED2_URL}/embed/movie?tmdb=${tmdbId}`;
       } else {
@@ -44,7 +48,7 @@ export default function EmbedVideoPlayer({ tmdbId, server, ...props }: Props) {
   return (
     <>
       {isLoading && <VideoPlayerSkeleton />}
-      {isError && <VideoPlayerError />}
+      {isError && <VideoPlayerError serverName={server} />}
       <div
         className={cn(
           "w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none",

@@ -1,7 +1,7 @@
-import { ServerName } from "@/utils/types/media/shared";
+import { TVMovieServerName } from "@/utils/types/media/shared";
 
-export const serverNames: ServerName[] = [
-  ServerName.azuraMain,
-  ServerName.embed1,
-  ServerName.embed2,
+export const tvMovieserverNames: TVMovieServerName[] = [
+  TVMovieServerName.azuraMain,
+  TVMovieServerName.embed1,
+  TVMovieServerName.embed2,
 ];

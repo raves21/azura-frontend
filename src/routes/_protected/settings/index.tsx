@@ -11,7 +11,8 @@ import AccountSettingSessions from "@/components/core/shared/sessions/accountSet
 import { createFileRoute } from "@tanstack/react-router";
 import { User2, Rows3, Trash, Settings2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import DefaultMovieTVServerSetting from "@/components/core/settings/preferences/defaultMovieTVServer/DefaultMovieTVServerSetting";
+import DefaultMovieTVServerSetting from "@/components/core/settings/preferences/DefaultMovieTVServerSetting";
+import DefaultAnimeServerSetting from "@/components/core/settings/preferences/DefaultAnimeServerSetting";
 
 export const Route = createFileRoute("/_protected/settings/")({
   component: () => <SettingsPage />,
@@ -89,6 +90,12 @@ function SettingsPage() {
             description="Select your preferred default video server for watching Movies/TV Shows"
           >
             <DefaultMovieTVServerSetting />
+          </SettingContentItem>
+          <SettingContentItem
+            title="Default Anime Server"
+            description="Select your preferred default video server for watching Anime"
+          >
+            <DefaultAnimeServerSetting />
           </SettingContentItem>
         </SettingContent>
         <SettingContent

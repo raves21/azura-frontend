@@ -12,6 +12,7 @@ import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import { getDefaultAnimeServer } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
@@ -90,6 +91,8 @@ export default function InfoPageAnimeEpisodes({
                   id: episode.id.replace(/^\//, ""),
                   title,
                   lang: titleLang,
+                  epNum: episode.number,
+                  animeServer: getDefaultAnimeServer(),
                 },
               }}
               episodeNumber={

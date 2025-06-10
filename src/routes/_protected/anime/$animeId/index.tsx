@@ -1,7 +1,4 @@
-import {
-  useAnimeEpisodes,
-  useAnimeInfo,
-} from "@/services/media/anime/queries";
+import { useAnimeEpisodes, useAnimeInfo } from "@/services/media/anime/queries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
 import { useEffect } from "react";
@@ -48,7 +45,7 @@ function AnimeInfoPage() {
 
   useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/anime" }),
+    onValidationFail: () => navigate({ to: "/anime" }),
   });
 
   const episodesQuery = useAnimeEpisodes({
@@ -65,7 +62,7 @@ function AnimeInfoPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [animeId]);
+  }, []);
 
   if (isAnimeInfoLoading) {
     return (
@@ -122,7 +119,7 @@ function AnimeInfoPage() {
           title={title}
           titleLang={lang}
           episodesQuery={episodesQuery}
-          replace={false}
+          replace={true}
           type={animeInfoAnilist?.type}
           episodeImageFallback={
             animeInfoAnilist?.image ||

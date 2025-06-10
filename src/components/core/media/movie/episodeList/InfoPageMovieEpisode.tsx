@@ -1,22 +1,18 @@
-import { ServerName } from "@/utils/types/media/shared";
 import EpisodeCard from "../../shared/episode/EpisodeCard";
 import EpisodeListContainer from "../../shared/episode/EpisodeListContainer";
 import EpisodesContainer from "../../shared/episode/EpisodesContainer";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import { useParams } from "@tanstack/react-router";
+import { getDefaultTVMovieServer } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   moviePoster: string | null;
 };
 
-export default function MovieEpisodeInfoPage({ moviePoster }: Props) {
+export default function InfoPageMovieEpisode({ moviePoster }: Props) {
   const { movieId } = useParams({
     from: "/_protected/movie/$movieId/",
   });
-
-  const defaultTVMovieServer = localStorage.getItem(
-    "defaultTVMovieServer"
-  ) as ServerName | null;
 
   return (
     <EpisodesContainer variant="infoPage">
@@ -29,7 +25,7 @@ export default function MovieEpisodeInfoPage({ moviePoster }: Props) {
               movieId,
             },
             search: {
-              server: defaultTVMovieServer || ServerName.embed1,
+              server: getDefaultTVMovieServer(),
             },
           }}
           episodeNumber={`MOVIE`}

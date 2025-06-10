@@ -4,9 +4,7 @@ import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/Episod
 import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPageTVEpisodes";
-import {
-  useMediaScraper,
-} from "@/services/media/sharedQueries";
+import { useMediaScraper } from "@/services/media/sharedQueries";
 import {
   useTVInfo,
   useTVRecommendations,
@@ -22,23 +20,21 @@ import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/me
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
 import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
-import { ServerName } from "@/utils/types/media/shared";
-import EmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/EmbedVideoPlayer";
+import { TVMovieServerName } from "@/utils/types/media/shared";
+import TVMovieEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/TVMovieEmbedVideoPlayer";
 import { queryClient } from "@/utils/variables/queryClient";
 import { tmdbApi } from "@/utils/variables/axiosInstances/tmdbAxiosInstance";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
-import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
-
-const defaultTVMovieServer = localStorage.getItem(
-  "defaultTVMovieServer"
-) as ServerName | null;
+import {
+  getDefaultTVMovieServer,
+  getTMDBImageURL,
+  getTMDBReleaseYear,
+} from "@/utils/functions/media/sharedFunctions";
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
   tvSeason: z.number(),
-  server: z
-    .nativeEnum(ServerName)
-    .catch(defaultTVMovieServer || ServerName.embed1),
+  server: z.nativeEnum(TVMovieServerName).catch(getDefaultTVMovieServer()),
 });
 
 type WatchTVEpisodePageSchema = z.infer<typeof watchTVEpisodePageSchema>;
@@ -50,14 +46,11 @@ export const Route = createFileRoute("/_protected/tv/$tvId/watch/")({
     if (v.success) {
       return v.data;
     } else {
-      const defaultTVMovieServer = localStorage.getItem(
-        "defaultTVMovieServer"
-      ) as ServerName;
       //if search params validation fails, provide defaults (season 1, episode 1).
       return {
         tvEp: 1,
         tvSeason: 1,
-        server: defaultTVMovieServer || ServerName.embed1,
+        server: getDefaultTVMovieServer(),
       };
     }
   },
@@ -197,15 +190,16 @@ function WatchTVEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {server === ServerName.embed1 || server === ServerName.embed2 ? (
-              <EmbedVideoPlayer
+            {server === TVMovieServerName.embed1 ||
+            server === TVMovieServerName.embed2 ? (
+              <TVMovieEmbedVideoPlayer
                 server={server}
                 tmdbId={tvId}
                 tvEp={tvEp}
                 tvSeason={tvSeason}
                 type="tv"
               />
-            ) : mediaScraperData && server === ServerName.azuraMain ? (
+            ) : mediaScraperData && server === TVMovieServerName.azuraMain ? (
               <VideoPlayer
                 mediaType="TV"
                 poster={getTMDBImageURL(currentEpisode.still_path)}
@@ -219,7 +213,7 @@ function WatchTVEpisodePage() {
             ) : isMediaScraperLoading ? (
               <VideoPlayerSkeleton />
             ) : (
-              <VideoPlayerError />
+              <VideoPlayerError serverName={server} />
             )}
 
             <EpisodeTitleAndNumber

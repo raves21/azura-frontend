@@ -8,7 +8,7 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { ServerName, TMDBGenre } from "@/utils/types/media/shared";
+import { TVMovieServerName, TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
@@ -54,7 +54,7 @@ export default function TVInfoPageHero({
 
   const defaultTVMovieServer = localStorage.getItem(
     "defaultTVMovieServer"
-  ) as ServerName;
+  ) as TVMovieServerName;
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -98,7 +98,7 @@ export default function TVInfoPageHero({
                   search: {
                     tvEp: 1,
                     tvSeason: 1,
-                    server: defaultTVMovieServer || ServerName.embed1,
+                    server: defaultTVMovieServer || TVMovieServerName.embed1,
                   },
                 });
               }}

@@ -1,9 +1,10 @@
+import { AnimeServerName } from "@/utils/types/media/shared";
 import {
   AnimeFormat,
   AnimeSeason,
   AnimeSortBy,
   AnilistAnimeStatus,
-  AnimeStatus
+  AnimeStatus,
 } from "../../types/media/anime/animeAnilist";
 
 export const animeSortByLabels: Record<AnimeSortBy, string> = {
@@ -13,7 +14,7 @@ export const animeSortByLabels: Record<AnimeSortBy, string> = {
   [AnimeSortBy.SCORE_DESC]: "Avg Score",
   [AnimeSortBy.TITLE]: "Title (A-Z)",
   [AnimeSortBy.TITLE_DESC]: "Title (Z-A)",
-  [AnimeSortBy.START_DATE_DESC]: "Release Date"
+  [AnimeSortBy.START_DATE_DESC]: "Release Date",
 };
 
 export const animeFormatLabels: Record<AnimeFormat, string> = {
@@ -23,14 +24,14 @@ export const animeFormatLabels: Record<AnimeFormat, string> = {
   [AnimeFormat.ONA]: "ONA",
   [AnimeFormat.MOVIE]: "Movie",
   [AnimeFormat.SPECIAL]: "Special",
-  [AnimeFormat.MUSIC]: "Music"
+  [AnimeFormat.MUSIC]: "Music",
 };
 
 export const animeAnilistStatusLabels: Record<AnilistAnimeStatus, string> = {
   [AnilistAnimeStatus.RELEASING]: "Ongoing",
   [AnilistAnimeStatus.FINISHED]: "Completed",
   [AnilistAnimeStatus.NOT_YET_RELEASED]: "Upcoming",
-  [AnilistAnimeStatus.CANCELLED]: "Cancelled"
+  [AnilistAnimeStatus.CANCELLED]: "Cancelled",
 };
 
 export const animeStatusLabels: Record<string, string> = {
@@ -41,26 +42,31 @@ export const animeStatusLabels: Record<string, string> = {
   [AnimeStatus.NotYetAired]: "Upcoming",
   [AnimeStatus.NOT_YET_RELEASED]: "Upcoming",
   [AnimeStatus.CANCELLED]: "Cancelled",
-  [AnimeStatus.HIATUS]: "Hiatus"
+  [AnimeStatus.HIATUS]: "Hiatus",
 };
 
 export const animeSeasonLabels: Record<AnimeSeason, string> = {
   [AnimeSeason.WINTER]: "Winter",
   [AnimeSeason.SPRING]: "Spring",
   [AnimeSeason.SUMMER]: "Summer",
-  [AnimeSeason.FALL]: "Fall"
+  [AnimeSeason.FALL]: "Fall",
 };
 
 export const animeCancelledStatus = [
   AnimeStatus.CANCELLED,
-  AnimeStatus.Cancelled
+  AnimeStatus.Cancelled,
 ];
 export const animeOngoingStatus = [AnimeStatus.Ongoing, AnimeStatus.RELEASING];
 export const animeUpcomingStatus = [
   AnimeStatus.NOT_YET_RELEASED,
-  AnimeStatus.NotYetAired
+  AnimeStatus.NotYetAired,
 ];
 export const animeCompletedStatus = [
   AnimeStatus.FINISHED,
-  AnimeStatus.Completed
+  AnimeStatus.Completed,
+];
+
+export const animeServerNames: AnimeServerName[] = [
+  AnimeServerName.server1,
+  AnimeServerName.server2,
 ];

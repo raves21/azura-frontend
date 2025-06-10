@@ -41,7 +41,7 @@ function PostsSearchResultsPage() {
 
   useHandleSearchParamsValidationFailure({
     isValidationFail: !success,
-    onValidationError: () => navigate({ to: "/social" }),
+    onValidationFail: () => navigate({ to: "/social" }),
   });
 
   const setSocialSearchKeyword = useGlobalStore(

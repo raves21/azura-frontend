@@ -78,17 +78,16 @@ export type PaginatedMediaExistenceInCollectionsResponse = PaginatedResponse & {
   data: MediaExistenceInCollection[];
 };
 
-export enum ServerName {
+export enum TVMovieServerName {
   azuraMain = "Azura Main",
   embed1 = "Embed 1",
   embed2 = "Embed 2",
 }
 
-export type VideoProvider = {
-  name: ServerName;
-  isEmbed: boolean;
-  embedLink: string | null;
-};
+export enum AnimeServerName {
+  server1 = "Server 1",
+  server2 = "Server 2",
+}
 
 export type MovieArgs = {
   type: "movie";

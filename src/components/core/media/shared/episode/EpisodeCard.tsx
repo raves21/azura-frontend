@@ -24,7 +24,7 @@ const EpisodeCard = forwardRef<HTMLAnchorElement, EpisodeCardProps>(
       isCurrentlyWatched,
       linkProps,
       episodeNumber,
-      episodeTitle
+      episodeTitle,
     },
     ref
   ) => {
