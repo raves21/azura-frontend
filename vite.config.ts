@@ -59,6 +59,9 @@ export default defineConfig({
             },
             handler: "CacheFirst",
             options: {
+              expiration: {
+                maxAgeSeconds: 3600,
+              },
               cacheName: "tmdb-cache",
               cacheableResponse: {
                 statuses: [0, 200],
