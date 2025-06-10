@@ -119,7 +119,7 @@ function AnimeInfoPage() {
           title={title}
           titleLang={lang}
           episodesQuery={episodesQuery}
-          replace={true}
+          replace={false}
           type={animeInfoAnilist?.type}
           episodeImageFallback={
             animeInfoAnilist?.image ||

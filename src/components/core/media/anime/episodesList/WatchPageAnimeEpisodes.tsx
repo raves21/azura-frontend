@@ -85,6 +85,7 @@ export default function WatchPageAnimeEpisodes({
             menuContentMaxHeight={350}
             onSelectItem={(serverName) =>
               navigate({
+                replace: true,
                 to: "/anime/$animeId/watch",
                 search: {
                   animeServer: serverName,
