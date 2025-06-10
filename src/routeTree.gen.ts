@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as NoInternetImport } from './routes/no-internet'
 import { Route as ProtectedRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as IndexImport } from './routes/index'
@@ -71,6 +72,11 @@ import { Route as ProtectedSettingsChangeDetailsChangeEmailVerifyEmailIndexImpor
 const ProtectedSettingsImport = createFileRoute('/_protected/settings')()
 
 // Create/Update Routes
+
+const NoInternetRoute = NoInternetImport.update({
+  path: '/no-internet',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProtectedRouteRoute = ProtectedRouteImport.update({
   id: '/_protected',
@@ -401,6 +407,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/no-internet': {
+      id: '/no-internet'
+      path: '/no-internet'
+      fullPath: '/no-internet'
+      preLoaderRoute: typeof NoInternetImport
       parentRoute: typeof rootRoute
     }
     '/_protected/anime': {
@@ -825,6 +838,7 @@ export const routeTree = rootRoute.addChildren({
       ProtectedSettingsIndexRoute,
     }),
   }),
+  NoInternetRoute,
 })
 
 /* prettier-ignore-end */
@@ -837,7 +851,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_auth",
-        "/_protected"
+        "/_protected",
+        "/no-internet"
       ]
     },
     "/": {
@@ -865,6 +880,9 @@ export const routeTree = rootRoute.addChildren({
         "/_protected/tv",
         "/_protected/settings"
       ]
+    },
+    "/no-internet": {
+      "filePath": "no-internet.tsx"
     },
     "/_protected/anime": {
       "filePath": "_protected/anime/route.tsx",
