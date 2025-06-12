@@ -24,18 +24,12 @@ type CreatePostProps = {
   type: "create";
 };
 
-type Props = {
-  resetStateOnMount?: boolean;
-} & (EditPostProps | CreatePostProps);
+type Props = EditPostProps | CreatePostProps;
 
-export default function ManagePostDialog({
-  resetStateOnMount = true,
-  ...props
-}: Props) {
+export default function ManagePostDialog({ ...props }: Props) {
   const { data: currentUser } = useCurrentUser();
 
   const [
-    resetState,
     managePostPage,
     setContent,
     setManagePostPage,
@@ -44,7 +38,6 @@ export default function ManagePostDialog({
     setMediaAttachment,
   ] = useManagePostStore(
     useShallow((state) => [
-      state.resetState,
       state.managePostPage,
       state.setContent,
       state.setManagePostPage,
@@ -58,12 +51,6 @@ export default function ManagePostDialog({
   useEffect(() => {
     //always set to initial page on mount
     setManagePostPage("managePost");
-
-    if (resetStateOnMount) {
-      //reset all state
-      resetState();
-    }
-
     const defaultCreatePostPrivacyPreference = localStorage.getItem(
       "defaultCreatePostPrivacyPreference"
     );

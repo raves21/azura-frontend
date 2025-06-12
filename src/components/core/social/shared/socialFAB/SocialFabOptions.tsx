@@ -15,6 +15,7 @@ import { useShallow } from "zustand/react/shallow";
 import SocialFabOption from "./SocialFabOption";
 import ManagePostDialog from "../../mainContent/post/managePost/managePostDialog/ManagePostDialog";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
+import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 
 type Props = {
   isActive: boolean;
@@ -56,6 +57,8 @@ export default function SocialFabOptions({
   const { data: currentUser } = useCurrentUser();
 
   const { isTabletUp } = useWindowBreakpoints();
+
+  const resetManagePostStore = useManagePostStore((state) => state.resetState);
 
   function handleOptionClick({ ...args }: HandleOptionClickArgs) {
     setIsActive(false);
@@ -155,12 +158,13 @@ export default function SocialFabOptions({
         icon={<CirclePlus className="stroke-mainWhite size-5" />}
         isActive={isActive}
         label="New Post"
-        onClick={() =>
+        onClick={() => {
+          resetManagePostStore();
           handleOptionClick({
             type: "openDialog",
             dialogComponent: <ManagePostDialog type="create" />,
-          })
-        }
+          });
+        }}
         setAnimationStatus={setAnimationStatus}
       />
     </>

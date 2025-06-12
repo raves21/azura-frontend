@@ -1,8 +1,5 @@
 import UserAvatar from "@/components/core/social/shared/UserAvatar";
-import {
-  useCreatePost,
-  useEditPost,
-} from "@/services/social/api/mutations";
+import { useCreatePost, useEditPost } from "@/services/social/api/mutations";
 import { useCurrentUser } from "@/services/auth/api/queries";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
@@ -34,7 +31,6 @@ import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
 import { UserBasicInfo } from "@/utils/types/auth/auth";
 import { useFocusInput } from "@/utils/hooks/useFocusInput";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect } from "react";
 
 type EditPostProps = {
   type: "edit";
@@ -67,12 +63,6 @@ export default function ManagePostPage({ ...props }: Props) {
       state.setContent,
     ])
   );
-
-  useEffect(() => {
-    if (props.type === "create") {
-      setContent(null);
-    }
-  }, []);
 
   const { inputRef } = useFocusInput({});
 

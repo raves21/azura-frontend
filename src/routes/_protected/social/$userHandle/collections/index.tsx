@@ -57,9 +57,20 @@ function CollectionsPage() {
 
     if (isEmpty) {
       return (
-        <p className="grid pb-24 mt-16 text-lg font-medium place-items-center">
-          No collections yet.
-        </p>
+        <div className="pb-24 mt-16 gap-4 flex flex-col justify-center items-center">
+          <p className="text-lg font-medium">No collections yet.</p>
+          <button
+            onClick={() =>
+              toggleOpenDialog(<ManageCollectionDialog type="create" />)
+            }
+            className="px-4 py-3 border border-mainAccent group gap-4 flex items-center rounded-xl"
+          >
+            <Plus className="size-5 stroke-mainWhite group-hover:stroke-mainAccent transition-colors" />
+            <p className="text-mainWhite md:text-md group-hover:text-mainAccent transition-colors">
+              Create collection
+            </p>
+          </button>
+        </div>
       );
     }
 

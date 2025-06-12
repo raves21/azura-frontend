@@ -10,7 +10,11 @@ import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { useShallow } from "zustand/react/shallow";
 import AddCollectionItemMediaPreviewDialog from "@/components/core/social/mainContent/previewPopup/addCollectionItem/AddCollectionItemMediaPreviewDialog";
 import MovieSearchResultCard from "../mediaSearchResultCards/MovieSearchResultCard";
-import { getTMDBImageURL, getTMDBRating, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
+import {
+  getTMDBImageURL,
+  getTMDBRating,
+  getTMDBReleaseYear,
+} from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   query: string;

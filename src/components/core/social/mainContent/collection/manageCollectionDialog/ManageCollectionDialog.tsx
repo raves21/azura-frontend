@@ -48,8 +48,6 @@ export default function ManageCollectionDialog(props: Props) {
     ])
   );
 
-  const x = useManageCollectionStore();
-
   const matchRoute = useMatchRoute();
   const isUserProfileCollectionsRoute = matchRoute({
     to: "/social/$userHandle/collections",
@@ -67,7 +65,6 @@ export default function ManageCollectionDialog(props: Props) {
 
   //initialize default values
   useEffect(() => {
-    console.log("X", x);
     resetManageCollectionStoreState();
     const defaultCreateCollectionPrivacyPreference = localStorage.getItem(
       "defaultCreateCollectionPrivacyPreference"

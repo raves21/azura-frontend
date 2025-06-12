@@ -5,6 +5,7 @@ import { Navigate } from "@tanstack/react-router";
 import UserAvatar from "../../../shared/UserAvatar";
 import useWindowBreakpoints from "@/utils/hooks/useWindowBreakpoints";
 import { getUsernamePreview } from "@/utils/functions/sharedFunctions";
+import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 
 export default function CreatePost() {
   const { data: currentUser } = useCurrentUser();
@@ -13,14 +14,25 @@ export default function CreatePost() {
 
   const { isTabletExtraSmallUp, isMobileMediumUp } = useWindowBreakpoints();
 
+  const resetPostStoreState = useManagePostStore((state) => state.resetState);
+
   let username: string;
 
   if (isTabletExtraSmallUp) {
-    username = getUsernamePreview({ maxLength: 20, currentUserUsername: currentUser.username });
+    username = getUsernamePreview({
+      maxLength: 20,
+      currentUserUsername: currentUser.username,
+    });
   } else if (isMobileMediumUp) {
-    username = getUsernamePreview({ maxLength: 8, currentUserUsername: currentUser.username });
+    username = getUsernamePreview({
+      maxLength: 8,
+      currentUserUsername: currentUser.username,
+    });
   } else {
-    username = getUsernamePreview({ maxLength: 5, currentUserUsername: currentUser.username });
+    username = getUsernamePreview({
+      maxLength: 5,
+      currentUserUsername: currentUser.username,
+    });
   }
 
   return (
@@ -36,11 +48,10 @@ export default function CreatePost() {
         imageClassName="md:size-11"
       />
       <button
-        onClick={() =>
-          toggleOpenDialog(
-            <ManagePostDialog type="create" resetStateOnMount={true} />
-          )
-        }
+        onClick={() => {
+          resetPostStoreState();
+          toggleOpenDialog(<ManagePostDialog type="create" />);
+        }}
         className="flex-grow py-2 mobile-m:text-base px-3 md:p-3 rounded-lg bg-gray-800 hover:bg-[#323b4a] text-start"
       >
         <p className="line-clamp-2">

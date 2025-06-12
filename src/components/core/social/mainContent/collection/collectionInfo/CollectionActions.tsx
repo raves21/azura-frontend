@@ -6,6 +6,7 @@ import ManagePostDialog from "../../post/managePost/managePostDialog/ManagePostD
 import { useCurrentUser } from "@/services/auth/api/queries";
 import { Navigate, useParams } from "@tanstack/react-router";
 import AddCollectionItemDialog from "./addCollectionItemDialog/AddCollectionItemDialog";
+import { useShallow } from "zustand/react/shallow";
 
 type DisabledProps = {
   disabled: true;
@@ -20,8 +21,8 @@ type Props = DisabledProps | ActiveProps;
 
 export default function CollectionActions(props: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const setCollectionAttachment = useManagePostStore(
-    (state) => state.setCollectionAttachment
+  const [setCollectionAttachment, resetManagePostStore] = useManagePostStore(
+    useShallow((state) => [state.setCollectionAttachment, state.resetState])
   );
   const { data: currentUser } = useCurrentUser();
   const { userHandle } = useParams({
@@ -36,10 +37,9 @@ export default function CollectionActions(props: Props) {
         <button
           onClick={() => {
             if (!props.disabled) {
+              resetManagePostStore();
               setCollectionAttachment(props.collection);
-              toggleOpenDialog(
-                <ManagePostDialog type="create" resetStateOnMount={false} />
-              );
+              toggleOpenDialog(<ManagePostDialog type="create" />);
             }
           }}
           disabled={props.disabled}

@@ -4,6 +4,7 @@ import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useManagePostStore } from "@/utils/stores/useManagePostStore";
 import { Media } from "@/utils/types/social/social";
 import { Forward } from "lucide-react";
+import { useShallow } from "zustand/react/shallow";
 
 type Props = {
   media: Media;
@@ -12,17 +13,16 @@ type Props = {
 
 export default function ShareMediaButton({ media, className }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
-  const setMediaAttachment = useManagePostStore(
-    (state) => state.setMediaAttachment
+  const [setMediaAttachment, resetManagePostStore] = useManagePostStore(
+    useShallow((state) => [state.setMediaAttachment, state.resetState])
   );
 
   return (
     <button
       onClick={() => {
+        resetManagePostStore();
         setMediaAttachment(media);
-        toggleOpenDialog(
-          <ManagePostDialog type="create" resetStateOnMount={false} />
-        );
+        toggleOpenDialog(<ManagePostDialog type="create" />);
       }}
       className={cn(
         "hover:scale-[1.02] transition-transform duration-200 flex items-center gap-2 px-4 py-4 rounded-full mobile-m:px-4 mobile-m:py-3 lg:px-5 lg:py-2 bg-black",
