@@ -18,16 +18,21 @@ export default function PostWithAttachment({
 }: Props) {
   const matchRoute = useMatchRoute();
 
+  const isPostInfoRoute = matchRoute({
+    to: "/social/$userHandle/posts/$postId",
+  });
+
   return (
     <div
       className={cn("flex flex-col w-full gap-3", {
-        "sm:pl-14": !matchRoute({ to: "/social/$userHandle/posts/$postId" }),
+        "sm:pl-14": !isPostInfoRoute,
       })}
     >
       {props.content && (
         <p
           className={cn(
-            "text-gray-300 line-clamp-2 text-sm mobile-m:text-md sm:text-base",
+            "text-gray-300 text-sm line-clamp-2 mobile-m:text-md sm:text-base",
+            { "line-clamp-none": isPostInfoRoute },
             contentClassName
           )}
         >
