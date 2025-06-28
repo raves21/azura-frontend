@@ -88,5 +88,5 @@ export function getDefaultAnimeServer() {
   const server = localStorage.getItem(
     "defaultAnimeServer"
   ) as AnimeServerName | null;
-  return server || AnimeServerName.server1;
+  return server || AnimeServerName.server2;
 }
