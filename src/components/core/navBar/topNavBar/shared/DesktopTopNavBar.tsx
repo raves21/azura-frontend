@@ -81,7 +81,7 @@ export default function DesktopTopNavBar({
               props.isAnimeCatalogRoute,
           })}
         >
-          Catalog
+          Discover
         </Link>
       );
       break;
@@ -163,8 +163,8 @@ export default function DesktopTopNavBar({
         <button
           className="p-[6px] relative group"
           onClick={() => {
-            toggleOpenSheet(<SideMenuSheet />)
-            toggleMediaPortal(true)
+            toggleOpenSheet(<SideMenuSheet />);
+            toggleMediaPortal(true);
           }}
         >
           <Menu />
@@ -199,8 +199,9 @@ export default function DesktopTopNavBar({
         </div>
         <button
           onClick={() => {
-            toggleMediaPortal(true)
-            toggleOpenDialog(searchDialogComponent)}}
+            toggleMediaPortal(true);
+            toggleOpenDialog(searchDialogComponent);
+          }}
           className="p-[6px] relative group"
         >
           <Search />
