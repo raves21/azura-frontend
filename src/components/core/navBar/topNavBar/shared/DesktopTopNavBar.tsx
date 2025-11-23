@@ -114,7 +114,7 @@ export default function DesktopTopNavBar({
               props.isMovieCatalogRoute,
           })}
         >
-          Catalog
+          Discover
         </Link>
       );
       break;
@@ -144,7 +144,7 @@ export default function DesktopTopNavBar({
               props.isTVCatalogRoute,
           })}
         >
-          Catalog
+          Discover
         </Link>
       );
       break;
