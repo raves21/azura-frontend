@@ -65,10 +65,12 @@ export function getUsernamePreview({
   currentUserUsername,
   maxLength,
 }: {
-  currentUserUsername: string
+  currentUserUsername: string;
   maxLength: number;
 }): string {
-  if (currentUserUsername.length <= currentUserUsername.slice(0, maxLength).length) {
+  if (
+    currentUserUsername.length <= currentUserUsername.slice(0, maxLength).length
+  ) {
     return currentUserUsername;
   }
   return currentUserUsername.slice(0, maxLength) + "...";
@@ -78,4 +80,13 @@ export function drawRandomURL({ urlList }: { urlList: string[] }): string {
   //💀💀 LOAD BALANCER HAHSQHAHAHHAHAHAH
   const randomURL = urlList[Math.floor(Math.random() * urlList.length)];
   return randomURL;
+}
+
+export function simpleHash(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
 }

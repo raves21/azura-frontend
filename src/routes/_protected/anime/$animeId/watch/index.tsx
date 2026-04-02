@@ -5,15 +5,17 @@ import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
+// import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
-  useAnimeEpisodeStreamLinkAniwatch,
-  useAnimeEpisodes,
+  // useAnimeEpisodeStreamLinkAniwatch,
+  // useAnimeEpisodes,
   useAnimeInfo,
-  useChunkAnimeEpisodes,
+  // useChunkAnimeEpisodes,
+  useChunkZencloudEpisodes,
   useEmbedStreamZencloud,
-  useEpisodeInfo,
+  useZencloudEpisodeInfo,
+  useZencloudEpisodes,
 } from "@/services/media/anime/queries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
 import MediaCard from "@/components/core/media/shared/MediaCard";
@@ -28,10 +30,10 @@ import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer
 import {
   AnimeServerName,
   SearchSchemaValidationStatus,
-  Subtitle,
+  // Subtitle,
 } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
-import { Kind } from "@/utils/types/media/anime/animeAnilist";
+// import { Kind } from "@/utils/types/media/anime/animeAnilist";
 import {
   getAnimeRatingInfoPage,
   getDefaultAnimeServer,
@@ -64,7 +66,7 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
         lang: "eng",
         id: "",
         epNum: 1,
-        animeServer: AnimeServerName.server1,
+        animeServer: AnimeServerName.server2,
         success: false,
       };
     }
@@ -88,7 +90,10 @@ function WatchEpisodePage() {
   }, []);
 
   useHandleSearchParamsValidationFailure({
-    isValidationFail: !success,
+    isValidationFail:
+      !success ||
+      //temporarily disable access to server 1
+      server === AnimeServerName.server1,
     onValidationFail: () => navigate({ to: "/anime" }),
   });
 
@@ -100,17 +105,19 @@ function WatchEpisodePage() {
 
   const windowWidth = useWindowWidth();
 
-  const { data: aniwatchStreamLink, isLoading: isAniwatchStreamLinkLoading } =
-    useAnimeEpisodeStreamLinkAniwatch(id);
+  // const { data: aniwatchStreamLink, isLoading: isAniwatchStreamLinkLoading } =
+  //   useAnimeEpisodeStreamLinkAniwatch(id);
 
   const { data: zencloudStream, isLoading: isZencloudStreamLoading } =
     useEmbedStreamZencloud({ animeId: animeId, episodeNum: epNum });
 
-  const episodesQuery = useAnimeEpisodes({
-    animeId,
-    title,
-    titleLang: lang,
-  });
+  // const episodesQuery = useAnimeEpisodes({
+  //   animeId,
+  //   title,
+  //   titleLang: lang,
+  // });
+
+  const zencloudEpisodesQuery = useZencloudEpisodes(animeId);
 
   const {
     data: animeInfo,
@@ -118,20 +125,35 @@ function WatchEpisodePage() {
     error: animeInfoError,
   } = useAnimeInfo({ animeId, title, titleLang: lang });
 
-  const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
+  const { data: zencloudChunkedEpisodes } = useChunkZencloudEpisodes(
+    zencloudEpisodesQuery.data,
+  );
 
-  const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
+  const { data: zencloudEpisodeInfo } = useZencloudEpisodeInfo(
+    id,
+    zencloudChunkedEpisodes,
+  );
+
+  // const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
+
+  // const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
   //sets the videoAndEpisodeInfoContainerHeight everytime window width changes
   useEffect(() => {
     if (videoAndEpisodeInfoContainerRef.current) {
       setVideoAndEpisodeInfoContainerHeight(
-        videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height
+        videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height,
       );
     }
-  }, [aniwatchStreamLink, episodeInfo, windowWidth, zencloudStream, server]);
+  }, [
+    // aniwatchStreamLink,
+    zencloudEpisodeInfo,
+    windowWidth,
+    zencloudStream,
+    server,
+  ]);
 
-  if (isAnimeInfoLoading || episodesQuery.isLoading) {
+  if (isAnimeInfoLoading || zencloudEpisodesQuery.isLoading) {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -146,7 +168,7 @@ function WatchEpisodePage() {
     );
   }
 
-  if (episodesQuery.error || animeInfoError) {
+  if (zencloudEpisodesQuery.error || animeInfoError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -155,24 +177,27 @@ function WatchEpisodePage() {
     );
   }
 
-  if (animeInfo && episodesQuery.data && episodeInfo) {
-    const { animeInfoAnilist, animeInfoAniwatch } = animeInfo;
+  if (animeInfo && zencloudEpisodesQuery.data && zencloudEpisodeInfo) {
+    const {
+      animeInfoAnilist,
+      // animeInfoAniwatch
+    } = animeInfo;
 
-    let subtitleTracks: Subtitle[] | undefined = undefined;
-    if (server === AnimeServerName.server1 && aniwatchStreamLink) {
-      subtitleTracks = aniwatchStreamLink.tracks
-        .filter((track) => track.kind === Kind.Captions)
-        .map((caption) => ({
-          lang: caption.label!,
-          url: caption.file,
-        }));
-    }
+    // let subtitleTracks: Subtitle[] | undefined = undefined;
+    // if (server === AnimeServerName.server1 && aniwatchStreamLink) {
+    //   subtitleTracks = aniwatchStreamLink.tracks
+    //     .filter((track) => track.kind === Kind.Captions)
+    //     .map((caption) => ({
+    //       lang: caption.label!,
+    //       url: caption.file,
+    //     }));
+    // }
 
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {server === AnimeServerName.server1 &&
+            {/* {server === AnimeServerName.server1 &&
               (aniwatchStreamLink && aniwatchStreamLink.sources.length !== 0 ? (
                 <VideoPlayer
                   mediaType="ANIME"
@@ -190,7 +215,7 @@ function WatchEpisodePage() {
                 <VideoPlayerSkeleton />
               ) : (
                 <VideoPlayerError serverName={server} />
-              ))}
+              ))} */}
 
             {server === AnimeServerName.server2 &&
               (zencloudStream && zencloudStream.player_url ? (
@@ -202,8 +227,8 @@ function WatchEpisodePage() {
               ))}
 
             <EpisodeTitleAndNumber
-              episodeNumber={`Episode ${episodeInfo.number}`}
-              episodeTitle={episodeInfo.title}
+              episodeNumber={`Episode ${zencloudEpisodeInfo.number}`}
+              episodeTitle={zencloudEpisodeInfo.title}
             />
           </div>
           <WatchPageAnimeEpisodes
@@ -211,38 +236,49 @@ function WatchEpisodePage() {
             titleLang={lang}
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
-              animeInfoAnilist?.cover ||
-              animeInfoAnilist?.image ||
-              animeInfoAniwatch?.info.poster
+              animeInfoAnilist?.cover || animeInfoAnilist?.image
+              // ||
+              // animeInfoAniwatch?.info.poster
             }
-            episodesQuery={episodesQuery}
+            episodesQuery={zencloudEpisodesQuery}
             replace
-            type={animeInfoAnilist?.type || animeInfoAniwatch?.info.stats.type}
-            currentlyWatchingEpisodeNumber={episodeInfo.number}
+            type={
+              animeInfoAnilist?.type
+              // || animeInfoAniwatch?.info.stats.type
+            }
+            currentlyWatchingEpisodeNumber={zencloudEpisodeInfo.number}
           />
         </section>
         <WatchPageAnimeInfo
           title={title}
           cover={
-            animeInfoAnilist?.cover ||
-            animeInfoAnilist?.image ||
-            animeInfoAniwatch?.info.poster
+            animeInfoAnilist?.cover || animeInfoAnilist?.image
+            // ||
+            // animeInfoAniwatch?.info.poster
           }
           titleLang={lang}
-          image={animeInfoAnilist?.image || animeInfoAniwatch?.info.poster}
+          image={
+            animeInfoAnilist?.image
+            // || animeInfoAniwatch?.info.poster
+          }
           description={
-            animeInfoAnilist?.description || animeInfoAniwatch?.info.description
+            animeInfoAnilist?.description
+            // || animeInfoAniwatch?.info.description
           }
           genres={animeInfoAnilist?.genres}
           status={animeInfoAnilist?.status}
           totalEpisodes={animeInfoAnilist?.totalEpisodes}
-          type={animeInfoAnilist?.type || animeInfoAniwatch?.info.stats.type}
+          type={
+            animeInfoAnilist?.type
+            // || animeInfoAniwatch?.info.stats.type
+          }
           year={animeInfoAnilist?.releaseDate}
           rating={getAnimeRatingInfoPage(
-            animeInfoAniwatch?.moreInfo.malscore
-              ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
-              : undefined,
-            animeInfoAnilist?.rating
+            // animeInfoAniwatch?.moreInfo.malscore
+            //   ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
+            //   :
+            undefined,
+            animeInfoAnilist?.rating,
           )}
         />
         {animeInfoAnilist?.recommendations && (

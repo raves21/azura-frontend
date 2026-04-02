@@ -7,6 +7,21 @@ export type EpisodeToBeRendered = {
   image: string | null | undefined;
 };
 
+export type ZencloudEpisodeToBeRendered = {
+  id: string;
+  title: string;
+  number: number;
+  image: string | null | undefined;
+  embedUrl: string;
+};
+
+export type ZencloudEpisodeChunk = {
+  label: string;
+  startEp: number;
+  endEp: number;
+  episodes: ZencloudEpisodeToBeRendered[];
+};
+
 export type EpisodeChunk = {
   label: string;
   startEp: number;

@@ -4,6 +4,8 @@ import {
   EpisodeChunk,
   TVMovieServerName,
   AnimeServerName,
+  ZencloudEpisodeChunk,
+  ZencloudEpisodeToBeRendered,
 } from "@/utils/types/media/shared";
 
 export function getTMDBImageURL(imagePath: string) {
@@ -16,7 +18,7 @@ export function getTMDBReleaseYear(releaseDate: string) {
 
 export function getAnimeRatingInfoPage(
   aniwatchRating: number | undefined,
-  anilistRating: number | undefined
+  anilistRating: number | undefined,
 ) {
   let rating: string | null;
   if (anilistRating) {
@@ -56,37 +58,71 @@ export function toggleMediaPortal(isMediaPortalOpen: boolean) {
   }
 }
 
+export function chunkZencloudEpisodes(
+  eps: ZencloudEpisodeToBeRendered[] | null,
+  epsPerChunk: number,
+): ZencloudEpisodeChunk[] | null {
+  if (!eps) return null;
+  const chunkedEpisodes = Array.from(
+    { length: Math.ceil(eps.length / epsPerChunk) },
+    (_, i) => {
+      const chunk = eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk);
+      const start = chunk[0].number;
+      const end = chunk[chunk.length - 1].number;
+      return {
+        label: `${start} - ${end}`,
+        startEp: start,
+        endEp: end,
+        episodes: chunk,
+      };
+    },
+  );
+  console.log(chunkedEpisodes);
+  return chunkedEpisodes;
+}
+
 export function chunkEpisodes(
   eps: EpisodeToBeRendered[] | null,
-  epsPerChunk: number
+  epsPerChunk: number,
 ): EpisodeChunk[] | null {
   if (!eps) return null;
   const chunkedEpisodes = Array.from(
     { length: Math.ceil(eps.length / epsPerChunk) },
     (_, i) => {
-      const start = i * epsPerChunk + 1;
-      const end = Math.min((i + 1) * epsPerChunk, eps.length);
+      const chunk = eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk);
+      const start = chunk[0].number;
+      const end = chunk[chunk.length - 1].number;
       return {
         label: `${start} - ${end}`,
         startEp: start,
         endEp: end,
-        episodes: eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk),
+        episodes: chunk,
       };
-    }
+    },
   );
   return chunkedEpisodes;
 }
 
 export function getDefaultTVMovieServer() {
   const server = localStorage.getItem(
-    "defaultTVMovieServer"
+    "defaultTVMovieServer",
   ) as TVMovieServerName | null;
-  return server || TVMovieServerName.embed1;
+
+  //temp set back to embed1
+  if (server && server === "Azura Main") {
+    localStorage.setItem("defaultTVMovieServer", TVMovieServerName.embed1);
+  }
+  const serverFinal = localStorage.getItem(
+    "defaultTVMovieServer",
+  ) as TVMovieServerName | null;
+  return serverFinal || TVMovieServerName.embed1;
 }
 
 export function getDefaultAnimeServer() {
-  const server = localStorage.getItem(
-    "defaultAnimeServer"
-  ) as AnimeServerName | null;
-  return server || AnimeServerName.server2;
+  // const server = localStorage.getItem(
+  //   "defaultAnimeServer",
+  // ) as AnimeServerName | null;
+
+  //temporarily default to server2
+  return AnimeServerName.server2;
 }

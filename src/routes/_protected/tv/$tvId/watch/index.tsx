@@ -11,7 +11,7 @@ import {
   useTVSeasonEpisodes,
 } from "@/services/media/tv/queries";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import WatchPageTVInfo from "@/components/core/media/tv/infoSection/WatchPageTVInfo";
@@ -30,6 +30,7 @@ import {
   getTMDBImageURL,
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
@@ -69,6 +70,24 @@ function WatchTVEpisodePage() {
   const [selectedSeason, setSelectedSeason] = useState(tvSeason);
   const windowWidth = useWindowWidth();
 
+  const navigate = useNavigate();
+
+  useHandleSearchParamsValidationFailure({
+    isValidationFail: server === TVMovieServerName.azuraMain,
+    onValidationFail: () =>
+      navigate({
+        to: "/tv/$tvId/watch",
+        params: {
+          tvId,
+        },
+        search: {
+          server: TVMovieServerName.embed1,
+          tvEp,
+          tvSeason,
+        },
+      }),
+  });
+
   const {
     data: tvInfo,
     isLoading: isTVInfoLoading,
@@ -79,7 +98,7 @@ function WatchTVEpisodePage() {
     if (tvInfo) {
       //only include main seasons, dont include special seasons (season 0)
       const mainTVSeasons = tvInfo.seasons.filter(
-        (season) => season.season_number > 0
+        (season) => season.season_number > 0,
       );
       if (mainTVSeasons.length !== 0) {
         setTotalSeasons(mainTVSeasons.length);
@@ -110,7 +129,7 @@ function WatchTVEpisodePage() {
             queryKey: ["tvSeasonEpisodes", tvId, season],
             queryFn: async () => {
               const { data: tvSeasonEpisodes } = await tmdbApi.get(
-                `/tv/${tvId}/season/${season}`
+                `/tv/${tvId}/season/${season}`,
               );
               return tvSeasonEpisodes.episodes as TMDBTVEpisode[];
             },
@@ -145,7 +164,7 @@ function WatchTVEpisodePage() {
   useEffect(() => {
     if (videoAndEpisodeInfoContainerRef.current) {
       setVideoAndEpisodeInfoContainerHeight(
-        videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height
+        videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height,
       );
     }
   }, [mediaScraperData, tvInfo, windowWidth, tvSeasonEpisodesQuery]);

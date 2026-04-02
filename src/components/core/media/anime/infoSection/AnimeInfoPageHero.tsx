@@ -4,7 +4,7 @@ import {
   AnimeStatus,
 } from "@/utils/types/media/anime/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
-import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
+import { useChunkZencloudEpisodes } from "@/services/media/anime/queries";
 import InfoSectionBackgroundImage from "@/components/core/media/shared/info/InfoSectionBackgroundImage";
 import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
@@ -22,7 +22,7 @@ import {
   animeCompletedStatus,
   animeOngoingStatus,
 } from "@/utils/variables/media/anime";
-import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import { ZencloudEpisodesData } from "@/utils/types/media/anime/shared";
 import ShareMediaButton from "../../shared/info/ShareMediaButton";
 import { AnimeServerName } from "@/utils/types/media/shared";
 
@@ -39,7 +39,7 @@ type Props = {
   genres: AnimeGenre[] | undefined;
   rating: string | null | undefined;
   animeId: string;
-  episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
+  episodesQuery: UseQueryResult<ZencloudEpisodesData, Error>;
 };
 
 export default function AnimeInfoPageHero({
@@ -59,7 +59,7 @@ export default function AnimeInfoPageHero({
 }: Props) {
   const navigate = useNavigate();
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkAnimeEpisodes(episodesQuery.data);
+    useChunkZencloudEpisodes(episodesQuery.data);
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -88,13 +88,13 @@ export default function AnimeInfoPageHero({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                   })
                 }
@@ -120,7 +120,7 @@ export default function AnimeInfoPageHero({
                     params: { animeId: animeId },
                     search: {
                       epNum: 1,
-                      animeServer: AnimeServerName.server1,
+                      animeServer: AnimeServerName.server2,
                       id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
                       lang: titleLang,
                       title,
@@ -175,13 +175,13 @@ export default function AnimeInfoPageHero({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                   })
                 }

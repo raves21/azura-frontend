@@ -1,5 +1,5 @@
 import { AnimeFormat } from "@/utils/types/media/anime/animeAnilist";
-import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
+import { useChunkZencloudEpisodes } from "@/services/media/anime/queries";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
@@ -11,11 +11,14 @@ import EpisodesError from "../../shared/episode/EpisodesError";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
-import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import {
+  // AnimeEpisodesData,
+  ZencloudEpisodesData,
+} from "@/utils/types/media/anime/shared";
 import { animeServerNames } from "@/utils/variables/media/anime";
 
 type Props = {
-  episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
+  episodesQuery: UseQueryResult<ZencloudEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
   title: string;
@@ -51,8 +54,11 @@ export default function WatchPageAnimeEpisodes({
     error: episodesError,
   } = episodesQuery;
 
-  const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkAnimeEpisodes(episodes);
+  // const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
+  //   useChunkAnimeEpisodes(episodes);
+
+  const { data: zencloudChunkedEpisodes, isLoading: isChunkEpisodesLoading } =
+    useChunkZencloudEpisodes(episodes);
 
   const {
     selectedChunk,
@@ -60,7 +66,7 @@ export default function WatchPageAnimeEpisodes({
     currentlyWatchingEpisodeCardRef,
     episodeListContainerRef,
   } = useAnimeEpisodes({
-    chunkedEpisodes,
+    chunkedEpisodes: zencloudChunkedEpisodes,
     currentlyWatchingEpisodeNumber,
   });
 
@@ -72,7 +78,8 @@ export default function WatchPageAnimeEpisodes({
     return <EpisodesError />;
   }
 
-  if (episodes && chunkedEpisodes) {
+  if (episodes && zencloudChunkedEpisodes) {
+    console.log(zencloudChunkedEpisodes);
     return (
       <EpisodesContainer
         variant="watchPage"
@@ -103,17 +110,17 @@ export default function WatchPageAnimeEpisodes({
             menuContentClassName="bg-darkBg"
             dropdownTriggerClassName="text-gray-400"
           />
-          {selectedChunk && chunkedEpisodes.length > 1 && (
+          {selectedChunk && zencloudChunkedEpisodes.length > 1 && (
             <CustomDropdown
               menuContentClassName="bg-darkBg"
               dropdownTriggerClassName="text-gray-400"
-              menuItems={chunkedEpisodes}
+              menuItems={zencloudChunkedEpisodes}
               currentlySelected={selectedChunk}
               menuContentMaxHeight={350}
               showMenuContentBorder
               onSelectItem={(epChunk) => setSelectedChunk(epChunk)}
-              menuItemLabelNames={chunkedEpisodes.map(
-                (epChunk) => epChunk.label
+              menuItemLabelNames={zencloudChunkedEpisodes.map(
+                (epChunk) => epChunk.label,
               )}
             />
           )}

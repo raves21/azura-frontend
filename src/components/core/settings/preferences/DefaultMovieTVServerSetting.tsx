@@ -8,7 +8,7 @@ export default function DefaultMovieTVServerSetting() {
     (localStorage.getItem("defaultTVMovieServer") as TVMovieServerName) || null;
 
   const [selectedServer, setSelectedServer] = useState<TVMovieServerName>(
-    defaultTVMovieServer || TVMovieServerName.embed1
+    defaultTVMovieServer || TVMovieServerName.embed1,
   );
 
   function handleSelect(serverName: TVMovieServerName) {
@@ -18,9 +18,11 @@ export default function DefaultMovieTVServerSetting() {
 
   return (
     <div className="w-full flex items-center flex-wrap gap-10 sm:gap-24 lg:gap-16 xl:gap-24 mt-6">
-      <button
+      {/* <button
+        //temp disabled
+        disabled={true}
         onClick={() => handleSelect(TVMovieServerName.azuraMain)}
-        className="flex items-center gap-4 group"
+        className="flex items-center gap-4 group disabled:text-gray-400 disabled:hover:pointer-none"
       >
         <Circle
           className={cn(
@@ -28,13 +30,13 @@ export default function DefaultMovieTVServerSetting() {
             {
               "bg-mainAccent stroke-2 stroke-socialPrimary":
                 selectedServer === TVMovieServerName.azuraMain,
-            }
+            },
           )}
         />
         <p className="group-hover:underline underline-offset-[6px] decoration-mainAccent">
           Azura Main
         </p>
-      </button>
+      </button> */}
       <button
         onClick={() => handleSelect(TVMovieServerName.embed1)}
         className="flex items-center gap-4 group"
@@ -45,7 +47,7 @@ export default function DefaultMovieTVServerSetting() {
             {
               "bg-mainAccent stroke-2 stroke-socialPrimary":
                 selectedServer === TVMovieServerName.embed1,
-            }
+            },
           )}
         />
         <p className="group-hover:underline underline-offset-[6px] decoration-mainAccent">
@@ -62,7 +64,7 @@ export default function DefaultMovieTVServerSetting() {
             {
               "bg-mainAccent stroke-2 stroke-socialPrimary":
                 selectedServer === TVMovieServerName.embed2,
-            }
+            },
           )}
         />
         <p className="group-hover:underline underline-offset-[6px] decoration-mainAccent">

@@ -67,6 +67,6 @@ export const animeCompletedStatus = [
 ];
 
 export const animeServerNames: AnimeServerName[] = [
-  AnimeServerName.server1,
+  // AnimeServerName.server1,
   AnimeServerName.server2,
 ];

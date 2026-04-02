@@ -1,10 +1,14 @@
 import { isEqual } from "radash";
 import { useEffect, useState, useRef } from "react";
-import { EpisodeChunk, EpisodeToBeRendered } from "../types/media/shared";
+import {
+  EpisodeChunk,
+  EpisodeToBeRendered,
+  ZencloudEpisodeChunk,
+} from "../types/media/shared";
 import { useScrollToElement } from "./useScrollToElement";
 
 type Args = {
-  chunkedEpisodes: EpisodeChunk[] | null | undefined;
+  chunkedEpisodes: ZencloudEpisodeChunk[] | null | undefined;
   currentlyWatchingEpisodeNumber: number | undefined;
 };
 
@@ -19,7 +23,7 @@ export function useAnimeEpisodes({
     useState<EpisodeChunk>();
   const episodeListContainerRef = useRef<HTMLDivElement | null>(null);
   const currentlyWatchingEpisodeCardRef = useRef<HTMLAnchorElement | null>(
-    null
+    null,
   );
 
   //setting the initial selected episode chunk
@@ -34,11 +38,12 @@ export function useAnimeEpisodes({
         //currentlyWatchingEpisodeNumber and return the first chunk where their
         //difference is not negative.
         const foundCurrentlyWatchingChunk = chunkedEpisodes.find(
-          (epChunk) => epChunk.endEp - currentlyWatchingEpisodeNumber >= 0
+          (epChunk) => epChunk.endEp - currentlyWatchingEpisodeNumber >= 0,
         );
+        console.log(foundCurrentlyWatchingChunk);
         const foundCurrentlyWatchingEpisode =
           foundCurrentlyWatchingChunk!.episodes.find(
-            (ep) => ep.number === currentlyWatchingEpisodeNumber
+            (ep) => ep.number === currentlyWatchingEpisodeNumber,
           );
         setSelectedChunk(foundCurrentlyWatchingChunk);
         setCurrentlyWatchingEpisodeChunk(foundCurrentlyWatchingChunk);

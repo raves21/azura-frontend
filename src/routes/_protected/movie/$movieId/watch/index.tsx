@@ -9,7 +9,7 @@ import {
   useMovieRecommendations,
 } from "@/services/media/movie/queries";
 import { useMediaScraper } from "@/services/media/sharedQueries";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
@@ -24,6 +24,7 @@ import {
   getTMDBImageURL,
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
+import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 
 const watchMoviePageSchema = z.object({
   server: z.nativeEnum(TVMovieServerName).catch(getDefaultTVMovieServer()),
@@ -45,6 +46,22 @@ export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
 function WatchMoviePage() {
   const { movieId } = Route.useParams();
   const { server } = Route.useSearch();
+
+  const navigate = useNavigate();
+
+  useHandleSearchParamsValidationFailure({
+    isValidationFail: server === TVMovieServerName.azuraMain,
+    onValidationFail: () =>
+      navigate({
+        to: "/movie/$movieId/watch",
+        params: {
+          movieId,
+        },
+        search: {
+          server: TVMovieServerName.embed1,
+        },
+      }),
+  });
 
   const {
     data: movieInfo,

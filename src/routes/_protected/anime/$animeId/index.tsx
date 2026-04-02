@@ -1,4 +1,7 @@
-import { useAnimeEpisodes, useAnimeInfo } from "@/services/media/anime/queries";
+import {
+  useAnimeInfo,
+  useZencloudEpisodes,
+} from "@/services/media/anime/queries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
 import { useEffect } from "react";
@@ -48,11 +51,7 @@ function AnimeInfoPage() {
     onValidationFail: () => navigate({ to: "/anime" }),
   });
 
-  const episodesQuery = useAnimeEpisodes({
-    animeId,
-    title,
-    titleLang: lang,
-  });
+  const episodesQuery = useZencloudEpisodes(animeId);
 
   const {
     data: animeInfo,
@@ -90,7 +89,10 @@ function AnimeInfoPage() {
   }
 
   if (animeInfo) {
-    const { animeInfoAnilist, animeInfoAniwatch } = animeInfo;
+    const {
+      animeInfoAnilist,
+      // animeInfoAniwatch
+    } = animeInfo;
     return (
       <main className="w-full pb-32">
         <AnimeInfoPageHero
@@ -98,21 +100,32 @@ function AnimeInfoPage() {
           animeId={animeId}
           title={title}
           titleLang={lang}
-          cover={animeInfoAnilist?.cover || animeInfoAniwatch?.info.poster}
-          image={animeInfoAnilist?.image || animeInfoAniwatch?.info.poster}
+          cover={
+            animeInfoAnilist?.cover
+            // || animeInfoAniwatch?.info.poster
+          }
+          image={
+            animeInfoAnilist?.image
+            // || animeInfoAniwatch?.info.poster
+          }
           description={
-            animeInfoAnilist?.description || animeInfoAniwatch?.info.description
+            animeInfoAnilist?.description
+            // || animeInfoAniwatch?.info.description
           }
           genres={animeInfoAnilist?.genres || undefined}
           status={animeInfoAnilist?.status}
           totalEpisodes={animeInfoAnilist?.totalEpisodes}
-          type={animeInfoAnilist?.type || animeInfoAniwatch?.info.stats.type}
+          type={
+            animeInfoAnilist?.type
+            // || animeInfoAniwatch?.info.stats.type
+          }
           year={animeInfoAnilist?.releaseDate}
           rating={getAnimeRatingInfoPage(
-            animeInfoAniwatch?.moreInfo.malscore
-              ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
-              : undefined,
-            animeInfoAnilist?.rating
+            // animeInfoAniwatch?.moreInfo.malscore
+            //   ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
+            //   :
+            undefined,
+            animeInfoAnilist?.rating,
           )}
         />
         <InfoPageAnimeEpisodes
@@ -122,9 +135,9 @@ function AnimeInfoPage() {
           replace={false}
           type={animeInfoAnilist?.type}
           episodeImageFallback={
-            animeInfoAnilist?.image ||
-            animeInfoAnilist?.cover ||
-            animeInfoAniwatch?.info.poster
+            animeInfoAnilist?.image || animeInfoAnilist?.cover
+            // ||
+            // animeInfoAniwatch?.info.poster
           }
         />
         {animeInfoAnilist?.recommendations &&

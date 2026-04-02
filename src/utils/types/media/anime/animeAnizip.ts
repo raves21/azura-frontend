@@ -1,19 +1,18 @@
-
 export type AnimeInfoAnizip = {
   titles: Titles;
-  episodes: Episodes;
+  episodes: AnizipEpisodes;
   episodeCount: number;
   specialCount: number;
   images: Image[];
 };
 
-export type Episodes = {
+export type AnizipEpisodes = {
   [episodeNumber: string]: AnizipEpisode;
 };
 
 export type AnizipEpisode = {
   episodeNumber: number;
-  title: {en: string};
+  title: { en: string };
   overview: string;
   image: string;
 };

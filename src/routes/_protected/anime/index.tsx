@@ -24,7 +24,7 @@ function AnimeHomePage() {
   } = useAnimesByCategory(
     17,
     AnimeSortBy.TRENDING_DESC,
-    AnilistAnimeStatus.RELEASING
+    AnilistAnimeStatus.RELEASING,
   );
   const {
     data: popularAnimes,
@@ -64,7 +64,7 @@ function AnimeHomePage() {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {trendingAnimes && (
+      {trendingAnimes && trendingAnimes.results && (
         <div className="w-dvw max-w-[100dvw]">
           <TrendingHeroCarousel
             carouselItems={trendingAnimes.results.slice(0, 5)}
@@ -106,7 +106,7 @@ function AnimeHomePage() {
         </div>
       )}
       <div className="w-full pt-8 pb-32 space-y-10">
-        {trendingAnimes && (
+        {trendingAnimes && trendingAnimes.results && (
           <CategoryCarousel
             gotoLinkProps={{
               to: "/anime/catalog",

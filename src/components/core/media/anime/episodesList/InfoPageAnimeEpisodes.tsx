@@ -1,5 +1,4 @@
 import { AnimeFormat } from "@/utils/types/media/anime/animeAnilist";
-import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
 import { useParams } from "@tanstack/react-router";
@@ -11,11 +10,15 @@ import EpisodeCard from "../../shared/episode/EpisodeCard";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
-import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
+import {
+  //  AnimeEpisodesData,
+  ZencloudEpisodesData,
+} from "@/utils/types/media/anime/shared";
 import { getDefaultAnimeServer } from "@/utils/functions/media/sharedFunctions";
+import { useChunkZencloudEpisodes } from "@/services/media/anime/queries";
 
 type Props = {
-  episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
+  episodesQuery: UseQueryResult<ZencloudEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
   title: string;
@@ -45,7 +48,7 @@ export default function InfoPageAnimeEpisodes({
   } = episodesQuery;
 
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkAnimeEpisodes(episodes);
+    useChunkZencloudEpisodes(episodes);
 
   const { selectedChunk, setSelectedChunk } = useAnimeEpisodes({
     chunkedEpisodes,
@@ -61,6 +64,7 @@ export default function InfoPageAnimeEpisodes({
   }
 
   if (episodes && chunkedEpisodes) {
+    console.log("chunked", chunkedEpisodes);
     return (
       <EpisodesContainer variant="infoPage">
         <EpisodesHeader>
@@ -74,7 +78,7 @@ export default function InfoPageAnimeEpisodes({
               showMenuContentBorder
               onSelectItem={(epChunk) => setSelectedChunk(epChunk)}
               menuItemLabelNames={chunkedEpisodes.map(
-                (epChunk) => epChunk.label
+                (epChunk) => epChunk.label,
               )}
             />
           )}
