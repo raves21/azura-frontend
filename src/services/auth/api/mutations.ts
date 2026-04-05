@@ -1,11 +1,16 @@
 import { closeAllPopups } from "@/utils/functions/sharedFunctions";
-import { LoginResponse, UserBasicInfo, UserSession } from "@/utils/types/auth/auth";
+import {
+  LoginResponse,
+  UserBasicInfo,
+  UserSession,
+} from "@/utils/types/auth/auth";
 import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import { queryClient } from "@/utils/variables/queryClient";
 import { useMutation } from "@tanstack/react-query";
 import { setCurrentUser } from "@/utils/functions/auth/functions";
 import { useAuthStore } from "@/utils/stores/useAuthStore";
 import Bowser from "bowser";
+import { AxiosError } from "axios";
 
 export function useVerifyPassword() {
   return useMutation({
@@ -56,7 +61,7 @@ export function useAccountSettingLogoutSession({ key }: { key: string }) {
         (oldData) => {
           if (!oldData) return undefined;
           return oldData.filter((userSession) => userSession.id !== sessionId);
-        }
+        },
       );
     },
   });
@@ -95,6 +100,16 @@ export function useSendOTC({ key }: { key?: string }) {
         message: response.data.message,
         statusCode: response.status,
       };
+    },
+  });
+}
+
+export function useCheckEmailAvailability() {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      await api.post("/auth/check-email-availability", {
+        email,
+      });
     },
   });
 }
@@ -142,15 +157,29 @@ export function useLogin() {
       password: string;
     }) => {
       const userAgentParser = Bowser.getParser(window.navigator.userAgent);
-      const { data } = await api.post(`/auth/login`, {
-        email,
-        password,
-        browser: userAgentParser.getBrowser().name,
-        os: userAgentParser.getOS().name,
-        platform: userAgentParser.getPlatform().type,
-      });
-
-      return data as LoginResponse;
+      try {
+        const { data } = await api.post(`/auth/login`, {
+          email,
+          password,
+          browser: userAgentParser.getBrowser().name,
+          os: userAgentParser.getOS().name,
+          platform: userAgentParser.getPlatform().type,
+        });
+        return data as LoginResponse;
+      } catch (error: any) {
+        if (error instanceof TypeError) {
+          throw new Error("A server error occured. Please try again later.");
+        } else if (error instanceof AxiosError) {
+          if (error.response?.status === 422) {
+            throw new Error("Incorrect email or password.");
+          } else if (error.response?.status === 400) {
+            throw new Error("Please provide all credentials.");
+          } else {
+            throw new Error("An unknown error occured.");
+          }
+        }
+        throw new Error("An unknown error occured.");
+      }
     },
     onSuccess: (result, { password }) => {
       queryClient.clear();
@@ -183,7 +212,7 @@ export function useFindUserByEmail() {
           params: {
             email,
           },
-        }
+        },
       );
       return data.data as UserBasicInfo;
     },

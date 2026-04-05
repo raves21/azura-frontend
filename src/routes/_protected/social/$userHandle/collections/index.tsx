@@ -13,7 +13,7 @@ import { useCustomScrollRestoration } from "@/utils/hooks/useCustomScrollRestora
 import { useUserCollections } from "@/services/social/api/queries";
 
 export const Route = createFileRoute(
-  "/_protected/social/$userHandle/collections/"
+  "/_protected/social/$userHandle/collections/",
 )({
   component: () => <CollectionsPage />,
 });
@@ -55,7 +55,15 @@ function CollectionsPage() {
   if (userCollections) {
     const isEmpty = userCollections.pages[0].data.length === 0;
 
-    if (isEmpty) {
+    if (isEmpty && userHandle !== currentUser.handle) {
+      return (
+        <div className="pb-24 mt-16 gap-4 flex flex-col justify-center items-center">
+          <p className="text-lg font-medium">No collections yet.</p>
+        </div>
+      );
+    }
+
+    if (isEmpty && userHandle === currentUser.handle) {
       return (
         <div className="pb-24 mt-16 gap-4 flex flex-col justify-center items-center">
           <p className="text-lg font-medium">No collections yet.</p>
@@ -72,12 +80,10 @@ function CollectionsPage() {
           </button>
         </div>
       );
-    }
-
-    return (
-      <div className="flex flex-col gap-4 w-full p-3 pb-8 rounded-lg sm:p-5 bg-socialPrimary">
-        {currentUser.handle === userHandle &&
-          (isTabletUp ? (
+    } else {
+      return (
+        <div className="flex flex-col gap-4 w-full p-3 pb-8 rounded-lg sm:p-5 bg-socialPrimary">
+          {isTabletUp ? (
             <button
               onClick={() =>
                 toggleOpenDialog(<ManageCollectionDialog type="create" />)
@@ -104,34 +110,35 @@ function CollectionsPage() {
               </div>
               <ChevronRight className="size-4 group-hover:stroke-mainAccent stroke-mainWhite" />
             </button>
-          ))}
-        <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3 mobile-l:gap-3">
-          {userCollections.pages.map((page) => (
-            <Fragment key={page.page}>
-              {page.data.map((collection) => (
-                <Collection
-                  linkProps={{
-                    to: "/social/$userHandle/collections/$collectionId",
-                    params: {
-                      userHandle: userHandle,
-                      collectionId: collection.id,
-                    },
-                  }}
-                  key={collection.id}
-                  name={collection.name}
-                  previewPosters={getPreviewPosters(collection.previewMedias)}
-                  photo={collection.photo}
-                />
-              ))}
-              {isFetchingNextPage && (
-                <div ref={bottomPageRef} key={"bottom of page"}>
-                  <UserCollectionsSkeleton />
-                </div>
-              )}
-            </Fragment>
-          ))}
+          )}
+          <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3 mobile-l:gap-3">
+            {userCollections.pages.map((page) => (
+              <Fragment key={page.page}>
+                {page.data.map((collection) => (
+                  <Collection
+                    linkProps={{
+                      to: "/social/$userHandle/collections/$collectionId",
+                      params: {
+                        userHandle: userHandle,
+                        collectionId: collection.id,
+                      },
+                    }}
+                    key={collection.id}
+                    name={collection.name}
+                    previewPosters={getPreviewPosters(collection.previewMedias)}
+                    photo={collection.photo}
+                  />
+                ))}
+                {isFetchingNextPage && (
+                  <div ref={bottomPageRef} key={"bottom of page"}>
+                    <UserCollectionsSkeleton />
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
