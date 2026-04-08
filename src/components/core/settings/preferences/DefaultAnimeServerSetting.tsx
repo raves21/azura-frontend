@@ -21,6 +21,7 @@ export default function DefaultAnimeServerSetting() {
     <div className="w-full flex items-center flex-wrap gap-10 sm:gap-24 lg:gap-16 xl:gap-24 mt-6">
       {animeServerNames.map((animeServerName) => (
         <button
+          key={animeServerName}
           onClick={() => handleSelect(animeServerName)}
           className="flex items-center gap-4 group"
         >
