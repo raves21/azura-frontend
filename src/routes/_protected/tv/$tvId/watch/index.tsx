@@ -1,7 +1,6 @@
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import WatchPageTVEpisodes from "@/components/core/media/tv/episodeList/WatchPageTVEpisodes";
 import { useMediaScraper } from "@/services/media/sharedQueries";
@@ -11,7 +10,7 @@ import {
   useTVSeasonEpisodes,
 } from "@/services/media/tv/queries";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import WatchPageTVInfo from "@/components/core/media/tv/infoSection/WatchPageTVInfo";
@@ -19,18 +18,17 @@ import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episod
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
-import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
 import { TVMovieServerName } from "@/utils/types/media/shared";
 import TVMovieEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/TVMovieEmbedVideoPlayer";
 import { queryClient } from "@/utils/variables/queryClient";
 import { tmdbApi } from "@/utils/variables/axiosInstances/tmdbAxiosInstance";
 import { TMDBTVEpisode } from "@/utils/types/media/TV/tvShowTmdb";
 import {
+  buildTVEmbedLink,
   getDefaultTVMovieServer,
   getTMDBImageURL,
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
-import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
@@ -69,24 +67,6 @@ function WatchTVEpisodePage() {
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);
   const [selectedSeason, setSelectedSeason] = useState(tvSeason);
   const windowWidth = useWindowWidth();
-
-  const navigate = useNavigate();
-
-  useHandleSearchParamsValidationFailure({
-    isValidationFail: server === TVMovieServerName.azuraMain,
-    onValidationFail: () =>
-      navigate({
-        to: "/tv/$tvId/watch",
-        params: {
-          tvId,
-        },
-        search: {
-          server: TVMovieServerName.embed1,
-          tvEp,
-          tvSeason,
-        },
-      }),
-  });
 
   const {
     data: tvInfo,
@@ -209,31 +189,10 @@ function WatchTVEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {server === TVMovieServerName.embed1 ||
-            server === TVMovieServerName.embed2 ? (
-              <TVMovieEmbedVideoPlayer
-                server={server}
-                tmdbId={tvId}
-                tvEp={tvEp}
-                tvSeason={tvSeason}
-                type="tv"
-              />
-            ) : mediaScraperData && server === TVMovieServerName.azuraMain ? (
-              <VideoPlayer
-                mediaType="TV"
-                poster={getTMDBImageURL(currentEpisode.still_path)}
-                streamLink={
-                  mediaScraperData.url ? mediaScraperData.url[0].link : null
-                }
-                subtitleTracks={mediaScraperData.tracks}
-                headers={mediaScraperData.headers}
-                title={currentEpisode?.name || undefined}
-              />
-            ) : isMediaScraperLoading ? (
-              <VideoPlayerSkeleton />
-            ) : (
-              <VideoPlayerError serverName={server} />
-            )}
+            <TVMovieEmbedVideoPlayer
+              embedLink={buildTVEmbedLink(tvId, tvSeason, tvEp, server)}
+              server={server}
+            />
 
             <EpisodeTitleAndNumber
               episodeNumber={`Episode ${tvEp}`}

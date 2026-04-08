@@ -17,10 +17,6 @@ export default function AnimeSearchDialogResultCard({ anime }: Props) {
       params={{
         animeId: anime.id,
       }}
-      search={{
-        title: anime.title.english || anime.title.romaji,
-        lang: anime.title.english ? "eng" : "jap",
-      }}
       onClick={() => toggleOpenDialog(null)}
       className="flex w-full gap-4 px-3 py-2 hover:bg-gray-900/70"
     >

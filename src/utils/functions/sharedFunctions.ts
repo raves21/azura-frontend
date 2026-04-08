@@ -82,7 +82,8 @@ export function drawRandomURL({ urlList }: { urlList: string[] }): string {
   return randomURL;
 }
 
-export function simpleHash(str: string) {
+export function simpleHash(str: string | undefined) {
+  if (!str) return "";
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i);

@@ -1,5 +1,5 @@
 import { AnimeFormat } from "@/utils/types/media/anime/animeAnilist";
-import { useChunkZencloudEpisodes } from "@/services/media/anime/queries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useAnimeEpisodes } from "@/utils/hooks/useAnimeEpisodes";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
@@ -11,18 +11,13 @@ import EpisodesError from "../../shared/episode/EpisodesError";
 import EpisodesHeader from "../../shared/episode/EpisodesHeader";
 import AllEpisodesLoading from "../../../loadingSkeletons/media/episode/AllEpisodesLoading";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
-import {
-  // AnimeEpisodesData,
-  ZencloudEpisodesData,
-} from "@/utils/types/media/anime/shared";
+import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 import { animeServerNames } from "@/utils/variables/media/anime";
 
 type Props = {
-  episodesQuery: UseQueryResult<ZencloudEpisodesData, Error>;
+  episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
-  title: string;
-  titleLang: "eng" | "jap";
   episodeImageFallback: string | undefined;
   episodeListMaxHeight?: number;
   currentlyWatchingEpisodeNumber?: number;
@@ -31,8 +26,6 @@ type Props = {
 export default function WatchPageAnimeEpisodes({
   type,
   replace,
-  title,
-  titleLang,
   episodesQuery,
   episodeImageFallback,
   episodeListMaxHeight,
@@ -58,7 +51,7 @@ export default function WatchPageAnimeEpisodes({
   //   useChunkAnimeEpisodes(episodes);
 
   const { data: zencloudChunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkZencloudEpisodes(episodes);
+    useChunkAnimeEpisodes(episodes);
 
   const {
     selectedChunk,
@@ -79,7 +72,6 @@ export default function WatchPageAnimeEpisodes({
   }
 
   if (episodes && zencloudChunkedEpisodes) {
-    console.log(zencloudChunkedEpisodes);
     return (
       <EpisodesContainer
         variant="watchPage"
@@ -98,8 +90,6 @@ export default function WatchPageAnimeEpisodes({
                   animeServer: serverName,
                   epNum,
                   id,
-                  lang: titleLang,
-                  title,
                 },
                 params: {
                   animeId,
@@ -142,8 +132,6 @@ export default function WatchPageAnimeEpisodes({
                     },
                     search: {
                       id: episode.id.replace(/^\//, ""),
-                      title,
-                      lang: titleLang,
                       epNum: episode.number,
                       animeServer,
                     },

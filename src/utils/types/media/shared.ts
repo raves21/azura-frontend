@@ -94,14 +94,20 @@ export type PaginatedMediaExistenceInCollectionsResponse = PaginatedResponse & {
 };
 
 export enum TVMovieServerName {
-  azuraMain = "Azura Main",
-  embed1 = "Embed 1",
-  embed2 = "Embed 2",
+  serverZenith = "Server Zenith",
+  serverYuna = "Server Yuna",
+  serverXanthe = "Server Xanthe",
+  serverWisteria = "Server Wisteria",
+  serverVaelis = "Server Vaelis",
+  serverUmbra = "Server Umbra",
+  serverThalor = "Server Thalor",
+  serverSolus = "Server Solus",
 }
 
 export enum AnimeServerName {
-  server1 = "Server 1",
-  server2 = "Server 2",
+  serverAshen = "Server Ashen",
+  serverBlight = "Server Blight",
+  serverCrowe = "Server Crowe",
 }
 
 export type MovieArgs = {

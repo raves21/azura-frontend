@@ -10,19 +10,14 @@ import EpisodeCard from "../../shared/episode/EpisodeCard";
 import NoEpisodesAvailable from "../../shared/episode/NoEpisodesAvailable";
 import EpisodesError from "../../shared/episode/EpisodesError";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
-import {
-  //  AnimeEpisodesData,
-  ZencloudEpisodesData,
-} from "@/utils/types/media/anime/shared";
+import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 import { getDefaultAnimeServer } from "@/utils/functions/media/sharedFunctions";
-import { useChunkZencloudEpisodes } from "@/services/media/anime/queries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
 
 type Props = {
-  episodesQuery: UseQueryResult<ZencloudEpisodesData, Error>;
+  episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
   type: string | undefined;
   replace: boolean;
-  title: string;
-  titleLang: "eng" | "jap";
   episodeImageFallback: string | undefined;
   episodeListMaxHeight?: number;
   currentlyWatchingEpisodeNumber?: number;
@@ -32,8 +27,6 @@ export default function InfoPageAnimeEpisodes({
   type,
   replace,
   episodesQuery,
-  title,
-  titleLang,
   episodeImageFallback,
   currentlyWatchingEpisodeNumber,
 }: Props) {
@@ -48,7 +41,7 @@ export default function InfoPageAnimeEpisodes({
   } = episodesQuery;
 
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkZencloudEpisodes(episodes);
+    useChunkAnimeEpisodes(episodes);
 
   const { selectedChunk, setSelectedChunk } = useAnimeEpisodes({
     chunkedEpisodes,
@@ -64,7 +57,6 @@ export default function InfoPageAnimeEpisodes({
   }
 
   if (episodes && chunkedEpisodes) {
-    console.log("chunked", chunkedEpisodes);
     return (
       <EpisodesContainer variant="infoPage">
         <EpisodesHeader>
@@ -93,8 +85,6 @@ export default function InfoPageAnimeEpisodes({
                 },
                 search: {
                   id: episode.id.replace(/^\//, ""),
-                  title,
-                  lang: titleLang,
                   epNum: episode.number,
                   animeServer: getDefaultAnimeServer(),
                 },
@@ -109,9 +99,6 @@ export default function InfoPageAnimeEpisodes({
                 episode.title === `Episode ${episode.number}`
                   ? `EP ${episode.number}`
                   : episode.title
-              }
-              isCurrentlyWatched={
-                episode.number === currentlyWatchingEpisodeNumber
               }
               episodeImageFallback={episodeImageFallback}
               replace={replace}

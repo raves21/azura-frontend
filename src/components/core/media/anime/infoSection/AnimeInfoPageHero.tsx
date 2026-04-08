@@ -4,7 +4,7 @@ import {
   AnimeStatus,
 } from "@/utils/types/media/anime/animeAnilist";
 import { UseQueryResult } from "@tanstack/react-query";
-import { useChunkZencloudEpisodes } from "@/services/media/anime/queries";
+import { useChunkAnimeEpisodes } from "@/services/media/anime/queries";
 import InfoSectionBackgroundImage from "@/components/core/media/shared/info/InfoSectionBackgroundImage";
 import Rating from "@/components/core/media/shared/info/Rating";
 import Description from "@/components/core/media/shared/info/Description";
@@ -22,7 +22,7 @@ import {
   animeCompletedStatus,
   animeOngoingStatus,
 } from "@/utils/variables/media/anime";
-import { ZencloudEpisodesData } from "@/utils/types/media/anime/shared";
+import { AnimeEpisodesData } from "@/utils/types/media/anime/shared";
 import ShareMediaButton from "../../shared/info/ShareMediaButton";
 import { AnimeServerName } from "@/utils/types/media/shared";
 
@@ -30,7 +30,6 @@ type Props = {
   image: string | undefined;
   cover: string | undefined;
   title: string;
-  titleLang: "eng" | "jap";
   description: string | undefined;
   totalEpisodes: number | undefined;
   year: number | undefined;
@@ -39,7 +38,7 @@ type Props = {
   genres: AnimeGenre[] | undefined;
   rating: string | null | undefined;
   animeId: string;
-  episodesQuery: UseQueryResult<ZencloudEpisodesData, Error>;
+  episodesQuery: UseQueryResult<AnimeEpisodesData, Error>;
 };
 
 export default function AnimeInfoPageHero({
@@ -47,7 +46,6 @@ export default function AnimeInfoPageHero({
   cover,
   title,
   description,
-  titleLang,
   totalEpisodes,
   year,
   type,
@@ -59,7 +57,7 @@ export default function AnimeInfoPageHero({
 }: Props) {
   const navigate = useNavigate();
   const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-    useChunkZencloudEpisodes(episodesQuery.data);
+    useChunkAnimeEpisodes(episodesQuery.data);
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -120,10 +118,8 @@ export default function AnimeInfoPageHero({
                     params: { animeId: animeId },
                     search: {
                       epNum: 1,
-                      animeServer: AnimeServerName.server2,
+                      animeServer: AnimeServerName.serverAshen,
                       id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
-                      lang: titleLang,
-                      title,
                     },
                   });
               }}

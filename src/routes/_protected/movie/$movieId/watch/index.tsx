@@ -2,29 +2,26 @@ import WatchPageMovieInfo from "@/components/core/media/movie/infoSection/WatchP
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
 import CategoryCarouselItem from "@/components/core/media/shared/carousel/CategoryCarouselItem";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
-import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import {
   useMovieInfo,
   useMovieRecommendations,
 } from "@/services/media/movie/queries";
-import { useMediaScraper } from "@/services/media/sharedQueries";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
-import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
 import TVMovieEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/TVMovieEmbedVideoPlayer";
 import { TVMovieServerName } from "@/utils/types/media/shared";
 import { z } from "zod";
 import WatchPageMovieEpisode from "@/components/core/media/movie/episodeList/WatchPageMovieEpisode";
 import {
+  buildMovieEmbedLink,
   getDefaultTVMovieServer,
   getTMDBImageURL,
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
-import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 
 const watchMoviePageSchema = z.object({
   server: z.nativeEnum(TVMovieServerName).catch(getDefaultTVMovieServer()),
@@ -47,22 +44,6 @@ function WatchMoviePage() {
   const { movieId } = Route.useParams();
   const { server } = Route.useSearch();
 
-  const navigate = useNavigate();
-
-  useHandleSearchParamsValidationFailure({
-    isValidationFail: server === TVMovieServerName.azuraMain,
-    onValidationFail: () =>
-      navigate({
-        to: "/movie/$movieId/watch",
-        params: {
-          movieId,
-        },
-        search: {
-          server: TVMovieServerName.embed1,
-        },
-      }),
-  });
-
   const {
     data: movieInfo,
     isLoading: isMovieInfoLoading,
@@ -75,22 +56,7 @@ function WatchMoviePage() {
     error: movieRecommendationsError,
   } = useMovieRecommendations(movieId);
 
-  const mediaScraperQuery = useMediaScraper({
-    type: "MOVIE",
-    enabled: !!movieInfo,
-    mediaId: movieId,
-  });
-
-  const {
-    data: mediaScraperData,
-    isLoading: isMediaScraperLoading,
-    error: mediaScraperError,
-  } = mediaScraperQuery;
-
-  if (
-    isMediaScraperLoading &&
-    (isMovieInfoLoading || isMovieRecommendationsLoading)
-  ) {
+  if (isMovieInfoLoading || isMovieRecommendationsLoading) {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -104,7 +70,7 @@ function WatchMoviePage() {
       </main>
     );
   }
-  if (mediaScraperError && (movieInfoError || movieRecommendationsError)) {
+  if (movieInfoError || movieRecommendationsError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this movie.</p>
@@ -118,29 +84,10 @@ function WatchMoviePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div className="w-full h-fit">
-            {server === TVMovieServerName.embed1 ||
-            server === TVMovieServerName.embed2 ? (
-              <TVMovieEmbedVideoPlayer
-                server={server}
-                tmdbId={movieId}
-                type="movie"
-              />
-            ) : mediaScraperData && server === TVMovieServerName.azuraMain ? (
-              <VideoPlayer
-                mediaType="MOVIE"
-                poster={getTMDBImageURL(movieInfo.backdrop_path)}
-                streamLink={
-                  mediaScraperData.url ? mediaScraperData.url[0].link : null
-                }
-                subtitleTracks={mediaScraperData.tracks}
-                headers={mediaScraperData.headers}
-                title={movieInfo.title}
-              />
-            ) : isMediaScraperLoading ? (
-              <VideoPlayerSkeleton />
-            ) : (
-              <VideoPlayerError serverName={server} />
-            )}
+            <TVMovieEmbedVideoPlayer
+              server={server}
+              embedLink={buildMovieEmbedLink(movieId, server)}
+            />
             <EpisodeTitleAndNumber
               episodeNumber={movieInfo.title}
               episodeTitle={getTMDBReleaseYear(movieInfo.release_date)}

@@ -8,10 +8,11 @@ import YearAndStatus from "@/components/core/media/shared/info/YearAndStatus";
 import Title from "@/components/core/media/shared/info/Title";
 import InfoDetails from "@/components/core/media/shared/info/InfoDetails";
 import InfoItem from "@/components/core/media/shared/info/InfoItem";
-import { TVMovieServerName, TMDBGenre } from "@/utils/types/media/shared";
+import { TMDBGenre } from "@/utils/types/media/shared";
 import GenreListTMDB from "../../shared/info/GenreListTMDB";
 import { useNavigate } from "@tanstack/react-router";
 import ShareMediaButton from "../../shared/info/ShareMediaButton";
+import { getDefaultTVMovieServer } from "@/utils/functions/media/sharedFunctions";
 
 type Props = {
   image: string;
@@ -39,10 +40,6 @@ export default function MovieInfoPageHero({
   movieId,
 }: Props) {
   const navigate = useNavigate();
-
-  const defaultTVMovieServer = localStorage.getItem(
-    "defaultTVMovieServer"
-  ) as TVMovieServerName;
 
   return (
     <section className="relative flex justify-center w-full text-sm md:text-base">
@@ -80,7 +77,7 @@ export default function MovieInfoPageHero({
                   to: "/movie/$movieId/watch",
                   params: { movieId },
                   search: {
-                    server: defaultTVMovieServer || TVMovieServerName.embed1,
+                    server: getDefaultTVMovieServer(),
                   },
                 });
               }}

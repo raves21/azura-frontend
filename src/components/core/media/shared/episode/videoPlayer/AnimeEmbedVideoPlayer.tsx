@@ -5,7 +5,7 @@ import VideoPlayerError from "./VideoPlayerError";
 import { useSearch } from "@tanstack/react-router";
 
 type Props = {
-  embedLink: string;
+  embedLink: string | null;
 };
 
 export default function AnimeEmbedVideoPlayer({ embedLink }: Props) {
@@ -19,25 +19,27 @@ export default function AnimeEmbedVideoPlayer({ embedLink }: Props) {
   return (
     <>
       {isLoading && <VideoPlayerSkeleton />}
-      {isError && <VideoPlayerError serverName={server} />}
-      <div
-        className={cn(
-          "w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none",
-          isLoading || isError ? "hidden" : ""
-        )}
-      >
-        <iframe
-          src={embedLink}
-          onLoad={() => setIsLoading(false)}
-          onError={() => {
-            setIsLoading(false);
-            setIsError(true);
-          }}
-          className="border-0 size-full absolute inset-0"
-          allowFullScreen={true}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-        />
-      </div>
+      {(isError || !embedLink) && <VideoPlayerError serverName={server} />}
+      {embedLink && (
+        <div
+          className={cn(
+            "w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none",
+            isLoading || isError ? "hidden" : "",
+          )}
+        >
+          <iframe
+            src={embedLink}
+            onLoad={() => setIsLoading(false)}
+            onError={() => {
+              setIsLoading(false);
+              setIsError(true);
+            }}
+            className="border-0 size-full absolute inset-0"
+            allowFullScreen={true}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          />
+        </div>
+      )}
     </>
   );
 }

@@ -1,5 +1,4 @@
-import { drawRandomURL } from "@/utils/functions/sharedFunctions";
-import { AniwatchEpisode } from "@/utils/types/media/anime/animeAniwatch";
+import { drawRandomURL, simpleHash } from "@/utils/functions/sharedFunctions";
 import {
   AnimeInfoAnizip,
   AnizipEpisodes,
@@ -11,27 +10,23 @@ import {
 } from "@/utils/types/media/shared";
 
 export function getEpisodesToBeRendered(
-  aniwatchEpisodes: AniwatchEpisode[] | undefined,
   animeInfoAnizip: AnimeInfoAnizip | undefined,
 ): EpisodeToBeRendered[] | null {
-  if (aniwatchEpisodes && aniwatchEpisodes.length > 0) {
-    return aniwatchEpisodes.map((episode) => {
-      const anizipEpisode = animeInfoAnizip
-        ? animeInfoAnizip.episodes[episode.number]
-          ? animeInfoAnizip.episodes[episode.number]
-          : null
-        : null;
-      return {
-        id: episode.episodeId,
-        title:
-          episode.title || anizipEpisode?.title.en || `EP ${episode.number}`,
-        number: episode.number,
-        image: anizipEpisode?.image || null,
-      };
-    });
-  } else {
-    return null;
+  if (animeInfoAnizip) {
+    const episodes = Object.entries(animeInfoAnizip.episodes);
+
+    if (!episodes.length) return null;
+
+    return Object.entries(animeInfoAnizip.episodes)
+      .filter(([key]) => /^\d+$/.test(key))
+      .map(([epNum, ep]) => ({
+        id: `${simpleHash(JSON.stringify(animeInfoAnizip.titles))}-${epNum}`,
+        image: ep.image,
+        number: ep.episodeNumber,
+        title: ep.title.en || `EP ${ep.episodeNumber}`,
+      }));
   }
+  return null;
 }
 
 export function getZencloudEpisodesToBeRendered(

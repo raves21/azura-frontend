@@ -5,17 +5,13 @@ import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import { z } from "zod";
 import { useWindowWidth } from "@/utils/hooks/useWindowWidth";
-// import VideoPlayer from "@/components/core/media/shared/episode/videoPlayer/VideoPlayer";
 import WatchPageAnimeInfo from "@/components/core/media/anime/infoSection/WatchPageAnimeInfo";
 import {
-  // useAnimeEpisodeStreamLinkAniwatch,
-  // useAnimeEpisodes,
+  useAnimeEpisodes,
   useAnimeInfo,
-  // useChunkAnimeEpisodes,
-  useChunkZencloudEpisodes,
+  useChunkAnimeEpisodes,
   useEmbedStreamZencloud,
-  useZencloudEpisodeInfo,
-  useZencloudEpisodes,
+  useEpisodeInfo,
 } from "@/services/media/anime/queries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
 import MediaCard from "@/components/core/media/shared/MediaCard";
@@ -30,11 +26,10 @@ import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer
 import {
   AnimeServerName,
   SearchSchemaValidationStatus,
-  // Subtitle,
 } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
-// import { Kind } from "@/utils/types/media/anime/animeAnilist";
 import {
+  buildAnimeEmbedLink,
   getAnimeRatingInfoPage,
   getDefaultAnimeServer,
 } from "@/utils/functions/media/sharedFunctions";
@@ -42,8 +37,6 @@ import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoP
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
-  title: z.string(),
-  lang: z.enum(["eng", "jap"]),
   epNum: z.coerce.number(),
   animeServer: z.nativeEnum(AnimeServerName).catch(getDefaultAnimeServer()),
 });
@@ -62,11 +55,9 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
       };
     } else {
       return {
-        title: "",
-        lang: "eng",
         id: "",
         epNum: 1,
-        animeServer: AnimeServerName.server2,
+        animeServer: AnimeServerName.serverAshen,
         success: false,
       };
     }
@@ -75,14 +66,7 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
 
 function WatchEpisodePage() {
   const navigate = useNavigate();
-  const {
-    id,
-    lang,
-    title,
-    success,
-    epNum,
-    animeServer: server,
-  } = Route.useSearch();
+  const { id, success, epNum, animeServer: server } = Route.useSearch();
   const { animeId } = Route.useParams();
 
   useEffect(() => {
@@ -90,10 +74,7 @@ function WatchEpisodePage() {
   }, []);
 
   useHandleSearchParamsValidationFailure({
-    isValidationFail:
-      !success ||
-      //temporarily disable access to server 1
-      server === AnimeServerName.server1,
+    isValidationFail: !success,
     onValidationFail: () => navigate({ to: "/anime" }),
   });
 
@@ -111,32 +92,17 @@ function WatchEpisodePage() {
   const { data: zencloudStream, isLoading: isZencloudStreamLoading } =
     useEmbedStreamZencloud({ animeId: animeId, episodeNum: epNum });
 
-  // const episodesQuery = useAnimeEpisodes({
-  //   animeId,
-  //   title,
-  //   titleLang: lang,
-  // });
-
-  const zencloudEpisodesQuery = useZencloudEpisodes(animeId);
+  const episodesQuery = useAnimeEpisodes(animeId);
 
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
     error: animeInfoError,
-  } = useAnimeInfo({ animeId, title, titleLang: lang });
+  } = useAnimeInfo({ animeId });
 
-  const { data: zencloudChunkedEpisodes } = useChunkZencloudEpisodes(
-    zencloudEpisodesQuery.data,
-  );
+  const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
 
-  const { data: zencloudEpisodeInfo } = useZencloudEpisodeInfo(
-    id,
-    zencloudChunkedEpisodes,
-  );
-
-  // const { data: chunkedEpisodes } = useChunkAnimeEpisodes(episodesQuery.data);
-
-  // const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
+  const { data: episodeInfo } = useEpisodeInfo(id, chunkedEpisodes);
 
   //sets the videoAndEpisodeInfoContainerHeight everytime window width changes
   useEffect(() => {
@@ -145,15 +111,9 @@ function WatchEpisodePage() {
         videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height,
       );
     }
-  }, [
-    // aniwatchStreamLink,
-    zencloudEpisodeInfo,
-    windowWidth,
-    zencloudStream,
-    server,
-  ]);
+  }, [episodeInfo, windowWidth, zencloudStream, server]);
 
-  if (isAnimeInfoLoading || zencloudEpisodesQuery.isLoading) {
+  if (isAnimeInfoLoading || episodesQuery.isLoading) {
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
@@ -168,7 +128,7 @@ function WatchEpisodePage() {
     );
   }
 
-  if (zencloudEpisodesQuery.error || animeInfoError) {
+  if (episodesQuery.error || animeInfoError) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-darkBg">
         <p>Oops! There was an error fetching this episode.</p>
@@ -177,47 +137,17 @@ function WatchEpisodePage() {
     );
   }
 
-  if (animeInfo && zencloudEpisodesQuery.data && zencloudEpisodeInfo) {
+  if (animeInfo && episodesQuery.data && episodeInfo) {
     const {
       animeInfoAnilist,
       // animeInfoAniwatch
     } = animeInfo;
 
-    // let subtitleTracks: Subtitle[] | undefined = undefined;
-    // if (server === AnimeServerName.server1 && aniwatchStreamLink) {
-    //   subtitleTracks = aniwatchStreamLink.tracks
-    //     .filter((track) => track.kind === Kind.Captions)
-    //     .map((caption) => ({
-    //       lang: caption.label!,
-    //       url: caption.file,
-    //     }));
-    // }
-
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {/* {server === AnimeServerName.server1 &&
-              (aniwatchStreamLink && aniwatchStreamLink.sources.length !== 0 ? (
-                <VideoPlayer
-                  mediaType="ANIME"
-                  poster={
-                    episodeInfo.image ||
-                    animeInfoAnilist?.cover ||
-                    animeInfoAniwatch?.info.poster
-                  }
-                  subtitleTracks={subtitleTracks}
-                  streamLink={aniwatchStreamLink.sources[0].url}
-                  headers={aniwatchStreamLink.headers}
-                  title={episodeInfo.title}
-                />
-              ) : isAniwatchStreamLinkLoading ? (
-                <VideoPlayerSkeleton />
-              ) : (
-                <VideoPlayerError serverName={server} />
-              ))} */}
-
-            {server === AnimeServerName.server2 &&
+            {server === AnimeServerName.serverAshen &&
               (zencloudStream && zencloudStream.player_url ? (
                 <AnimeEmbedVideoPlayer embedLink={zencloudStream.player_url} />
               ) : isZencloudStreamLoading ? (
@@ -226,60 +156,54 @@ function WatchEpisodePage() {
                 <VideoPlayerError serverName={server} />
               ))}
 
+            {server === AnimeServerName.serverBlight && (
+              <AnimeEmbedVideoPlayer
+                embedLink={buildAnimeEmbedLink(id, epNum, server)}
+              />
+            )}
+
+            {server === AnimeServerName.serverCrowe && (
+              <AnimeEmbedVideoPlayer
+                embedLink={buildAnimeEmbedLink(
+                  animeId,
+                  epNum,
+                  server,
+                  animeInfoAnilist.type === "MOVIE",
+                )}
+              />
+            )}
+
             <EpisodeTitleAndNumber
-              episodeNumber={`Episode ${zencloudEpisodeInfo.number}`}
-              episodeTitle={zencloudEpisodeInfo.title}
+              episodeNumber={`Episode ${episodeInfo.number}`}
+              episodeTitle={episodeInfo.title}
             />
           </div>
           <WatchPageAnimeEpisodes
-            title={title}
-            titleLang={lang}
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}
             episodeImageFallback={
               animeInfoAnilist?.cover || animeInfoAnilist?.image
-              // ||
-              // animeInfoAniwatch?.info.poster
             }
-            episodesQuery={zencloudEpisodesQuery}
+            episodesQuery={episodesQuery}
             replace
-            type={
-              animeInfoAnilist?.type
-              // || animeInfoAniwatch?.info.stats.type
-            }
-            currentlyWatchingEpisodeNumber={zencloudEpisodeInfo.number}
+            type={animeInfoAnilist?.type}
+            currentlyWatchingEpisodeNumber={episodeInfo.number}
           />
         </section>
         <WatchPageAnimeInfo
-          title={title}
-          cover={
-            animeInfoAnilist?.cover || animeInfoAnilist?.image
-            // ||
-            // animeInfoAniwatch?.info.poster
+          title={
+            animeInfoAnilist.title.english ||
+            animeInfoAnilist.title.romaji ||
+            animeInfoAnilist.title.native
           }
-          titleLang={lang}
-          image={
-            animeInfoAnilist?.image
-            // || animeInfoAniwatch?.info.poster
-          }
-          description={
-            animeInfoAnilist?.description
-            // || animeInfoAniwatch?.info.description
-          }
+          cover={animeInfoAnilist?.cover || animeInfoAnilist?.image}
+          image={animeInfoAnilist?.image}
+          description={animeInfoAnilist?.description}
           genres={animeInfoAnilist?.genres}
           status={animeInfoAnilist?.status}
           totalEpisodes={animeInfoAnilist?.totalEpisodes}
-          type={
-            animeInfoAnilist?.type
-            // || animeInfoAniwatch?.info.stats.type
-          }
+          type={animeInfoAnilist?.type}
           year={animeInfoAnilist?.releaseDate}
-          rating={getAnimeRatingInfoPage(
-            // animeInfoAniwatch?.moreInfo.malscore
-            //   ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
-            //   :
-            undefined,
-            animeInfoAnilist?.rating,
-          )}
+          rating={getAnimeRatingInfoPage(undefined, animeInfoAnilist?.rating)}
         />
         {animeInfoAnilist?.recommendations && (
           <CategoryCarousel
@@ -293,12 +217,6 @@ function WatchEpisodePage() {
                     linkProps={{
                       to: "/anime/$animeId",
                       params: { animeId: `${recommendation.id}` },
-                      search: {
-                        title:
-                          recommendation.title.english ||
-                          recommendation.title.romaji,
-                        lang: recommendation.title.english ? "eng" : "jap",
-                      },
                     }}
                     subLabels={[recommendation.type, recommendation.status]}
                     title={

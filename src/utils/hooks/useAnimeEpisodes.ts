@@ -1,14 +1,10 @@
 import { isEqual } from "radash";
 import { useEffect, useState, useRef } from "react";
-import {
-  EpisodeChunk,
-  EpisodeToBeRendered,
-  ZencloudEpisodeChunk,
-} from "../types/media/shared";
+import { EpisodeChunk, EpisodeToBeRendered } from "../types/media/shared";
 import { useScrollToElement } from "./useScrollToElement";
 
 type Args = {
-  chunkedEpisodes: ZencloudEpisodeChunk[] | null | undefined;
+  chunkedEpisodes: EpisodeChunk[] | null | undefined;
   currentlyWatchingEpisodeNumber: number | undefined;
 };
 

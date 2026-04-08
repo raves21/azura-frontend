@@ -7,6 +7,8 @@ import {
   ZencloudEpisodeChunk,
   ZencloudEpisodeToBeRendered,
 } from "@/utils/types/media/shared";
+import { animeServerNames } from "@/utils/variables/media/anime";
+import { tvMovieserverNames } from "@/utils/variables/media/shared";
 
 export function getTMDBImageURL(imagePath: string) {
   return `https://image.tmdb.org/t/p/original${imagePath}`;
@@ -77,7 +79,6 @@ export function chunkZencloudEpisodes(
       };
     },
   );
-  console.log(chunkedEpisodes);
   return chunkedEpisodes;
 }
 
@@ -103,26 +104,94 @@ export function chunkEpisodes(
   return chunkedEpisodes;
 }
 
+export function buildMovieEmbedLink(id: string, server: TVMovieServerName) {
+  switch (server) {
+    case TVMovieServerName.serverZenith:
+      return `${import.meta.env.VITE_VIDEASY_URL}/movie/${id}?color=c026d3`;
+    case TVMovieServerName.serverYuna:
+      return `${import.meta.env.VITE_RIVESTREAM_URL}?type=movie&id=${id}`;
+    case TVMovieServerName.serverXanthe:
+      return `${import.meta.env.VITE_VIDROCK_URL}/movie/${id}?theme=c026d3&episodeselector=false&autoplay=false`;
+    case TVMovieServerName.serverWisteria:
+      return `${import.meta.env.VITE_VIDNEST_URL}/movie/${id}`;
+    case TVMovieServerName.serverVaelis:
+      return `${import.meta.env.VITE_VIDZEN_URL}/movie/${id}`;
+    case TVMovieServerName.serverUmbra:
+      return `${import.meta.env.VITE_VIDFAST_URL}/movie/${id}?autoPlay=false`;
+    case TVMovieServerName.serverThalor:
+      return `${import.meta.env.VITE_EMBED1_URL}/movie/${id}`;
+    case TVMovieServerName.serverSolus:
+      return `${import.meta.env.VITE_EMBED2_URL}/movie?tmdb=${id}`;
+    default:
+      return null;
+  }
+}
+
+export function buildTVEmbedLink(
+  id: string,
+  season: number,
+  episode: number,
+  server: TVMovieServerName,
+) {
+  switch (server) {
+    case TVMovieServerName.serverZenith:
+      return `${import.meta.env.VITE_VIDEASY_URL}/tv/${id}/${season}/${episode}?color=c026d3`;
+    case TVMovieServerName.serverYuna:
+      return `${import.meta.env.VITE_RIVESTREAM_URL}?type=tv&id=${id}&season=${season}&episode=${episode}`;
+    case TVMovieServerName.serverXanthe:
+      return `${import.meta.env.VITE_VIDROCK_URL}/tv/${id}/${season}/${episode}?theme=c026d3&episodeselector=false&autoplay=false`;
+    case TVMovieServerName.serverWisteria:
+      return `${import.meta.env.VITE_VIDNEST_URL}/tv/${id}/${season}/${episode}`;
+    case TVMovieServerName.serverVaelis:
+      return `${import.meta.env.VITE_VIDZEN_URL}/tv/${id}/${season}/${episode}`;
+    case TVMovieServerName.serverUmbra:
+      return `${import.meta.env.VITE_VIDFAST_URL}/tv/${id}/${season}/${episode}?autoPlay=false`;
+    case TVMovieServerName.serverThalor:
+      return `${import.meta.env.VITE_EMBED1_URL}/tv/${id}/${season}/${episode}`;
+    case TVMovieServerName.serverSolus:
+      return `${import.meta.env.VITE_EMBED2_URL}/tv?tmdb=${id}&season=${season}&episode=${episode}`;
+    default:
+      return null;
+  }
+}
+
+export function buildAnimeEmbedLink(
+  id: string,
+  episode: number,
+  server: AnimeServerName,
+  isMovie?: boolean,
+) {
+  switch (server) {
+    case AnimeServerName.serverBlight:
+      return `${import.meta.env.VITE_VIDNEST_URL}/anime/${id}/${episode}/sub`;
+    case AnimeServerName.serverCrowe:
+      if (isMovie) {
+        return `${import.meta.env.VITE_VIDEASY_URL}/anime/${id}?color=c026d3`;
+      }
+      return `${import.meta.env.VITE_VIDEASY_URL}/anime/${id}/${episode}?color=c026d3`;
+    default:
+      return null;
+  }
+}
+
 export function getDefaultTVMovieServer() {
-  const server = localStorage.getItem(
+  const defaultServer = localStorage.getItem(
     "defaultTVMovieServer",
   ) as TVMovieServerName | null;
 
-  //temp set back to embed1
-  if (server && server === "Azura Main") {
-    localStorage.setItem("defaultTVMovieServer", TVMovieServerName.embed1);
+  if (defaultServer && tvMovieserverNames.includes(defaultServer)) {
+    return defaultServer;
   }
-  const serverFinal = localStorage.getItem(
-    "defaultTVMovieServer",
-  ) as TVMovieServerName | null;
-  return serverFinal || TVMovieServerName.embed1;
+  return TVMovieServerName.serverZenith;
 }
 
 export function getDefaultAnimeServer() {
-  // const server = localStorage.getItem(
-  //   "defaultAnimeServer",
-  // ) as AnimeServerName | null;
+  const defaultServer = localStorage.getItem(
+    "defaultAnimeServer",
+  ) as AnimeServerName | null;
 
-  //temporarily default to server2
-  return AnimeServerName.server2;
+  if (defaultServer && animeServerNames.includes(defaultServer)) {
+    return defaultServer;
+  }
+  return AnimeServerName.serverAshen;
 }

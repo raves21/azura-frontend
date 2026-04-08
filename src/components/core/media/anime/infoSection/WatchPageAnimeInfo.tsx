@@ -27,7 +27,6 @@ type Props = {
   status: string | undefined;
   genres: string[] | undefined;
   rating: string | null | undefined;
-  titleLang: "eng" | "jap";
 };
 
 export default function WatchPageAnimeInfo({
@@ -41,7 +40,6 @@ export default function WatchPageAnimeInfo({
   status,
   genres,
   rating,
-  titleLang,
 }: Props) {
   return (
     <section className="relative flex flex-col w-full gap-6 py-[90px] mt-8 mb-5 justify-center">
@@ -52,10 +50,6 @@ export default function WatchPageAnimeInfo({
           <Title
             linkProps={{
               to: "/anime/$animeId",
-              search: {
-                title,
-                lang: titleLang,
-              },
             }}
             title={title || ""}
             variant="watchPage"
@@ -75,13 +69,13 @@ export default function WatchPageAnimeInfo({
                   status &&
                   cn("font-semibold text-orange-500", {
                     "text-green-500": animeOngoingStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                     "text-blue-500": animeCompletedStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                     "text-red-500": animeCancelledStatus.includes(
-                      status as AnimeStatus
+                      status as AnimeStatus,
                     ),
                   })
                 }

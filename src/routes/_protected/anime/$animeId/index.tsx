@@ -1,8 +1,5 @@
-import {
-  useAnimeInfo,
-  useZencloudEpisodes,
-} from "@/services/media/anime/queries";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useAnimeEpisodes, useAnimeInfo } from "@/services/media/anime/queries";
+import { createFileRoute } from "@tanstack/react-router";
 import AnimeInfoPageHero from "@/components/core/media/anime/infoSection/AnimeInfoPageHero";
 import { useEffect } from "react";
 import CategoryCarousel from "@/components/core/media/shared/carousel/CategoryCarousel";
@@ -10,54 +7,23 @@ import CategoryCarouselItem from "@/components/core/media/shared/carousel/Catego
 import MediaCard from "@/components/core/media/shared/MediaCard";
 import InfoPageAnimeEpisodes from "@/components/core/media/anime/episodesList/InfoPageAnimeEpisodes";
 import InfoPageHeroSkeleton from "@/components/core/loadingSkeletons/media/info/InfoPageHeroSkeleton";
-import z from "zod";
-import { SearchSchemaValidationStatus } from "@/utils/types/media/shared";
-import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import { getAnimeRatingInfoPage } from "@/utils/functions/media/sharedFunctions";
-
-const searchParamsSchema = z.object({
-  title: z.string(),
-  lang: z.enum(["eng", "jap"]),
-});
-
-type SearchParamsSchema = z.infer<typeof searchParamsSchema> &
-  SearchSchemaValidationStatus;
+import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 
 export const Route = createFileRoute("/_protected/anime/$animeId/")({
   component: () => <AnimeInfoPage />,
-  validateSearch: (search): SearchParamsSchema => {
-    const validatedSearch = searchParamsSchema.safeParse(search);
-    if (validatedSearch.success) {
-      return {
-        ...validatedSearch.data,
-        success: true,
-      };
-    }
-    return {
-      title: "",
-      lang: "eng",
-      success: false,
-    };
-  },
 });
 
 function AnimeInfoPage() {
   const { animeId } = Route.useParams();
-  const { lang, title, success } = Route.useSearch();
-  const navigate = useNavigate();
 
-  useHandleSearchParamsValidationFailure({
-    isValidationFail: !success,
-    onValidationFail: () => navigate({ to: "/anime" }),
-  });
-
-  const episodesQuery = useZencloudEpisodes(animeId);
+  const episodesQuery = useAnimeEpisodes(animeId);
 
   const {
     data: animeInfo,
     isLoading: isAnimeInfoLoading,
     error: animeInfoError,
-  } = useAnimeInfo({ animeId, title, titleLang: lang });
+  } = useAnimeInfo({ animeId });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,14 +33,7 @@ function AnimeInfoPage() {
     return (
       <main className="w-full pb-32">
         <InfoPageHeroSkeleton />
-        <InfoPageAnimeEpisodes
-          title={title}
-          titleLang={lang}
-          episodeImageFallback={undefined}
-          episodesQuery={episodesQuery}
-          replace={false}
-          type="TV"
-        />
+        <AllEpisodesLoading variant="infoPage" />
       </main>
     );
   }
@@ -89,17 +48,18 @@ function AnimeInfoPage() {
   }
 
   if (animeInfo) {
-    const {
-      animeInfoAnilist,
-      // animeInfoAniwatch
-    } = animeInfo;
+    const { animeInfoAnilist } = animeInfo;
     return (
       <main className="w-full pb-32">
         <AnimeInfoPageHero
+          title={
+            animeInfoAnilist.title?.english ||
+            animeInfoAnilist.title?.romaji ||
+            animeInfoAnilist.title?.romaji ||
+            ""
+          }
           episodesQuery={episodesQuery}
           animeId={animeId}
-          title={title}
-          titleLang={lang}
           cover={
             animeInfoAnilist?.cover
             // || animeInfoAniwatch?.info.poster
@@ -129,8 +89,6 @@ function AnimeInfoPage() {
           )}
         />
         <InfoPageAnimeEpisodes
-          title={title}
-          titleLang={lang}
           episodesQuery={episodesQuery}
           replace={false}
           type={animeInfoAnilist?.type}
@@ -153,12 +111,6 @@ function AnimeInfoPage() {
                       linkProps={{
                         to: "/anime/$animeId",
                         params: { animeId: `${recommendation.id}` },
-                        search: {
-                          title:
-                            recommendation.title.english ||
-                            recommendation.title.romaji,
-                          lang: recommendation.title.english ? "eng" : "jap",
-                        },
                       }}
                       subLabels={[recommendation.type, recommendation.status]}
                       title={

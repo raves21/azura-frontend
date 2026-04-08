@@ -64,7 +64,7 @@ function AnimeHomePage() {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {trendingAnimes && trendingAnimes.results && (
+      {trendingAnimes && trendingAnimes.results.length && (
         <div className="w-dvw max-w-[100dvw]">
           <TrendingHeroCarousel
             carouselItems={trendingAnimes.results.slice(0, 5)}
@@ -95,10 +95,6 @@ function AnimeHomePage() {
                   params: {
                     animeId: anime.id,
                   },
-                  search: {
-                    title: anime.title.english || anime.title.romaji,
-                    lang: anime.title.english ? "eng" : "jap",
-                  },
                 }}
               />
             )}
@@ -106,7 +102,7 @@ function AnimeHomePage() {
         </div>
       )}
       <div className="w-full pt-8 pb-32 space-y-10">
-        {trendingAnimes && trendingAnimes.results && (
+        {trendingAnimes && trendingAnimes.results.length && (
           <CategoryCarousel
             gotoLinkProps={{
               to: "/anime/catalog",
@@ -123,12 +119,6 @@ function AnimeHomePage() {
                     linkProps={{
                       to: "/anime/$animeId",
                       params: { animeId: trendingAnime.id },
-                      search: {
-                        title:
-                          trendingAnime.title.english ||
-                          trendingAnime.title.romaji,
-                        lang: trendingAnime.title.english ? "eng" : "jap",
-                      },
                     }}
                     subLabels={[
                       trendingAnime.type,
@@ -147,7 +137,7 @@ function AnimeHomePage() {
             categoryName="Trending"
           />
         )}
-        {topRatedAnimes && (
+        {topRatedAnimes && topRatedAnimes.results.length && (
           <CategoryCarousel
             gotoLinkProps={{
               to: "/anime/catalog",
@@ -164,12 +154,6 @@ function AnimeHomePage() {
                     linkProps={{
                       to: "/anime/$animeId",
                       params: { animeId: topRatedAnime.id },
-                      search: {
-                        title:
-                          topRatedAnime.title.english ||
-                          topRatedAnime.title.romaji,
-                        lang: topRatedAnime.title.english ? "eng" : "jap",
-                      },
                     }}
                     subLabels={[
                       topRatedAnime.type,
@@ -188,7 +172,7 @@ function AnimeHomePage() {
             categoryName="Top Rated"
           />
         )}
-        {popularAnimes && (
+        {popularAnimes && popularAnimes.results.length && (
           <CategoryCarousel
             gotoLinkProps={{
               to: "/anime/catalog",
@@ -205,12 +189,6 @@ function AnimeHomePage() {
                     linkProps={{
                       to: "/anime/$animeId",
                       params: { animeId: popularAnime.id },
-                      search: {
-                        title:
-                          popularAnime.title.english ||
-                          popularAnime.title.romaji,
-                        lang: popularAnime.title.english ? "eng" : "jap",
-                      },
                     }}
                     subLabels={[
                       popularAnime.type,

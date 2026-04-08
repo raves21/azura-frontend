@@ -46,7 +46,7 @@ export default function CollectionItemPreviewContainer({
         state.toggleOpenDrawer,
         state.toggleOpenDialog,
         state.toggleOpenDialogSecondary,
-      ])
+      ]),
     );
 
   const { isTabletSmallUp } = useWindowBreakpoints();
@@ -58,7 +58,7 @@ export default function CollectionItemPreviewContainer({
     }
     if (actionButtonsContainerRef.current) {
       setActionButtonsContainerWidth(
-        actionButtonsContainerRef.current.getBoundingClientRect().width
+        actionButtonsContainerRef.current.getBoundingClientRect().width,
       );
     }
   }, []);
@@ -80,10 +80,6 @@ export default function CollectionItemPreviewContainer({
         to: "/anime/$animeId",
         params: {
           animeId: mediaId,
-        },
-        search: {
-          title: media.title,
-          lang: "eng",
         },
       };
       break;
@@ -136,7 +132,7 @@ export default function CollectionItemPreviewContainer({
             {...visitLinkProps}
             onClick={closePopup}
             className={cn(
-              "flex bg-blue-500 hover:bg-blue-600 items-center drop-shadow-lg gap-2 py-2 px-3 rounded-lg group transition-colors group"
+              "flex bg-blue-500 hover:bg-blue-600 items-center drop-shadow-lg gap-2 py-2 px-3 rounded-lg group transition-colors group",
             )}
           >
             <SquareArrowOutUpRight className="stroke-mainWhite size-4 transition-colors" />
@@ -152,7 +148,7 @@ export default function CollectionItemPreviewContainer({
                     mutationKey={mutationKey}
                     header="Remove from collection?"
                     message="This will remove this item from this collection. This action cannot be undone."
-                  />
+                  />,
                 );
               } else {
                 toggleOpenDrawer(null);
@@ -163,7 +159,7 @@ export default function CollectionItemPreviewContainer({
                     header="Remove from collection?"
                     afterConfirmSuccessAction={() => closeAllPopups()}
                     message="This will remove this item from this collection. This action cannot be undone."
-                  />
+                  />,
                 );
               }
             }}
