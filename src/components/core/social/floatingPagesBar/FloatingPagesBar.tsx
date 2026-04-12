@@ -12,6 +12,7 @@ export type TFloatingPagesBarItem = {
 
 export default function FloatingPagesBar() {
   const { data: currentUser } = useCurrentUser();
+
   if (!currentUser) return <Navigate to="/login" replace />;
 
   const matchRoute = useMatchRoute();
@@ -22,13 +23,13 @@ export default function FloatingPagesBar() {
   );
 
   const isSocialUserProfileRoute = !!(
-    !matchRoute({to: "/social/notifications"}) &&
-    !matchRoute({to: "/social/discover-people"}) &&
-    matchRoute({ to: "/social/$userHandle"}) ||
-    matchRoute({to: "/social/$userHandle/collections", fuzzy: true}) ||
-    matchRoute({to: "/social/$userHandle/followers"}) ||
-    matchRoute({to: "/social/$userHandle/following"}) &&
-    !matchRoute({ to: "/social/$userHandle/posts/$postId" })
+    (!matchRoute({ to: "/social/notifications" }) &&
+      !matchRoute({ to: "/social/discover-people" }) &&
+      matchRoute({ to: "/social/$userHandle" })) ||
+    matchRoute({ to: "/social/$userHandle/collections", fuzzy: true }) ||
+    matchRoute({ to: "/social/$userHandle/followers" }) ||
+    (matchRoute({ to: "/social/$userHandle/following" }) &&
+      !matchRoute({ to: "/social/$userHandle/posts/$postId" }))
   );
   const isSocialNotificationsRoute = !!matchRoute({
     to: "/social/notifications",
@@ -62,7 +63,7 @@ export default function FloatingPagesBar() {
   ];
 
   return (
-    <div className="hidden transition-colors box-content hover:border-mainAccent fixed lg:flex z-[200] overflow-hidden border rounded-full bg-socialPrimary bottom-5 border-socialTextSecondary">
+    <div className="hidden transition-colors box-content hover:border-mainAccent fixed lg:flex z-[200] border rounded-full bg-socialPrimary bottom-5 border-socialTextSecondary">
       {floatingPagesBarItems.map((floatingPagesBarItem) => (
         <FloatingPagesBarItem
           key={floatingPagesBarItem.name}

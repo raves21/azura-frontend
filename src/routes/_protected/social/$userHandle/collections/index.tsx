@@ -63,24 +63,25 @@ function CollectionsPage() {
       );
     }
 
-    if (isEmpty && userHandle === currentUser.handle) {
-      return (
-        <div className="pb-24 mt-16 gap-4 flex flex-col justify-center items-center">
-          <p className="text-lg font-medium">No collections yet.</p>
-          <button
-            onClick={() =>
-              toggleOpenDialog(<ManageCollectionDialog type="create" />)
-            }
-            className="px-4 py-3 border border-mainAccent group gap-4 flex items-center rounded-xl"
-          >
-            <Plus className="size-5 stroke-mainWhite group-hover:stroke-mainAccent transition-colors" />
-            <p className="text-mainWhite md:text-md group-hover:text-mainAccent transition-colors">
-              Create collection
-            </p>
-          </button>
-        </div>
-      );
-    } else {
+    if (userHandle === currentUser.handle) {
+      if (isEmpty) {
+        return (
+          <div className="pb-24 mt-16 gap-4 flex flex-col justify-center items-center">
+            <p className="text-lg font-medium">No collections yet.</p>
+            <button
+              onClick={() =>
+                toggleOpenDialog(<ManageCollectionDialog type="create" />)
+              }
+              className="px-4 py-3 border border-mainAccent group gap-4 flex items-center rounded-xl"
+            >
+              <Plus className="size-5 stroke-mainWhite group-hover:stroke-mainAccent transition-colors" />
+              <p className="text-mainWhite md:text-md group-hover:text-mainAccent transition-colors">
+                Create collection
+              </p>
+            </button>
+          </div>
+        );
+      }
       return (
         <div className="flex flex-col gap-4 w-full p-3 pb-8 rounded-lg sm:p-5 bg-socialPrimary">
           {isTabletUp ? (
@@ -111,6 +112,37 @@ function CollectionsPage() {
               <ChevronRight className="size-4 group-hover:stroke-mainAccent stroke-mainWhite" />
             </button>
           )}
+          <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3 mobile-l:gap-3">
+            {userCollections.pages.map((page) => (
+              <Fragment key={page.page}>
+                {page.data.map((collection) => (
+                  <Collection
+                    linkProps={{
+                      to: "/social/$userHandle/collections/$collectionId",
+                      params: {
+                        userHandle: userHandle,
+                        collectionId: collection.id,
+                      },
+                    }}
+                    key={collection.id}
+                    name={collection.name}
+                    previewPosters={getPreviewPosters(collection.previewMedias)}
+                    photo={collection.photo}
+                  />
+                ))}
+                {isFetchingNextPage && (
+                  <div ref={bottomPageRef} key={"bottom of page"}>
+                    <UserCollectionsSkeleton />
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-col gap-4 w-full p-3 pb-8 rounded-lg sm:p-5 bg-socialPrimary">
           <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3 mobile-l:gap-3">
             {userCollections.pages.map((page) => (
               <Fragment key={page.page}>

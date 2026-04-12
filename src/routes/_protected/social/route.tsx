@@ -32,7 +32,7 @@ function SocialPageLayout() {
       <div
         className={cn(
           "flex-1 hidden overflow-y-auto rounded-xl md:flex md:flex-col md:gap-4",
-          { "mb-[300px]": isTabletUp && !isDesktopSmallUp }
+          { "mb-[300px]": isTabletUp && !isDesktopSmallUp },
         )}
       >
         {isTabletUp &&

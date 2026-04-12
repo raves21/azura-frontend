@@ -33,7 +33,7 @@ export default function BottomNavBar({ type }: Props) {
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
   const isAccountRoute = matchRoute({ to: "/settings", fuzzy: true });
   const isMediaPortalOpen = useMediaPortalStore(
-    (state) => state.isMediaPortalOpen
+    (state) => state.isMediaPortalOpen,
   );
 
   let mediaRouteComponent: ReactNode;
@@ -99,7 +99,7 @@ export default function BottomNavBar({ type }: Props) {
     <div
       className={cn(
         "lg:hidden w-dvw text-2xs fixed bottom-0 font-montserrat z-[45] border-t-[0.5px] border-gray-700 pb-6 pt-[7px] bg-darkBg flex items-center justify-between",
-        { "z-[701]": isMediaPortalOpen }
+        { "z-[701]": isMediaPortalOpen },
       )}
     >
       {mediaRouteComponent}
@@ -113,7 +113,7 @@ export default function BottomNavBar({ type }: Props) {
             "stroke-mainAccent font-medium": isCatalogRoute,
           })}
         />
-        <p className={cn({ "text-mainAccent": isCatalogRoute })}>Catalog</p>
+        <p className={cn({ "text-mainAccent": isCatalogRoute })}>Discover</p>
       </Link>
       <div className="h-full w-12 mobile-m:w-16 mobile-l:w-20 md:w-28 bg-transparent" />
       <button

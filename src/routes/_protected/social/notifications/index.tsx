@@ -5,6 +5,7 @@ import ErrorDialog from "@/components/core/shared/ErrorDialog";
 import Notification from "@/components/core/social/mainContent/notification/Notification";
 import {
   useDeleteAllNotifications,
+  useMarkNotifsAsRead,
 } from "@/services/social/api/mutations";
 import { useNotifications } from "@/services/social/api/queries";
 import { replaceDialogContent } from "@/utils/functions/sharedFunctions";
@@ -12,7 +13,13 @@ import { useFetchNextPageInView } from "@/utils/hooks/useFetchNextPageInView";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { useUniqueMutationKeyStore } from "@/utils/stores/useUniqueMutationKeyStore";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { ArrowLeft, Circle, Trash } from "lucide-react";
+import {
+  ArrowLeft,
+  // Check,
+  Circle,
+  Trash,
+} from "lucide-react";
+import { useEffect } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { useShallow } from "zustand/react/shallow";
 
@@ -35,11 +42,32 @@ function NotificationsPage() {
 
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
   const [uniqueMutationKey, setUniqueMutationKey] = useUniqueMutationKeyStore(
-    useShallow((state) => [state.uniqueMutationKey, state.setUniqueMutationKey])
+    useShallow((state) => [
+      state.uniqueMutationKey,
+      state.setUniqueMutationKey,
+    ]),
   );
   const { mutateAsync: deleteAllNotifications } = useDeleteAllNotifications({
     key: `deleteAllNotifs-${uniqueMutationKey}`,
   });
+
+  const { mutate: markNotifsAsRead } = useMarkNotifsAsRead({
+    key: `markNotifsAsRead-${uniqueMutationKey}`,
+  });
+
+  useEffect(() => {
+    markNotifsAsRead();
+  }, []);
+
+  // async function markAllNotifsAsRead() {
+  //   try {
+  //     await markNotifsAsRead();
+  //   } catch (error) {
+  //     replaceDialogContent({ content: <ErrorDialog error={error} /> });
+  //   } finally {
+  //     setUniqueMutationKey(crypto.randomUUID());
+  //   }
+  // }
 
   async function deleteAllNotifs() {
     try {
@@ -93,23 +121,42 @@ function NotificationsPage() {
         <div className="flex items-center gap-6 p-3 text-base font-semibold mobile-l:text-lg sm:p-5 sm:text-xl">
           <BackButton />
           <p>Notifications</p>
-          <button
-            disabled={notifications.pages[0].data.length === 0}
-            className="ml-auto group relative"
-            onClick={() =>
-              toggleOpenDialog(
-                <AsyncConfirmationDialog
-                  message="Are you sure you want to delete all notifications? This action cannot be undone."
-                  header="Confirm wipe notifications"
-                  confirmAction={deleteAllNotifs}
-                  mutationKey={[`deleteAllNotifs-${uniqueMutationKey}`]}
-                />
-              )
-            }
-          >
-            <Trash className="transition-colors group-disabled:stroke-gray-600 size-6 stroke-mainWhite group-hover:stroke-mainAccent" />
-            <Circle className="fill-gray-700/20 group-disabled:hidden stroke-none size-[190%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-          </button>
+          <div className="flex items-center gap-6 ml-auto">
+            <button
+              disabled={notifications.pages[0].data.length === 0}
+              className="ml-auto group relative"
+              onClick={() =>
+                toggleOpenDialog(
+                  <AsyncConfirmationDialog
+                    message="Are you sure you want to delete all notifications?"
+                    header="Confirm wipe notifications"
+                    confirmAction={deleteAllNotifs}
+                    mutationKey={[`deleteAllNotifs-${uniqueMutationKey}`]}
+                  />,
+                )
+              }
+            >
+              <Trash className="transition-colors group-disabled:stroke-gray-600 size-6 stroke-mainWhite group-hover:stroke-mainAccent" />
+              <Circle className="fill-gray-700/20 group-disabled:hidden stroke-none size-[190%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            </button>
+            {/* <button
+              disabled={notifications.pages[0].data.length === 0}
+              className="ml-auto group relative"
+              onClick={() =>
+                toggleOpenDialog(
+                  <AsyncConfirmationDialog
+                    message="Are you sure you want to mark all notifications as read?"
+                    header="Confirmation"
+                    confirmAction={markAllNotifsAsRead}
+                    mutationKey={[`markNotifsAsRead-${uniqueMutationKey}`]}
+                  />,
+                )
+              }
+            >
+              <Check className="transition-colors group-disabled:stroke-gray-600 size-6 stroke-mainWhite group-hover:stroke-mainAccent" />
+              <Circle className="fill-gray-700/20 group-disabled:hidden stroke-none size-[190%] group-hover:opacity-100 opacity-0 transition-opacity rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            </button> */}
+          </div>
         </div>
         <div className="w-full flex flex-col">
           {notifications.pages[0].data.length === 0 ? (

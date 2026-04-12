@@ -31,7 +31,10 @@ import {
   deleteComment_CommentsCacheMutation,
   editComment_CommentsCacheMutation,
 } from "../functions/cacheMutations";
-import { getCurrentUser, setCurrentUser } from "@/utils/functions/auth/functions";
+import {
+  getCurrentUser,
+  setCurrentUser,
+} from "@/utils/functions/auth/functions";
 
 type CreatePostArgs = {
   content: string | null;
@@ -446,34 +449,16 @@ export function useDeleteCollection({ collectionId }: UseDeleteCollectionArgs) {
   });
 }
 
-type UseUpdateNotificationReadStatus = {
-  notificationId: string;
-  isRead: boolean;
-};
-
-export function useUpdateNotificationReadStatus() {
+export function useMarkNotifAsRead() {
   return useMutation({
-    mutationFn: async ({
-      isRead,
-      notificationId,
-    }: UseUpdateNotificationReadStatus) => {
-      await api.put(`/collections/${notificationId}`, {
-        isRead,
+    mutationFn: async (notificationId: string) => {
+      await api.post(`/notifications/mark-notification-as-read`, {
+        notificationId,
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`notifications`] });
-    },
-  });
-}
-
-export function useDeleteNotification() {
-  return useMutation({
-    mutationFn: async (collectionId: string) => {
-      await api.delete(`/collections/${collectionId}`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`notifications`] });
+      queryClient.invalidateQueries({ queryKey: [`unreadNotifsCount`] });
     },
   });
 }
@@ -486,6 +471,19 @@ export function useDeleteAllNotifications({ key }: { key: string }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`notifications`] });
+    },
+  });
+}
+
+export function useMarkNotifsAsRead({ key }: { key: string }) {
+  return useMutation({
+    mutationKey: [key],
+    mutationFn: async () => {
+      await api.post(`/notifications/mark-all-as-read`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({ queryKey: ["unreadNotifsCount"] });
     },
   });
 }

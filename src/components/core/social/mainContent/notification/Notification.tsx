@@ -5,6 +5,7 @@ import { LinkProps, Navigate, useNavigate } from "@tanstack/react-router";
 import { useCurrentUser } from "@/services/auth/api/queries";
 import { useFormatToRelativeTimeOnInterval } from "@/utils/hooks/useFormatToRelativeTimeOnInterval";
 import { queryClient } from "@/utils/variables/queryClient";
+import { useMarkNotifAsRead } from "@/services/social/api/mutations";
 
 type Props = {
   notification: TNotification;
@@ -14,8 +15,10 @@ export default function Notification({ notification }: Props) {
   const navigate = useNavigate();
   const { data: currentUser } = useCurrentUser();
 
+  const { mutate: markAsRead } = useMarkNotifAsRead();
+
   const { timeAgo: updatedAtRelativeTime } = useFormatToRelativeTimeOnInterval(
-    notification.updatedAt.toString()
+    notification.updatedAt.toString(),
   );
 
   if (!currentUser) return <Navigate to="/login" replace />;
@@ -42,10 +45,11 @@ export default function Notification({ notification }: Props) {
   return (
     <button
       onClick={() => {
-        if(notification.postId){
+        markAsRead(notification.id);
+        if (notification.postId) {
           queryClient.invalidateQueries({
-          queryKey: [`postInfo`, notification.postId],
-        });
+            queryKey: [`postInfo`, notification.postId],
+          });
         }
         navigate(linkProps);
       }}

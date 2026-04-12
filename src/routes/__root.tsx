@@ -17,7 +17,7 @@ function RootRoute() {
   const matchRoute = useMatchRoute();
   const isSocialRoute = matchRoute({ to: "/social", fuzzy: true });
 
-  useShowPWAPrompt(<InstallPWADialog/>)
+  useShowPWAPrompt(<InstallPWADialog />);
 
   return (
     <>

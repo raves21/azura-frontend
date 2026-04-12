@@ -1,8 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  UserBasicInfo,
-  UserSession,
-} from "@/utils/types/auth/auth";
+import { UserBasicInfo, UserSession } from "@/utils/types/auth/auth";
 import { api } from "@/utils/variables/axiosInstances/backendAxiosInstance";
 import axios from "axios";
 
@@ -14,7 +11,7 @@ export function useCurrentUser() {
         `${!!Number(import.meta.env.VITE_IS_PROD) ? import.meta.env.VITE_BACKEND_BASE_URL_1 : import.meta.env.VITE_BACKEND_BASE_URL}/users/me`,
         {
           withCredentials: true,
-        }
+        },
       );
       return data.data as UserBasicInfo;
     },
@@ -31,4 +28,3 @@ export function useSessions() {
     },
   });
 }
-

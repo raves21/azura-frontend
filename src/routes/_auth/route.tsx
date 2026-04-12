@@ -9,6 +9,7 @@ import {
   Navigate,
   Outlet,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/_auth")({
   component: () => <AuthLayout />,
@@ -17,6 +18,10 @@ export const Route = createFileRoute("/_auth")({
 function AuthLayout() {
   const { data: authUser, isLoading: isAuthUserPending } = useCurrentUser();
 
+  useEffect(() => {
+    localStorage.setItem("isLastRouteSocial", "false");
+  }, []);
+
   if (isAuthUserPending) {
     return <StaticLoadingPage />;
   }
@@ -24,7 +29,7 @@ function AuthLayout() {
   if (authUser) {
     //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
     const lastMediaRouteVisited = sessionStorage.getItem(
-      "lastMediaRouteVisited"
+      "lastMediaRouteVisited",
     ) as MediaType | null;
     let authenticatedGotoLink: LinkProps;
     if (lastMediaRouteVisited) {

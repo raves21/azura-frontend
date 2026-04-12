@@ -8,6 +8,7 @@ import AzuraLogo from "@/components/core/shared/AzuraLogo";
 import { useMediaPortalStore } from "@/utils/stores/useMediaPortal";
 import { toggleMediaPortal } from "@/utils/functions/media/sharedFunctions";
 import SideMenuSheet from "@/components/core/sideMenuSheet/SideMenuSheet";
+import { useUnreadNotifsCount } from "@/services/social/api/queries";
 
 type MovieProps = {
   type: "MOVIE";
@@ -41,8 +42,10 @@ export default function DesktopTopNavBar({
   const { isScrolledDown } = useScrolledState();
 
   const isMediaPortalOpen = useMediaPortalStore(
-    (state) => state.isMediaPortalOpen
+    (state) => state.isMediaPortalOpen,
   );
+
+  const { data: unreadNotifsCount } = useUnreadNotifsCount();
 
   const matchRoute = useMatchRoute();
   const isAccountRoute = matchRoute({ to: "/settings", fuzzy: true });
@@ -66,7 +69,7 @@ export default function DesktopTopNavBar({
             {
               "text-gray-300 font-normal no-underline":
                 props.isAnimeCatalogRoute,
-            }
+            },
           )}
         >
           Anime
@@ -99,7 +102,7 @@ export default function DesktopTopNavBar({
             {
               "text-gray-300 font-normal no-underline":
                 props.isMovieCatalogRoute,
-            }
+            },
           )}
         >
           Movie
@@ -129,7 +132,9 @@ export default function DesktopTopNavBar({
               "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
                 props.isTVRoute,
             },
-            { "text-gray-300 font-normal no-underline": props.isTVCatalogRoute }
+            {
+              "text-gray-300 font-normal no-underline": props.isTVCatalogRoute,
+            },
           )}
         >
           TV
@@ -154,7 +159,7 @@ export default function DesktopTopNavBar({
     <div
       className={cn(
         "fixed left-1/2 ml-[-50vw] w-dvw z-[45]  transition-all duration-300",
-        { "bg-darkBg/80": isScrolledDown }
+        { "bg-darkBg/80": isScrolledDown },
       )}
     >
       <div
@@ -179,11 +184,19 @@ export default function DesktopTopNavBar({
           <Link
             onClick={() => toggleMediaPortal(true)}
             to="/social"
-            className={cn("p-[6px] hover:text-mainAccent transition-colors", {
-              "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
-                isSocialRoute,
-            })}
+            className={cn(
+              "p-[6px] relative hover:text-mainAccent transition-colors",
+              {
+                "text-mainWhite font-medium underline underline-offset-8 decoration-mainAccent decoration-2":
+                  isSocialRoute,
+              },
+            )}
           >
+            {unreadNotifsCount && unreadNotifsCount > 0 ? (
+              <div className="rounded-full absolute -right-5 -top-2 grid place-items-center size-[22px] bg-red-500 text-white font-medium">
+                {unreadNotifsCount}
+              </div>
+            ) : null}
             Social
           </Link>
           <Link

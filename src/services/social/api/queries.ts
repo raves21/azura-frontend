@@ -41,7 +41,7 @@ export function useForYouFeed() {
 
 export function useUserProfile(
   userHandle: string | undefined,
-  currentUserHandle: string | undefined
+  currentUserHandle: string | undefined,
 ) {
   return useQuery({
     queryKey: [`userProfile`, userHandle],
@@ -100,7 +100,7 @@ export function useDeletePost(postId: string | null) {
 
 export function useUserProfilePosts(
   userHandle: string,
-  currentUserHandle: string | undefined
+  currentUserHandle: string | undefined,
 ) {
   return useInfiniteQuery({
     queryKey: [`posts`, `userProfilePosts`, userHandle],
@@ -211,7 +211,7 @@ export function useDiscoverPeople() {
     queryFn: async ({ pageParam }) => {
       const { data: discoverPeopleResponse } = await api.get(
         `/discover-people`,
-        { params: { page: pageParam } }
+        { params: { page: pageParam } },
       );
       return discoverPeopleResponse as PaginatedUserPreviewsResponse;
     },
@@ -229,7 +229,7 @@ export function useDiscoverPeoplePreview() {
     queryFn: async ({ pageParam }) => {
       const { data: discoverPeoplePreviewResponse } = await api.get(
         `/discover-people`,
-        { params: { page: pageParam } }
+        { params: { page: pageParam } },
       );
       return discoverPeoplePreviewResponse as PaginatedUserPreviewsResponse;
     },
@@ -348,7 +348,7 @@ export function useMediaExistenceInCollections({
     queryFn: async ({ pageParam }) => {
       const { data: mediaExistenceInCollections } = await api.get(
         `/collections/check-media-existence`,
-        { params: { mediaId, type: mediaType, page: pageParam } }
+        { params: { mediaId, type: mediaType, page: pageParam } },
       );
       return mediaExistenceInCollections as PaginatedMediaExistenceInCollectionsResponse;
     },
@@ -369,7 +369,7 @@ export function useMediaExistenceInCollection({
     queryFn: async () => {
       const { data: mediaExistenceInCollection } = await api.get(
         `/collections/${collectionId}/check-media-existence`,
-        { params: { mediaId, type: mediaType } }
+        { params: { mediaId, type: mediaType } },
       );
       return mediaExistenceInCollection.data as {
         doesGivenMediaExist: boolean;
@@ -383,7 +383,7 @@ export function useCollectionInfo(collectionId: string) {
     queryKey: [`collectionInfo`, collectionId],
     queryFn: async () => {
       const { data: collectionInfo } = await api.get(
-        `/collections/${collectionId}`
+        `/collections/${collectionId}`,
       );
       return collectionInfo.data as TCollection;
     },
@@ -406,7 +406,7 @@ export function useCollectionItems({
     queryFn: async ({ pageParam }) => {
       const { data: collectionItems } = await api.get(
         `/collections/${collectionId}/collection-items`,
-        { params: { page: pageParam } }
+        { params: { page: pageParam } },
       );
       return collectionItems as PaginatedCollectionItemsResponse;
     },
@@ -435,6 +435,17 @@ export function useNotifications() {
       result.page === result.totalPages ? undefined : result.page + 1,
     gcTime: frequentlyChanging.gcTime,
     staleTime: frequentlyChanging.staleTime,
+  });
+}
+
+export function useUnreadNotifsCount() {
+  return useQuery({
+    queryKey: ["unreadNotifsCount"],
+    queryFn: async () => {
+      const { data } = await api.get("/notifications/unread-notifications");
+
+      return data.unreadNotifsCount as number;
+    },
   });
 }
 

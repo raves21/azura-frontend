@@ -4,10 +4,12 @@ import {
   createFileRoute,
   Navigate,
   Outlet,
+  useLocation,
   useMatchRoute,
+  useNavigate,
 } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { MediaType } from "@/utils/types/shared";
 import BottomNavBar from "@/components/core/navBar/bottomNavBar/BottomNavBar";
 import AnimeTopNavBar from "@/components/core/navBar/topNavBar/AnimeTopNavBar";
@@ -27,9 +29,31 @@ function Protected() {
   } = useCurrentUser();
 
   const matchRoute = useMatchRoute();
+  const location = useLocation({
+    select: (s) => s.pathname,
+  });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.split("/").includes("social")) {
+      localStorage.setItem("isLastRouteSocial", "true");
+    } else {
+      localStorage.setItem("isLastRouteSocial", "false");
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const isLastRouteSocial = localStorage.getItem("isLastRouteSocial");
+
+    if (isLastRouteSocial === "true") {
+      navigate({ to: "/social" });
+    }
+  }, []);
+
   //get the value of the last media route visited from sessionStorage (either anime/tv/movie)
   const lastMediaRouteVisited = sessionStorage.getItem(
-    "lastMediaRouteVisited"
+    "lastMediaRouteVisited",
   ) as MediaType | null;
 
   let topNavBar: ReactNode;
@@ -67,7 +91,7 @@ function Protected() {
           <div
             className={cn(
               "font-montserrat px-2 sm:px-3 lg:max-w-[1000px] xl:max-w-[1200px] 1440:max-w-[1300px] 2xl:max-w-[1400px] 1600:max-w-[1450px] mx-auto",
-              { "px-1": matchRoute({ to: "/social", fuzzy: true }) }
+              { "px-1": matchRoute({ to: "/social", fuzzy: true }) },
             )}
           >
             <Outlet />
