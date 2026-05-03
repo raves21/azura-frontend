@@ -134,7 +134,7 @@ export function useFilterAnime({
               ? `[${genres?.map((genre) => `"${genre}"`)}]`
               : undefined,
             year,
-            sort: `["${sortBy}"]`,
+            sort: `["${sortBy ?? AnimeSortBy.TRENDING_DESC}"]`,
             format,
             page: page ?? 1,
             status,
