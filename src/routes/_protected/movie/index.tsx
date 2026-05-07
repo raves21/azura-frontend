@@ -9,28 +9,12 @@ import { useMoviesByCategory } from "@/services/media/movie/queries";
 import { getTMDBImageURL, getTMDBReleaseYear } from "@/utils/functions/media/sharedFunctions";
 import { MovieSortBy } from "@/utils/types/media/movie/movieTmdb";
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
-import {useEffect} from "react";
 
 export const Route = createFileRoute("/_protected/movie/")({
   component: () => <MovieHomePage />,
 });
 
 function MovieHomePage() {
-  useEffect(() => {
-    axios.post('https://vris.davaocity.gov.ph/server/api/auth/login', {
-  username: 'user@example.com',
-  password: 'yourpassword'
-})
-.then(response => {
-  console.log(response.data);
-})
-.catch(error => {
-  console.error(error);
-});
-  }, [])
-  
-  
   const {
     data: trendingMovies,
     isLoading: isTrendingMoviesLoading,
