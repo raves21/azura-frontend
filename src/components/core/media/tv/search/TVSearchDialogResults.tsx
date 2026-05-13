@@ -50,7 +50,7 @@ export default function TVSearchDialogResults({ tvSearchQuery, query }: Props) {
         </ul>
         {searchResults.page < searchResults.total_pages && (
           <Link
-            to="/movie/catalog/search"
+            to="/tv/catalog/search"
             search={{
               page: 1,
               query,
