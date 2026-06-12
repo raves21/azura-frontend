@@ -22,6 +22,7 @@ import {
   getTMDBImageURL,
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
+import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
 
 const watchMoviePageSchema = z.object({
   server: z.nativeEnum(TVMovieServerName).catch(getDefaultTVMovieServer()),
@@ -88,10 +89,13 @@ function WatchMoviePage() {
               server={server}
               embedLink={buildMovieEmbedLink(movieId, server)}
             />
-            <EpisodeTitleAndNumber
-              episodeNumber={movieInfo.title}
-              episodeTitle={getTMDBReleaseYear(movieInfo.release_date)}
-            />
+            <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
+              <EpisodeTitleAndNumber
+                episodeNumber={movieInfo.title}
+                episodeTitle={getTMDBReleaseYear(movieInfo.release_date)}
+              />
+              <TheaterModeButton movieProps={{ movieId, server }} />
+            </div>
           </div>
           <WatchPageMovieEpisode
             moviePoster={getTMDBImageURL(movieInfo.poster_path)}

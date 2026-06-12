@@ -6,9 +6,10 @@ import { useSearch } from "@tanstack/react-router";
 
 type Props = {
   embedLink: string | null;
+  className?: string;
 };
 
-export default function AnimeEmbedVideoPlayer({ embedLink }: Props) {
+export default function AnimeEmbedVideoPlayer({ embedLink, className }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -25,6 +26,7 @@ export default function AnimeEmbedVideoPlayer({ embedLink }: Props) {
           className={cn(
             "w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none",
             isLoading || isError ? "hidden" : "",
+            className,
           )}
         >
           <iframe

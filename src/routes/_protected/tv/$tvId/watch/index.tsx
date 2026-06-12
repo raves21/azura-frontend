@@ -29,6 +29,7 @@ import {
   getTMDBImageURL,
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
+import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
 
 const watchTVEpisodePageSchema = z.object({
   tvEp: z.number(),
@@ -193,11 +194,13 @@ function WatchTVEpisodePage() {
               embedLink={buildTVEmbedLink(tvId, tvSeason, tvEp, server)}
               server={server}
             />
-
-            <EpisodeTitleAndNumber
-              episodeNumber={`Episode ${tvEp}`}
-              episodeTitle={currentEpisode?.name || undefined}
-            />
+            <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
+              <EpisodeTitleAndNumber
+                episodeNumber={`Episode ${tvEp}`}
+                episodeTitle={currentEpisode?.name || undefined}
+              />
+              <TheaterModeButton tvProps={{ tvId, tvSeason, tvEp, server }} />
+            </div>
           </div>
           <WatchPageTVEpisodes
             coverImage={getTMDBImageURL(tvInfo.backdrop_path)}

@@ -34,6 +34,7 @@ import {
   getDefaultAnimeServer,
 } from "@/utils/functions/media/sharedFunctions";
 import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/AnimeEmbedVideoPlayer";
+import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
@@ -172,11 +173,13 @@ function WatchEpisodePage() {
                 )}
               />
             )}
-
-            <EpisodeTitleAndNumber
-              episodeNumber={`Episode ${episodeInfo.number}`}
-              episodeTitle={episodeInfo.title}
-            />
+            <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
+              <EpisodeTitleAndNumber
+                episodeNumber={`Episode ${episodeInfo.number}`}
+                episodeTitle={episodeInfo.title}
+              />
+              <TheaterModeButton animeProps={{ animeId: id, epNum, server }} />
+            </div>
           </div>
           <WatchPageAnimeEpisodes
             episodeListMaxHeight={videoAndeEpisodeInfoContainerHeight}

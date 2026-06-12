@@ -30,6 +30,7 @@ module.exports = {
         1440: "1440px",
         570: "570px",
         1600: "1600px",
+        2000: "2000px"
       },
       colors: {
         darkBg: "#100c14",
