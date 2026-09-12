@@ -50,7 +50,10 @@ export default function TheaterModePlayer({
     return (
       <div className="bg-black/70 h-dvh w-dvw grid place-items-center">
         <button
-          onClick={() => toggleOpenDialog(null)}
+          onClick={() => {
+            setIsTheaterModeActive(false);
+            toggleOpenDialog(null);
+          }}
           className="box-content flex items-center gap-3 fixed self-end p-2 transition-colors group hover:border-mainAccent border border-gray-400 rounded-full lg:p-3 top-5 right-3 w-fit group"
         >
           <X className="size-4 lg:size-5 stroke-gray-400 group-hover:stroke-mainAccent" />
@@ -71,7 +74,10 @@ export default function TheaterModePlayer({
     return (
       <div className="bg-black/70 h-dvh w-dvw grid place-items-center">
         <button
-          onClick={() => toggleOpenDialog(null)}
+          onClick={() => {
+            setIsTheaterModeActive(false);
+            toggleOpenDialog(null);
+          }}
           className="box-content flex items-center gap-3 fixed self-end p-2 transition-colors group hover:border-mainAccent border border-gray-400 rounded-full lg:p-3 top-5 right-3 w-fit group"
         >
           <X className="size-4 lg:size-5 stroke-gray-400 group-hover:stroke-mainAccent" />
@@ -92,7 +98,10 @@ export default function TheaterModePlayer({
     return (
       <div className="bg-black/70 h-dvh w-dvw grid place-items-center">
         <button
-          onClick={() => toggleOpenDialog(null)}
+          onClick={() => {
+            setIsTheaterModeActive(false);
+            toggleOpenDialog(null);
+          }}
           className="box-content flex items-center gap-3 fixed self-end p-2 transition-colors group hover:border-mainAccent border border-gray-400 rounded-full lg:p-3 top-5 right-3 w-fit group"
         >
           <X className="size-4 lg:size-5 stroke-gray-400 group-hover:stroke-mainAccent" />
