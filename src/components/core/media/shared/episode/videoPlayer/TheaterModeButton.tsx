@@ -1,13 +1,7 @@
-import {
-  buildAnimeEmbedLink,
-  buildMovieEmbedLink,
-  buildTVEmbedLink,
-} from "@/utils/functions/media/sharedFunctions";
 import { useGlobalStore } from "@/utils/stores/useGlobalStore";
 import { AnimeServerName, TVMovieServerName } from "@/utils/types/media/shared";
-import { TvMinimalPlay, X } from "lucide-react";
-import TVMovieEmbedVideoPlayer from "./TVMovieEmbedVideoPlayer";
-import AnimeEmbedVideoPlayer from "./AnimeEmbedVideoPlayer";
+import { TvMinimalPlay } from "lucide-react";
+import TheaterModePlayer from "./TheaterModePlayer";
 
 type Props = {
   tvProps?: {
@@ -25,36 +19,27 @@ type Props = {
     epNum: number;
     server: AnimeServerName;
   };
+  setIsTheaterModeActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function TheaterModeButton({
   tvProps,
   movieProps,
   animeProps,
+  setIsTheaterModeActive,
 }: Props) {
   const toggleOpenDialog = useGlobalStore((state) => state.toggleOpenDialog);
 
   if (tvProps) {
-    const { tvId, tvSeason, tvEp, server } = tvProps;
     return (
       <button
         onClick={() => {
+          setIsTheaterModeActive(true);
           toggleOpenDialog(
-            <div className="bg-black/70 h-dvh w-dvw grid place-items-center">
-              <button
-                onClick={() => toggleOpenDialog(null)}
-                className="box-content flex items-center gap-3 fixed self-end p-2 transition-colors group hover:border-mainAccent border border-gray-400 rounded-full lg:p-3 top-5 right-3 w-fit group"
-              >
-                <X className="size-4 lg:size-5 stroke-gray-400 group-hover:stroke-mainAccent" />
-              </button>
-              <div className="aspect-video h-[150px] mobile-l:h-[200px] 570:h-[290px] sm:h-[330px] md:h-[400px] lg:h-[520px] xl:h-[660px] 1440:h-[730px] 2000:h-[1100px]">
-                <TVMovieEmbedVideoPlayer
-                  server={server}
-                  embedLink={buildTVEmbedLink(tvId, tvSeason, tvEp, server)}
-                  className="ml-0 lg:ml-0"
-                />
-              </div>
-            </div>,
+            <TheaterModePlayer
+              setIsTheaterModeActive={setIsTheaterModeActive}
+              tvProps={tvProps}
+            />,
           );
         }}
         className="flex w-fit items-center border border-gray-400 text-gray-400 rounded-lg group hover:border-mainAccent transition-colors px-3 py-2 gap-4"
@@ -68,26 +53,15 @@ export default function TheaterModeButton({
   }
 
   if (movieProps) {
-    const { movieId, server } = movieProps;
     return (
       <button
         onClick={() => {
+          setIsTheaterModeActive(true);
           toggleOpenDialog(
-            <div className="bg-black/70 h-dvh w-dvw grid place-items-center">
-              <button
-                onClick={() => toggleOpenDialog(null)}
-                className="box-content flex items-center gap-3 fixed self-end p-2 transition-colors group hover:border-mainAccent border border-gray-400 rounded-full lg:p-3 top-5 right-3 w-fit group"
-              >
-                <X className="size-4 lg:size-5 stroke-gray-400 group-hover:stroke-mainAccent" />
-              </button>
-              <div className="aspect-video h-[150px] mobile-l:h-[200px] 570:h-[290px] sm:h-[330px] md:h-[400px] lg:h-[520px] xl:h-[660px] 1440:h-[730px] 2000:h-[1100px]">
-                <TVMovieEmbedVideoPlayer
-                  server={server}
-                  embedLink={buildMovieEmbedLink(movieId, server)}
-                  className="ml-0 lg:ml-0"
-                />
-              </div>
-            </div>,
+            <TheaterModePlayer
+              setIsTheaterModeActive={setIsTheaterModeActive}
+              movieProps={movieProps}
+            />,
           );
         }}
         className="flex w-fit items-center border border-gray-400 text-gray-400 rounded-lg group hover:border-mainAccent transition-colors px-3 py-2 gap-4"
@@ -101,26 +75,15 @@ export default function TheaterModeButton({
   }
 
   if (animeProps) {
-    const { animeId, epNum, server } = animeProps;
-
     return (
       <button
         onClick={() => {
+          setIsTheaterModeActive(true);
           toggleOpenDialog(
-            <div className="bg-black/70 h-dvh w-dvw grid place-items-center">
-              <button
-                onClick={() => toggleOpenDialog(null)}
-                className="box-content flex items-center gap-3 fixed self-end p-2 transition-colors group hover:border-mainAccent border border-gray-400 rounded-full lg:p-3 top-5 right-3 w-fit group"
-              >
-                <X className="size-4 lg:size-5 stroke-gray-400 group-hover:stroke-mainAccent" />
-              </button>
-              <div className="aspect-video h-[150px] mobile-l:h-[200px] 570:h-[290px] sm:h-[330px] md:h-[400px] lg:h-[520px] xl:h-[660px] 1440:h-[730px] 2000:h-[1100px]">
-                <AnimeEmbedVideoPlayer
-                  embedLink={buildAnimeEmbedLink(animeId, epNum, server)}
-                  className="ml-0 lg:ml-0"
-                />
-              </div>
-            </div>,
+            <TheaterModePlayer
+              setIsTheaterModeActive={setIsTheaterModeActive}
+              animeProps={animeProps}
+            />,
           );
         }}
         className="flex w-fit items-center border border-gray-400 text-gray-400 rounded-lg group hover:border-mainAccent transition-colors px-3 py-2 gap-4"

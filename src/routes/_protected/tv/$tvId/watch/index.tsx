@@ -68,6 +68,7 @@ function WatchTVEpisodePage() {
   const [totalSeasons, setTotalSeasons] = useState<number | null>(null);
   const [selectedSeason, setSelectedSeason] = useState(tvSeason);
   const windowWidth = useWindowWidth();
+  const [isTheaterModeActive, setIsTheaterModeActive] = useState(false);
 
   const {
     data: tvInfo,
@@ -190,16 +191,23 @@ function WatchTVEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            <TVMovieEmbedVideoPlayer
-              embedLink={buildTVEmbedLink(tvId, tvSeason, tvEp, server)}
-              server={server}
-            />
+            {isTheaterModeActive ? (
+              <div className="w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none bg-black"></div>
+            ) : (
+              <TVMovieEmbedVideoPlayer
+                embedLink={buildTVEmbedLink(tvId, tvSeason, tvEp, server)}
+                server={server}
+              />
+            )}
             <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
               <EpisodeTitleAndNumber
                 episodeNumber={`Episode ${tvEp}`}
                 episodeTitle={currentEpisode?.name || undefined}
               />
-              <TheaterModeButton tvProps={{ tvId, tvSeason, tvEp, server }} />
+              <TheaterModeButton
+                setIsTheaterModeActive={setIsTheaterModeActive}
+                tvProps={{ tvId, tvSeason, tvEp, server }}
+              />
             </div>
           </div>
           <WatchPageTVEpisodes

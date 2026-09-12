@@ -23,6 +23,7 @@ import {
   getTMDBReleaseYear,
 } from "@/utils/functions/media/sharedFunctions";
 import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
+import { useState } from "react";
 
 const watchMoviePageSchema = z.object({
   server: z.nativeEnum(TVMovieServerName).catch(getDefaultTVMovieServer()),
@@ -44,6 +45,8 @@ export const Route = createFileRoute("/_protected/movie/$movieId/watch/")({
 function WatchMoviePage() {
   const { movieId } = Route.useParams();
   const { server } = Route.useSearch();
+
+  const [isTheaterModeActive, setIsTheaterModeActive] = useState(false);
 
   const {
     data: movieInfo,
@@ -85,16 +88,23 @@ function WatchMoviePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div className="w-full h-fit">
-            <TVMovieEmbedVideoPlayer
-              server={server}
-              embedLink={buildMovieEmbedLink(movieId, server)}
-            />
+            {isTheaterModeActive ? (
+              <div className="w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none bg-black"></div>
+            ) : (
+              <TVMovieEmbedVideoPlayer
+                server={server}
+                embedLink={buildMovieEmbedLink(movieId, server)}
+              />
+            )}
             <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
               <EpisodeTitleAndNumber
                 episodeNumber={movieInfo.title}
                 episodeTitle={getTMDBReleaseYear(movieInfo.release_date)}
               />
-              <TheaterModeButton movieProps={{ movieId, server }} />
+              <TheaterModeButton
+                setIsTheaterModeActive={setIsTheaterModeActive}
+                movieProps={{ movieId, server }}
+              />
             </div>
           </div>
           <WatchPageMovieEpisode

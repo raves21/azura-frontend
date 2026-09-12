@@ -2,9 +2,10 @@ import { useMatchRoute } from "@tanstack/react-router";
 
 type Props = {
   serverName: string;
+  customMessage?: string;
 };
 
-export default function VideoPlayerError({ serverName }: Props) {
+export default function VideoPlayerError({ serverName, customMessage }: Props) {
   const matchRoute = useMatchRoute();
 
   const isMovieRoute = matchRoute({ to: "/movie/$movieId/watch" });
@@ -17,14 +18,20 @@ export default function VideoPlayerError({ serverName }: Props) {
       />
       <div className="absolute inset-0 bg-black/60 z-20" />
       <div className="flex flex-col items-center gap-2 text-base mobile-m:text-lg sm:text-2xl md:text-3xl w-full text-center font-semibold absolute -translate-x-1/2 z-30 -translate-y-1/2 left-1/2 top-1/2 px-12">
-        <p className="bg-black p-2 w-fit rounded-md">
-          {isMovieRoute
-            ? `${serverName} unavailable for this movie.`
-            : `${serverName} unavailable for this episode.`}
-        </p>
-        <p className="bg-black p-2 w-fit rounded-md">
-          Please try other servers.
-        </p>
+        {customMessage ? (
+          <p className="bg-black p-2 w-fit rounded-md">{customMessage}</p>
+        ) : (
+          <p className="bg-black p-2 w-fit rounded-md">
+            {isMovieRoute
+              ? `${serverName} unavailable for this movie.`
+              : `${serverName} unavailable for this episode.`}
+          </p>
+        )}
+        {customMessage ? null : (
+          <p className="bg-black p-2 w-fit rounded-md">
+            Please try other servers.
+          </p>
+        )}
       </div>
     </div>
   );

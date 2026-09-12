@@ -29,12 +29,12 @@ import {
 } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import {
-  buildAnimeEmbedLink,
+  // buildAnimeEmbedLink,
   getAnimeRatingInfoPage,
   getDefaultAnimeServer,
 } from "@/utils/functions/media/sharedFunctions";
-import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/AnimeEmbedVideoPlayer";
-import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
+// import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/AnimeEmbedVideoPlayer";
+// import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
@@ -90,8 +90,10 @@ function WatchEpisodePage() {
   // const { data: aniwatchStreamLink, isLoading: isAniwatchStreamLinkLoading } =
   //   useAnimeEpisodeStreamLinkAniwatch(id);
 
-  const { data: zencloudStream, isLoading: isZencloudStreamLoading } =
-    useEmbedStreamZencloud({ animeId: animeId, episodeNum: epNum });
+  const {
+    data: zencloudStream,
+    // isLoading: isZencloudStreamLoading
+  } = useEmbedStreamZencloud({ animeId: animeId, episodeNum: epNum });
 
   const episodesQuery = useAnimeEpisodes(animeId);
 
@@ -148,7 +150,7 @@ function WatchEpisodePage() {
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {server === AnimeServerName.serverAshen &&
+            {/* {server === AnimeServerName.serverAshen &&
               (zencloudStream && zencloudStream.player_url ? (
                 <AnimeEmbedVideoPlayer embedLink={zencloudStream.player_url} />
               ) : isZencloudStreamLoading ? (
@@ -172,13 +174,17 @@ function WatchEpisodePage() {
                   animeInfoAnilist.type === "MOVIE",
                 )}
               />
-            )}
+            )} */}
+            <VideoPlayerError
+              serverName=""
+              customMessage="Azura Anime is not available for now."
+            />
             <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
               <EpisodeTitleAndNumber
                 episodeNumber={`Episode ${episodeInfo.number}`}
                 episodeTitle={episodeInfo.title}
               />
-              <TheaterModeButton animeProps={{ animeId: id, epNum, server }} />
+              {/* <TheaterModeButton animeProps={{ animeId: id, epNum, server }} /> */}
             </div>
           </div>
           <WatchPageAnimeEpisodes
