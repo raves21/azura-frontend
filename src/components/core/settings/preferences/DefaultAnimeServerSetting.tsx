@@ -1,15 +1,13 @@
 import { cn } from "@/lib/utils";
 import { AnimeServerName } from "@/utils/types/media/shared";
 import { animeServerNames } from "@/utils/variables/media/anime";
+import { getDefaultAnimeServer } from "@/utils/functions/media/sharedFunctions";
 import { Circle } from "lucide-react";
 import { useState } from "react";
 
 export default function DefaultAnimeServerSetting() {
-  const defaultAnimeServer =
-    (localStorage.getItem("defaultAnimeServer") as AnimeServerName) || null;
-
   const [selectedServer, setSelectedServer] = useState<AnimeServerName>(
-    defaultAnimeServer || AnimeServerName.serverAshen,
+    getDefaultAnimeServer(),
   );
 
   function handleSelect(serverName: AnimeServerName) {

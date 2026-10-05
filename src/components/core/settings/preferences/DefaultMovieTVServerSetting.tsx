@@ -1,15 +1,13 @@
 import { cn } from "@/lib/utils";
 import { TVMovieServerName } from "@/utils/types/media/shared";
 import { tvMovieserverNames } from "@/utils/variables/media/shared";
+import { getDefaultTVMovieServer } from "@/utils/functions/media/sharedFunctions";
 import { Circle } from "lucide-react";
 import { useState } from "react";
 
 export default function DefaultMovieTVServerSetting() {
-  const defaultTVMovieServer =
-    (localStorage.getItem("defaultTVMovieServer") as TVMovieServerName) || null;
-
   const [selectedServer, setSelectedServer] = useState<TVMovieServerName>(
-    defaultTVMovieServer || TVMovieServerName.serverZenith,
+    getDefaultTVMovieServer(),
   );
 
   function handleSelect(serverName: TVMovieServerName) {

@@ -118,7 +118,7 @@ export default function AnimeInfoPageHero({
                     params: { animeId: animeId },
                     search: {
                       epNum: 1,
-                      animeServer: AnimeServerName.serverAshen,
+                      animeServer: AnimeServerName.serverBlight,
                       id: chunkedEpisodes[0].episodes[0].id.replace(/^\//, ""),
                     },
                   });

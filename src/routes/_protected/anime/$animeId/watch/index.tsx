@@ -10,7 +10,6 @@ import {
   useAnimeEpisodes,
   useAnimeInfo,
   useChunkAnimeEpisodes,
-  useEmbedStreamZencloud,
   useEpisodeInfo,
 } from "@/services/media/anime/queries";
 import EpisodeTitleAndNumber from "@/components/core/media/shared/episode/EpisodeTitleAndNumber";
@@ -22,19 +21,18 @@ import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episod
 import EpisodeTitleAndNumberSkeleton from "@/components/core/loadingSkeletons/media/episode/EpisodeTitleAndNumberSkeleton";
 import AllEpisodesLoading from "@/components/core/loadingSkeletons/media/episode/AllEpisodesLoading";
 import WatchInfoPageSkeleton from "@/components/core/loadingSkeletons/media/info/WatchPageInfoSkeleton";
-import VideoPlayerError from "@/components/core/media/shared/episode/videoPlayer/VideoPlayerError";
 import {
   AnimeServerName,
   SearchSchemaValidationStatus,
 } from "@/utils/types/media/shared";
 import { useHandleSearchParamsValidationFailure } from "@/utils/hooks/useHandleSearchParamsValidationFailure";
 import {
-  // buildAnimeEmbedLink,
+  buildAnimeEmbedLink,
   getAnimeRatingInfoPage,
   getDefaultAnimeServer,
 } from "@/utils/functions/media/sharedFunctions";
-// import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/AnimeEmbedVideoPlayer";
-// import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
+import AnimeEmbedVideoPlayer from "@/components/core/media/shared/episode/videoPlayer/AnimeEmbedVideoPlayer";
+import TheaterModeButton from "@/components/core/media/shared/episode/videoPlayer/TheaterModeButton";
 
 const episodePageSearchSchema = z.object({
   id: z.string(),
@@ -58,7 +56,7 @@ export const Route = createFileRoute("/_protected/anime/$animeId/watch/")({
       return {
         id: "",
         epNum: 1,
-        animeServer: AnimeServerName.serverAshen,
+        animeServer: AnimeServerName.serverBlight,
         success: false,
       };
     }
@@ -86,14 +84,7 @@ function WatchEpisodePage() {
   ] = useState(0);
 
   const windowWidth = useWindowWidth();
-
-  // const { data: aniwatchStreamLink, isLoading: isAniwatchStreamLinkLoading } =
-  //   useAnimeEpisodeStreamLinkAniwatch(id);
-
-  const {
-    data: zencloudStream,
-    // isLoading: isZencloudStreamLoading
-  } = useEmbedStreamZencloud({ animeId: animeId, episodeNum: epNum });
+  const [isTheaterModeActive, setIsTheaterModeActive] = useState(false);
 
   const episodesQuery = useAnimeEpisodes(animeId);
 
@@ -114,7 +105,7 @@ function WatchEpisodePage() {
         videoAndEpisodeInfoContainerRef.current.getBoundingClientRect().height,
       );
     }
-  }, [episodeInfo, windowWidth, zencloudStream, server]);
+  }, [episodeInfo, windowWidth, server]);
 
   if (isAnimeInfoLoading || episodesQuery.isLoading) {
     return (
@@ -141,50 +132,30 @@ function WatchEpisodePage() {
   }
 
   if (animeInfo && episodesQuery.data && episodeInfo) {
-    const {
-      animeInfoAnilist,
-      // animeInfoAniwatch
-    } = animeInfo;
+    const { animeInfoAnilist } = animeInfo;
 
     return (
       <main className="flex flex-col pb-32">
         <section className="flex flex-col w-full gap-2 pt-20 lg:pt-24 lg:gap-6 lg:flex-row">
           <div ref={videoAndEpisodeInfoContainerRef} className="w-full h-fit">
-            {/* {server === AnimeServerName.serverAshen &&
-              (zencloudStream && zencloudStream.player_url ? (
-                <AnimeEmbedVideoPlayer embedLink={zencloudStream.player_url} />
-              ) : isZencloudStreamLoading ? (
-                <VideoPlayerSkeleton />
-              ) : (
-                <VideoPlayerError serverName={server} />
-              ))}
-
-            {server === AnimeServerName.serverBlight && (
-              <AnimeEmbedVideoPlayer
-                embedLink={buildAnimeEmbedLink(id, epNum, server)}
-              />
+            {isTheaterModeActive ? (
+              <div className="w-dvw ml-[calc(-50vw+50%)] relative lg:w-full lg:ml-auto aspect-video rounded-none bg-black"></div>
+            ) : (
+              server === AnimeServerName.serverBlight && (
+                <AnimeEmbedVideoPlayer
+                  embedLink={buildAnimeEmbedLink(id, epNum, server)}
+                />
+              )
             )}
-
-            {server === AnimeServerName.serverCrowe && (
-              <AnimeEmbedVideoPlayer
-                embedLink={buildAnimeEmbedLink(
-                  animeId,
-                  epNum,
-                  server,
-                  animeInfoAnilist.type === "MOVIE",
-                )}
-              />
-            )} */}
-            <VideoPlayerError
-              serverName=""
-              customMessage="Azura Anime is not available for now."
-            />
             <div className="flex flex-col gap-6 sm:flex-row sm:gap-0 sm:items-center justify-between">
               <EpisodeTitleAndNumber
                 episodeNumber={`Episode ${episodeInfo.number}`}
                 episodeTitle={episodeInfo.title}
               />
-              {/* <TheaterModeButton animeProps={{ animeId: id, epNum, server }} /> */}
+              <TheaterModeButton
+                setIsTheaterModeActive={setIsTheaterModeActive}
+                animeProps={{ animeId: id, epNum, server }}
+              />
             </div>
           </div>
           <WatchPageAnimeEpisodes
@@ -212,7 +183,7 @@ function WatchEpisodePage() {
           totalEpisodes={animeInfoAnilist?.totalEpisodes}
           type={animeInfoAnilist?.type}
           year={animeInfoAnilist?.releaseDate}
-          rating={getAnimeRatingInfoPage(undefined, animeInfoAnilist?.rating)}
+          rating={getAnimeRatingInfoPage(animeInfoAnilist?.rating)}
         />
         {animeInfoAnilist?.recommendations && (
           <CategoryCarousel

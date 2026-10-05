@@ -7,7 +7,6 @@ import {
 } from "@vidstack/react/player/layouts/default";
 import { cn } from "@/lib/utils";
 import { Subtitle } from "@/utils/types/media/shared";
-import { getRandomAniwatchProxyURL } from "@/utils/functions/media/animeFunctions";
 
 type VideoPlayerProps = {
   streamLink: string | undefined | null;
@@ -16,7 +15,6 @@ type VideoPlayerProps = {
   className?: string;
   volume?: number;
   title?: string;
-  mediaType: "ANIME" | "TV" | "MOVIE";
   subtitleTracks?: Subtitle[];
 };
 
@@ -27,16 +25,10 @@ export default function VideoPlayer({
   poster,
   title,
   subtitleTracks,
-  mediaType,
   ...props
 }: VideoPlayerProps) {
   if (streamLink) {
-    let streamLinkFinal: string;
-    if (mediaType === "ANIME") {
-      streamLinkFinal = `${getRandomAniwatchProxyURL()}?url=${streamLink}`;
-    } else {
-      streamLinkFinal = `${import.meta.env.VITE_TMDB_PROXY_URL}/m3u8-proxy.m3u8?url=${encodeURIComponent(streamLink)}`;
-    }
+    const streamLinkFinal = `${import.meta.env.VITE_TMDB_PROXY_URL}/m3u8-proxy.m3u8?url=${encodeURIComponent(streamLink)}`;
 
     return (
       <div

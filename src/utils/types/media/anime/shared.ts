@@ -1,12 +1,5 @@
-// import { AniwatchEpisode } from "./animeAniwatch";
-import { AnimeInfoAnizip, AnizipEpisodes } from "./animeAnizip";
-import { ZencloudEpisode } from "./animeZencloud";
+import { AnimeInfoAnizip } from "./animeAnizip";
 
 export type AnimeEpisodesData = {
   anizipEps: AnimeInfoAnizip;
-};
-
-export type ZencloudEpisodesData = {
-  anizipEps: AnizipEpisodes;
-  allZencloudEps: ZencloudEpisode[];
 };

@@ -60,33 +60,15 @@ function AnimeInfoPage() {
           }
           episodesQuery={episodesQuery}
           animeId={animeId}
-          cover={
-            animeInfoAnilist?.cover
-            // || animeInfoAniwatch?.info.poster
-          }
-          image={
-            animeInfoAnilist?.image
-            // || animeInfoAniwatch?.info.poster
-          }
-          description={
-            animeInfoAnilist?.description
-            // || animeInfoAniwatch?.info.description
-          }
+          cover={animeInfoAnilist?.cover}
+          image={animeInfoAnilist?.image}
+          description={animeInfoAnilist?.description}
           genres={animeInfoAnilist?.genres || undefined}
           status={animeInfoAnilist?.status}
           totalEpisodes={animeInfoAnilist?.totalEpisodes}
-          type={
-            animeInfoAnilist?.type
-            // || animeInfoAniwatch?.info.stats.type
-          }
+          type={animeInfoAnilist?.type}
           year={animeInfoAnilist?.releaseDate}
-          rating={getAnimeRatingInfoPage(
-            // animeInfoAniwatch?.moreInfo.malscore
-            //   ? parseFloat(animeInfoAniwatch?.moreInfo.malscore)
-            //   :
-            undefined,
-            animeInfoAnilist?.rating,
-          )}
+          rating={getAnimeRatingInfoPage(animeInfoAnilist?.rating)}
         />
         <InfoPageAnimeEpisodes
           episodesQuery={episodesQuery}
@@ -94,8 +76,6 @@ function AnimeInfoPage() {
           type={animeInfoAnilist?.type}
           episodeImageFallback={
             animeInfoAnilist?.image || animeInfoAnilist?.cover
-            // ||
-            // animeInfoAniwatch?.info.poster
           }
         />
         {animeInfoAnilist?.recommendations &&

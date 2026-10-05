@@ -47,10 +47,7 @@ export default function WatchPageAnimeEpisodes({
     error: episodesError,
   } = episodesQuery;
 
-  // const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
-  //   useChunkAnimeEpisodes(episodes);
-
-  const { data: zencloudChunkedEpisodes, isLoading: isChunkEpisodesLoading } =
+  const { data: chunkedEpisodes, isLoading: isChunkEpisodesLoading } =
     useChunkAnimeEpisodes(episodes);
 
   const {
@@ -59,7 +56,7 @@ export default function WatchPageAnimeEpisodes({
     currentlyWatchingEpisodeCardRef,
     episodeListContainerRef,
   } = useAnimeEpisodes({
-    chunkedEpisodes: zencloudChunkedEpisodes,
+    chunkedEpisodes: chunkedEpisodes,
     currentlyWatchingEpisodeNumber,
   });
 
@@ -71,7 +68,7 @@ export default function WatchPageAnimeEpisodes({
     return <EpisodesError />;
   }
 
-  if (episodes && zencloudChunkedEpisodes) {
+  if (episodes && chunkedEpisodes) {
     return (
       <EpisodesContainer
         variant="watchPage"
@@ -100,16 +97,16 @@ export default function WatchPageAnimeEpisodes({
             menuContentClassName="bg-darkBg"
             dropdownTriggerClassName="text-gray-400"
           />
-          {selectedChunk && zencloudChunkedEpisodes.length > 1 && (
+          {selectedChunk && chunkedEpisodes.length > 1 && (
             <CustomDropdown
               menuContentClassName="bg-darkBg"
               dropdownTriggerClassName="text-gray-400"
-              menuItems={zencloudChunkedEpisodes}
+              menuItems={chunkedEpisodes}
               currentlySelected={selectedChunk}
               menuContentMaxHeight={350}
               showMenuContentBorder
               onSelectItem={(epChunk) => setSelectedChunk(epChunk)}
-              menuItemLabelNames={zencloudChunkedEpisodes.map(
+              menuItemLabelNames={chunkedEpisodes.map(
                 (epChunk) => epChunk.label,
               )}
             />

@@ -7,21 +7,6 @@ export type EpisodeToBeRendered = {
   image: string | null | undefined;
 };
 
-export type ZencloudEpisodeToBeRendered = {
-  id: string;
-  title: string;
-  number: number;
-  image: string | null | undefined;
-  embedUrl: string;
-};
-
-export type ZencloudEpisodeChunk = {
-  label: string;
-  startEp: number;
-  endEp: number;
-  episodes: ZencloudEpisodeToBeRendered[];
-};
-
 export type EpisodeChunk = {
   label: string;
   startEp: number;
@@ -94,20 +79,15 @@ export type PaginatedMediaExistenceInCollectionsResponse = PaginatedResponse & {
 };
 
 export enum TVMovieServerName {
-  serverZenith = "Server Zenith",
-  serverYuna = "Server Yuna",
   serverXanthe = "Server Xanthe",
   serverWisteria = "Server Wisteria",
   serverVaelis = "Server Vaelis",
   serverUmbra = "Server Umbra",
-  serverThalor = "Server Thalor",
   serverSolus = "Server Solus",
 }
 
 export enum AnimeServerName {
-  serverAshen = "Server Ashen",
   serverBlight = "Server Blight",
-  serverCrowe = "Server Crowe",
 }
 
 export type MovieArgs = {

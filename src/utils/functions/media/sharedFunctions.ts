@@ -4,8 +4,6 @@ import {
   EpisodeChunk,
   TVMovieServerName,
   AnimeServerName,
-  ZencloudEpisodeChunk,
-  ZencloudEpisodeToBeRendered,
 } from "@/utils/types/media/shared";
 import { animeServerNames } from "@/utils/variables/media/anime";
 import { tvMovieserverNames } from "@/utils/variables/media/shared";
@@ -18,19 +16,8 @@ export function getTMDBReleaseYear(releaseDate: string) {
   return releaseDate ? releaseDate.split("-")[0] : "";
 }
 
-export function getAnimeRatingInfoPage(
-  aniwatchRating: number | undefined,
-  anilistRating: number | undefined,
-) {
-  let rating: string | null;
-  if (anilistRating) {
-    rating = (anilistRating * 0.1).toFixed(1);
-  } else if (aniwatchRating) {
-    rating = aniwatchRating ? aniwatchRating.toFixed(1) : null;
-  } else {
-    rating = null;
-  }
-  return rating;
+export function getAnimeRatingInfoPage(anilistRating: number | undefined) {
+  return anilistRating ? (anilistRating * 0.1).toFixed(1) : null;
 }
 
 export function getAnimeRating(rating: number | null) {
@@ -60,28 +47,6 @@ export function toggleMediaPortal(isMediaPortalOpen: boolean) {
   }
 }
 
-export function chunkZencloudEpisodes(
-  eps: ZencloudEpisodeToBeRendered[] | null,
-  epsPerChunk: number,
-): ZencloudEpisodeChunk[] | null {
-  if (!eps) return null;
-  const chunkedEpisodes = Array.from(
-    { length: Math.ceil(eps.length / epsPerChunk) },
-    (_, i) => {
-      const chunk = eps.slice(i * epsPerChunk, (i + 1) * epsPerChunk);
-      const start = chunk[0].number;
-      const end = chunk[chunk.length - 1].number;
-      return {
-        label: `${start} - ${end}`,
-        startEp: start,
-        endEp: end,
-        episodes: chunk,
-      };
-    },
-  );
-  return chunkedEpisodes;
-}
-
 export function chunkEpisodes(
   eps: EpisodeToBeRendered[] | null,
   epsPerChunk: number,
@@ -106,10 +71,6 @@ export function chunkEpisodes(
 
 export function buildMovieEmbedLink(id: string, server: TVMovieServerName) {
   switch (server) {
-    case TVMovieServerName.serverZenith:
-      return `${import.meta.env.VITE_VIDEASY_URL}/movie/${id}?color=c026d3`;
-    case TVMovieServerName.serverYuna:
-      return `${import.meta.env.VITE_RIVESTREAM_URL}?type=movie&id=${id}`;
     case TVMovieServerName.serverXanthe:
       return `${import.meta.env.VITE_VIDROCK_URL}/movie/${id}?theme=c026d3&episodeselector=false&autoplay=false`;
     case TVMovieServerName.serverWisteria:
@@ -118,8 +79,6 @@ export function buildMovieEmbedLink(id: string, server: TVMovieServerName) {
       return `${import.meta.env.VITE_VIDZEN_URL}/movie/${id}`;
     case TVMovieServerName.serverUmbra:
       return `${import.meta.env.VITE_VIDFAST_URL}/movie/${id}?autoPlay=false`;
-    case TVMovieServerName.serverThalor:
-      return `${import.meta.env.VITE_EMBED1_URL}/movie/${id}`;
     case TVMovieServerName.serverSolus:
       return `${import.meta.env.VITE_EMBED2_URL}/movie?tmdb=${id}`;
     default:
@@ -134,10 +93,6 @@ export function buildTVEmbedLink(
   server: TVMovieServerName,
 ) {
   switch (server) {
-    case TVMovieServerName.serverZenith:
-      return `${import.meta.env.VITE_VIDEASY_URL}/tv/${id}/${season}/${episode}?color=c026d3`;
-    case TVMovieServerName.serverYuna:
-      return `${import.meta.env.VITE_RIVESTREAM_URL}?type=tv&id=${id}&season=${season}&episode=${episode}`;
     case TVMovieServerName.serverXanthe:
       return `${import.meta.env.VITE_VIDROCK_URL}/tv/${id}/${season}/${episode}?theme=c026d3&episodeselector=false&autoplay=false`;
     case TVMovieServerName.serverWisteria:
@@ -146,8 +101,6 @@ export function buildTVEmbedLink(
       return `${import.meta.env.VITE_VIDZEN_URL}/tv/${id}/${season}/${episode}`;
     case TVMovieServerName.serverUmbra:
       return `${import.meta.env.VITE_VIDFAST_URL}/tv/${id}/${season}/${episode}?autoPlay=false`;
-    case TVMovieServerName.serverThalor:
-      return `${import.meta.env.VITE_EMBED1_URL}/tv/${id}/${season}/${episode}`;
     case TVMovieServerName.serverSolus:
       return `${import.meta.env.VITE_EMBED2_URL}/tv?tmdb=${id}&season=${season}&episode=${episode}`;
     default:
@@ -159,16 +112,10 @@ export function buildAnimeEmbedLink(
   id: string,
   episode: number,
   server: AnimeServerName,
-  isMovie?: boolean,
 ) {
   switch (server) {
     case AnimeServerName.serverBlight:
       return `${import.meta.env.VITE_VIDNEST_URL}/anime/${id}/${episode}/sub`;
-    case AnimeServerName.serverCrowe:
-      if (isMovie) {
-        return `${import.meta.env.VITE_VIDEASY_URL}/anime/${id}?color=c026d3`;
-      }
-      return `${import.meta.env.VITE_VIDEASY_URL}/anime/${id}/${episode}?color=c026d3`;
     default:
       return null;
   }
@@ -182,7 +129,7 @@ export function getDefaultTVMovieServer() {
   if (defaultServer && tvMovieserverNames.includes(defaultServer)) {
     return defaultServer;
   }
-  return TVMovieServerName.serverZenith;
+  return TVMovieServerName.serverXanthe;
 }
 
 export function getDefaultAnimeServer() {
@@ -193,5 +140,5 @@ export function getDefaultAnimeServer() {
   if (defaultServer && animeServerNames.includes(defaultServer)) {
     return defaultServer;
   }
-  return AnimeServerName.serverAshen;
+  return AnimeServerName.serverBlight;
 }
