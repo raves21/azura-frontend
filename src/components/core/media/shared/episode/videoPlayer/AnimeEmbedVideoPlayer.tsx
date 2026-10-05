@@ -1,6 +1,6 @@
 import VideoPlayerSkeleton from "@/components/core/loadingSkeletons/media/episode/VideoPlayerSkeleton";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VideoPlayerError from "./VideoPlayerError";
 import { useSearch } from "@tanstack/react-router";
 
@@ -12,6 +12,10 @@ type Props = {
 export default function AnimeEmbedVideoPlayer({ embedLink, className }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    console.log(embedLink);
+  })
 
   const { animeServer: server } = useSearch({
     from: "/_protected/anime/$animeId/watch/",
