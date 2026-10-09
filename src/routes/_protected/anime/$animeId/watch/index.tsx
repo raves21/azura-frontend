@@ -143,7 +143,7 @@ function WatchEpisodePage() {
             ) : (
               server === AnimeServerName.serverBlight && (
                 <AnimeEmbedVideoPlayer
-                  embedLink={buildAnimeEmbedLink(id, epNum, server)}
+                  embedLink={buildAnimeEmbedLink(animeId, epNum, server)}
                 />
               )
             )}
@@ -154,7 +154,7 @@ function WatchEpisodePage() {
               />
               <TheaterModeButton
                 setIsTheaterModeActive={setIsTheaterModeActive}
-                animeProps={{ animeId: id, epNum, server }}
+                animeProps={{ animeId, epNum, server }}
               />
             </div>
           </div>
